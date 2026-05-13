@@ -2,10 +2,20 @@
   "active_plan": "/Users/mackhaymond/Desktop/coding/projects/bai_website/.sisyphus/plans/bai-website.md",
   "started_at": "2026-05-13T23:00:56.047Z",
   "session_ids": [
-    "ses_1dc8c7154ffegEQJS2TSV29uGI"
+    "ses_1dc8c7154ffegEQJS2TSV29uGI",
+    "ses_1dc6388fbffeUO18PRDlVwFcPu",
+    "ses_1dc6318a2ffe03Ld2CpszNsrAa",
+    "ses_1dc630647ffdsgOhJc3XTy35Jk",
+    "ses_1dc62a051ffexC74GQGJhHnXow",
+    "ses_1dc574809ffe7UW4XvLMxxWtwp"
   ],
   "session_origins": {
-    "ses_1dc8c7154ffegEQJS2TSV29uGI": "direct"
+    "ses_1dc8c7154ffegEQJS2TSV29uGI": "direct",
+    "ses_1dc6388fbffeUO18PRDlVwFcPu": "appended",
+    "ses_1dc6318a2ffe03Ld2CpszNsrAa": "appended",
+    "ses_1dc630647ffdsgOhJc3XTy35Jk": "appended",
+    "ses_1dc62a051ffexC74GQGJhHnXow": "appended",
+    "ses_1dc574809ffe7UW4XvLMxxWtwp": "appended"
   },
   "plan_name": "bai-website",
   "agent": "atlas",
@@ -18,6 +28,33 @@
       "agent": "Sisyphus-Junior",
       "category": "writing",
       "updated_at": "2026-05-13T23:05:29.865Z"
+    },
+    "todo:8": {
+      "task_key": "todo:8",
+      "task_label": "8",
+      "task_title": "**Next.js 15 scaffold (TS, Tailwind, ESLint, Prettier, bundle-analyzer)**",
+      "session_id": "ses_1dc642c89ffewIRbx5kNpAE8J6",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-05-13T23:11:49.735Z"
+    },
+    "todo:9": {
+      "task_key": "todo:9",
+      "task_label": "9",
+      "task_title": "**Design tokens — colors, typography scale, spacing, radii in CSS vars + tailwind.config.ts**",
+      "session_id": "ses_1dc62a051ffexC74GQGJhHnXow",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-05-13T23:12:56.865Z"
+    },
+    "todo:10": {
+      "task_key": "todo:10",
+      "task_label": "10",
+      "task_title": "**Font loading — Fraunces serif + Inter sans + Geist Mono via next/font**",
+      "session_id": "ses_1dc574809ffe7UW4XvLMxxWtwp",
+      "agent": "Sisyphus-Junior",
+      "category": "visual-engineering",
+      "updated_at": "2026-05-13T23:25:20.358Z"
     }
   }
 }

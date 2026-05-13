@@ -679,7 +679,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
 ### Wave 1A — Polished Landing Page (Foundation Sub-Wave)
 
-- [ ] 8. **Next.js 15 scaffold (TS, Tailwind, ESLint, Prettier, bundle-analyzer)**
+- [x] 8. **Next.js 15 scaffold (TS, Tailwind, ESLint, Prettier, bundle-analyzer)** ✅ Next 16.2.6 + React 19 + Tailwind v4 + bundle-analyzer + all scripts + commits 7d4759c, 6b1b8ee
 
   **What to do**:
   - Initialize: `bunx create-next-app@latest bai-website --typescript --tailwind --app --eslint --no-src-dir --import-alias '@/*'`
@@ -743,7 +743,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
   - Message: `feat(scaffold): Next.js 15 + Sanity + Lenis foundation`
   - Files: all initial scaffold
 
-- [ ] 9. **Design tokens — colors, typography scale, spacing, radii in CSS vars + tailwind.config.ts**
+- [x] 9. **Design tokens — colors, typography scale, spacing, radii in CSS vars + tailwind.config.ts** ✅ Tailwind v4 @theme block + CSS vars; commits 66dee11 + f3d0d8f
 
   **What to do**:
   - Create `app/globals.css` with CSS custom properties for ALL design tokens (NOT in Sanity):
@@ -893,7 +893,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
   - Message: `feat(scaffold): font loading with next/font (Fraunces + Inter + Geist Mono)`
   - Files: `app/layout.tsx`, `app/globals.css`
 
-- [ ] 11. **Sanity v3 project init + initial schemas + Studio mount at /studio**
+- [x] 11. **Sanity v3 project init + initial schemas + Studio mount at /studio** ✅ Schemas (siteSettings/homePage/foundingMember/committee), Studio at /studio, proxy.ts noindex, .env.local placeholder; commit b1aa74e
 
   **What to do**:
   - Install: `bun add sanity @sanity/vision @sanity/image-url @portabletext/react next-sanity styled-components`
