@@ -823,7 +823,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
   - Message: `feat(scaffold): design tokens for navy/gold prestige palette`
   - Files: `app/globals.css`, `tailwind.config.ts`
 
-- [ ] 10. **Font loading — Fraunces serif + Inter sans + Geist Mono via next/font**
+- [x] 10. **Font loading — Fraunces serif + Inter sans + Geist Mono via next/font**
 
   **What to do**:
   - Use `next/font/google` for Fraunces (serif display) + Inter (sans body) + Geist Mono (numeric/code).
@@ -981,7 +981,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
   - Message: `feat(cms): Sanity v3 + Studio mount + initial schemas`
   - Files: `sanity.config.ts`, `sanity/`, `app/studio/`, `.env.example`
 
-- [ ] 12. **Lenis + GSAP + Motion install with ticker bridge + ReactLenis layout + RouteChangeHandler**
+- [x] 12. **Lenis + GSAP + Motion install with ticker bridge + ReactLenis layout + RouteChangeHandler**
 
   **What to do**:
   - Install: `bun add lenis gsap motion`
@@ -1061,7 +1061,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
   - Message: `feat(scaffold): Lenis + GSAP + Motion with reduced-motion handling`
   - Files: `app/layout.tsx`, `app/_components/gsap-lenis-bridge.tsx`, `app/_components/route-change-handler.tsx`, `app/_components/reduced-motion-guard.tsx`, `app/globals.css`
 
-- [ ] 13. **Accessibility & focus management scaffolding**
+- [x] 13. **Accessibility & focus management scaffolding**
 
   **What to do**:
   - Global focus ring (`:focus-visible`): 2px solid gold outline, 2px offset. Override Tailwind's `outline-none` defaults.
@@ -1106,7 +1106,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: groups with Wave 1A foundation — `feat(a11y): focus management + axe-core harness`
 
-- [ ] 14. **SEO infrastructure — sitemap, robots, OG image, JSON-LD organization schema**
+- [x] 14. **SEO infrastructure — sitemap, robots, OG image, JSON-LD organization schema**
 
   **What to do**:
   - `app/sitemap.ts`: returns array of all routes (home + future pages, generated from a known route manifest in `app/_lib/routes.ts`); dynamic routes populated via Sanity queries in Wave 2

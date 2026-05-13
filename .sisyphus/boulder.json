@@ -7,7 +7,8 @@
     "ses_1dc6318a2ffe03Ld2CpszNsrAa",
     "ses_1dc630647ffdsgOhJc3XTy35Jk",
     "ses_1dc62a051ffexC74GQGJhHnXow",
-    "ses_1dc574809ffe7UW4XvLMxxWtwp"
+    "ses_1dc574809ffe7UW4XvLMxxWtwp",
+    "ses_1dc534eafffed1ZiNxx3Wv1VdP"
   ],
   "session_origins": {
     "ses_1dc8c7154ffegEQJS2TSV29uGI": "direct",
@@ -15,7 +16,8 @@
     "ses_1dc6318a2ffe03Ld2CpszNsrAa": "appended",
     "ses_1dc630647ffdsgOhJc3XTy35Jk": "appended",
     "ses_1dc62a051ffexC74GQGJhHnXow": "appended",
-    "ses_1dc574809ffe7UW4XvLMxxWtwp": "appended"
+    "ses_1dc574809ffe7UW4XvLMxxWtwp": "appended",
+    "ses_1dc534eafffed1ZiNxx3Wv1VdP": "appended"
   },
   "plan_name": "bai-website",
   "agent": "atlas",
@@ -55,6 +57,15 @@
       "agent": "Sisyphus-Junior",
       "category": "visual-engineering",
       "updated_at": "2026-05-13T23:25:20.358Z"
+    },
+    "todo:15": {
+      "task_key": "todo:15",
+      "task_label": "15",
+      "task_title": "**Site shell — header (logo + nav), footer (disclaimer + socials), page wrapper + LOGO VECTORIZATION**",
+      "session_id": "ses_1dc534eafffed1ZiNxx3Wv1VdP",
+      "agent": "Sisyphus-Junior",
+      "category": "visual-engineering",
+      "updated_at": "2026-05-13T23:29:40.803Z"
     }
   }
 }
