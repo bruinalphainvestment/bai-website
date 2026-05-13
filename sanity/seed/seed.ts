@@ -43,7 +43,7 @@ const writeToken = process.env.SANITY_API_WRITE_TOKEN?.trim();
 const PLACEHOLDER_PROJECT_ID = 'pPLACEHOLDR';
 
 function exitWithError(message: string): never {
-  // eslint-disable-next-line no-console
+   
   console.error(`\n  ❌  ${message}\n`);
   process.exit(1);
 }
@@ -275,7 +275,7 @@ async function createIfNotExists(
 }
 
 async function main() {
-  // eslint-disable-next-line no-console
+   
   console.log(
     `\n  🌱  Seeding Sanity project=${projectId} dataset=${dataset}\n`,
   );
@@ -284,40 +284,40 @@ async function main() {
 
   // Order matters: members must exist before committees (committee.director refs them).
   for (const member of foundingMembers) {
-    // eslint-disable-next-line no-await-in-loop
+     
     results.push(await createIfNotExists(member));
   }
 
   for (const cmt of committees) {
-    // eslint-disable-next-line no-await-in-loop
+     
     results.push(await createIfNotExists(cmt));
   }
 
   results.push(await createIfNotExists(siteSettingsDoc));
   results.push(await createIfNotExists(homePageDoc));
 
-  // eslint-disable-next-line no-console
+   
   console.log('  Results:');
   for (const r of results) {
     const icon = r.status === 'created' ? '✨' : '✓ ';
-    // eslint-disable-next-line no-console
+     
     console.log(`    ${icon} ${r.id} (${r.status})`);
   }
 
   const createdCount = results.filter((r) => r.status === 'created').length;
   const existsCount = results.filter((r) => r.status === 'exists').length;
-  // eslint-disable-next-line no-console
+   
   console.log(
     `\n  ✅  Done. ${createdCount} created, ${existsCount} already existed.\n`,
   );
-  // eslint-disable-next-line no-console
+   
   console.log(
     `  Next: open https://www.sanity.io/manage → your project, or run \`bun run dev\`\n  and visit http://localhost:3000/studio to verify and continue editing.\n`,
   );
 }
 
 main().catch((err: unknown) => {
-  // eslint-disable-next-line no-console
+   
   console.error('\n  ❌  Seed failed:\n', err);
   process.exit(1);
 });
