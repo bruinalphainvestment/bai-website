@@ -75,7 +75,7 @@ export async function SiteFooter() {
             <p className="text-gray-400 text-xs leading-relaxed">
               {disclaimer}
             </p>
-            <p className="text-gray-500 text-xs mt-4">
+            <p className="text-gray-400 text-xs mt-4">
               &copy; {new Date().getFullYear()} Bruin Alpha Investment. All rights reserved.
             </p>
           </div>

@@ -84,6 +84,42 @@ npx sanity dataset export production backup-YYYY-MM-DD.tar.gz
 npx sanity dataset import backup-YYYY-MM-DD.tar.gz production
 ```
 
+### First-Run Seeding (one-time)
+After completing [`SETUP-CHECKLIST.md`](SETUP-CHECKLIST.md) Section D (real
+Sanity project created, `.env.local` populated with the real `NEXT_PUBLIC_SANITY_PROJECT_ID`),
+seed the dataset with locked default content:
+
+1. **Create a write token** at `https://www.sanity.io/manage/project/<projectId>/api`:
+   - Tab: *Tokens* → *Add API token*
+   - Name: `seed-script`
+   - Permissions: **Editor** (or higher)
+   - Copy the token immediately (cannot be viewed again).
+2. **Add to `.env.local`** (project root):
+   ```
+   SANITY_API_WRITE_TOKEN=<paste here>
+   ```
+   ⚠️ Server-only — do NOT prefix with `NEXT_PUBLIC_`. Already gitignored.
+3. **Run the seeder:**
+   ```bash
+   bun run seed
+   ```
+4. **Verify in Studio** (`bun run dev` → http://localhost:3000/studio):
+   - Site Settings singleton populated with disclaimer, mission, slogan.
+   - Home Page singleton exists (empty sections array — populate via Studio).
+   - 5 Founding Member docs (Mack, Max, Sam, Kai, Helmer).
+   - 4 Committee docs (Wealth Management, Trading, Accounting & Consulting,
+     Investment Banking — IB director left empty as "TBD").
+
+The seeder is **idempotent**: re-running it skips any document that already
+exists (matched by deterministic `_id`). Safe to run after editing — only
+missing documents get created.
+
+### Re-seeding After Catastrophic Loss
+If the dataset is wiped and you need to rebuild defaults:
+1. Delete remaining documents in Studio (or via `sanity documents delete`).
+2. Run `bun run seed` again — recreates the 11 baseline documents.
+3. Re-upload headshots / re-enter custom content via Studio.
+
 ## 2FA Status
 | Service | 2FA Enabled | Last Verified | Verified By |
 | :--- | :--- | :--- | :--- |

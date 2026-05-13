@@ -1250,7 +1250,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): site shell with disclaimer footer + logo SVG vectorization`
 
-- [ ] 16. **Home hero — kinetic serif display + pinned scroll + slogan + gold accents**
+- [x] 16. **Home hero — kinetic serif display + pinned scroll + slogan + gold accents**
 
   **What to do**:
   - Full-bleed dark surface (`--surface-hero`). Foreground: massive Fraunces display headline "Bruin Alpha Investment" (clamp-sized), gold-accented "Alpha" word, slogan as kinetic kicker text underneath. Scroll indicator at bottom ("scroll to explore" — lenis-style).
@@ -1307,7 +1307,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): kinetic hero with pinned scroll`
 
-- [ ] 17. **Mission section — UCLA-approved statement rendered as portable text**
+- [x] 17. **Mission section — UCLA-approved statement rendered as portable text**
 
   **What to do**:
   - Section block fetching `SiteSettings.mission_statement` (portable text) — seeded with verbatim UCLA-approved description from First Meeting slides.
@@ -1355,7 +1355,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): mission section`
 
-- [ ] 18. **Values section — numbered 01/02/03 lenis-style reveals**
+- [x] 18. **Values section — numbered 01/02/03 lenis-style reveals**
 
   **What to do**:
   - 7 core values rendered as numbered list (lenis pattern: `01 / 02 / 03 / ... / 07`).
@@ -1414,7 +1414,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): numbered values section with lenis-style reveals`
 
-- [ ] 19. **Committees teaser — 4-card grid with doubled-text hover**
+- [x] 19. **Committees teaser — 4-card grid with doubled-text hover**
 
   **What to do**:
   - 4-card grid (2x2 desktop, 1x4 mobile) — Wealth Management, Trading, Accounting/Consulting, Investment Banking. Each card: committee name (Fraunces), 1-line tagline, "Explore →" link.
@@ -1469,7 +1469,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): committees teaser with doubled-text hover`
 
-- [ ] 20. **Founding team grid — monogram tile placeholders**
+- [x] 20. **Founding team grid — monogram tile placeholders**
 
   **What to do**:
   - Section: "The Founding Class — Built in Spring 2026"
@@ -1514,7 +1514,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): founding team grid with monogram tiles`
 
-- [ ] 21. **Marquee section — kinetic horizontal scroll text**
+- [x] 21. **Marquee section — kinetic horizontal scroll text**
 
   **What to do**:
   - Below team grid: full-bleed dark band with marquee scrolling left-to-right: "BAI / REAL IMPACT / LEGACY / BRUIN ALPHA / FOUNDED 2026 / [repeat]"
@@ -1552,7 +1552,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): kinetic marquee section`
 
-- [ ] 22. **Recruitment CTA + Tally embed with Sanity-managed URL**
+- [x] 22. **Recruitment CTA + Tally embed with Sanity-managed URL**
 
   **What to do**:
   - Final section: large CTA "Join the Founding Cohort" + sub-copy ("Priority application closes [date]. Applications open to all current and incoming UCLA students.")
@@ -1603,7 +1603,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(home): recruitment CTA + Tally embed`
 
-- [ ] 23. **Stats strip — Est. 2026 / 5 Founding Members / 4 Committees / Fall 2026 Recruitment**
+- [x] 23. **Stats strip — Est. 2026 / 5 Founding Members / 4 Committees / Fall 2026 Recruitment**
 
   **What to do**:
   - Horizontal stats strip (4 cells, equal width): each cell has large number + label.
