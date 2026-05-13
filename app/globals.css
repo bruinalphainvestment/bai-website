@@ -1,26 +1,90 @@
+/*
+ * BRAND DESIGN SYSTEM
+ * Brand Palette Source: brand_assets/BAI Folder/BAI Logo.png
+ * IMPORTANT: Design tokens are locked in code here.
+ * NEVER put design tokens in Sanity CMS. 
+ */
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --color-navy: #002147;
+  --color-gold-start: #C5A059;
+  --color-gold-end: #8B6F38;
+  --color-deep: #0A1428;
+  --color-cream: #FAF7F2;
+  --color-offwhite: #F5F5F0;
+  --color-text-on-dark: #F5F5F0;
+  --color-text-on-light: #002147;
+  --color-border-subtle: #1A2A4A;
+
+  /* Surfaces */
+  --surface-hero: linear-gradient(180deg, #0A1428 0%, #002147 100%);
+  --surface-content: var(--color-cream);
+  --surface-card-dark: var(--color-navy);
+  --surface-card-light: var(--color-offwhite);
+
+  /* Typography Scale */
+  --font-display-xl: clamp(3.5rem, 8vw + 1rem, 9rem);
+  --font-display-lg: clamp(2.5rem, 5vw + 1rem, 6rem);
+  --font-h1: clamp(2rem, 3vw + 1rem, 4rem);
+  --font-h2: clamp(1.5rem, 2vw + 0.5rem, 2.5rem);
+  --font-body: 1rem;
+  --font-small: 0.875rem;
+
+  /* Spacing */
+  --space-section: clamp(6rem, 12vw, 12rem);
+
+  /* Radii */
+  --radius-none: 0;
+  --radius-subtle: 2px;
+  --radius-card: 8px;
+
+  /* Easings */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* Colors */
+  --color-navy: var(--color-navy);
+  --color-gold-start: var(--color-gold-start);
+  --color-gold-end: var(--color-gold-end);
+  --color-deep: var(--color-deep);
+  --color-cream: var(--color-cream);
+  --color-offwhite: var(--color-offwhite);
+  --color-text-on-dark: var(--color-text-on-dark);
+  --color-text-on-light: var(--color-text-on-light);
+  --color-border-subtle: var(--color-border-subtle);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Surfaces */
+  --background-image-surface-hero: var(--surface-hero);
+  --color-surface-content: var(--surface-content);
+  --color-surface-card-dark: var(--surface-card-dark);
+  --color-surface-card-light: var(--surface-card-light);
+
+  /* Typography Scale */
+  --text-display-xl: var(--font-display-xl);
+  --text-display-lg: var(--font-display-lg);
+  --text-h1: var(--font-h1);
+  --text-h2: var(--font-h2);
+  --text-body: var(--font-body);
+  --text-small: var(--font-small);
+
+  /* Spacing */
+  --spacing-section: var(--space-section);
+
+  /* Radii */
+  --radius-none: var(--radius-none);
+  --radius-subtle: var(--radius-subtle);
+  --radius-card: var(--radius-card);
+
+  /* Easings */
+  --ease-out-expo: var(--ease-out-expo);
+  --ease-out-quart: var(--ease-out-quart);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface-content);
+  color: var(--color-text-on-light);
 }
