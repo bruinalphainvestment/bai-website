@@ -1,8 +1,23 @@
+import Hero from '@/app/_components/sections/hero';
+import Mission from '@/app/_components/sections/mission';
+import Stats from '@/app/_components/sections/stats';
+import Values from '@/app/_components/sections/values';
+import CommitteesTeaser from '@/app/_components/sections/committees-teaser';
+import FoundingTeam from '@/app/_components/sections/founding-team';
+import Marquee from '@/app/_components/sections/marquee';
+import RecruitmentCTA from '@/app/_components/sections/recruitment-cta';
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-24 pt-32">
-      <h1 className="text-4xl font-serif font-bold text-[#002147] mb-4">Bruin Alpha Investment</h1>
-      <p className="text-xl text-gray-600">Wave 1A composition coming next</p>
-    </div>
+    <>
+      <Hero />
+      <Mission />
+      <Stats />
+      <Values />
+      <CommitteesTeaser />
+      <FoundingTeam />
+      <Marquee />
+      <RecruitmentCTA />
+    </>
   );
 }

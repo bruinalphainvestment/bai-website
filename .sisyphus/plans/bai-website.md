@@ -1171,7 +1171,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
 ### Wave 1A — Polished Landing Page (Composition Sub-Wave)
 
-- [ ] 15. **Site shell — header (logo + nav), footer (disclaimer + socials), page wrapper + LOGO VECTORIZATION**
+- [x] 15. **Site shell — header (logo + nav), footer (disclaimer + socials), page wrapper + LOGO VECTORIZATION**
 
   > **NOTE ON LOGO**: User confirmed only PNG is available (`brand_assets/BAI Folder/BAI Logo.png`). This task includes vectorizing it to SVG so the hero logo doesn't pixelate at large sizes / on Retina displays. Vector also reduces bundle weight when inlined.
 
