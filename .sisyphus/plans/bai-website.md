@@ -1657,7 +1657,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
 ### Wave 1A — Polished Landing Page (Finishing Sub-Wave)
 
-- [ ] 24. **Sanity content seeding script — populate SiteSettings, HomePage, 5 Members, 4 Committees from transcripts**
+- [x] 24. **Sanity content seeding script — populate SiteSettings, HomePage, 5 Members, 4 Committees from transcripts**
 
   **What to do**:
   - Create `sanity/seed/seed.ts` — uses Sanity Mutate API to create:
@@ -1705,7 +1705,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(content): seed Sanity from transcripts (5 members, 4 committees)`
 
-- [ ] 25. **Playwright QA harness + Lighthouse CI setup + axe-core integration**
+- [x] 25. **Playwright QA harness + Lighthouse CI setup + axe-core integration**
 
   **What to do**:
   - Install: `bun add -d @playwright/test @axe-core/playwright @lhci/cli`
@@ -1752,7 +1752,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `chore(test): Playwright + LHCI + axe-core harness`
 
-- [ ] 26. **Per-page Playwright scenarios for home page (happy + 4 failure cases)**
+- [x] 26. **Per-page Playwright scenarios for home page (happy + 4 failure cases)**
 
   **What to do**:
   - Create `tests/home.spec.ts` covering:
@@ -1854,7 +1854,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `chore(deploy): Vercel deployment + Analytics + Speed Insights`
 
-- [ ] 28. **EDITING-GUIDE.md draft — 1-page how-to for non-technical editors**
+- [x] 28. **EDITING-GUIDE.md draft — 1-page how-to for non-technical editors**
 
   **What to do**:
   - Create `docs/EDITING-GUIDE.md` — written for an incoming UCLA student who has NEVER used a CMS.
@@ -1900,7 +1900,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
 ### Wave 1B — UBS Submission Prerequisites (manual, parallel)
 
-- [ ] 29. **LinkedIn page creation guide (officer task, documented)**
+- [x] 29. **LinkedIn page creation guide (officer task, documented)**
 
   **What to do**:
   - Create `docs/launch/LINKEDIN-SETUP.md` — step-by-step officer guide:
@@ -1936,7 +1936,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `docs(launch): LinkedIn setup guide`
 
-- [ ] 30. **Instagram account creation guide (officer task, documented)**
+- [x] 30. **Instagram account creation guide (officer task, documented)**
 
   **What to do**:
   - Create `docs/launch/INSTAGRAM-SETUP.md` — officer guide:
@@ -1971,7 +1971,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `docs(launch): Instagram setup guide`
 
-- [ ] 31. **UBS directory Google Form submission guide (officer task, documented)**
+- [x] 31. **UBS directory Google Form submission guide (officer task, documented)**
 
   **What to do**:
   - Create `docs/launch/UBS-SUBMISSION.md` — officer guide:
@@ -2008,7 +2008,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
 ### Wave 2 — Full Site Through Summer (Schema + CMS expansion)
 
-- [ ] 32. **Expand Sanity schemas — Committee subpages, Project, Event, FAQ, Page-with-blocks polymorphic schema**
+- [x] 32. **Expand Sanity schemas — Committee subpages, Project, Event, FAQ, Page-with-blocks polymorphic schema**
 
   **What to do**:
   - Extend `committee.ts`: add `curriculum` (portable text), `signature_projects` (array of references to Project), `comp_calendar` (array of `{name, date, url, type}`), `director_quote`, `accent_color` enum
@@ -2098,7 +2098,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(cms): Sanity Presentation Tool with draft mode`
 
-- [ ] 34. **Weekly Sanity dataset export GitHub Action backup**
+- [x] 34. **Weekly Sanity dataset export GitHub Action backup**
 
   **What to do**:
   - Create `.github/workflows/sanity-backup.yml` — runs every Sunday 04:00 UTC:

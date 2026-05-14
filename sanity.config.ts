@@ -76,8 +76,15 @@ export default defineConfig({
     }),
     presentationTool({
       previewUrl: {
-        origin: typeof location === 'undefined' ? '' : location.origin,
+        origin:
+          typeof location === 'undefined'
+            ? (process.env.NEXT_PUBLIC_SITE_URL ?? '')
+            : location.origin,
         preview: '/',
+        previewMode: {
+          enable: '/api/draft-mode/enable',
+          disable: '/api/draft-mode/disable',
+        },
       },
     }),
     visionTool({ defaultApiVersion: apiVersion }),

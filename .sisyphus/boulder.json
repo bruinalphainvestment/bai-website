@@ -1,0 +1,38 @@
+{
+  "active_plan": "/Users/mackhaymond/Desktop/coding/projects/bai_website/.sisyphus/plans/bai-website.md",
+  "started_at": "2026-05-13T23:00:56.047Z",
+  "session_ids": [
+    "ses_1dc8c7154ffegEQJS2TSV29uGI",
+    "ses_1dc3702ffffexm5hTBkkvUaLXU",
+    "ses_1dc36730dffeHVF3BcM9XmaSWc",
+    "ses_1dc362e42ffeuva4sPDL2Tn50u",
+    "ses_1dc12a439ffdgpnH9yGgNgzpbJ",
+    "ses_1dc120f3effd45DK8Ob3e03ymI",
+    "ses_1dc0cbe5dffevJEXOrRk0A7Qu5",
+    "ses_1dc0cbdaeffegxQ8y3S9382igP"
+  ],
+  "session_origins": {
+    "ses_1dc8c7154ffegEQJS2TSV29uGI": "direct",
+    "ses_1dc3702ffffexm5hTBkkvUaLXU": "appended",
+    "ses_1dc36730dffeHVF3BcM9XmaSWc": "appended",
+    "ses_1dc362e42ffeuva4sPDL2Tn50u": "appended",
+    "ses_1dc12a439ffdgpnH9yGgNgzpbJ": "appended",
+    "ses_1dc120f3effd45DK8Ob3e03ymI": "appended",
+    "ses_1dc0cbe5dffevJEXOrRk0A7Qu5": "appended",
+    "ses_1dc0cbdaeffegxQ8y3S9382igP": "appended"
+  },
+  "plan_name": "bai-website",
+  "agent": "atlas",
+  "resumed_after_pause": "2026-05-13T17:00:00Z",
+  "task_sessions": {
+    "todo:27": {
+      "task_key": "todo:27",
+      "task_label": "27",
+      "task_title": "**Vercel deployment + env vars + Analytics + Speed Insights wired**",
+      "session_id": "ses_1dc0cbe5dffevJEXOrRk0A7Qu5",
+      "agent": "Sisyphus-Junior",
+      "category": "visual-engineering",
+      "updated_at": "2026-05-14T00:46:45.380Z"
+    }
+  }
+}
