@@ -1,20 +1,42 @@
-export default function FoundingTeam() {
-  const team = [
-    { monogram: "MH", name: "Mack Haymond", role: "President" },
-    { monogram: "MX", name: "Max", role: "Trading Director" },
-    { monogram: "SM", name: "Sam", role: "Operations" },
-    { monogram: "KX", name: "Kai", role: "Trading Co-Director" },
-    { monogram: "HM", name: "Helmer", role: "Accounting & Consulting Director" }
-  ];
+import type { FoundingTeamSection } from '@/sanity/types/generated';
+
+import {
+  foundingTeamFallback,
+  foundingTeamMembersFallback,
+  type FoundingTeamMemberItem,
+} from '../fallbacks/sections/founding-team';
+
+type Props = Partial<FoundingTeamSection> & {
+  members?: FoundingTeamMemberItem[];
+};
+
+export default function FoundingTeam(props: Props = {}) {
+  const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
+  const data = useSanity && props.heading ? props : foundingTeamFallback;
+  const members =
+    useSanity && props.members && props.members.length > 0
+      ? props.members
+      : foundingTeamMembersFallback;
+
+  const heading = data.heading ?? foundingTeamFallback.heading ?? '';
+  const subheading = data.subheading;
 
   return (
-    <section data-section="team" className="bg-cream text-navy py-24 md:py-32 px-4 md:px-8 border-t border-navy/10">
+    <section
+      data-section="team"
+      className="bg-cream text-navy py-24 md:py-32 px-4 md:px-8 border-t border-navy/10"
+    >
       <div className="mx-auto max-w-7xl">
         <h2 className="font-display text-3xl md:text-5xl mb-16 max-w-2xl">
-          The Founding Class — Built in Spring 2026
+          {heading}
         </h2>
+        {subheading ? (
+          <p className="font-sans text-lg text-navy/70 max-w-3xl mb-12 -mt-12">
+            {subheading}
+          </p>
+        ) : null}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
-          {team.map((member) => (
+          {members.map((member) => (
             <div key={member.name} className="flex flex-col group">
               <div className="aspect-square bg-deep flex items-center justify-center mb-6 overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-navy to-deep opacity-80" />
