@@ -847,3 +847,134 @@ This session completed the remainder of Phase 1 on top of Delegation D (which ha
 ### T1.4 — DEFERRED to user manual step
 T1.4 (Sanity Manage UI webhook configuration) is a dashboard-only task that cannot be automated from this session. Tracked in `notepads/cms-migration/issues.md` as a user-action TODO. Once Mack creates the webhook with URL `https://www.bruinalphainvestment.com/api/revalidate`, secret `$SANITY_REVALIDATE_SECRET`, and trigger on create/update/delete, the full Phase 1 acceptance criteria are satisfied.
 
+---
+
+## Phase 2 — Page Refactors (T2.1 – T2.10)
+
+All routes now fetch from Sanity with `NEXT_PUBLIC_USE_SANITY` env flag + try/catch fallback to typed hardcoded modules. Production build (`bun run build`) and `bun run typecheck` exit 0; no `any` casts or `@ts-ignore` introduced.
+
+### Commit map
+
+| SHA | Task | Title |
+|---|---|---|
+| `12876c9` | T2.1 | feat(cms-migration): T2.1 /about page from Sanity with typed fallback |
+| `53038e7` | T2.3 | feat(cms-migration): T2.3 /training page from Sanity with typed fallback |
+| `fa73c1d` | T2.4 | feat(cms-migration): T2.4 /join page from Sanity with inline FAQs (D11) |
+| `890dcd9` | T2.5 | feat(cms-migration): T2.5 /events page + events list from Sanity |
+| `cff12d9` | T2.6 | feat(cms-migration): T2.6 /projects page + projects list from Sanity |
+| `9aa368a` | T2.7 | feat(cms-migration): T2.7 /team page + founding members from Sanity |
+| `2f64e86` | T2.8 | feat(cms-migration): T2.8 /committees index page + list from Sanity |
+| `b90e418` | T2.2 | feat(cms-migration): T2.2 /committees/[slug] detail with deref + ISR |
+| `d13d5fa` | T2.9 | feat(cms-migration): T2.9 middleware committee slug redirects (D18) |
+| `1eaeacd` | T2.10 | feat(cms-migration): T2.10 section components accept typed props + fallbacks |
+
+### Final exit codes (post-T2.10)
+- `bun run typegen` — 18 queries, 49 schema types, prettier-formatted ✓
+- `bun run typecheck` — exit 0 (no `any`, no `@ts-ignore`) ✓
+- `bun run build` — exit 0, 4 committee subroutes statically prerendered with 1h ISR ✓
+
+### Smoke test (production server on :3001, all routes HTTP 200)
+
+```
+200  /
+200  /about
+200  /training
+200  /join
+200  /events
+200  /projects
+200  /team
+200  /committees
+200  /committees/wealth-management
+200  /committees/trading
+200  /committees/accounting-consulting
+200  /committees/investment-banking
+```
+
+### Stega character audit (zero PUA U+E000–U+F8FF chars in rendered HTML)
+
+```
+PUA chars in /: 0
+PUA chars in /about: 0
+PUA chars in /training: 0
+PUA chars in /join: 0
+PUA chars in /events: 0
+PUA chars in /projects: 0
+PUA chars in /team: 0
+PUA chars in /committees: 0
+PUA chars in /committees/trading: 0
+```
+
+### T2.10 acceptance gate — zero hardcoded editorial copy in section .tsx
+
+```
+$ grep -E "(2026|Bruin Alpha|Mack Haymond|Have Passion|Investing in Bruin)" app/_components/sections/*.tsx
+(no output → grep exit 1, AKA zero matches)
+```
+
+All editorial copy lives in `app/_components/fallbacks/sections/*.ts` (8 modules, one per section).
+
+### Per-route artifacts
+
+#### T2.1 — /about
+- `sanity/lib/queries.ts`: added `aboutPageQuery`
+- `app/_components/fallbacks/about-page.ts`: typed `aboutPageFallback` + `aboutQuoteFallback` (quote is not in About schema; kept in JSX-stable structural copy)
+- `app/(site)/about/page.tsx`: async server component; `generateMetadata` from `aboutPage.seo` + `siteSettings` fallback; renders hero + history (paragraph-split) + quote + values + signatureTrip
+
+#### T2.3 — /training
+- `trainingPageQuery` added; `trainingPageFallback` mirrors 5-week curriculum entries from production hardcode
+- Page renders hero + curriculum grid + Class Hierarchy + Sample Week + Quarterly All-Club Project (structural sections stay JSX, dynamic copy from data)
+
+#### T2.4 — /join
+- `joinPageQuery` (inline FAQs per D11) added; `joinPageFallback` mirrors 6 FAQs + 4 timeline steps + applicationForm
+- Page uses `siteSettings.clubEmail|instagramUrl|linkedinUrl` for the "Get in Touch" cards
+
+#### T2.5 — /events
+- `eventsPageQuery` + `allEventsQuery` (joined with committee deref, coalesced externalUrl)
+- `eventsListFallback`: 6 events (2 upcoming, 4 competitions) mirroring production hardcode
+- Page splits events by `type === 'comp'` into Competitions vs Upcoming sections; uses `upcomingEmptyState` / `pastEmptyState` from page singleton
+
+#### T2.6 — /projects
+- `projectsPageQuery` + `allProjectsQuery` (joined with committee deref)
+- `projectsListFallback`: 5 projects mirroring production hardcode
+- Page status legend uses `STATUS_DISPLAY` lookup; emphasized dot for Planning status (matches current production visual)
+
+#### T2.7 — /team
+- `teamPageQuery` + reused `allFoundingMembersQuery`
+- `foundingMembersFallback`: 5 members (the actual seed roster, not the stale hardcode — issues.md flagged this; now corrected: Mack/Max/Sam/Kai/Helmer)
+- Monogram derivation: `monogramOverride` → first+last initials → first 2 chars → '?'
+
+#### T2.8 — /committees (list)
+- `committeesIndexPageQuery` + `allCommitteesIndexQuery` (with director deref)
+- `committeesIndexPageFallback` + `committeesIndexListFallback`
+- Director label: `${firstName} ${lastName}` → `directorPlaceholder` → 'TBD'
+- D9 "Connected by Design" supports `paragraphs[]` array (preferred) or legacy `body` field
+
+#### T2.2 — /committees/[slug] (detail)
+- `committeeBySlugQuery` (joined: director → headshot/monogramOverride, signature_projects[] → summary/status), `committeeSlugsQuery`, `committeeRedirectMapQuery`
+- `export const revalidate = 3600` + `export const dynamicParams = true` per plan
+- `generateStaticParams()` enumerates slugs from Sanity (falls back to fallback module keys if fetch fails)
+- D6 director nullable: renders `directorPlaceholder` when ref is null
+- `committeeDetailFallback`: full 4-committee table mirrors production hardcode verbatim
+- `committeeDetailFallbackCurriculum`: 8-week portable-text curriculum (matches the hardcoded weeks in main)
+
+#### T2.9 — middleware.ts
+- Merged with the pre-existing `X-Robots-Tag` middleware for `/studio` + `/api`
+- `loadRedirectMap()` uses `unstable_cache` with tag `committee` (webhook-revalidatable per T1.3) + 3600s TTL
+- Reads `redirectsFrom[]` arrays via `committeeRedirectMapQuery`, emits 301 if incoming slug matches
+- Falls back to empty map when `NEXT_PUBLIC_USE_SANITY !== 'true'` — no false redirects in flag-off mode
+- Matcher: `['/committees/:path*', '/studio/:path*', '/api/:path*']`
+
+**Redirect smoke test — no committee in seed currently has `redirectsFrom[]` set, so live 301 verification deferred to user.** Verified: unknown slug → 404 (middleware passes through); known slug → 200 (middleware passes through); `/api/*` keeps `X-Robots-Tag: noindex, nofollow` header.
+
+#### T2.10 — section components
+- 8 typed fallback modules under `app/_components/fallbacks/sections/`
+- 8 section components refactored to `(props: Partial<XSection> = {})` signature
+- Decision rule: when `useSanity && requiredField` present → use props; else → fallback
+- Hero parses "Bruin **Alpha** Investment" gold-accent from any 3+-word headline (preserves visual)
+- Mission extracts text from Portable Text blocks + splits first-letter drop-cap
+
+### Notes / deferrals
+- **Playwright e2e specs intentionally skipped** per task brief (deferred to later phase; current focus is data wiring + visual parity).
+- **Dev-server flake on /committees/[slug]**: Turbopack dev mode produced a transient ChunkLoadError for the dynamic route. The production build (`bun run start`) renders all 4 slugs cleanly with HTTP 200. Filed as dev-only quirk; production behavior unaffected.
+- **Editor-side defaults**: Each fallback module is typed against `NonNullable<XQueryResult>`, so when the editor seeds these singletons in `migration` dataset, the same shape applies — no client-side schema drift.
+
