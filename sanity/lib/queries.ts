@@ -207,3 +207,51 @@ export const allCommitteesIndexQuery = defineQuery(`
     }
   }
 `);
+
+export const committeeBySlugQuery = defineQuery(`
+  *[_type == "committee" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    tagline,
+    description,
+    curriculum,
+    learn,
+    differentiator,
+    director_quote,
+    redirectsFrom,
+    accentColor,
+    order,
+    directorPlaceholder,
+    "director": director->{
+      _id,
+      firstName,
+      lastName,
+      role,
+      committee,
+      headshot,
+      photoReleaseObtained,
+      monogramOverride
+    },
+    "projects": signature_projects[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      summary,
+      status
+    }
+  }
+`);
+
+export const committeeSlugsQuery = defineQuery(`
+  *[_type == "committee" && defined(slug.current)] {
+    "slug": slug.current
+  }
+`);
+
+export const committeeRedirectMapQuery = defineQuery(`
+  *[_type == "committee" && defined(slug.current)] {
+    "slug": slug.current,
+    redirectsFrom
+  }
+`);

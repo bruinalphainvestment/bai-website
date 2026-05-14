@@ -1579,6 +1579,104 @@ export type AllCommitteesIndexQueryResult = Array<{
   } | null;
 }>;
 
+// Source: sanity/lib/queries.ts
+// Variable: committeeBySlugQuery
+// Query: *[_type == "committee" && slug.current == $slug][0] {    _id,    name,    "slug": slug.current,    tagline,    description,    curriculum,    learn,    differentiator,    director_quote,    redirectsFrom,    accentColor,    order,    directorPlaceholder,    "director": director->{      _id,      firstName,      lastName,      role,      committee,      headshot,      photoReleaseObtained,      monogramOverride    },    "projects": signature_projects[]->{      _id,      name,      "slug": slug.current,      summary,      status    }  }
+export type CommitteeBySlugQueryResult = {
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  tagline: string | null;
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<{
+      href?: string;
+      _type: 'link';
+      _key: string;
+    }>;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }> | null;
+  curriculum: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<{
+      href?: string;
+      _type: 'link';
+      _key: string;
+    }>;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }> | null;
+  learn: Array<string> | null;
+  differentiator: string | null;
+  director_quote: string | null;
+  redirectsFrom: Array<string> | null;
+  accentColor: 'gold' | 'navy' | null;
+  order: number | null;
+  directorPlaceholder: string | null;
+  director: {
+    _id: string;
+    firstName: string | null;
+    lastName: string | null;
+    role: string | null;
+    committee:
+      | 'accounting-consulting'
+      | 'investment-banking'
+      | 'operations'
+      | 'president'
+      | 'trading'
+      | 'wealth-management'
+      | null;
+    headshot: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    } | null;
+    photoReleaseObtained: boolean | null;
+    monogramOverride: string | null;
+  } | null;
+  projects: Array<{
+    _id: string;
+    name: string | null;
+    slug: string | null;
+    summary: string | null;
+    status: 'active' | 'completed' | 'planning' | null;
+  }> | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: committeeSlugsQuery
+// Query: *[_type == "committee" && defined(slug.current)] {    "slug": slug.current  }
+export type CommitteeSlugsQueryResult = Array<{
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/queries.ts
+// Variable: committeeRedirectMapQuery
+// Query: *[_type == "committee" && defined(slug.current)] {    "slug": slug.current,    redirectsFrom  }
+export type CommitteeRedirectMapQueryResult = Array<{
+  slug: string | null;
+  redirectsFrom: Array<string> | null;
+}>;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1598,5 +1696,8 @@ declare module '@sanity/client' {
     '\n  *[_type == "teamPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    foundingClassHeading,\n    membersHeading,\n    membersPlaceholder,\n    alumniHeading,\n    alumniPlaceholder\n  }\n': TeamPageQueryResult;
     '\n  *[_type == "committeesIndexPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    connectedByDesign\n  }\n': CommitteesIndexPageQueryResult;
     '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    learn,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "director": director->{\n      firstName,\n      lastName,\n      role\n    }\n  }\n': AllCommitteesIndexQueryResult;
+    '\n  *[_type == "committee" && slug.current == $slug][0] {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    curriculum,\n    learn,\n    differentiator,\n    director_quote,\n    redirectsFrom,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "director": director->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "projects": signature_projects[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      summary,\n      status\n    }\n  }\n': CommitteeBySlugQueryResult;
+    '\n  *[_type == "committee" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': CommitteeSlugsQueryResult;
+    '\n  *[_type == "committee" && defined(slug.current)] {\n    "slug": slug.current,\n    redirectsFrom\n  }\n': CommitteeRedirectMapQueryResult;
   }
 }
