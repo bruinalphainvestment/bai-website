@@ -21,22 +21,57 @@ export default defineConfig({
           .title('Content')
           .items([
             S.listItem()
-              .title('Site Settings')
-              .id('siteSettings')
+              .title('Pages')
+              .id('pagesGroup')
               .child(
-                S.document()
-                  .schemaType('siteSettings')
-                  .documentId('siteSettings'),
+                S.list()
+                  .title('Pages')
+                  .items([
+                    S.listItem()
+                      .title('Home Page')
+                      .id('homePage')
+                      .child(
+                        S.document()
+                          .schemaType('homePage')
+                          .documentId('homePage'),
+                      ),
+                    S.divider(),
+                    S.documentTypeListItem('page').title('All Pages'),
+                  ]),
               ),
             S.listItem()
-              .title('Home Page')
-              .id('homePage')
+              .title('Content')
+              .id('contentGroup')
               .child(
-                S.document().schemaType('homePage').documentId('homePage'),
+                S.list()
+                  .title('Content')
+                  .items([
+                    S.documentTypeListItem('committee').title('Committees'),
+                    S.documentTypeListItem('foundingMember').title(
+                      'Founding Members',
+                    ),
+                    S.documentTypeListItem('project').title('Projects'),
+                    S.documentTypeListItem('event').title('Events'),
+                    S.documentTypeListItem('faq').title('FAQs'),
+                  ]),
               ),
-            S.divider(),
-            S.documentTypeListItem('committee').title('Committees'),
-            S.documentTypeListItem('foundingMember').title('Founding Members'),
+            S.listItem()
+              .title('Settings')
+              .id('settingsGroup')
+              .child(
+                S.list()
+                  .title('Settings')
+                  .items([
+                    S.listItem()
+                      .title('Site Settings')
+                      .id('siteSettings')
+                      .child(
+                        S.document()
+                          .schemaType('siteSettings')
+                          .documentId('siteSettings'),
+                      ),
+                  ]),
+              ),
           ]),
     }),
     presentationTool({
