@@ -1532,6 +1532,53 @@ export type TeamPageQueryResult = {
   alumniPlaceholder: string | null;
 } | null;
 
+// Source: sanity/lib/queries.ts
+// Variable: committeesIndexPageQuery
+// Query: *[_type == "committeesIndexPage"][0] {    title,    seo,    hero,    intro,    connectedByDesign  }
+export type CommitteesIndexPageQueryResult = {
+  title: string | null;
+  seo: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  } | null;
+  hero: {
+    heading?: string;
+    subheading?: string;
+  } | null;
+  intro: string | null;
+  connectedByDesign: {
+    heading?: string;
+    body?: string;
+    paragraphs?: Array<string>;
+  } | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: allCommitteesIndexQuery
+// Query: *[_type == "committee"] | order(order asc) {    _id,    name,    "slug": slug.current,    tagline,    learn,    accentColor,    order,    directorPlaceholder,    "director": director->{      firstName,      lastName,      role    }  }
+export type AllCommitteesIndexQueryResult = Array<{
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  tagline: string | null;
+  learn: Array<string> | null;
+  accentColor: 'gold' | 'navy' | null;
+  order: number | null;
+  directorPlaceholder: string | null;
+  director: {
+    firstName: string | null;
+    lastName: string | null;
+    role: string | null;
+  } | null;
+}>;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1549,5 +1596,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "projectsPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    emptyState,\n    statusLegend\n  }\n': ProjectsPageQueryResult;
     '\n  *[_type == "project"] | order(_createdAt asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    summary,\n    status,\n    tags,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllProjectsQueryResult;
     '\n  *[_type == "teamPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    foundingClassHeading,\n    membersHeading,\n    membersPlaceholder,\n    alumniHeading,\n    alumniPlaceholder\n  }\n': TeamPageQueryResult;
+    '\n  *[_type == "committeesIndexPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    connectedByDesign\n  }\n': CommitteesIndexPageQueryResult;
+    '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    learn,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "director": director->{\n      firstName,\n      lastName,\n      role\n    }\n  }\n': AllCommitteesIndexQueryResult;
   }
 }

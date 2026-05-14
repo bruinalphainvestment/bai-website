@@ -179,3 +179,31 @@ export const teamPageQuery = defineQuery(`
     alumniPlaceholder
   }
 `);
+
+export const committeesIndexPageQuery = defineQuery(`
+  *[_type == "committeesIndexPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    connectedByDesign
+  }
+`);
+
+export const allCommitteesIndexQuery = defineQuery(`
+  *[_type == "committee"] | order(order asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    tagline,
+    learn,
+    accentColor,
+    order,
+    directorPlaceholder,
+    "director": director->{
+      firstName,
+      lastName,
+      role
+    }
+  }
+`);
