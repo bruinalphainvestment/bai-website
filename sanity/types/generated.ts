@@ -1037,11 +1037,14 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: siteSettingsQuery
-// Query: *[_type == "siteSettings"][0] {    ucla_compliant_name,    slogan,    mission_statement,    disclaimer_text,    applyUrl,    clubEmail,    instagramUrl,    linkedinUrl,    slackInviteUrl,    domain_renewal_date  }
+// Query: *[_type == "siteSettings"][0] {    brandName,    titleSuffix,    slogan,    "disclaimer": coalesce(disclaimerText, disclaimer_text),    "uclaName": coalesce(uclaCompliantName, ucla_compliant_name),    "mission": coalesce(missionStatement, mission_statement),    applyUrl,    clubEmail,    instagramUrl,    linkedinUrl,    slackInviteUrl,    navLinks,    foundedYear,    foundedTerm,    defaultMetaDescription,    defaultOgImage,    organizationDescription,    sameAs,    errorCopy,    "domainRenewal": coalesce(domainRenewalDate, domain_renewal_date)  }
 export type SiteSettingsQueryResult = {
-  ucla_compliant_name: string | null;
+  brandName: string | null;
+  titleSuffix: string | null;
   slogan: string | null;
-  mission_statement: Array<{
+  disclaimer: string | null;
+  uclaName: string | null;
+  mission: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
@@ -1059,13 +1062,37 @@ export type SiteSettingsQueryResult = {
     _type: 'block';
     _key: string;
   }> | null;
-  disclaimer_text: string | null;
   applyUrl: string | null;
   clubEmail: string | null;
   instagramUrl: string | null;
   linkedinUrl: string | null;
   slackInviteUrl: string | null;
-  domain_renewal_date: string | null;
+  navLinks: Array<{
+    label?: string;
+    href?: string;
+    _type: 'navLink';
+    _key: string;
+  }> | null;
+  foundedYear: number | null;
+  foundedTerm: string | null;
+  defaultMetaDescription: string | null;
+  defaultOgImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  } | null;
+  organizationDescription: string | null;
+  sameAs: Array<string> | null;
+  errorCopy: {
+    notFoundHeading?: string;
+    notFoundBody?: string;
+    errorHeading?: string;
+    errorBody?: string;
+    loadingLabel?: string;
+  } | null;
+  domainRenewal: string | null;
 } | null;
 
 // Source: sanity/lib/queries.ts
@@ -1246,7 +1273,7 @@ export type AllFoundingMembersQueryResult = Array<{
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\n  *[_type == "siteSettings"][0] {\n    ucla_compliant_name,\n    slogan,\n    mission_statement,\n    disclaimer_text,\n    applyUrl,\n    clubEmail,\n    instagramUrl,\n    linkedinUrl,\n    slackInviteUrl,\n    domain_renewal_date\n  }\n': SiteSettingsQueryResult;
+    '\n  *[_type == "siteSettings"][0] {\n    brandName,\n    titleSuffix,\n    slogan,\n    "disclaimer": coalesce(disclaimerText, disclaimer_text),\n    "uclaName": coalesce(uclaCompliantName, ucla_compliant_name),\n    "mission": coalesce(missionStatement, mission_statement),\n    applyUrl,\n    clubEmail,\n    instagramUrl,\n    linkedinUrl,\n    slackInviteUrl,\n    navLinks,\n    foundedYear,\n    foundedTerm,\n    defaultMetaDescription,\n    defaultOgImage,\n    organizationDescription,\n    sameAs,\n    errorCopy,\n    "domainRenewal": coalesce(domainRenewalDate, domain_renewal_date)\n  }\n': SiteSettingsQueryResult;
     '\n  *[_type == "homePage"][0] {\n    title,\n    sections[] {\n      _key,\n      _type,\n      ...\n    }\n  }\n': HomePageQueryResult;
     '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    order,\n    accentColor,\n    "director": director-> {\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee\n    }\n  }\n': AllCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;

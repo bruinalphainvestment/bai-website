@@ -2,16 +2,26 @@ import { defineQuery } from 'next-sanity';
 
 export const siteSettingsQuery = defineQuery(`
   *[_type == "siteSettings"][0] {
-    ucla_compliant_name,
+    brandName,
+    titleSuffix,
     slogan,
-    mission_statement,
-    disclaimer_text,
+    "disclaimer": coalesce(disclaimerText, disclaimer_text),
+    "uclaName": coalesce(uclaCompliantName, ucla_compliant_name),
+    "mission": coalesce(missionStatement, mission_statement),
     applyUrl,
     clubEmail,
     instagramUrl,
     linkedinUrl,
     slackInviteUrl,
-    domain_renewal_date
+    navLinks,
+    foundedYear,
+    foundedTerm,
+    defaultMetaDescription,
+    defaultOgImage,
+    organizationDescription,
+    sameAs,
+    errorCopy,
+    "domainRenewal": coalesce(domainRenewalDate, domain_renewal_date)
   }
 `);
 
