@@ -184,8 +184,8 @@ export default async function CommitteePage({ params }: { params: Promise<{ slug
             What You&apos;ll Learn
           </h2>
           <ul className="grid md:grid-cols-2 gap-4">
-            {committee.learn.map((item, idx) => (
-              <li key={idx} className="flex items-start">
+            {committee.learn.map((item) => (
+              <li key={item} className="flex items-start">
                 <span className="text-[#0A192F] mr-3 mt-1">•</span>
                 <span className="text-gray-700 leading-relaxed">{item}</span>
               </li>
@@ -198,8 +198,8 @@ export default async function CommitteePage({ params }: { params: Promise<{ slug
             Signature Projects
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {committee.projects.map((project, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            {committee.projects.map((project) => (
+              <div key={project.title} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <h3 className="text-xl font-bold text-[#0A192F] mb-3">{project.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{project.description}</p>
               </div>
@@ -214,7 +214,7 @@ export default async function CommitteePage({ params }: { params: Promise<{ slug
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             {curriculum.map((item, idx) => (
               <div 
-                key={idx} 
+                key={item.week} 
                 className={`flex flex-col sm:flex-row sm:items-center px-6 py-4 ${idx !== curriculum.length - 1 ? 'border-b border-gray-100' : ''}`}
               >
                 <div className="w-32 font-bold text-[#0A192F] mb-1 sm:mb-0">

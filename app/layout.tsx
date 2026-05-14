@@ -72,9 +72,9 @@ export default function RootLayout({
           <RouteChangeHandler />
           <ReducedMotionGuard />
           
-          <main id="main-content" className="flex-grow flex flex-col">
+          <div id="root-content" className="flex-grow flex flex-col">
             {children}
-          </main>
+          </div>
         </LenisProvider>
 
         {/* Note: JSON-LD script is the one allowed exception for dangerouslySetInnerHTML */}

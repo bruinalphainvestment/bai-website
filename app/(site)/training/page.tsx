@@ -29,7 +29,7 @@ export default function TrainingPage() {
         <h2 className="font-serif text-h2 font-light mb-12 border-b border-border-subtle pb-4">How It Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
           {PHASES.map((phase, i) => (
-            <div key={i} className="relative bg-offwhite p-6 border border-border-subtle flex flex-col h-full group hover:border-gold-start transition-colors">
+            <div key={phase.title} className="relative bg-offwhite p-6 border border-border-subtle flex flex-col h-full group hover:border-gold-start transition-colors">
               <span className="text-sm font-bold tracking-widest text-gold-start mb-4 block uppercase">
                 {phase.week}
               </span>

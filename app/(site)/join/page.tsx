@@ -103,8 +103,8 @@ export default function JoinPage() {
           FAQ
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-          {faqs.map((faq, index) => (
-            <div key={index} className="flex flex-col">
+          {faqs.map((faq) => (
+            <div key={faq.q} className="flex flex-col">
               <h3 className="font-display text-xl mb-3">{faq.q}</h3>
               <p className="font-sans text-navy/70 leading-relaxed">{faq.a}</p>
             </div>

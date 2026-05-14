@@ -90,8 +90,8 @@ export default function CommitteesIndexPage() {
                 <div className="bg-cream/50 rounded-lg p-5 mb-8">
                   <h3 className="font-semibold text-navy mb-3">What you&apos;ll do:</h3>
                   <ul className="space-y-2">
-                    {committee.bullets.map((bullet, i) => (
-                      <li key={i} className="flex items-start text-sm text-navy/80">
+                    {committee.bullets.map((bullet) => (
+                      <li key={bullet} className="flex items-start text-sm text-navy/80">
                         <span className="text-gold mr-2 font-bold">•</span>
                         <span>{bullet}</span>
                       </li>

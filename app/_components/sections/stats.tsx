@@ -10,8 +10,8 @@ export default function Stats() {
     <section data-section="stats" className="bg-cream text-navy py-16 px-4 md:px-8 border-y border-navy/10">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center md:text-left">
-          {stats.map((stat, i) => (
-            <div key={i} className="flex flex-col border-b-2 border-[#C5A059] pb-4">
+          {stats.map((stat) => (
+            <div key={stat.label} className="flex flex-col border-b-2 border-[#C5A059] pb-4">
               <div className="font-display text-4xl md:text-5xl lg:text-6xl mb-2 text-navy">
                 {stat.value}
               </div>

@@ -50,8 +50,8 @@ export default function ProjectsPage() {
 
       <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {PROJECTS.map((project, i) => (
-            <div key={i} className="bg-offwhite border border-border-subtle p-8 flex flex-col hover:border-gold-start transition-colors">
+          {PROJECTS.map((project) => (
+            <div key={project.title} className="bg-offwhite border border-border-subtle p-8 flex flex-col hover:border-gold-start transition-colors">
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <span className="bg-navy text-cream text-xs font-bold uppercase tracking-widest px-3 py-1">
                   {project.committee}

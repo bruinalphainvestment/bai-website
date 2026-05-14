@@ -75,8 +75,9 @@ export async function SiteFooter() {
             <p className="text-gray-400 text-xs leading-relaxed">
               {disclaimer}
             </p>
+            {/* Update annually during Spring Handoff Ritual — see docs/HANDOFF.md */}
             <p className="text-gray-400 text-xs mt-4">
-              &copy; {new Date().getFullYear()} Bruin Alpha Investment. All rights reserved.
+              &copy; 2026 Bruin Alpha Investment. All rights reserved.
             </p>
           </div>
         </div>
