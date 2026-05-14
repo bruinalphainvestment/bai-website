@@ -314,7 +314,175 @@ Format per task:
 - Notes:
   - This is the production-breaker fix (PB-1 from metis-critique.md). Without this, every Sanity image asset (founding member headshots, OG images, committee photos) would return 500 in production with "Invalid src prop ... hostname cdn.sanity.io is not configured".
   - Production env var `NEXT_PUBLIC_USE_SANITY=false` keeps the site rendering hardcoded fallbacks until Phase 6 cutover, so this change is purely additive and safe.
-  - Vercel auto-deploys preview off feature/cms-migration; production (main branch) unaffected.
+   - Vercel auto-deploys preview off feature/cms-migration; production (main branch) unaffected.
   - This unblocks all later tasks that render Sanity-hosted images.
- 
+
+---
+
+## Session: Phase 0 Delegation A — Started 2026-05-14T22:00:00Z
+
+Batched 5 plan tasks (T0.5, T0.6, T0.8, T0.9, T0.10) — all touch `sanity/schemas/*` extensions; minimal interdependence.
+
+### T0.5 — Extend `siteSettings` schema
+- Started: 2026-05-14T22:00:00Z
+- Completed: 2026-05-14T22:05:00Z
+- Commands:
+  - `bun run typegen` → exit 0 (42 schema types, 553ms)
+  - `bun run typecheck` → exit 0
+  - `git add sanity/schemas/siteSettings.ts sanity/types/generated.ts`
+  - `git commit -m "feat(cms-migration): T0.5 extend siteSettings with SEO/nav/error fields"`
+  - `git push` → success (origin/feature/cms-migration)
+- Exit codes: all 0
+- Artifacts:
+  - File edited: `sanity/schemas/siteSettings.ts` (193 insertions, 25 deletions)
+  - File regenerated: `sanity/types/generated.ts` (+48 lines)
+  - Commit SHA: `bedacc66` (full: `bedacc6612cf70bf9a4eb2837346f0b909a1abaa`)
+  - Commit subject: `feat(cms-migration): T0.5 extend siteSettings with SEO/nav/error fields`
+- Verification:
+  - 14 new camelCase fields added (D1, D2, D3, D5, D9, D10, D13, D14, D18):
+    - `brandName`, `titleSuffix`, `defaultMetaDescription`, `defaultOgImage`
+    - `foundedYear` (validation: required().integer().min(2020).max(2030)), `foundedTerm`
+    - `navLinks` (array of {label, href}; max 8 per validation rule)
+    - `organizationDescription`, `sameAs` (array of url)
+    - `errorCopy` (object: notFoundHeading, notFoundBody, errorHeading, errorBody, loadingLabel)
+    - `disclaimerText`, `uclaCompliantName`, `missionStatement`, `domainRenewalDate` — 4 camelCase replacements per D10
+  - 4 existing snake_case fields marked `readOnly: true` with appended `Deprecated — use the camelCase field; will be removed after migration.` description (NOT deleted)
+  - `LOCKED_DISCLAIMER` and new `LOCKED_MISSION` constants extracted at top of file; reused as initialValues for both old (deprecated) and new fields → DRY
+  - Preview now selects `uclaCompliantName` first, falls back to `ucla_compliant_name` for legacy-doc rendering during migration window
+  - `SiteSettings` type at `sanity/types/generated.ts:570-617` exposes every new field
+- Notes:
+  - The two section markers in the schema (`// ---- Existing fields …` and `// ---- New fields …`) are intentional migration-window markers; remove during Phase 7 cutover when snake_case fields are deleted.
+  - No changes to `sanity/schemas/index.ts` (extensions only).
+
+### T0.6 — Extend `committee` schema
+- Started: 2026-05-14T22:05:30Z
+- Completed: 2026-05-14T22:07:00Z
+- Commands:
+  - `bun run typegen` → exit 0 (476ms)
+  - `bun run typecheck` → exit 0
+  - `git add sanity/schemas/committee.ts sanity/types/generated.ts`
+  - `git commit -m "feat(cms-migration): T0.6 extend committee with learn/differentiator/redirects fields"`
+  - `git push` → success
+- Exit codes: all 0
+- Artifacts:
+  - File edited: `sanity/schemas/committee.ts` (29 insertions, 0 deletions)
+  - File regenerated: `sanity/types/generated.ts` (+4 lines)
+  - Commit SHA: `95b850d3` (full: `95b850d3581adc79aba7cf33c15d0c3fab11143b`)
+- Verification:
+  - 4 new fields appended after `accentColor` (D6 + D18):
+    - `learn` (array of string, validation: max(4))
+    - `differentiator` (text, rows: 3)
+    - `directorPlaceholder` (string)
+    - `redirectsFrom` (array of string)
+  - Existing 11 fields untouched (slug, director ref, tagline, description, curriculum, signature_projects, comp_calendar, director_quote, order, accentColor preserved bit-for-bit)
+  - `Committee` type at `sanity/types/generated.ts:414-417` includes `learn?: Array<string>`, `differentiator?: string`, `directorPlaceholder?: string`, `redirectsFrom?: Array<string>`
+
+### T0.8 — Verify / extend `event` schema
+- Started: 2026-05-14T22:07:30Z
+- Completed: 2026-05-14T22:09:00Z
+- Commands:
+  - Read `sanity/schemas/event.ts` (79 lines)
+  - Audit against spec: `name`, `date`, `endDate`, `location`, `description`, `type`, `status`, `externalUrl`, `committee`
+  - Audit result: 4 missing (`endDate`, `status`, `externalUrl` as new camelCase, `committee`); 1 to deprecate (`external_url`)
+  - `bun run typegen` → exit 0 (483ms)
+  - `bun run typecheck` → exit 0
+  - `git add sanity/schemas/event.ts sanity/types/generated.ts`
+  - `git commit -m "feat(cms-migration): T0.8 extend event with endDate/status/committee + deprecate external_url"`
+  - `git push` → success
+- Exit codes: all 0
+- Artifacts:
+  - File edited: `sanity/schemas/event.ts` (37 insertions, 0 deletions; now 116 lines)
+  - File regenerated: `sanity/types/generated.ts` (Event type +5 lines net)
+  - Commit SHA: `ddb4eb1b` (full: `ddb4eb1baa5a817b566633a34ddddd567427b6cc`)
+- Verification:
+  - Pre-existing 5-value `type` enum (recruitment/comp/social/speaker/fair) preserved
+  - Added fields:
+    - `endDate` (datetime, optional)
+    - `status` (string radio: tbd/scheduled/past, initialValue: 'tbd')
+    - `externalUrl` (NEW camelCase replacement)
+    - `committee` (reference to `committee`, optional)
+  - `external_url` marked `readOnly: true` + `Deprecated …` description (NOT deleted)
+  - `Event` type at `sanity/types/generated.ts:270-286`:
+    ```ts
+    name?: string;
+    date?: string;
+    endDate?: string;
+    location?: string;
+    description?: string;
+    type?: 'recruitment' | 'comp' | 'social' | 'speaker' | 'fair';
+    status?: 'tbd' | 'scheduled' | 'past';
+    external_url?: string;
+    externalUrl?: string;
+    committee?: CommitteeReference;
+    ```
+
+### T0.9 — Verify `project` schema (READ-ONLY)
+- Started: 2026-05-14T22:09:30Z
+- Completed: 2026-05-14T22:09:45Z
+- Commands:
+  - Read `sanity/schemas/project.ts` (84 lines)
+- Exit codes: N/A (no commands run; no schema changes; no commit)
+- Verification:
+  - Hardcoded data per plan T0.9: `title`, `committee`, `status`, `summary` (4 fields)
+  - Schema field-by-field audit:
+    - `name` ✓ (maps to "title")
+    - `slug` ✓ (bonus; needed for redirectsFrom + future slugged pages)
+    - `summary` ✓
+    - `narrative` ✓ (bonus; portable text for detail view)
+    - `committee` ✓ (reference)
+    - `status` ✓ (3-option enum: planning/active/completed; matches plan D9 baseline)
+    - `tags` ✓ (bonus)
+    - `hero_image` ✓ (bonus; image with hotspot)
+  - **Conclusion**: schema is adequate. The 5 hardcoded projects in `app/(site)/projects/page.tsx` can be expressed as `project` docs without any schema change. No commit produced for this task.
+- Notes:
+  - `hero_image` retains snake_case naming; plan T0.5 §D10 covers `siteSettings` snake_case renames only. If a future task (post-Phase-0) wants strict camelCase across all schemas, `hero_image` → `heroImage` would follow the same deprecation pattern; out of scope for this delegation.
+
+### T0.10 — Extend `ctaSection` object schema
+- Started: 2026-05-14T22:10:00Z
+- Completed: 2026-05-14T22:11:30Z
+- Commands:
+  - Read `sanity/schemas/objects/ctaSection.ts` (32 lines, found via Glob)
+  - `bun run typegen` → exit 0 (487ms)
+  - `bun run typecheck` → exit 0
+  - `git add sanity/schemas/objects/ctaSection.ts sanity/types/generated.ts`
+  - `git commit -m "feat(cms-migration): T0.10 extend ctaSection with secondary CTA fields"`
+  - `git push` → success
+- Exit codes: all 0
+- Artifacts:
+  - File edited: `sanity/schemas/objects/ctaSection.ts` (10 insertions, 0 deletions; now 42 lines)
+  - File regenerated: `sanity/types/generated.ts` (CtaSection +2 lines)
+  - Commit SHA: `cd2ea2a5` (full: `cd2ea2a5d69f32155a738afc822a15da9d0c7ca7`)
+- Verification:
+  - 2 new fields added after existing `ctaLabel`:
+    - `secondaryCtaLabel` (string)
+    - `secondaryCtaHref` (string)
+  - Existing `heading`, `body`, `ctaLabel` untouched
+  - `CtaSection` type at `sanity/types/generated.ts:153-160`:
+    ```ts
+    _type: 'ctaSection';
+    heading?: string;
+    body?: string;
+    ctaLabel?: string;
+    secondaryCtaLabel?: string;
+    secondaryCtaHref?: string;
+    ```
+
+### Phase 0 Delegation A — Final Verification
+- `bun run typegen` → exit 0 (42 schema types; types/generated.ts regenerated 4 times across the task without drift between runs)
+- `bun run typecheck` → exit 0 (`tsc --noEmit`)
+- `bun run build` → exit 0 (full Next.js route table emitted; static + SSG + dynamic routes all rendered; only warning is the unrelated `middleware` → `proxy` deprecation that pre-existed this delegation)
+- Studio loading test (`bun run dev` then `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/studio`):
+  - dev server `Ready in 207ms` on port 3000
+  - First curl attempt: `HTTP 200 in 975ms` (under 10s spec threshold)
+  - Dev-server log entry: `GET /studio 200 in 847ms (next.js: 227ms, proxy.ts: 29ms, application-code: 590ms)`
+  - dev server killed cleanly via `pkill -f "next dev"`; port 3000 confirmed free
+- No changes to `sanity/schemas/index.ts` or `sanity.config.ts` (out of scope; T0.7 and T0.12 will handle those)
+- No changes to `sanity/seed/seed.ts` (out of scope; T0.11)
+- Commits produced (4 schema + this evidence commit):
+  - `bedacc66` — T0.5 siteSettings (218 lines schema; 48 lines types)
+  - `95b850d3` — T0.6 committee (29 lines schema; 4 lines types)
+  - `ddb4eb1b` — T0.8 event (37 lines schema; 20 lines types)
+  - `cd2ea2a5` — T0.10 ctaSection (10 lines schema; 4 lines types)
+  - T0.9: no commit (read-only verification only; conclusion recorded above)
+
 
