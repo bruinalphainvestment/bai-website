@@ -90,3 +90,15 @@ export const aboutPageQuery = defineQuery(`
     sections
   }
 `);
+
+export const trainingPageQuery = defineQuery(`
+  *[_type == "trainingPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    curriculum,
+    programs,
+    signatureCertifications
+  }
+`);

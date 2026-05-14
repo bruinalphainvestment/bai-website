@@ -1325,6 +1325,50 @@ export type AboutPageQueryResult = {
   }> | null;
 } | null;
 
+// Source: sanity/lib/queries.ts
+// Variable: trainingPageQuery
+// Query: *[_type == "trainingPage"][0] {    title,    seo,    hero,    intro,    curriculum,    programs,    signatureCertifications  }
+export type TrainingPageQueryResult = {
+  title: string | null;
+  seo: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  } | null;
+  hero: {
+    heading?: string;
+    subheading?: string;
+  } | null;
+  intro: string | null;
+  curriculum: Array<{
+    week?: string;
+    topic?: string;
+    body?: string;
+    _type: 'curriculumEntry';
+    _key: string;
+  }> | null;
+  programs: Array<{
+    name?: string;
+    description?: string;
+    format?: string;
+    duration?: string;
+    _type: 'program';
+    _key: string;
+  }> | null;
+  signatureCertifications: Array<{
+    title?: string;
+    body?: string;
+    _type: 'certification';
+    _key: string;
+  }> | null;
+} | null;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1335,5 +1379,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "committee" && defined(slug.current)] | order(order asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SitemapCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
     '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    hero,\n    mission,\n    history,\n    signatureTrip,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
+    '\n  *[_type == "trainingPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    curriculum,\n    programs,\n    signatureCertifications\n  }\n': TrainingPageQueryResult;
   }
 }
