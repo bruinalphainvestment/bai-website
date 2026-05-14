@@ -260,6 +260,13 @@ export type Faq = {
   order?: number;
 };
 
+export type CommitteeReference = {
+  _ref: string;
+  _type: 'reference';
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: 'committee';
+};
+
 export type Event = {
   _id: string;
   _type: 'event';
@@ -268,17 +275,14 @@ export type Event = {
   _rev: string;
   name?: string;
   date?: string;
+  endDate?: string;
   location?: string;
   description?: string;
   type?: 'recruitment' | 'comp' | 'social' | 'speaker' | 'fair';
+  status?: 'tbd' | 'scheduled' | 'past';
   external_url?: string;
-};
-
-export type CommitteeReference = {
-  _ref: string;
-  _type: 'reference';
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: 'committee';
+  externalUrl?: string;
+  committee?: CommitteeReference;
 };
 
 export type Project = {
@@ -741,8 +745,8 @@ export type AllSanitySchemaTypes =
   | MissionSection
   | HeroSection
   | Faq
-  | Event
   | CommitteeReference
+  | Event
   | Project
   | SanityImageCrop
   | SanityImageHotspot
