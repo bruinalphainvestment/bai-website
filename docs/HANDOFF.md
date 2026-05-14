@@ -20,12 +20,12 @@ This document serves as the master record for Bruin Alpha Investment (BAI) websi
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Root Email** | gmail.com | Mack's Personal | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | OAuth root for all services |
 | **Club Gmail** | gmail.com | `bruinalphainvestment26` | Mack, Max, Sam | Personal Backup | N/A | Primary recovery hub |
-| **Vercel Team** | vercel.com | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Hobby tier (free, non-commercial) |
-| **Sanity Org** | sanity.io | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Project ID: `epognpe3` |
-| **GitHub Org** | github.com | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Private repo: `bai-website` |
+| **Vercel (Hobby)** | vercel.com | `bai-website` (personal scope) | Mack Haymond (sole deployer) | `bruinalphainvestment26@gmail.com` | N/A | Hobby tier — single deployer; multi-member Teams are Pro-only |
+| **Sanity Org** | sanity.io | `bruin-alpha-investment` (org `oAQMAXlMm`) | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Project ID: `u1y6t81y` · Dataset: `production` (public) · Tokens: `seed-script` (Editor) |
+| **GitHub Repo** | github.com | `<mack-username>/bai-website` (personal scope) | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Private repo. Future: migrate to `bruin-alpha-investment` org and apply for free GitHub Team via faculty advisor at [github.com/edu](https://github.com/edu/teachers) |
 | **Tally.so** | tally.so | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Recruitment forms hub |
 | **Domain Registrar** | [TO BE FILLED] | [TO BE FILLED] | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | [TO BE FILLED] | Target: `bruinalpha.com` |
-| **Password Vault** | bitwarden.com | BAI Shared Vault | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Bitwarden Free Org |
+| **Password Vault** | bitwarden.com | BAI Shared Vault | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Bitwarden Free Org (2-user cap) — upgrade to Families ($3.99/mo, 6 seats) if all 5 officers need access |
 | **LinkedIn Page** | linkedin.com | `bai-ucla` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md) |
 | **Instagram** | instagram.com | `@bruinalphainvestment` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [INSTAGRAM-SETUP.md](./launch/INSTAGRAM-SETUP.md) |
 
@@ -91,8 +91,12 @@ This ritual MUST be completed by **Week 8 of every Spring Quarter** to ensure co
 4. Access the club Gmail to reset the password and regain control.
 
 ### Scenario B: Vercel or Sanity Billing Issues
-1. The site runs on **Vercel Hobby (free)**. Hobby's ToS restricts commercial use, so keep the site free of paid advertising and commercial transactions. Sponsorship logos for the club itself are generally tolerated, but if Vercel ever flags the project, the immediate fix is to scrub commercial-looking content.
-2. If Hobby limits (bandwidth, build minutes, team seats) become blocking, the fallbacks are: (a) apply to the **Vercel for Startups / OSS** program, (b) have an officer pay for Vercel Pro out of pocket (~$20/mo), or (c) migrate to **Cloudflare Pages** (free tier, allows commercial use).
+1. **Vercel** runs on the free **Hobby** plan with Mack as the sole deployer (multi-member Teams are Pro-only at $20/seat/mo). Hobby's [Fair Use policy](https://vercel.com/docs/limits/fair-use-guidelines) prohibits commercial use — no ads, no donations, no paid transactions, no affiliate links. Stay informational and the project remains compliant.
+2. If multi-officer deploy access becomes necessary, options in order of preference:
+   - (a) Apply to **[Vercel for Open Source](mailto:sponsorships@vercel.com)** — free Pro plan in exchange for open-sourcing the repo. Applications reviewed quarterly.
+   - (b) Pay for **Vercel Pro** out of officer funds (~$20/mo base + $20/mo per additional deploying seat).
+   - (c) Migrate to **Cloudflare Pages** (free tier, allows commercial use, no seat caps).
+3. **Sanity** runs on the free tier with a public dataset. If quotas become blocking or private datasets are needed, apply for the **Non-Profit Plan** ([sanity.io/docs/platform-management/non-profit-plan](https://www.sanity.io/docs/platform-management/non-profit-plan)) which covers educational orgs (25 users, 3 datasets, private allowed). The Startup Program is VC-portfolio-only and does not apply to student clubs.
 
 ### Scenario C: GSAP License Changes
 The site uses GSAP for advanced animations. If the license terms change or the club can no longer afford a paid tier (if required for future features), the fallback is to use **Framer Motion only**. The architecture is decoupled to allow this transition.
@@ -157,7 +161,7 @@ seed the dataset with locked default content:
 4. **Verify in Studio** (`bun run dev` → http://localhost:3000/studio):
    - Site Settings singleton populated with disclaimer, mission, slogan.
    - Home Page singleton exists (empty sections array — populate via Studio).
-   - 5 Founding Member docs (Mack, Max, Sam, Kai, Helmer).
+   - 8 Founding Member docs (Matt Walker, Ben Robinson, Michael Prosser, Mack Haymond, Kai Hata, Samuel Jiang, Max Helmer, Rhett Adkins).
    - 4 Committee docs (Wealth Management, Trading, Accounting & Consulting,
      Investment Banking — IB director left empty as "TBD").
 
@@ -168,7 +172,7 @@ missing documents get created.
 ### Re-seeding After Catastrophic Loss
 If the dataset is wiped and you need to rebuild defaults:
 1. Delete remaining documents in Studio (or via `sanity documents delete`).
-2. Run `bun run seed` again — recreates the 11 baseline documents.
+2. Run `bun run seed` again — recreates the 14 baseline documents.
 3. Re-upload headshots / re-enter custom content via Studio.
 
 ## 2FA Status
@@ -197,7 +201,7 @@ Log the completion of the quarterly access audit here.
 The initial site architecture and content were bootstrapped by Antigravity (AI Agent) in May 2026.
 - **Commits:** 17+ commits covering design tokens, CMS schemas, and page implementations.
 - **Files:** 119+ managed files in the repository.
-- **CMS:** 11 baseline documents seeded (Settings, Home, Members, Committees).
+- **CMS:** 14 baseline documents seeded (Settings, Home, 8 Members, 4 Committees).
 - **Automation:** GitHub Actions for Sanity backups and Lighthouse CI audits configured.
 
 ## References

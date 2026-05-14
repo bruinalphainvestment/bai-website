@@ -9,7 +9,7 @@ This guide covers the manual creation of the official LinkedIn Company Page for 
 ## 2. Page Identity
 - [ ] **Page Name**: `Bruin Alpha Investment at UCLA`
 - [ ] **LinkedIn Public URL**: `linkedin.com/company/bai-ucla` (or similar if taken)
-- [ ] **Website**: [https://bruinalphainvestment.ucla.edu](https://bruinalphainvestment.ucla.edu) (or your live custom domain)
+- [ ] **Website**: Use the live URL — initially `https://bai-website.vercel.app`, then `https://bruinalpha.com` once the custom domain is provisioned. (UCLA does not provide `*.ucla.edu` subdomains to student orgs.)
 
 ## 3. Organization Details
 - [ ] **Industry**: `Investment Management` OR `Higher Education`

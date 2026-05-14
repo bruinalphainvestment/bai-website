@@ -32,9 +32,9 @@ Per the [HANDOFF.md](./HANDOFF.md) strategy, the domain should be registered usi
 Once purchased, point the domain to Vercel.
 
 1.  **Vercel Nameservers (Recommended)**: Change the nameservers at your registrar to the ones provided by Vercel. This allows Vercel to handle SSL and DNS records automatically.
-2.  **CNAME/A Records**: If you prefer to keep DNS at the registrar (e.g., Cloudflare), add these records:
-    *   **A Record**: `@` → `76.76.21.21`
-    *   **CNAME Record**: `www` → `cname.vercel-dns.com`
+2.  **CNAME/A Records (alternative)**: If you prefer to keep DNS at the registrar (e.g., Cloudflare), add the domain in Vercel **first** (Project → Settings → Domains → Add) and then copy the **exact records Vercel displays** — they are now project-specific dynamic values such as `cname.vercel-dns-016.com` rather than the legacy generic `cname.vercel-dns.com`. The legacy values still work but are deprecated.
+    *   Reference (legacy, still functional): A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com`.
+    *   Always prefer whatever Vercel's dashboard shows for your specific project.
 
 ---
 

@@ -16,7 +16,7 @@ Ensure the following are complete before submitting:
 Use these exact values for consistency and compliance:
 
 - **Club Name**: `Bruin Alpha Investment at UCLA`
-- **Website URL**: `https://bruinalphainvestment.ucla.edu` (or live URL)
+- **Website URL**: The current live URL — `https://bai-website.vercel.app` initially, `https://bruinalpha.com` after custom domain provisioning. (UCLA does not issue `*.ucla.edu` subdomains to student orgs.)
 - **LinkedIn URL**: [Paste URL from LinkedIn setup]
 - **Instagram URL**: [Paste URL from Instagram setup]
 - **Club Email**: `bruinalphainvestment26@gmail.com`
@@ -34,7 +34,7 @@ The organization emphasizes practical execution, disciplined risk management, an
 
 ## 5. Post-Submission
 - [ ] **Review Period**: Expect a 1-2 week review by the UBS PR committee.
-- [ ] **Follow-up**: If no response in 2 weeks, email `ubsbruins@gmail.com`.
+- [ ] **Follow-up**: If no response in 2 weeks, use the [UBS contact form](https://uclaubs.com/contact). (UBS primarily communicates via the contact form and GroupMe; the email `ubsbruins@gmail.com` referenced in older docs is not confirmed active — prefer the form.)
 - [ ] **Verification**: Once approved, search the [UBS Directory](https://uclaubs.com/club-directory) to ensure the listing appears correctly.
 
 ---

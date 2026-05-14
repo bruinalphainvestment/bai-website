@@ -1,10 +1,12 @@
 /**
  * Centralised access to Sanity env vars with safe fallbacks.
  *
- * The fallback `pPLACEHOLDR` is intentionally a 10-char syntactically valid
- * projectId so the Studio + client modules don't crash at build/import time
- * before the real project is provisioned. See `docs/SETUP-CHECKLIST.md`
- * Section D — Mack swaps the real ID in once Sanity org+project exist.
+ * The fallback `pPLACEHOLDR` is a syntactically tolerable string so the Studio
+ * + client modules don't crash at build/import time before the real project
+ * is provisioned. Real Sanity project IDs are 8-character lowercase
+ * alphanumeric (e.g. `v6m6t4z6`); the placeholder will never resolve a real
+ * API call. See `docs/SETUP-CHECKLIST.md` Section 1 — Mack swaps the real ID
+ * in once Sanity org+project exist.
  */
 
 function readEnv(name: string): string | undefined {
