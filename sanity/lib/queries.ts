@@ -165,3 +165,17 @@ export const allProjectsQuery = defineQuery(`
     "committee": committee->{ _id, name, "slug": slug.current }
   }
 `);
+
+export const teamPageQuery = defineQuery(`
+  *[_type == "teamPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    foundingClassHeading,
+    membersHeading,
+    membersPlaceholder,
+    alumniHeading,
+    alumniPlaceholder
+  }
+`);

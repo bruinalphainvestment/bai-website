@@ -1504,6 +1504,34 @@ export type AllProjectsQueryResult = Array<{
   } | null;
 }>;
 
+// Source: sanity/lib/queries.ts
+// Variable: teamPageQuery
+// Query: *[_type == "teamPage"][0] {    title,    seo,    hero,    intro,    foundingClassHeading,    membersHeading,    membersPlaceholder,    alumniHeading,    alumniPlaceholder  }
+export type TeamPageQueryResult = {
+  title: string | null;
+  seo: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  } | null;
+  hero: {
+    heading?: string;
+    subheading?: string;
+  } | null;
+  intro: string | null;
+  foundingClassHeading: string | null;
+  membersHeading: string | null;
+  membersPlaceholder: string | null;
+  alumniHeading: string | null;
+  alumniPlaceholder: string | null;
+} | null;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1520,5 +1548,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "event"] | order(date asc) {\n    _id,\n    name,\n    date,\n    endDate,\n    location,\n    description,\n    type,\n    status,\n    "externalUrl": coalesce(externalUrl, external_url),\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllEventsQueryResult;
     '\n  *[_type == "projectsPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    emptyState,\n    statusLegend\n  }\n': ProjectsPageQueryResult;
     '\n  *[_type == "project"] | order(_createdAt asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    summary,\n    status,\n    tags,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllProjectsQueryResult;
+    '\n  *[_type == "teamPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    foundingClassHeading,\n    membersHeading,\n    membersPlaceholder,\n    alumniHeading,\n    alumniPlaceholder\n  }\n': TeamPageQueryResult;
   }
 }
