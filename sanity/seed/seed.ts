@@ -20,7 +20,10 @@
  *     defaults for slogan, disclaimer, mission, naming compliance, club email.
  *   - HomePage singleton (id: "homePage") — empty sections array; UI renders
  *     hardcoded fallbacks until Mack composes sections via Studio.
- *   - 5 FoundingMember docs — Mack, Max, Sam, Kai, Helmer.
+ *   - 8 FoundingMember docs — Matt Walker (President), Ben Robinson +
+ *     Michael Prosser (Consulting), Mack Haymond + Kai Hata + Samuel Jiang
+ *     (Trading), Max Helmer + Rhett Adkins (IB). Roster confirmed by Mack
+ *     from the club Slack on 2026-05-14.
  *   - 4 Committee docs — Wealth Management, Trading,
  *     Accounting & Consulting, Investment Banking.
  *
@@ -78,22 +81,48 @@ const client: SanityClient = createClient({
   perspective: 'published',
 });
 
+// Document IDs are intentionally dot-free. Sanity treats public datasets as
+// readable to anonymous queries ONLY for IDs without a `.` separator — IDs
+// like `foundingMember.kai` get a `permission` omit on anonymous reads even
+// when aclMode=public. Singletons (`siteSettings`, `homePage`) and dash-only
+// IDs (`member-kai-hata`) are anonymously readable. Verified empirically
+// against project u1y6t81y on 2026-05-14.
 const IDS = {
   siteSettings: 'siteSettings',
   homePage: 'homePage',
   members: {
-    mack: 'foundingMember.mack-haymond',
-    max: 'foundingMember.max',
-    sam: 'foundingMember.sam',
-    kai: 'foundingMember.kai',
-    helmer: 'foundingMember.helmer',
+    matt: 'member-matt-walker',
+    ben: 'member-ben-robinson',
+    michael: 'member-michael-prosser',
+    kai: 'member-kai-hata',
+    mack: 'member-mack-haymond',
+    sam: 'member-samuel-jiang',
+    maxHelmer: 'member-max-helmer',
+    rhett: 'member-rhett-adkins',
   },
   committees: {
-    wealth: 'committee.wealth-management',
-    trading: 'committee.trading',
-    accounting: 'committee.accounting-consulting',
-    ib: 'committee.investment-banking',
+    wealth: 'committee-wealth-management',
+    trading: 'committee-trading',
+    accounting: 'committee-accounting-consulting',
+    ib: 'committee-investment-banking',
   },
+  // Stale IDs from the pre-roster-finalisation seed run. We delete these
+  // before re-seeding so the dataset doesn't carry both old + new docs.
+  // Order matters: committees must be deleted BEFORE members because the
+  // `committee.director` reference creates a foreign-key-style constraint
+  // in Sanity. Safe to remove this entire block once Mack confirms the
+  // dataset is clean.
+  stale: [
+    'committee.wealth-management',
+    'committee.trading',
+    'committee.accounting-consulting',
+    'committee.investment-banking',
+    'foundingMember.mack-haymond',
+    'foundingMember.max',
+    'foundingMember.sam',
+    'foundingMember.kai',
+    'foundingMember.helmer',
+  ],
 } as const;
 
 const LOCKED_DISCLAIMER =
@@ -147,37 +176,52 @@ const homePageDoc = {
   sections: [] as unknown[],
 };
 
+// Founding roster as confirmed by Mack on 2026-05-14 from the club Slack
+// member list. Schema requires non-empty first+last name, role, committee
+// (must match COMMITTEE_OPTIONS), and 2024<=gradYear<=2035. All 8 founders
+// are the class of 2029 (confirmed by Mack 2026-05-14).
 const foundingMembers = [
+  {
+    _id: IDS.members.matt,
+    _type: 'foundingMember',
+    firstName: 'Matt',
+    lastName: 'Walker',
+    role: 'President & Wealth Management Director',
+    committee: 'wealth-management',
+    gradYear: 2029,
+    bio: '',
+    photoReleaseObtained: false,
+  },
+  {
+    _id: IDS.members.ben,
+    _type: 'foundingMember',
+    firstName: 'Ben',
+    lastName: 'Robinson',
+    role: 'Accounting & Consulting Co-Director',
+    committee: 'accounting-consulting',
+    gradYear: 2029,
+    bio: '',
+    photoReleaseObtained: false,
+  },
+  {
+    _id: IDS.members.michael,
+    _type: 'foundingMember',
+    firstName: 'Michael',
+    lastName: 'Prosser',
+    role: 'Accounting & Consulting Co-Director',
+    committee: 'accounting-consulting',
+    gradYear: 2029,
+    bio: '',
+    photoReleaseObtained: false,
+  },
   {
     _id: IDS.members.mack,
     _type: 'foundingMember',
     firstName: 'Mack',
     lastName: 'Haymond',
-    role: 'President',
-    committee: 'president',
-    gradYear: 2028,
-    bio: '',
-    photoReleaseObtained: false,
-  },
-  {
-    _id: IDS.members.max,
-    _type: 'foundingMember',
-    firstName: 'Max',
-    lastName: '',
-    role: 'Trading Director',
+    role: 'Founder & Trading Co-Director',
     committee: 'trading',
-    gradYear: 2028,
-    bio: '',
-    photoReleaseObtained: false,
-  },
-  {
-    _id: IDS.members.sam,
-    _type: 'foundingMember',
-    firstName: 'Sam',
-    lastName: '',
-    role: 'Operations',
-    committee: 'operations',
-    gradYear: 2028,
+    gradYear: 2029,
     bio: '',
     photoReleaseObtained: false,
   },
@@ -185,21 +229,44 @@ const foundingMembers = [
     _id: IDS.members.kai,
     _type: 'foundingMember',
     firstName: 'Kai',
-    lastName: '',
+    lastName: 'Hata',
     role: 'Trading Co-Director',
     committee: 'trading',
-    gradYear: 2028,
+    gradYear: 2029,
     bio: '',
     photoReleaseObtained: false,
   },
   {
-    _id: IDS.members.helmer,
+    _id: IDS.members.sam,
     _type: 'foundingMember',
-    firstName: 'Helmer',
-    lastName: '',
-    role: 'Accounting & Consulting Director',
-    committee: 'accounting-consulting',
-    gradYear: 2028,
+    firstName: 'Samuel',
+    lastName: 'Jiang',
+    role: 'Trading Co-Director',
+    committee: 'trading',
+    gradYear: 2029,
+    bio: '',
+    photoReleaseObtained: false,
+  },
+  {
+    _id: IDS.members.maxHelmer,
+    _type: 'foundingMember',
+    firstName: 'Max',
+    lastName: 'Helmer',
+    role: 'Investment Banking Co-Director',
+    committee: 'investment-banking',
+    gradYear: 2029,
+    bio: '',
+    photoReleaseObtained: false,
+  },
+  {
+    _id: IDS.members.rhett,
+    _type: 'foundingMember',
+    firstName: 'Rhett',
+    lastName: 'Adkins',
+    // Mack to confirm Rhett's committee — IB is a placeholder.
+    role: 'Investment Banking Co-Director',
+    committee: 'investment-banking',
+    gradYear: 2029,
     bio: '',
     photoReleaseObtained: false,
   },
@@ -211,7 +278,7 @@ const committees = [
     _type: 'committee',
     name: 'Wealth Management',
     slug: { _type: 'slug', current: 'wealth-management' },
-    director: { _type: 'reference', _ref: IDS.members.mack },
+    director: { _type: 'reference', _ref: IDS.members.matt },
     tagline: 'Relationships, soft skills, exam preparation.',
     description: portableText(
       COMMITTEE_PLACEHOLDER_DESCRIPTION,
@@ -225,7 +292,11 @@ const committees = [
     _type: 'committee',
     name: 'Trading',
     slug: { _type: 'slug', current: 'trading' },
-    director: { _type: 'reference', _ref: IDS.members.max },
+    // Trading is co-led by Mack, Kai, and Samuel. Sanity's committee schema
+    // only supports a single director reference, so Mack (founder) is the
+    // canonical Studio pick. Use the `role` field on each member doc to
+    // surface all three as Co-Directors on the public page.
+    director: { _type: 'reference', _ref: IDS.members.mack },
     tagline: 'Charts, volatility, systematic strategies.',
     description: portableText(
       COMMITTEE_PLACEHOLDER_DESCRIPTION,
@@ -239,7 +310,8 @@ const committees = [
     _type: 'committee',
     name: 'Accounting & Consulting',
     slug: { _type: 'slug', current: 'accounting-consulting' },
-    director: { _type: 'reference', _ref: IDS.members.helmer },
+    // Co-led by Ben + Michael. Ben listed first per Mack's roster note.
+    director: { _type: 'reference', _ref: IDS.members.ben },
     tagline: '3-statement modeling, DCF, audit fundamentals.',
     description: portableText(
       COMMITTEE_PLACEHOLDER_DESCRIPTION,
@@ -253,7 +325,7 @@ const committees = [
     _type: 'committee',
     name: 'Investment Banking',
     slug: { _type: 'slug', current: 'investment-banking' },
-    // director: TBD — left unset; Studio editor adds once recruited.
+    director: { _type: 'reference', _ref: IDS.members.maxHelmer },
     tagline: 'Modeling, networking, technical interview prep.',
     description: portableText(COMMITTEE_PLACEHOLDER_DESCRIPTION, 'desc-ib'),
     order: 4,
@@ -274,11 +346,28 @@ async function createIfNotExists(
   return { id: doc._id, status: 'created' };
 }
 
+async function deleteStaleDocs(staleIds: readonly string[]): Promise<number> {
+  let deleted = 0;
+  for (const id of staleIds) {
+    const existing = await client.getDocument(id);
+    if (!existing) continue;
+    await client.delete(id);
+    deleted += 1;
+  }
+  return deleted;
+}
+
 async function main() {
    
   console.log(
     `\n  🌱  Seeding Sanity project=${projectId} dataset=${dataset}\n`,
   );
+
+  const removed = await deleteStaleDocs(IDS.stale);
+  if (removed > 0) {
+     
+    console.log(`  🧹  Removed ${removed} stale doc(s) from prior schema.\n`);
+  }
 
   const results: Array<{ id: string; status: 'created' | 'exists' }> = [];
 
