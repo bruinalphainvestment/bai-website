@@ -177,6 +177,37 @@ Format per task:
 - Notes:
   - Vercel GitHub integration will auto-trigger preview deployment for the new branch within 60s (no manual action needed)
   - The 5 remaining untracked files (.sisyphus/plans/*.md, .sisyphus/notepads/cms-migration/*.md, .sisyphus/boulder.json) are intentionally left uncommitted per task spec
-  - Branch is ready for Phase 0 schema work (T-2.x tasks)
+   - Branch is ready for Phase 0 schema work (T-2.x tasks)
 
+### T0.1 — PB-1 fix: add cdn.sanity.io to images.remotePatterns
+- Started: 2026-05-14T23:15:00Z
+- Completed: 2026-05-14T23:18:30Z
+- Commands:
+  1. `git branch --show-current` → `feature/cms-migration` ✓
+  2. Edited `next.config.ts`: added `images.remotePatterns` block with `cdn.sanity.io` + `/images/u1y6t81y/**` pathname
+  3. `bun run typecheck` → exit 0 (no output = success)
+  4. `bun run build` → exit 0, "Compiled successfully in 7.7s"
+  5. `grep -E "invalid src|cdn\.sanity\.io|hostname.*not configured" build.log` → no matches (no image-domain warnings)
+  6. `git diff next.config.ts` → verified only `nextConfig` object body changed; imports + analyzer wrapping preserved
+  7. `git -c commit.gpgsign=false commit -am "feat(cms-migration): T0.1 PB-1 fix - add cdn.sanity.io to images.remotePatterns" -m "..."` → commit `cd38e00`
+  8. `git push` → pushed to `origin/feature/cms-migration`
+- Exit codes: all 0
+- Artifacts:
+  - File edited: `/Users/mackhaymond/Desktop/coding/projects/bai_website/next.config.ts`
+  - Commit SHA: `cd38e00` (full: `cd38e00a...`)
+  - Commit subject: `feat(cms-migration): T0.1 PB-1 fix - add cdn.sanity.io to images.remotePatterns`
+  - Build log: last 30 lines show route table + "Compiled successfully" ✓
+- Verification:
+  - `next.config.ts` structure preserved: imports, `withBundleAnalyzer` wrapping, export statement all unchanged ✓
+  - `images.remotePatterns` added with exact spec: protocol=https, hostname=cdn.sanity.io, pathname=/images/u1y6t81y/** ✓
+  - TypeScript compilation clean (typecheck exit 0) ✓
+  - Next.js build clean (exit 0, "Compiled successfully") ✓
+  - No image-domain warnings in build output ✓
+  - Commit pushed to origin ✓
+- Notes:
+  - This is the production-breaker fix (PB-1 from metis-critique.md). Without this, every Sanity image asset (founding member headshots, OG images, committee photos) would return 500 in production with "Invalid src prop ... hostname cdn.sanity.io is not configured".
+  - Production env var `NEXT_PUBLIC_USE_SANITY=false` keeps the site rendering hardcoded fallbacks until Phase 6 cutover, so this change is purely additive and safe.
+  - Vercel auto-deploys preview off feature/cms-migration; production (main branch) unaffected.
+  - This unblocks all later tasks that render Sanity-hosted images.
+ 
 
