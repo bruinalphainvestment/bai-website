@@ -1,0 +1,34 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e15]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e22]: An error occurred
+          - generic [ref=e24]: An error occurred that Sanity Studio was unable to recover from.
+          - generic [ref=e26]:
+            - code [ref=e28]: Request error while attempting to reach is https://pPLACEHOLDR.api.sanity.io/v2026-05-04/users/me?tag=sanity.studio.users.get-current.initial
+            - code [ref=e30]: "Error: Request error while attempting to reach is https://pPLACEHOLDR.api.sanity.io/v2026-05-04/users/me?tag=sanity.studio.users.get-current.initial at XMLHttpRequest.<anonymous> (http://localhost:3000/_next/static/chunks/node_modules_0s39oz0._.js:11386:14)"
+        - generic [ref=e31]:
+          - button "Retry" [ref=e33]:
+            - generic [ref=e35]:
+              - img [ref=e38]
+              - generic [ref=e44]: Retry
+          - button "Copy error details" [ref=e46]:
+            - generic [ref=e48]:
+              - img [ref=e51]
+              - generic [ref=e56]: Copy error details
+      - list
+  - generic [ref=e9] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e10]:
+      - img [ref=e11]
+    - generic [ref=e57]:
+      - button "Open issues overlay" [ref=e58]:
+        - generic [ref=e59]:
+          - generic [ref=e60]: "0"
+          - generic [ref=e61]: "1"
+        - generic [ref=e62]: Issue
+      - button "Collapse issues badge" [ref=e63]:
+        - img [ref=e64]
+  - alert [ref=e14]

@@ -40,7 +40,7 @@ const PROJECTS = [
 
 export default function ProjectsPage() {
   return (
-    <main className="bg-cream text-navy min-h-screen pt-32 pb-24">
+    <div className="bg-cream text-navy min-h-screen pt-32 pb-24">
       <section className="px-6 md:px-12 lg:px-24 mb-24 max-w-7xl mx-auto">
         <h1 className="font-serif text-h1 font-light tracking-tight mb-6">What We Build</h1>
         <p className="text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
@@ -87,6 +87,6 @@ export default function ProjectsPage() {
           </li>
         </ul>
       </section>
-    </main>
+    </div>
   );
 }

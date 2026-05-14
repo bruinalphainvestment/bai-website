@@ -1,0 +1,99 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - link "Bruin Alpha Investment at UCLA" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Bruin Alpha Investment at UCLA" [ref=e7]
+      - navigation [ref=e8]:
+        - link "Home" [ref=e9] [cursor=pointer]:
+          - /url: /#home
+        - link "Committees" [ref=e10] [cursor=pointer]:
+          - /url: /#committees
+        - link "Training" [ref=e11] [cursor=pointer]:
+          - /url: /#training
+        - link "Team" [ref=e12] [cursor=pointer]:
+          - /url: /#team
+        - link "Join" [ref=e13] [cursor=pointer]:
+          - /url: /#join
+    - main [ref=e14]:
+      - main [ref=e15]:
+        - generic [ref=e16]:
+          - heading "The Team" [level=1] [ref=e17]
+          - paragraph [ref=e18]: Meet the minds behind Bruin Alpha Investment. A dedicated group of students pushing the boundaries of undergraduate finance.
+        - generic [ref=e19]:
+          - heading "Founding Class — Spring 2026" [level=2] [ref=e20]
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e25]: MH
+              - heading "Mack Haymond" [level=3] [ref=e26]
+              - paragraph [ref=e27]: President
+              - paragraph [ref=e28]: Leading Bruin Alpha Investment's overall strategy and operations.
+            - generic [ref=e29]:
+              - generic [ref=e32]: MX
+              - heading "Max" [level=3] [ref=e33]
+              - paragraph [ref=e34]: Trading Director
+              - paragraph [ref=e35]: Directing quantitative and discretionary trading initiatives.
+            - generic [ref=e36]:
+              - generic [ref=e39]: SM
+              - heading "Sam" [level=3] [ref=e40]
+              - paragraph [ref=e41]: Operations
+              - paragraph [ref=e42]: Managing internal processes, structure, and organizational growth.
+            - generic [ref=e43]:
+              - generic [ref=e46]: KX
+              - heading "Kai" [level=3] [ref=e47]
+              - paragraph [ref=e48]: Trading Co-Director
+              - paragraph [ref=e49]: Co-directing trading strategies and market research.
+            - generic [ref=e50]:
+              - generic [ref=e53]: HM
+              - heading "Helmer" [level=3] [ref=e54]
+              - paragraph [ref=e55]: Accounting & Consulting Director
+              - paragraph [ref=e56]: Overseeing accounting principles, financial analysis, and consulting projects.
+        - generic [ref=e57]:
+          - heading "Members" [level=2] [ref=e58]
+          - paragraph [ref=e60]: Our first cohort joins Fall 2026 — check back after recruitment.
+        - generic [ref=e61]:
+          - heading "Alumni" [level=2] [ref=e62]
+          - paragraph [ref=e64]: Our first alumni graduate in 2027.
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - img "Bruin Alpha Investment" [ref=e69]
+        - paragraph [ref=e70]: Investing in Bruin excellence.
+      - generic [ref=e71]:
+        - heading "Navigation" [level=3] [ref=e72]
+        - list [ref=e73]:
+          - listitem [ref=e74]:
+            - link "Home" [ref=e75] [cursor=pointer]:
+              - /url: /#home
+          - listitem [ref=e76]:
+            - link "Committees" [ref=e77] [cursor=pointer]:
+              - /url: /#committees
+          - listitem [ref=e78]:
+            - link "Training" [ref=e79] [cursor=pointer]:
+              - /url: /#training
+          - listitem [ref=e80]:
+            - link "Team" [ref=e81] [cursor=pointer]:
+              - /url: /#team
+          - listitem [ref=e82]:
+            - link "Join" [ref=e83] [cursor=pointer]:
+              - /url: /#join
+      - generic [ref=e84]:
+        - heading "Connect" [level=3] [ref=e85]
+        - list [ref=e86]:
+          - listitem [ref=e87]:
+            - link "Instagram" [ref=e88] [cursor=pointer]:
+              - /url: https://instagram.com
+          - listitem [ref=e89]:
+            - link "LinkedIn" [ref=e90] [cursor=pointer]:
+              - /url: https://linkedin.com
+          - listitem [ref=e91]:
+            - link "Email Us" [ref=e92] [cursor=pointer]:
+              - /url: mailto:contact@bruinalpha.com
+      - generic [ref=e93]:
+        - heading "Legal" [level=3] [ref=e94]
+        - paragraph [ref=e95]: Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.
+        - paragraph [ref=e96]: © 2026 Bruin Alpha Investment. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e102] [cursor=pointer]:
+    - img [ref=e103]
+  - alert [ref=e106]

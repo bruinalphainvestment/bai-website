@@ -1,0 +1,130 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - link "Bruin Alpha Investment at UCLA" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Bruin Alpha Investment at UCLA" [ref=e7]
+      - navigation [ref=e8]:
+        - link "Home" [ref=e9] [cursor=pointer]:
+          - /url: /#home
+        - link "Committees" [ref=e10] [cursor=pointer]:
+          - /url: /#committees
+        - link "Training" [ref=e11] [cursor=pointer]:
+          - /url: /#training
+        - link "Team" [ref=e12] [cursor=pointer]:
+          - /url: /#team
+        - link "Join" [ref=e13] [cursor=pointer]:
+          - /url: /#join
+    - main [ref=e14]:
+      - main [ref=e15]:
+        - generic [ref=e16]:
+          - link "Back to Committees" [ref=e17] [cursor=pointer]:
+            - /url: /committees
+            - img [ref=e18]
+            - text: Back to Committees
+          - heading "Trading" [level=1] [ref=e20]
+          - paragraph [ref=e21]: Markets, mechanics, and the systematic edge — from chart reading to hedge fund recruiting.
+          - generic [ref=e22]: "Director: Max"
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - generic [ref=e25]:
+              - heading "The BAI Difference" [level=2] [ref=e26]
+              - paragraph [ref=e27]: A unique focus on hands-on quant and market structure across alternative asset classes.
+            - blockquote [ref=e28]: "\"The market is an incredible teacher. We focus on removing emotion and finding repeatable edge through systematic analysis.\" — Max"
+          - generic [ref=e29]:
+            - heading "What You'll Learn" [level=2] [ref=e30]
+            - list [ref=e31]:
+              - listitem [ref=e32]:
+                - generic [ref=e33]: •
+                - generic [ref=e34]: Chart reading, price action, and order flow
+              - listitem [ref=e35]:
+                - generic [ref=e36]: •
+                - generic [ref=e37]: Volatility analysis and position sizing
+              - listitem [ref=e38]:
+                - generic [ref=e39]: •
+                - generic [ref=e40]: Systematic strategy basics and risk management
+              - listitem [ref=e41]:
+                - generic [ref=e42]: •
+                - generic [ref=e43]: Technical interview prep for trading roles and hedge fund coffee chats
+          - generic [ref=e44]:
+            - heading "Signature Projects" [level=2] [ref=e45]
+            - generic [ref=e46]:
+              - generic [ref=e47]:
+                - heading "Event-Contract Modeling Research" [level=3] [ref=e48]
+                - paragraph [ref=e49]: Systematic identification and modeling of mispriced binary event contracts across various domains.
+              - generic [ref=e50]:
+                - heading "Internal Trading Competition" [level=3] [ref=e51]
+                - paragraph [ref=e52]: A CME-style simulation testing execution under pressure.
+              - generic [ref=e53]:
+                - heading "External Competitions" [level=3] [ref=e54]
+                - paragraph [ref=e55]: Preparation for and participation in the CME Trading Challenge (Fall) and IMC Prosperity (Spring).
+          - generic [ref=e56]:
+            - heading "Curriculum (Fall 2026)" [level=2] [ref=e57]
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - generic [ref=e60]: Week 1
+                - generic [ref=e61]: Introduction & Core Concepts
+              - generic [ref=e62]:
+                - generic [ref=e63]: Week 2
+                - generic [ref=e64]: Industry Overview & Terminology
+              - generic [ref=e65]:
+                - generic [ref=e66]: Week 3
+                - generic [ref=e67]: Foundational Models & Tools
+              - generic [ref=e68]:
+                - generic [ref=e69]: Week 4
+                - generic [ref=e70]: Advanced Case Studies
+              - generic [ref=e71]:
+                - generic [ref=e72]: Week 5
+                - generic [ref=e73]: Midterm Project Review
+              - generic [ref=e74]:
+                - generic [ref=e75]: Week 6
+                - generic [ref=e76]: Networking & Interview Strategies
+              - generic [ref=e77]:
+                - generic [ref=e78]: Week 7
+                - generic [ref=e79]: "Deep Dive: Specialized Topics"
+              - generic [ref=e80]:
+                - generic [ref=e81]: Week 8
+                - generic [ref=e82]: Final Presentations
+    - generic [ref=e85]:
+      - generic [ref=e86]:
+        - img "Bruin Alpha Investment" [ref=e87]
+        - paragraph [ref=e88]: Investing in Bruin excellence.
+      - generic [ref=e89]:
+        - heading "Navigation" [level=3] [ref=e90]
+        - list [ref=e91]:
+          - listitem [ref=e92]:
+            - link "Home" [ref=e93] [cursor=pointer]:
+              - /url: /#home
+          - listitem [ref=e94]:
+            - link "Committees" [ref=e95] [cursor=pointer]:
+              - /url: /#committees
+          - listitem [ref=e96]:
+            - link "Training" [ref=e97] [cursor=pointer]:
+              - /url: /#training
+          - listitem [ref=e98]:
+            - link "Team" [ref=e99] [cursor=pointer]:
+              - /url: /#team
+          - listitem [ref=e100]:
+            - link "Join" [ref=e101] [cursor=pointer]:
+              - /url: /#join
+      - generic [ref=e102]:
+        - heading "Connect" [level=3] [ref=e103]
+        - list [ref=e104]:
+          - listitem [ref=e105]:
+            - link "Instagram" [ref=e106] [cursor=pointer]:
+              - /url: https://instagram.com
+          - listitem [ref=e107]:
+            - link "LinkedIn" [ref=e108] [cursor=pointer]:
+              - /url: https://linkedin.com
+          - listitem [ref=e109]:
+            - link "Email Us" [ref=e110] [cursor=pointer]:
+              - /url: mailto:contact@bruinalpha.com
+      - generic [ref=e111]:
+        - heading "Legal" [level=3] [ref=e112]
+        - paragraph [ref=e113]: Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.
+        - paragraph [ref=e114]: © 2026 Bruin Alpha Investment. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e120] [cursor=pointer]:
+    - img [ref=e121]
+  - alert [ref=e124]

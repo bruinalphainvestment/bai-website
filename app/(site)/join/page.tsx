@@ -34,7 +34,7 @@ const faqs = [
 
 export default function JoinPage() {
   return (
-    <main className="min-h-screen bg-cream text-navy pt-32 pb-24">
+    <div className="min-h-screen bg-cream text-navy pt-32 pb-24">
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-20 md:mb-32">
         <h1 className="font-display text-5xl md:text-7xl mb-6">Join the Cohort</h1>
         <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
@@ -137,6 +137,6 @@ export default function JoinPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="bg-cream text-navy min-h-screen pt-32 pb-24 selection:bg-navy selection:text-cream">
+    <div className="bg-cream text-navy min-h-screen pt-32 pb-24 selection:bg-navy selection:text-cream">
       {/* Hero Section */}
       <section className="px-6 md:px-12 lg:px-24 mb-24 max-w-7xl mx-auto">
         <h1 className="font-serif text-h1 font-light tracking-tight mb-6">Our Story</h1>
@@ -75,6 +75,6 @@ export default function AboutPage() {
           <p className="text-lg opacity-70 uppercase tracking-widest">In Development</p>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

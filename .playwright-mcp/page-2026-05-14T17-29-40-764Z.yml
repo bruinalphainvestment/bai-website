@@ -1,0 +1,202 @@
+- generic [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - link "Bruin Alpha Investment at UCLA" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Bruin Alpha Investment at UCLA" [ref=e7]
+      - button "Open mobile menu" [expanded] [active] [ref=e8]:
+        - img [ref=e9]
+    - dialog [ref=e212]:
+      - generic [ref=e213]:
+        - link "Bruin Alpha Investment at UCLA" [ref=e214] [cursor=pointer]:
+          - /url: /
+          - img "Bruin Alpha Investment at UCLA" [ref=e215]
+        - button "Close mobile menu" [ref=e216]:
+          - img [ref=e217]
+      - navigation [ref=e219]:
+        - link "Home" [ref=e220] [cursor=pointer]:
+          - /url: /#home
+        - link "Committees" [ref=e221] [cursor=pointer]:
+          - /url: /#committees
+        - link "Training" [ref=e222] [cursor=pointer]:
+          - /url: /#training
+        - link "Team" [ref=e223] [cursor=pointer]:
+          - /url: /#team
+        - link "Join" [ref=e224] [cursor=pointer]:
+          - /url: /#join
+    - main [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e14]:
+          - heading "Bruin Alpha Investment" [level=1] [ref=e15]
+          - paragraph [ref=e16]: Have Passion, Believe in Legacy, Believe in BAI
+        - generic [ref=e18]: Scroll
+      - generic [ref=e22]:
+        - heading "Our Mission" [level=2] [ref=e24]
+        - paragraph [ref=e26]:
+          - generic [ref=e27]: B
+          - text: ruin Alpha Investment is a student-led organization dedicated to bridging academic finance with real-world market application. The club brings together students interested in asset and wealth management, financial analysis, sales & trading, prediction markets, and those engaged in active investing across equities, options, futures, and cryptocurrency markets. Beyond discussion, members actively participate in real trading environments, applying arbitrage strategies and other advanced techniques to live markets. The organization emphasizes practical execution, disciplined risk management, and a deep understanding of market structure. Through a collaborative and performance-driven community, Bruin Alpha Investment equips members with the technical skills, strategic thinking, and real experience needed to succeed in competitive finance careers.
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]: "2026"
+          - generic [ref=e33]: Est.
+        - generic [ref=e34]:
+          - generic [ref=e35]: "5"
+          - generic [ref=e36]: Founding Members
+        - generic [ref=e37]:
+          - generic [ref=e38]: "4"
+          - generic [ref=e39]: Committees
+        - generic [ref=e40]:
+          - generic [ref=e41]: Fall 2026
+          - generic [ref=e42]: Recruitment
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e48]: "01"
+          - generic [ref=e49]:
+            - heading "Active Community" [level=3] [ref=e50]
+            - paragraph [ref=e51]: Project-driven cohort, not just a newsletter.
+        - generic [ref=e52]:
+          - generic [ref=e54]: "02"
+          - generic [ref=e55]:
+            - heading "Strong Dedicated Leadership" [level=3] [ref=e56]
+            - paragraph [ref=e57]: Accountability rituals from day one.
+        - generic [ref=e58]:
+          - generic [ref=e60]: "03"
+          - generic [ref=e61]:
+            - heading "Passion for Legacy and Mission" [level=3] [ref=e62]
+            - paragraph [ref=e63]: Built to outlive the founders.
+        - generic [ref=e64]:
+          - generic [ref=e66]: "04"
+          - generic [ref=e67]:
+            - heading "Real Engagements, Real Companies, Real Alumni" [level=3] [ref=e68]
+            - paragraph [ref=e69]: Hands-on work that compounds.
+        - generic [ref=e70]:
+          - generic [ref=e72]: "05"
+          - generic [ref=e73]:
+            - heading "Real Impact Projects" [level=3] [ref=e74]
+            - paragraph [ref=e75]: Outcomes you can put on a resume — and defend in interviews.
+        - generic [ref=e76]:
+          - generic [ref=e78]: "06"
+          - generic [ref=e79]:
+            - heading "Strong Recruitment" [level=3] [ref=e80]
+            - paragraph [ref=e81]: A pipeline calibrated to the most competitive UCLA finance careers.
+        - generic [ref=e82]:
+          - generic [ref=e84]: "07"
+          - generic [ref=e85]:
+            - heading "Active Brand Presence" [level=3] [ref=e86]
+            - paragraph [ref=e87]: Discoverable across the channels prospective members already live on.
+      - generic [ref=e89]:
+        - heading "Committees" [level=2] [ref=e90]
+        - generic [ref=e91]:
+          - link "Wealth Management Soft skills, relationship building, and SIE/Series exam readiness. Explore →" [ref=e92] [cursor=pointer]:
+            - /url: /committees/wealth-management
+            - generic [ref=e93]:
+              - generic [ref=e94]:
+                - heading "Wealth Management" [level=3] [ref=e95]
+                - paragraph [ref=e96]: Soft skills, relationship building, and SIE/Series exam readiness.
+              - generic [ref=e98]:
+                - text: Explore
+                - generic [ref=e99]: →
+          - link "Trading Volatility, systematic strategies, and event-contract modeling research. Explore →" [ref=e100] [cursor=pointer]:
+            - /url: /committees/trading
+            - generic [ref=e101]:
+              - generic [ref=e102]:
+                - heading "Trading" [level=3] [ref=e103]
+                - paragraph [ref=e104]: Volatility, systematic strategies, and event-contract modeling research.
+              - generic [ref=e106]:
+                - text: Explore
+                - generic [ref=e107]: →
+          - link "Accounting & Consulting 3-statement modeling, DCF, and audit fundamentals. Explore →" [ref=e108] [cursor=pointer]:
+            - /url: /committees/accounting-consulting
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - heading "Accounting & Consulting" [level=3] [ref=e111]
+                - paragraph [ref=e112]: 3-statement modeling, DCF, and audit fundamentals.
+              - generic [ref=e114]:
+                - text: Explore
+                - generic [ref=e115]: →
+          - link "Investment Banking Modeling, networking, and technical interview prep. Explore →" [ref=e116] [cursor=pointer]:
+            - /url: /committees/investment-banking
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - heading "Investment Banking" [level=3] [ref=e119]
+                - paragraph [ref=e120]: Modeling, networking, and technical interview prep.
+              - generic [ref=e122]:
+                - text: Explore
+                - generic [ref=e123]: →
+      - generic [ref=e125]:
+        - heading "The Founding Class — Built in Spring 2026" [level=2] [ref=e126]
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - generic [ref=e131]: MH
+            - heading "Mack Haymond" [level=3] [ref=e132]
+            - paragraph [ref=e133]: President
+          - generic [ref=e134]:
+            - generic [ref=e137]: MX
+            - heading "Max" [level=3] [ref=e138]
+            - paragraph [ref=e139]: Trading Director
+          - generic [ref=e140]:
+            - generic [ref=e143]: SM
+            - heading "Sam" [level=3] [ref=e144]
+            - paragraph [ref=e145]: Operations
+          - generic [ref=e146]:
+            - generic [ref=e149]: KX
+            - heading "Kai" [level=3] [ref=e150]
+            - paragraph [ref=e151]: Trading Co-Director
+          - generic [ref=e152]:
+            - generic [ref=e155]: HM
+            - heading "Helmer" [level=3] [ref=e156]
+            - paragraph [ref=e157]: Accounting & Consulting Director
+      - generic [ref=e160]:
+        - generic [ref=e161]: BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 · BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 · BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 · BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 ·
+        - generic [ref=e162]: BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 · BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 · BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 · BAI · REAL IMPACT · LEGACY · BRUIN ALPHA · FOUNDED 2026 ·
+      - generic [ref=e164]:
+        - heading "Join the Founding Cohort" [level=2] [ref=e165]
+        - paragraph [ref=e166]: Priority application closes [date — placeholder TBD]. Applications open to all current and incoming UCLA students.
+        - generic [ref=e167]:
+          - link "Apply Now" [ref=e168] [cursor=pointer]:
+            - /url: "#"
+          - link "Email Us" [ref=e169] [cursor=pointer]:
+            - /url: mailto:bruinalphainvestment26@gmail.com
+    - generic [ref=e172]:
+      - generic [ref=e173]:
+        - img "Bruin Alpha Investment" [ref=e174]
+        - paragraph [ref=e175]: Investing in Bruin excellence.
+      - generic [ref=e176]:
+        - heading "Navigation" [level=3] [ref=e177]
+        - list [ref=e178]:
+          - listitem [ref=e179]:
+            - link "Home" [ref=e180] [cursor=pointer]:
+              - /url: /#home
+          - listitem [ref=e181]:
+            - link "Committees" [ref=e182] [cursor=pointer]:
+              - /url: /#committees
+          - listitem [ref=e183]:
+            - link "Training" [ref=e184] [cursor=pointer]:
+              - /url: /#training
+          - listitem [ref=e185]:
+            - link "Team" [ref=e186] [cursor=pointer]:
+              - /url: /#team
+          - listitem [ref=e187]:
+            - link "Join" [ref=e188] [cursor=pointer]:
+              - /url: /#join
+      - generic [ref=e189]:
+        - heading "Connect" [level=3] [ref=e190]
+        - list [ref=e191]:
+          - listitem [ref=e192]:
+            - link "Instagram" [ref=e193] [cursor=pointer]:
+              - /url: https://instagram.com
+          - listitem [ref=e194]:
+            - link "LinkedIn" [ref=e195] [cursor=pointer]:
+              - /url: https://linkedin.com
+          - listitem [ref=e196]:
+            - link "Email Us" [ref=e197] [cursor=pointer]:
+              - /url: mailto:contact@bruinalpha.com
+      - generic [ref=e198]:
+        - heading "Legal" [level=3] [ref=e199]
+        - paragraph [ref=e200]: Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.
+        - paragraph [ref=e201]: © 2026 Bruin Alpha Investment. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e207] [cursor=pointer]:
+    - img [ref=e208]
+  - alert [ref=e211]

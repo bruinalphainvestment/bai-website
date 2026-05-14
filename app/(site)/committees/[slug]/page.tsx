@@ -142,7 +142,7 @@ export default async function CommitteePage({ params }: { params: Promise<{ slug
   ];
 
   return (
-    <main className="min-h-screen bg-[#FAF9F6] text-gray-900 font-sans pb-24">
+    <div className="min-h-screen bg-[#FAF9F6] text-gray-900 font-sans pb-24">
       <section className="pt-32 pb-16 px-6 md:px-12 max-w-5xl mx-auto">
         <Link 
           href="/committees" 
@@ -228,6 +228,6 @@ export default async function CommitteePage({ params }: { params: Promise<{ slug
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

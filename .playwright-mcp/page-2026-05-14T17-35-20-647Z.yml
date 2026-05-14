@@ -1,0 +1,102 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - link "Bruin Alpha Investment at UCLA" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Bruin Alpha Investment at UCLA" [ref=e7]
+      - button "Open mobile menu" [ref=e8]:
+        - img [ref=e9]
+    - main [ref=e11]:
+      - main [ref=e12]:
+        - generic [ref=e13]:
+          - heading "What We Build" [level=1] [ref=e14]
+          - paragraph [ref=e15]: At Bruin Alpha Investment, theory is immediately put into practice. Our committees drive independent research and structured deliverables.
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - generic [ref=e19]:
+              - generic [ref=e20]: Trading
+              - generic [ref=e21]: Planning
+            - heading "Event-Contract Modeling Research" [level=2] [ref=e23]
+            - paragraph [ref=e24]: A quantitative initiative focused on pricing and analyzing probability-based event contracts. Analysts will build predictive models to evaluate mispricings in event-driven markets.
+          - generic [ref=e25]:
+            - generic [ref=e26]:
+              - generic [ref=e27]: Accounting & Consulting
+              - generic [ref=e28]: Planning
+            - heading "UCLA Club Audit Initiative" [level=2] [ref=e30]
+            - paragraph [ref=e31]: Pro-bono financial reviews for other campus organizations. Members will assess cash flow, budget allocations, and operational efficiency, culminating in a formalized advisory report.
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - generic [ref=e34]: Investment Banking (All-Club)
+              - generic [ref=e35]: Planning
+            - heading "Spring Stock Pitch" [level=2] [ref=e37]
+            - paragraph [ref=e38]: Our capstone event where analysts across all committees form teams to deliver comprehensive investment pitches, emphasizing rigorous valuation, market sizing, and strategic rationale.
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: Wealth Management
+              - generic [ref=e42]: Planning
+            - heading "Wealth Advisory Mock Engagement" [level=2] [ref=e44]
+            - paragraph [ref=e45]: Simulated client engagements requiring analysts to construct diversified portfolios based on specific risk profiles, tax considerations, and long-term financial objectives.
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - generic [ref=e48]: Trading (Aspirational)
+              - generic [ref=e49]: Planning
+            - heading "UCLA-Wide Stock Trading Competition" [level=2] [ref=e51]
+            - paragraph [ref=e52]: A campus-wide initiative currently in the planning phase. The goal is to democratize market access and test trading strategies in a competitive, simulated environment.
+        - generic [ref=e53]:
+          - heading "Status Legend" [level=3] [ref=e54]
+          - list [ref=e55]:
+            - listitem [ref=e56]:
+              - generic [ref=e58]:
+                - strong [ref=e59]: Planning
+                - text: Scope and deliverables are currently being finalized.
+            - listitem [ref=e60]:
+              - generic [ref=e62]:
+                - strong [ref=e63]: Active
+                - text: Project is currently in execution phase.
+            - listitem [ref=e64]:
+              - generic [ref=e66]:
+                - strong [ref=e67]: Completed
+                - text: Final deliverable has been published.
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - img "Bruin Alpha Investment" [ref=e72]
+        - paragraph [ref=e73]: Investing in Bruin excellence.
+      - generic [ref=e74]:
+        - heading "Navigation" [level=3] [ref=e75]
+        - list [ref=e76]:
+          - listitem [ref=e77]:
+            - link "Home" [ref=e78] [cursor=pointer]:
+              - /url: /#home
+          - listitem [ref=e79]:
+            - link "Committees" [ref=e80] [cursor=pointer]:
+              - /url: /#committees
+          - listitem [ref=e81]:
+            - link "Training" [ref=e82] [cursor=pointer]:
+              - /url: /#training
+          - listitem [ref=e83]:
+            - link "Team" [ref=e84] [cursor=pointer]:
+              - /url: /#team
+          - listitem [ref=e85]:
+            - link "Join" [ref=e86] [cursor=pointer]:
+              - /url: /#join
+      - generic [ref=e87]:
+        - heading "Connect" [level=3] [ref=e88]
+        - list [ref=e89]:
+          - listitem [ref=e90]:
+            - link "Instagram" [ref=e91] [cursor=pointer]:
+              - /url: https://instagram.com
+          - listitem [ref=e92]:
+            - link "LinkedIn" [ref=e93] [cursor=pointer]:
+              - /url: https://linkedin.com
+          - listitem [ref=e94]:
+            - link "Email Us" [ref=e95] [cursor=pointer]:
+              - /url: mailto:contact@bruinalpha.com
+      - generic [ref=e96]:
+        - heading "Legal" [level=3] [ref=e97]
+        - paragraph [ref=e98]: Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.
+        - paragraph [ref=e99]: © 2026 Bruin Alpha Investment. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e105] [cursor=pointer]:
+    - img [ref=e106]
+  - alert [ref=e109]

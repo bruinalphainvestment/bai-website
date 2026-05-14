@@ -20,8 +20,8 @@ This document serves as the master record for Bruin Alpha Investment (BAI) websi
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Root Email** | gmail.com | Mack's Personal | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | OAuth root for all services |
 | **Club Gmail** | gmail.com | `bruinalphainvestment26` | Mack, Max, Sam | Personal Backup | N/A | Primary recovery hub |
-| **Vercel Team** | vercel.com | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Pro tier via Student Pack |
-| **Sanity Org** | sanity.io | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Project ID: `v6m6t4z6` |
+| **Vercel Team** | vercel.com | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Hobby tier (free, non-commercial) |
+| **Sanity Org** | sanity.io | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Project ID: `epognpe3` |
 | **GitHub Org** | github.com | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Private repo: `bai-website` |
 | **Tally.so** | tally.so | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Recruitment forms hub |
 | **Domain Registrar** | [TO BE FILLED] | [TO BE FILLED] | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | [TO BE FILLED] | Target: `bruinalpha.com` |
@@ -91,8 +91,8 @@ This ritual MUST be completed by **Week 8 of every Spring Quarter** to ensure co
 4. Access the club Gmail to reset the password and regain control.
 
 ### Scenario B: Vercel or Sanity Billing Issues
-1. Vercel Pro is currently covered by the **GitHub Student Developer Pack**. If this expires, a new officer with a valid `.edu` email must apply for the pack and link it to the Vercel Team.
-2. If Student Pack is unavailable, the fallback is to migrate to **Cloudflare Pages** (free tier) or move to Vercel Hobby (requires scrubbing commercial/sponsorship mentions).
+1. The site runs on **Vercel Hobby (free)**. Hobby's ToS restricts commercial use, so keep the site free of paid advertising and commercial transactions. Sponsorship logos for the club itself are generally tolerated, but if Vercel ever flags the project, the immediate fix is to scrub commercial-looking content.
+2. If Hobby limits (bandwidth, build minutes, team seats) become blocking, the fallbacks are: (a) apply to the **Vercel for Startups / OSS** program, (b) have an officer pay for Vercel Pro out of pocket (~$20/mo), or (c) migrate to **Cloudflare Pages** (free tier, allows commercial use).
 
 ### Scenario C: GSAP License Changes
 The site uses GSAP for advanced animations. If the license terms change or the club can no longer afford a paid tier (if required for future features), the fallback is to use **Framer Motion only**. The architecture is decoupled to allow this transition.

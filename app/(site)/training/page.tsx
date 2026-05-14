@@ -15,7 +15,7 @@ const PHASES = [
 
 export default function TrainingPage() {
   return (
-    <main className="bg-cream text-navy min-h-screen pt-32 pb-24">
+    <div className="bg-cream text-navy min-h-screen pt-32 pb-24">
       {/* Hero */}
       <section className="px-6 md:px-12 lg:px-24 mb-24 max-w-7xl mx-auto">
         <h1 className="font-serif text-h1 font-light tracking-tight mb-6">The Rotational Program</h1>
@@ -120,6 +120,6 @@ export default function TrainingPage() {
           </p>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

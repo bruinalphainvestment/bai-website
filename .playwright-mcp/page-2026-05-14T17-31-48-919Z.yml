@@ -1,0 +1,126 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - link "Bruin Alpha Investment at UCLA" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Bruin Alpha Investment at UCLA" [ref=e7]
+      - navigation [ref=e8]:
+        - link "Home" [ref=e9] [cursor=pointer]:
+          - /url: /#home
+        - link "Committees" [ref=e10] [cursor=pointer]:
+          - /url: /#committees
+        - link "Training" [ref=e11] [cursor=pointer]:
+          - /url: /#training
+        - link "Team" [ref=e12] [cursor=pointer]:
+          - /url: /#team
+        - link "Join" [ref=e13] [cursor=pointer]:
+          - /url: /#join
+    - main [ref=e14]:
+      - main [ref=e15]:
+        - generic [ref=e16]:
+          - link "Back to Committees" [ref=e17] [cursor=pointer]:
+            - /url: /committees
+            - img [ref=e18]
+            - text: Back to Committees
+          - heading "Investment Banking" [level=1] [ref=e20]
+          - paragraph [ref=e21]: Modeling, networking, and the mental models behind every deal.
+          - generic [ref=e22]: "Director: TBD — announcement coming soon"
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - generic [ref=e25]:
+              - heading "The BAI Difference" [level=2] [ref=e26]
+              - paragraph [ref=e27]: A rotational program first approach, transitioning to specialized IB prep with tight cohort camaraderie and access to a smaller community.
+            - blockquote [ref=e28]: "\"Success in banking isn't just about building the model perfectly—it's about understanding the \"why\" behind the transaction and clearly communicating that narrative.\" — Director"
+          - generic [ref=e29]:
+            - heading "What You'll Learn" [level=2] [ref=e30]
+            - list [ref=e31]:
+              - listitem [ref=e32]:
+                - generic [ref=e33]: •
+                - generic [ref=e34]: Advanced 3-statement modeling and DCF valuation
+              - listitem [ref=e35]:
+                - generic [ref=e36]: •
+                - generic [ref=e37]: M&A models, LBO mechanics, and accretion/dilution analysis
+              - listitem [ref=e38]:
+                - generic [ref=e39]: •
+                - generic [ref=e40]: Strategic networking, cold emailing, and coffee chat mastery
+              - listitem [ref=e41]:
+                - generic [ref=e42]: •
+                - generic [ref=e43]: Technical interview prep for top-tier banking groups
+          - generic [ref=e44]:
+            - heading "Signature Projects" [level=2] [ref=e45]
+            - generic [ref=e46]:
+              - generic [ref=e47]:
+                - heading "Live Deal Tear-Down" [level=3] [ref=e48]
+                - paragraph [ref=e49]: Analyze a recent M&A deal, present the strategic rationale, and propose alternative theses.
+              - generic [ref=e50]:
+                - heading "Spring Stock Pitch" [level=3] [ref=e51]
+                - paragraph [ref=e52]: An all-club capstone where members synthesize their financial modeling and presentation skills.
+          - generic [ref=e53]:
+            - heading "Curriculum (Fall 2026)" [level=2] [ref=e54]
+            - generic [ref=e55]:
+              - generic [ref=e56]:
+                - generic [ref=e57]: Week 1
+                - generic [ref=e58]: Introduction & Core Concepts
+              - generic [ref=e59]:
+                - generic [ref=e60]: Week 2
+                - generic [ref=e61]: Industry Overview & Terminology
+              - generic [ref=e62]:
+                - generic [ref=e63]: Week 3
+                - generic [ref=e64]: Foundational Models & Tools
+              - generic [ref=e65]:
+                - generic [ref=e66]: Week 4
+                - generic [ref=e67]: Advanced Case Studies
+              - generic [ref=e68]:
+                - generic [ref=e69]: Week 5
+                - generic [ref=e70]: Midterm Project Review
+              - generic [ref=e71]:
+                - generic [ref=e72]: Week 6
+                - generic [ref=e73]: Networking & Interview Strategies
+              - generic [ref=e74]:
+                - generic [ref=e75]: Week 7
+                - generic [ref=e76]: "Deep Dive: Specialized Topics"
+              - generic [ref=e77]:
+                - generic [ref=e78]: Week 8
+                - generic [ref=e79]: Final Presentations
+    - generic [ref=e82]:
+      - generic [ref=e83]:
+        - img "Bruin Alpha Investment" [ref=e84]
+        - paragraph [ref=e85]: Investing in Bruin excellence.
+      - generic [ref=e86]:
+        - heading "Navigation" [level=3] [ref=e87]
+        - list [ref=e88]:
+          - listitem [ref=e89]:
+            - link "Home" [ref=e90] [cursor=pointer]:
+              - /url: /#home
+          - listitem [ref=e91]:
+            - link "Committees" [ref=e92] [cursor=pointer]:
+              - /url: /#committees
+          - listitem [ref=e93]:
+            - link "Training" [ref=e94] [cursor=pointer]:
+              - /url: /#training
+          - listitem [ref=e95]:
+            - link "Team" [ref=e96] [cursor=pointer]:
+              - /url: /#team
+          - listitem [ref=e97]:
+            - link "Join" [ref=e98] [cursor=pointer]:
+              - /url: /#join
+      - generic [ref=e99]:
+        - heading "Connect" [level=3] [ref=e100]
+        - list [ref=e101]:
+          - listitem [ref=e102]:
+            - link "Instagram" [ref=e103] [cursor=pointer]:
+              - /url: https://instagram.com
+          - listitem [ref=e104]:
+            - link "LinkedIn" [ref=e105] [cursor=pointer]:
+              - /url: https://linkedin.com
+          - listitem [ref=e106]:
+            - link "Email Us" [ref=e107] [cursor=pointer]:
+              - /url: mailto:contact@bruinalpha.com
+      - generic [ref=e108]:
+        - heading "Legal" [level=3] [ref=e109]
+        - paragraph [ref=e110]: Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.
+        - paragraph [ref=e111]: © 2026 Bruin Alpha Investment. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e117] [cursor=pointer]:
+    - img [ref=e118]

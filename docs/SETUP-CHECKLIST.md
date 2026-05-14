@@ -14,12 +14,12 @@ This secures the root of all other accounts.
 4. [ ] **Store Root Credentials:** Save the login details for the Club Gmail and all following services into this shared vault.
 
 ## Section B: GitHub Student Pack (5 mins + 24h wait)
-This unlocks free Vercel Pro ($240/year value) for the club.
+Useful for adjacent perks (Namecheap domain credit, JetBrains, etc.). Vercel Pro is **no longer** part of the pack — the club will run on Vercel's free Hobby tier.
 
 1. [ ] **Apply for Pack:** Go to [education.github.com/pack](https://education.github.com/pack).
 2. [ ] **UCLA Verification:** Use your `[user]@ucla.edu` email to apply.
 3. [ ] **Wait for Approval:** Approvals usually take ~24 hours. Once approved, you will receive an email from GitHub.
-4. [ ] **Redeem Vercel Pro:** Once approved, go to [vercel.com/dashboard](https://vercel.com/dashboard), link your GitHub, and follow the prompt to redeem the GitHub Student Pack offer.
+4. [ ] **Browse Offers:** Check the pack catalog for current perks relevant to this project (e.g., Namecheap `.me` domain, GitHub Copilot Pro).
 
 ## Section C: Vercel Team (5 mins)
 Crucial: Do NOT create the project under your personal namespace.
@@ -27,7 +27,7 @@ Crucial: Do NOT create the project under your personal namespace.
 1. [ ] **Create Team:** Go to [vercel.com/teams/new](https://vercel.com/teams/new).
 2. [ ] **Name:** Set the name to `Bruin Alpha Investment`.
 3. [ ] **Invite Officers:** Invite at least one co-admin officer to the team.
-4. [ ] **Verify Pro Tier:** Ensure the team is on the "Pro" plan (covered by your Student Pack).
+4. [ ] **Confirm Hobby Tier:** The team should be on the free **Hobby** plan. Do NOT enable paid features unless an officer is paying. (Hobby is intended for non-commercial use; keep the site free of paid advertising / commercial transactions to stay within ToS.)
 5. [ ] **Update Handoff:** Copy the team slug (e.g., `bruin-alpha-investment`) into `docs/HANDOFF.md`.
 
 ## Section D: Sanity Project (10 mins)

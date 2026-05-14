@@ -1,0 +1,164 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - link "Bruin Alpha Investment at UCLA" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "Bruin Alpha Investment at UCLA" [ref=e7]
+      - navigation [ref=e8]:
+        - link "Home" [ref=e9] [cursor=pointer]:
+          - /url: /#home
+        - link "Committees" [ref=e10] [cursor=pointer]:
+          - /url: /#committees
+        - link "Training" [ref=e11] [cursor=pointer]:
+          - /url: /#training
+        - link "Team" [ref=e12] [cursor=pointer]:
+          - /url: /#team
+        - link "Join" [ref=e13] [cursor=pointer]:
+          - /url: /#join
+    - main [ref=e14]:
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - heading "Four Committees. One Club." [level=1] [ref=e18]:
+            - text: Four Committees.
+            - text: One Club.
+          - paragraph [ref=e19]: Bruin Alpha Investment is structured around four core committees. While each has a distinct focus, they work together to provide a comprehensive financial education through our rotational program.
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e23]:
+                - heading "Wealth Management" [level=2] [ref=e24]
+                - generic [ref=e25]: W
+              - paragraph [ref=e26]: "Director: Mack Haymond"
+              - paragraph [ref=e27]: Learn the fundamentals of relationship building, sales, and advisory services. Develop the skills required to one day build a book of business and guide clients through complex financial decisions.
+              - generic [ref=e28]:
+                - heading "What you'll do:" [level=3] [ref=e29]
+                - list [ref=e30]:
+                  - listitem [ref=e31]:
+                    - generic [ref=e32]: •
+                    - generic [ref=e33]: Relationship building & networking
+                  - listitem [ref=e34]:
+                    - generic [ref=e35]: •
+                    - generic [ref=e36]: Sales fundamentals & rejection resistance
+                  - listitem [ref=e37]:
+                    - generic [ref=e38]: •
+                    - generic [ref=e39]: SIE exam awareness and prep methodologies
+            - link "Explore Wealth Management" [ref=e41] [cursor=pointer]:
+              - /url: /committees/wealth-management
+              - text: Explore Wealth Management
+              - img [ref=e42]
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]:
+                - heading "Trading" [level=2] [ref=e47]
+                - generic [ref=e48]: T
+              - paragraph [ref=e49]: "Director: Max"
+              - paragraph [ref=e50]: Dive into the mechanics of markets. From chart reading and volatility analysis to systematic strategy basics, build a foundation in both discretionary and quantitative trading.
+              - generic [ref=e51]:
+                - heading "What you'll do:" [level=3] [ref=e52]
+                - list [ref=e53]:
+                  - listitem [ref=e54]:
+                    - generic [ref=e55]: •
+                    - generic [ref=e56]: Chart reading & technical analysis
+                  - listitem [ref=e57]:
+                    - generic [ref=e58]: •
+                    - generic [ref=e59]: Position sizing & risk management
+                  - listitem [ref=e60]:
+                    - generic [ref=e61]: •
+                    - generic [ref=e62]: Hedge fund interview preparation
+            - link "Explore Trading" [ref=e64] [cursor=pointer]:
+              - /url: /committees/trading
+              - text: Explore Trading
+              - img [ref=e65]
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - generic [ref=e69]:
+                - heading "Accounting & Consulting" [level=2] [ref=e70]
+                - generic [ref=e71]: A
+              - paragraph [ref=e72]: "Director: Helmer"
+              - paragraph [ref=e73]: Master the intersection of financial reporting and strategic advisory. Build a dual skillset that opens doors to Big Four accounting, management consulting, and beyond.
+              - generic [ref=e74]:
+                - heading "What you'll do:" [level=3] [ref=e75]
+                - list [ref=e76]:
+                  - listitem [ref=e77]:
+                    - generic [ref=e78]: •
+                    - generic [ref=e79]: 3-statement modeling & DCF basics
+                  - listitem [ref=e80]:
+                    - generic [ref=e81]: •
+                    - generic [ref=e82]: Audit fundamentals & operational analysis
+                  - listitem [ref=e83]:
+                    - generic [ref=e84]: •
+                    - generic [ref=e85]: Industry case competition frameworks
+            - link "Explore Accounting & Consulting" [ref=e87] [cursor=pointer]:
+              - /url: /committees/accounting-consulting
+              - text: Explore Accounting & Consulting
+              - img [ref=e88]
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - heading "Investment Banking" [level=2] [ref=e93]
+                - generic [ref=e94]: I
+              - paragraph [ref=e95]: "Director: Announcement Coming Soon"
+              - paragraph [ref=e96]: Prepare for the rigorous world of investment banking. Master core valuation techniques, deal mechanics, and the technical knowledge required to ace superdays.
+              - generic [ref=e97]:
+                - heading "What you'll do:" [level=3] [ref=e98]
+                - list [ref=e99]:
+                  - listitem [ref=e100]:
+                    - generic [ref=e101]: •
+                    - generic [ref=e102]: Core valuation methodologies (DCF, Comps)
+                  - listitem [ref=e103]:
+                    - generic [ref=e104]: •
+                    - generic [ref=e105]: M&A modeling fundamentals
+                  - listitem [ref=e106]:
+                    - generic [ref=e107]: •
+                    - generic [ref=e108]: Technical interview preparation
+            - link "Explore Investment Banking" [ref=e110] [cursor=pointer]:
+              - /url: /committees/investment-banking
+              - text: Explore Investment Banking
+              - img [ref=e111]
+        - generic [ref=e113]:
+          - heading "Connected by Design" [level=2] [ref=e114]
+          - paragraph [ref=e116]: We don't believe in silos. Our unique rotational program ensures that every member gains exposure to all four disciplines during their early tenure. You might specialize in Wealth Management, but you'll understand how a trader sizes positions, how a consultant audits operations, and how an investment banker builds a DCF.
+          - paragraph [ref=e117]: This cross-pollination comes to life in our unified all-club projects, where members from different committees collaborate to tackle complex, multi-faceted financial challenges. We build well-rounded professionals who understand the entire financial ecosystem.
+    - generic [ref=e120]:
+      - generic [ref=e121]:
+        - img "Bruin Alpha Investment" [ref=e122]
+        - paragraph [ref=e123]: Investing in Bruin excellence.
+      - generic [ref=e124]:
+        - heading "Navigation" [level=3] [ref=e125]
+        - list [ref=e126]:
+          - listitem [ref=e127]:
+            - link "Home" [ref=e128] [cursor=pointer]:
+              - /url: /#home
+          - listitem [ref=e129]:
+            - link "Committees" [ref=e130] [cursor=pointer]:
+              - /url: /#committees
+          - listitem [ref=e131]:
+            - link "Training" [ref=e132] [cursor=pointer]:
+              - /url: /#training
+          - listitem [ref=e133]:
+            - link "Team" [ref=e134] [cursor=pointer]:
+              - /url: /#team
+          - listitem [ref=e135]:
+            - link "Join" [ref=e136] [cursor=pointer]:
+              - /url: /#join
+      - generic [ref=e137]:
+        - heading "Connect" [level=3] [ref=e138]
+        - list [ref=e139]:
+          - listitem [ref=e140]:
+            - link "Instagram" [ref=e141] [cursor=pointer]:
+              - /url: https://instagram.com
+          - listitem [ref=e142]:
+            - link "LinkedIn" [ref=e143] [cursor=pointer]:
+              - /url: https://linkedin.com
+          - listitem [ref=e144]:
+            - link "Email Us" [ref=e145] [cursor=pointer]:
+              - /url: mailto:contact@bruinalpha.com
+      - generic [ref=e146]:
+        - heading "Legal" [level=3] [ref=e147]
+        - paragraph [ref=e148]: Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.
+        - paragraph [ref=e149]: © 2026 Bruin Alpha Investment. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e155] [cursor=pointer]:
+    - img [ref=e156]
+  - alert [ref=e159]
