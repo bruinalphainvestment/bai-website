@@ -1240,6 +1240,14 @@ export type AllCommitteesQueryResult = Array<{
 }>;
 
 // Source: sanity/lib/queries.ts
+// Variable: sitemapCommitteesQuery
+// Query: *[_type == "committee" && defined(slug.current)] | order(order asc) {    "slug": slug.current,    _updatedAt  }
+export type SitemapCommitteesQueryResult = Array<{
+  slug: string | null;
+  _updatedAt: string;
+}>;
+
+// Source: sanity/lib/queries.ts
 // Variable: allFoundingMembersQuery
 // Query: *[_type == "foundingMember"] | order(lastName asc) {    _id,    firstName,    lastName,    role,    committee,    gradYear,    bio,    linkedinUrl,    photoReleaseObtained,    headshot,    monogramOverride  }
 export type AllFoundingMembersQueryResult = Array<{
@@ -1276,6 +1284,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "siteSettings"][0] {\n    brandName,\n    titleSuffix,\n    slogan,\n    "disclaimer": coalesce(disclaimerText, disclaimer_text),\n    "uclaName": coalesce(uclaCompliantName, ucla_compliant_name),\n    "mission": coalesce(missionStatement, mission_statement),\n    applyUrl,\n    clubEmail,\n    instagramUrl,\n    linkedinUrl,\n    slackInviteUrl,\n    navLinks,\n    foundedYear,\n    foundedTerm,\n    defaultMetaDescription,\n    defaultOgImage,\n    organizationDescription,\n    sameAs,\n    errorCopy,\n    "domainRenewal": coalesce(domainRenewalDate, domain_renewal_date)\n  }\n': SiteSettingsQueryResult;
     '\n  *[_type == "homePage"][0] {\n    title,\n    sections[] {\n      _key,\n      _type,\n      ...\n    }\n  }\n': HomePageQueryResult;
     '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    order,\n    accentColor,\n    "director": director-> {\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee\n    }\n  }\n': AllCommitteesQueryResult;
+    '\n  *[_type == "committee" && defined(slug.current)] | order(order asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SitemapCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
   }
 }

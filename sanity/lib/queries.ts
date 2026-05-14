@@ -55,6 +55,13 @@ export const allCommitteesQuery = defineQuery(`
   }
 `);
 
+export const sitemapCommitteesQuery = defineQuery(`
+  *[_type == "committee" && defined(slug.current)] | order(order asc) {
+    "slug": slug.current,
+    _updatedAt
+  }
+`);
+
 export const allFoundingMembersQuery = defineQuery(`
   *[_type == "foundingMember"] | order(lastName asc) {
     _id,
