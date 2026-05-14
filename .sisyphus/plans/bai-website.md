@@ -2058,7 +2058,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(cms): expand Sanity schemas (committee, project, event, faq, page)`
 
-- [ ] 33. **Sanity Presentation Tool wiring — split-view live preview with draft mode**
+- [x] 33. **Sanity Presentation Tool wiring — split-view live preview with draft mode**
 
   **What to do**:
   - Configure `presentationTool` in `sanity.config.ts` with `previewUrl: { previewMode: { enable: '/api/draft-mode/enable' } }`
@@ -2157,7 +2157,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 > - **Aesthetic**: cream `#FAF7F2` background, navy text, Fraunces headlines, Inter body, smooth scroll persists but kinetic intensity is dialed down
 > - **Sanity content seeding**: each page task includes seeding placeholder content sourced from transcripts/slides
 
-- [ ] 35. **About / Our Story page**
+- [x] 35. **About / Our Story page**
 
   **What to do**:
   - Route: `app/(site)/about/page.tsx` — fetches `*[_type=="page" && slug.current=="about"][0]`
@@ -2203,7 +2203,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(about): our story page`
 
-- [ ] 36. **Committees index page — 4-card grid with director quotes**
+- [x] 36. **Committees index page — 4-card grid with director quotes**
 
   **What to do**:
   - Route: `app/(site)/committees/page.tsx` — fetches `*[_type=="committee"] | order(order asc)`
@@ -2239,7 +2239,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(committees): index page`
 
-- [ ] 37. **Wealth Management committee subpage**
+- [x] 37. **Wealth Management committee subpage**
 
   **What to do**:
   - Route: `app/(site)/committees/[slug]/page.tsx` (dynamic, generates for all 4)
@@ -2279,7 +2279,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(committees): wealth management subpage`
 
-- [ ] 38. **Trading committee subpage (Polymarket-scrubbed copy)**
+- [x] 38. **Trading committee subpage (Polymarket-scrubbed copy)**
 
   **What to do**:
   - Same dynamic route, content per Trading committee from transcripts (Max's plan)
@@ -2321,7 +2321,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(committees): trading subpage`
 
-- [ ] 39. **Accounting / Consulting committee subpage**
+- [x] 39. **Accounting / Consulting committee subpage**
 
   **What to do**:
   - Sections (from Meeting 2 transcript — Helmer + Sam's design):
@@ -2356,7 +2356,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(committees): accounting & consulting subpage`
 
-- [ ] 40. **Investment Banking committee subpage**
+- [x] 40. **Investment Banking committee subpage**
 
   **What to do**:
   - Sections:
@@ -2396,7 +2396,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(committees): investment banking subpage`
 
-- [ ] 41. **Training / Rotational Program page**
+- [x] 41. **Training / Rotational Program page**
 
   **What to do**:
   - Route: `app/(site)/training/page.tsx`
@@ -2430,7 +2430,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(training): rotational program page`
 
-- [ ] 42. **Projects page**
+- [x] 42. **Projects page**
 
   **What to do**:
   - Route: `app/(site)/projects/page.tsx` — fetches `*[_type=="project"] | order(_createdAt desc)`
@@ -2472,7 +2472,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(projects): projects showcase page`
 
-- [ ] 43. **Team page — Founding Class + Members + Alumni placeholder sections**
+- [x] 43. **Team page — Founding Class + Members + Alumni placeholder sections**
 
   **What to do**:
   - Route: `app/(site)/team/page.tsx`
@@ -2512,7 +2512,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(team): founding class + members + alumni page`
 
-- [ ] 44. **Events page — Enormous Activities Fair + competitions + speakers**
+- [x] 44. **Events page — Enormous Activities Fair + competitions + speakers**
 
   **What to do**:
   - Route: `app/(site)/events/page.tsx` — fetches `*[_type=="event"]`
@@ -2548,7 +2548,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `feat(events): events page with reframed EAF + competitions`
 
-- [ ] 45. **Join Us page — FAQ, priority deadline, Tally embed, contact**
+- [x] 45. **Join Us page — FAQ, priority deadline, Tally embed, contact**
 
   **What to do**:
   - Route: `app/(site)/join/page.tsx`
@@ -2596,7 +2596,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
 ### Wave 2 — Finishing Sub-Wave
 
-- [ ] 46. **ANIMATION-CONVENTIONS.md — GSAP vs Motion split + lenis pattern catalog**
+- [x] 46. **ANIMATION-CONVENTIONS.md — GSAP vs Motion split + lenis pattern catalog**
 
   **What to do**:
   - Create `docs/ANIMATION-CONVENTIONS.md` documenting:
@@ -2630,7 +2630,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `docs(handoff): animation conventions guide`
 
-- [ ] 47. **Per-page Playwright suite for all Wave-2 pages + sitemap-discovered URL walker**
+- [x] 47. **Per-page Playwright suite for all Wave-2 pages + sitemap-discovered URL walker**
 
   **What to do**:
   - Create `tests/pages-suite.spec.ts` — parameterized over all routes discovered via sitemap.xml:
@@ -2669,7 +2669,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `test(site): full per-page suite with sitemap walker`
 
-- [ ] 48. **Finalize HANDOFF.md + EDITING-GUIDE.md — all credentials + transition checklist**
+- [x] 48. **Finalize HANDOFF.md + EDITING-GUIDE.md — all credentials + transition checklist**
 
   **What to do**:
   - Update `docs/HANDOFF.md` with all account details populated (URLs, slugs, admin rosters, renewal dates, recovery procedures, backup restore steps).
@@ -2711,7 +2711,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `docs(handoff): finalize HANDOFF + EDITING-GUIDE with screenshots`
 
-- [ ] 49. **Custom domain swap-in task (placeholder for when bruinalpha.com purchased)**
+- [x] 49. **Custom domain swap-in task (placeholder for when bruinalpha.com purchased)**
 
   **What to do**:
   - Document procedure in `docs/CUSTOM-DOMAIN.md`:
@@ -2752,25 +2752,25 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 >
 > **Do NOT auto-proceed after verification. Wait for user's explicit approval before marking work complete.** Never mark F1-F4 as checked before getting user's okay.
 
-- [ ] F1. **Plan Compliance Audit** — `oracle`
+- [x] F1. **Plan Compliance Audit** — `oracle`
 
   Read this plan end-to-end. For each "Must Have": verify implementation exists (read file, curl endpoint, run command). For each "Must NOT Have": grep codebase for forbidden patterns and language ("Polymarket", "AUM", "real client money", "live trading," etc.) — reject with file:line if found. Verify site-wide disclaimer present on every page from sitemap.xml. Verify UCLA naming compliance ("at UCLA" form) in all SEO/OG/JSON-LD output. Verify no design tokens in Sanity. Check evidence files exist in `.sisyphus/evidence/`. Compare deliverables against plan.
 
   Output: `Must Have [N/N] | Must NOT Have [N/N] | Compliance Items [N/N] | Tasks [N/N] | VERDICT: APPROVE/REJECT`
 
-- [ ] F2. **Code Quality Review** — `unspecified-high`
+- [x] F2. **Code Quality Review** — `unspecified-high`
 
   Run `tsc --noEmit` + `eslint .` + `bunx playwright test`. Review all changed files for: `as any`, `@ts-ignore`, empty catches, `console.log` in prod, commented-out code, unused imports, `dangerouslySetInnerHTML` usage, hardcoded URLs that should be in SiteSettings. Check AI slop: excessive comments, over-abstraction, generic names (data/result/item/temp). Verify GSAP vs Motion split per `/docs/ANIMATION-CONVENTIONS.md`. Verify no `SANITY_API_WRITE_TOKEN` in committed files (grep `.env*`).
 
   Output: `Build [PASS/FAIL] | Lint [PASS/FAIL] | Tests [N pass/N fail] | Files [N clean/N issues] | Forbidden patterns [CLEAN/N issues] | VERDICT`
 
-- [ ] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
+- [x] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
 
   Start from clean state (`bun install && bun run build && bun run start`). Execute EVERY QA scenario from EVERY task — follow exact steps, capture evidence. Test cross-task integration: smooth scroll continuous across page navigation, reduced-motion kills ALL animations, mobile responsive 320→1440, Sanity Studio loads at `/studio` and edits propagate to preview within 2s, all socials/email links resolve 200, Tally form embeds. Run Lighthouse mobile audit per page — assert all thresholds (Perf≥85, A11y≥95, BP≥95, SEO≥95). Run axe-core per page — assert zero violations. Save evidence to `.sisyphus/evidence/final-qa/`.
 
   Output: `Scenarios [N/N pass] | Lighthouse [N/N pages pass] | Axe [N/N pages clean] | Integration [N/N] | VERDICT`
 
-- [ ] F4. **Scope Fidelity Check** — `deep`
+- [x] F4. **Scope Fidelity Check** — `deep`
 
   For each task: read "What to do," read actual diff (git log/diff). Verify 1:1 — everything in spec was built (no missing), nothing beyond spec was built (no creep). Check "Must NOT do" compliance per task. Detect cross-task contamination: Task N touching Task M's files without justification. Flag unaccounted changes. Verify HANDOFF.md + EDITING-GUIDE.md + ANIMATION-CONVENTIONS.md exist and are complete.
 
