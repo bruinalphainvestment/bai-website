@@ -45,6 +45,9 @@ next-env.d.ts
 .sisyphus/evidence/
 .sisyphus/notepads/
 
+# sanity
+/sanity.schema.json
+
 # playwright
 /playwright-report
 /test-results

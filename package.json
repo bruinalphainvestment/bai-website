@@ -12,7 +12,9 @@
     "test:e2e": "playwright test",
     "test:lh": "lhci autorun",
     "seed": "bunx tsx sanity/seed/seed.ts",
-    "backup": "bunx sanity dataset export production backup-$(date +%Y%m%d).tar.gz"
+    "backup": "bunx sanity dataset export production backup-$(date +%Y%m%d).tar.gz",
+    "typegen:schema": "bunx sanity@latest schema extract --workspace default --path ./sanity.schema.json",
+    "typegen": "bun run typegen:schema && bunx sanity typegen generate"
   },
   "dependencies": {
     "@portabletext/react": "^6.2.0",
