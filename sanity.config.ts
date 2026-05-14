@@ -6,7 +6,17 @@ import { structureTool } from 'sanity/structure';
 import { apiVersion, dataset, projectId, studioBasePath } from './sanity/env';
 import { schemaTypes } from './sanity/schemas';
 
-const SINGLETON_TYPES = new Set(['siteSettings', 'homePage']);
+const SINGLETON_TYPES = new Set([
+  'siteSettings',
+  'homePage',
+  'aboutPage',
+  'trainingPage',
+  'joinPage',
+  'eventsPage',
+  'projectsPage',
+  'teamPage',
+  'committeesIndexPage',
+]);
 
 export default defineConfig({
   name: 'bai-studio',
@@ -34,6 +44,62 @@ export default defineConfig({
                         S.document()
                           .schemaType('homePage')
                           .documentId('homePage'),
+                      ),
+                    S.listItem()
+                      .title('About Page')
+                      .id('aboutPage')
+                      .child(
+                        S.document()
+                          .schemaType('aboutPage')
+                          .documentId('aboutPage'),
+                      ),
+                    S.listItem()
+                      .title('Training Page')
+                      .id('trainingPage')
+                      .child(
+                        S.document()
+                          .schemaType('trainingPage')
+                          .documentId('trainingPage'),
+                      ),
+                    S.listItem()
+                      .title('Join Page')
+                      .id('joinPage')
+                      .child(
+                        S.document()
+                          .schemaType('joinPage')
+                          .documentId('joinPage'),
+                      ),
+                    S.listItem()
+                      .title('Events Page')
+                      .id('eventsPage')
+                      .child(
+                        S.document()
+                          .schemaType('eventsPage')
+                          .documentId('eventsPage'),
+                      ),
+                    S.listItem()
+                      .title('Projects Page')
+                      .id('projectsPage')
+                      .child(
+                        S.document()
+                          .schemaType('projectsPage')
+                          .documentId('projectsPage'),
+                      ),
+                    S.listItem()
+                      .title('Team Page')
+                      .id('teamPage')
+                      .child(
+                        S.document()
+                          .schemaType('teamPage')
+                          .documentId('teamPage'),
+                      ),
+                    S.listItem()
+                      .title('Committees Index Page')
+                      .id('committeesIndexPage')
+                      .child(
+                        S.document()
+                          .schemaType('committeesIndexPage')
+                          .documentId('committeesIndexPage'),
                       ),
                     S.divider(),
                     S.documentTypeListItem('page').title('All Pages'),
