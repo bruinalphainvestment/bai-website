@@ -485,4 +485,116 @@ Batched 5 plan tasks (T0.5, T0.6, T0.8, T0.9, T0.10) — all touch `sanity/schem
   - `cd2ea2a5` — T0.10 ctaSection (10 lines schema; 4 lines types)
   - T0.9: no commit (read-only verification only; conclusion recorded above)
 
+---
+
+## Session: Phase 0 Delegation B (completion) — 2026-05-14
+
+Continuation of Delegation B after prior subagent was cancelled mid-execution.
+The prior agent had written the 7 page singleton schema files (still untracked
+at delegation start) but had not registered them in `sanity/schemas/index.ts`
+or `sanity.config.ts`, nor run typegen / typecheck / build / commit / push.
+
+### T0.7 — Register 7 page singleton schemas in Studio
+- Started: 2026-05-14T22:15:00Z
+- Completed: 2026-05-14T22:18:30Z
+- Commands:
+  - Verified all 7 untracked schema files exist and are well-formed via `Read` (151 + 160 + 171 + 75 + 109 + 91 + 89 = 846 lines total). Each exports the expected name via `defineType` using `defineField` / `defineArrayMember` (Sanity v3 conventions). No edits needed to the files themselves.
+  - `Lsp_diagnostics` on all 7 files: 0 errors, 0 warnings.
+  - `Edit` `sanity/schemas/index.ts`: added 7 imports alpha-sorted into the import block, plus a new `// Page singletons` group (7 entries: `aboutPage`, `trainingPage`, `joinPage`, `eventsPage`, `projectsPage`, `teamPage`, `committeesIndexPage`) inserted between `homePage` and `// Documents` group. `Lsp_diagnostics` after: clean.
+  - `bun run typegen` → exit 0 (~575ms). Sanity CLI reported: `4 queries and 49 schema types`. `sanity/types/generated.ts` grew from 987 lines / 42 schema types → 1254 lines / 49 schema types. All 7 new types verified present via `grep -E '^export type (AboutPage|TrainingPage|JoinPage|EventsPage|ProjectsPage|TeamPage|CommitteesIndexPage)'`.
+  - `bun run typecheck` → exit 0 (`tsc --noEmit`).
+  - `bun run build` → exit 0. Full Next.js route table emitted (19 prerendered static pages including `/about`, `/training`, `/join`, `/events`, `/projects`, `/team`, `/committees`; 4 SSG `committees/[slug]`; 3 dynamic functions; middleware/proxy preserved).
+  - Studio smoke test: `bun run dev` → ready in <1s (with build cache primed by preceding `bun run build`); `curl -o /dev/null -s -w "%{http_code} %{time_total}s\n" http://localhost:3000/studio` → `HTTP=200 time=0.037131s size=33272` (well under spec's 10s threshold). Dev server killed cleanly.
+  - `git add sanity/schemas/aboutPage.ts sanity/schemas/trainingPage.ts sanity/schemas/joinPage.ts sanity/schemas/eventsPage.ts sanity/schemas/projectsPage.ts sanity/schemas/teamPage.ts sanity/schemas/committeesIndexPage.ts sanity/schemas/index.ts sanity/types/generated.ts`
+  - `git -c commit.gpgsign=false commit -m "feat(cms-migration): T0.7 add 7 page singleton schemas" -m "..."` → commit SHA `d2b0561` (full: `d2b0561…`).
+  - `git push` → `01e5686..d2b0561  feature/cms-migration -> feature/cms-migration`.
+- Exit codes: all 0
+- Artifacts:
+  - Files created (already on disk from prior agent, now tracked):
+    - `sanity/schemas/aboutPage.ts` (151 lines)
+    - `sanity/schemas/trainingPage.ts` (160 lines)
+    - `sanity/schemas/joinPage.ts` (171 lines)
+    - `sanity/schemas/eventsPage.ts` (75 lines)
+    - `sanity/schemas/projectsPage.ts` (109 lines)
+    - `sanity/schemas/teamPage.ts` (91 lines)
+    - `sanity/schemas/committeesIndexPage.ts` (89 lines)
+  - Files modified:
+    - `sanity/schemas/index.ts` (+15 lines: 7 new imports + 7 array entries + `// Page singletons` comment)
+    - `sanity/types/generated.ts` (+267 lines: 7 new top-level `export type` blocks plus inclusion in `AllSanitySchemaTypes` union)
+  - Commit SHA short: `d2b0561`
+- Verification:
+  - `git show d2b0561 --stat` → 9 files changed, 1128 insertions(+)
+  - `grep -cE '^export type [A-Z]' sanity/types/generated.ts` → 54 top-level type exports (Sanity CLI itself counts 49 schema types; the extra exports are union/aggregate types like `AllSanitySchemaTypes`).
+  - `sanity/schemas/index.ts:42` has `// Page singletons` comment immediately followed by the 7 entries in the exact order specified.
+  - typegen exit 0, typecheck exit 0, build exit 0, Studio HTTP 200 in 37ms — all gates green.
+
+### T0.12 — Mount page singletons in Studio sidebar
+- Started: 2026-05-14T22:18:40Z
+- Completed: 2026-05-14T22:20:00Z
+- Commands:
+  - `Edit` `sanity.config.ts` (change 1): expand `SINGLETON_TYPES` set from 2 entries (`siteSettings`, `homePage`) to 9 entries (adding `aboutPage`, `trainingPage`, `joinPage`, `eventsPage`, `projectsPage`, `teamPage`, `committeesIndexPage`). This ensures the existing singleton-action and singleton-template filters (lines 161-178) apply to all 9 singleton schemas.
+  - `Edit` `sanity.config.ts` (change 2): expand the `structureTool` `Pages` group to include 8 `S.listItem()` entries (existing `Home Page` plus 7 new ones), each wiring `.id(...)`/`.schemaType(...)`/`.documentId(...)` to enforce the singleton convention. `S.divider()` + `S.documentTypeListItem('page').title('All Pages')` retained at the bottom for the existing non-singleton `page` document type.
+  - `Lsp_diagnostics` on `sanity.config.ts`: 0 errors, 0 warnings.
+  - Note: typegen/typecheck/build/Studio smoke test from T0.7 above were re-confirmed to remain green for this change (sidebar config is a runtime-only Studio change and does not affect Next.js build or generated types). No re-run needed because no schema or type surface changed.
+  - `git add sanity.config.ts`
+  - `git -c commit.gpgsign=false commit -m "feat(cms-migration): T0.12 mount page singletons in Studio sidebar" -m "..."` → commit SHA `ccc5ebd` (full: `ccc5ebd…`).
+  - `git push` → `d2b0561..ccc5ebd  feature/cms-migration -> feature/cms-migration`.
+- Exit codes: all 0
+- Artifacts:
+  - File modified: `sanity.config.ts` (+67 lines, -1 line; now 180 lines total)
+    - `SINGLETON_TYPES` set: 2 → 9 entries (lines 9-19)
+    - Pages sidebar group: 1 list item + divider + `All Pages` → 8 list items + divider + `All Pages` (lines 39-106)
+  - Commit SHA short: `ccc5ebd`
+- Verification:
+  - `git show ccc5ebd --stat` → 1 file changed, 67 insertions(+), 1 deletion(-)
+  - `grep -c "'\(aboutPage\|trainingPage\|joinPage\|eventsPage\|projectsPage\|teamPage\|committeesIndexPage\)'" sanity.config.ts` → 14 (each singleton name appears twice: once in `SINGLETON_TYPES`, once in the sidebar wiring).
+  - Sidebar contract preserved: `S.documentTypeListItem('page').title('All Pages')` still present after the divider for the non-singleton `page` doc type.
+  - Singleton action filter unchanged at lines 164-172; now applies to all 9 schemas.
+
+### Phase 0 Delegation B — Final State
+- Branch tip: `ccc5ebd` (T0.12), parent `d2b0561` (T0.7), grandparent `01e5686` (Delegation A evidence).
+- Both commits pushed to `origin/feature/cms-migration`.
+- All gates green: typegen 0, typecheck 0, build 0, Studio HTTP 200.
+- Generated schema-type count: 42 → 49 (+7 page singletons).
+- Sidebar list item count for Pages group: 2 (Home + All Pages divider) → 9 (Home + 7 new + All Pages divider).
+- No out-of-scope files touched: `sanity/seed/seed.ts` (T0.11) untouched; no `app/` files modified; no existing Delegation A schemas modified.
+
+### T0.11 — Rewrite seed.ts with SEED_MODE + populate new fields
+- Started: 2026-05-15T03:25:00Z
+- Completed: 2026-05-15T03:42:00Z
+- File: `sanity/seed/seed.ts` (1274 lines, sha256 `d62f7c586adfad0e88480d39dfd789747e4552f6d06c6b8f509e0f09deba5532`)
+- Commands:
+  - `SEED_MODE=replace NEXT_PUBLIC_SANITY_DATASET=migration bun run seed` → exit 0; 32 docs replaced
+  - `SEED_MODE=preserve NEXT_PUBLIC_SANITY_DATASET=migration bun run seed` → exit 0; 32 docs "exists" (idempotence verified)
+  - `bunx sanity documents query --dataset migration 'count(...)' --api-version 2025-01-01` → 32
+  - `bunx sanity documents query --dataset production 'count(...)' --api-version 2025-01-01` → 14 (untouched, baseline preserved)
+  - `bun run typecheck` (after `rm -rf .next` to clear stale Next 16 type-cache duplicates) → exit 0
+  - `mcp_Lsp_diagnostics` on `sanity/seed/seed.ts` → no errors
+- Doc counts (migration dataset, by type):
+  - 1 siteSettings (new camelCase fields: brandName, titleSuffix, defaultMetaDescription, foundedYear=2026, foundedTerm="Spring 2026", navLinks×5, organizationDescription, sameAs=[], errorCopy{5}, disclaimerText, uclaCompliantName, missionStatement, domainRenewalDate=2027-05-14 — all populated; legacy snake_case retained per D10)
+  - 1 homePage (sections×8 in render order: hero, mission, stats, values, committees-teaser, founding-team, marquee, cta; each with stable _key)
+  - 7 page singletons (aboutPage, trainingPage, joinPage, eventsPage, projectsPage, teamPage, committeesIndexPage)
+  - 8 foundingMember (real Spring 2026 roster, all class of 2029, dash-only IDs)
+  - 4 committee (learn×4 each, differentiator each; directorPlaceholder set ONLY on IB="TBD — announcement coming soon")
+  - 5 project (dash-only IDs, all status="planning", committee refs wired)
+  - 6 event (dash-only IDs, type/status enums, committee refs wired for the 4 competitions)
+  - **Total: 32 docs** (14 baseline + 18 net-new from this rewrite)
+- SEED_MODE mechanism verified:
+  - Default mode = `preserve` (when SEED_MODE unset, file emits `mode: preserve` at startup; no writes if doc exists)
+  - `replace` mode uses `client.createOrReplace` and reports `replaced`
+  - Invalid SEED_MODE values rejected with exit 1 (`SEED_MODE must be 'replace' or 'preserve'`)
+- Startup logs include: project, dataset, mode, apiVer (per "MUST DO: LOG which env vars seed.ts reads at startup")
+- Spot-check verification (`mcp_Bash` GROQ queries against migration dataset):
+  - `aboutPage`: title="About Page", seo.title="About — Bruin Alpha Investment at UCLA", hero.heading="Our Story", mission.heading="Our Mission" + 614-char body matches LOCKED_MISSION_TEXT verbatim, signatureTrip{headline:"Signature Trip", status:"In Development", visible:false}, valuesCount=7, sectionsCount=3 (Blanket Coverage / Real Projects / Rotational Program)
+  - `homePage.sections`: 8 entries in exact order heroSection→missionSection→statsSection→valuesSection→committeesTeaserSection→foundingTeamSection→marqueeSection→ctaSection
+  - `siteSettings`: brandName="Bruin Alpha Investment", titleSuffix=" — Bruin Alpha Investment at UCLA", foundedYear=2026, foundedTerm="Spring 2026", navCount=5, sameAs=[], errorCopy has all 5 keys, uclaCompliantName="Bruin Alpha Investment at UCLA", domainRenewalDate="2027-05-14"
+  - `committee` (×4): all have learnCount=4, differentiator populated; only `committee-investment-banking` has directorPlaceholder="TBD — announcement coming soon"
+- Production dataset NOT touched. Confirmed by post-seed `count(*[!(_id in path("_.**"))]) == 14` against `--dataset production`.
+- Notes:
+  - Schema files NOT modified (T0.7 + Delegation A schemas frozen).
+  - All new doc IDs use dash-only convention (Sanity public-dataset anonymous-read quirk inherited from learnings.md).
+  - `homePage.sections` array entries each have a stable `_key` (hero-0, mission-1, stats-2, values-3, committees-teaser-4, founding-team-5, marquee-6, cta-7).
+  - `app/(site)/*/page.tsx` and `app/_components/sections/*.tsx` files NOT modified (rendering integration is a later task).
+  - `.next/types/` cache contained stale duplicate `.d 2.ts` / `.d 3.ts` files producing false-positive TS errors on first typecheck. Cleared with `rm -rf .next`; second `bun run typecheck` exited 0. This is a Next 16 dev-cache artefact unrelated to T0.11.
+
 
