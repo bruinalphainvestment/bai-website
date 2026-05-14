@@ -619,3 +619,103 @@ or `sanity.config.ts`, nor run typegen / typecheck / build / commit / push.
   - `.next/types/` cache contained stale duplicate `.d 2.ts` / `.d 3.ts` files producing false-positive TS errors on first typecheck. Cleared with `rm -rf .next`; second `bun run typecheck` exited 0. This is a Next 16 dev-cache artefact unrelated to T0.11.
 
 
+
+---
+
+## Phase 1 Delegation D — Live API + revalidation webhook
+### T1.1 — `sanity/lib/live.ts` with `defineLive`
+
+**Commit**: `07c1e65` on `feature/cms-migration`
+**Verification**:
+- `bun run typecheck` → exit 0
+- `bun run build` → exit 0 (route table unchanged: 21 routes, all green)
+- `lsp_diagnostics sanity/lib/live.ts` → No diagnostics found
+- File: 34 lines; exports `sanityFetch` + `SanityLive` via `defineLive({ client: client.withConfig({ apiVersion: '2025-01-01', useCdn: false }), serverToken, browserToken })`
+
+**Notable discovery** (recorded in `notepads/cms-migration/learnings.md` below):
+- `defineLive` is exported from `next-sanity/live`, NOT the package root in v12.4.5.
+  The plan snippet's `import { defineLive } from 'next-sanity'` would not resolve.
+  Likewise, `VisualEditing` lives under `next-sanity/visual-editing` (used in T1.2).
+  Verified against `node_modules/next-sanity/package.json` exports map:
+  ```
+  '.'                            → ./dist/index.js
+  './live'                       → live/* (defineLive lives here)
+  './visual-editing'             → ./dist/visual-editing/index.js (VisualEditing here)
+  './visual-editing/client-component' → ...
+  ```
+- `DefineLiveOptions.serverToken` and `.browserToken` are typed as
+  `string | false | undefined` so passing `process.env.X` (which may be
+  `undefined`) is type-safe. No runtime errors when both env vars are unset.
+
+### T1.2 — Mount `<SanityLive />` + `<VisualEditing />` in `app/layout.tsx`
+
+**Commit**: `53015de` on `feature/cms-migration`
+**Verification**:
+- `bun run typecheck` → exit 0
+- `bun run build` → exit 0 (route table unchanged, all 19 pages rebuilt)
+- `lsp_diagnostics app/layout.tsx` → No diagnostics found
+- `RootLayout` converted from `function` → `async function` to support
+  `await draftMode()` inside conditional `<VisualEditing />` mount
+- Imports added: `draftMode` from `next/headers`, `VisualEditing` from
+  `next-sanity/visual-editing`, `SanityLive` from `@/sanity/lib/live`
+- JSX additions, in order, AFTER `</LenisProvider>` and BEFORE the JSON-LD
+  `<script>` block:
+  ```tsx
+  {(await draftMode()).isEnabled && <VisualEditing />}
+  <SanityLive />
+  ```
+- JSON-LD `<script>` block preserved verbatim (T1.7 will rewire its source
+  from Sanity later).
+- `<SanityLive />` is always mounted (it establishes the live EventSource
+  in published-mode as well). `<VisualEditing />` is draft-mode-only so
+  it doesn't ship to public visitors.
+
+### T1.3 — `app/api/revalidate/route.ts` webhook handler
+
+**Commit**: `74f0170` on `feature/cms-migration`
+**Verification**:
+- `bun run typecheck` → exit 0
+- `bun run build` → exit 0
+- Route table now shows `ƒ /api/revalidate` (Dynamic — server-rendered
+  on demand) alongside the existing `ƒ /api/draft-mode/{enable,disable}`
+- `lsp_diagnostics app/api/revalidate/route.ts` → No diagnostics found
+- **Local smoke test (unsigned POST)**:
+  ```
+  $ curl -X POST http://localhost:3000/api/revalidate \
+         -H "Content-Type: application/json" \
+         -d '{"_type":"siteSettings","_id":"siteSettings"}'
+  → HTTP 401, body: "Invalid signature"
+  $ curl -X POST http://localhost:3000/api/revalidate -d '{}'
+  → HTTP 401, body: "Invalid signature"
+  ```
+  Both unauthenticated requests rejected with 401 (parseBody validates HMAC
+  before reaching the `!body?._type` 400 branch). Behaviour matches plan
+  Expected Outcome.
+- Handler structure:
+  - Missing `SANITY_REVALIDATE_SECRET` env → HTTP 500
+  - Invalid HMAC signature → HTTP 401
+  - Missing `_type` in valid-signature body → HTTP 400
+  - Success → JSON `{ revalidated: true, _type, _id, now }`
+- `parseBody(req, secret, true)` — third arg `waitForContentLakeEventualConsistency`
+  is `true` per Metis §2.11 mandate (Content Lake propagation delay).
+- `revalidateTag` uses 2-arg form `revalidateTag(tag, 'max')` — Next 16
+  requires a cache life profile (1-arg form fails TS2554). Selected `'max'`
+  to match next-sanity's own `live/server-actions/index.js` idiom.
+- LIST_PATHS map covers all 14 doc types (committee, foundingMember,
+  project, event, faq, siteSettings + 8 page singletons).
+- Slug-change handling: when `body._type === 'committee'` and
+  `body.previousSlug !== body.slug.current`, both the new and old slug
+  paths are revalidated (prevents 404 cache for the old URL).
+
+### Phase 1 Delegation D — gate summary
+| Check | Result |
+| --- | --- |
+| `sanity/lib/live.ts` exists, exports `sanityFetch` + `SanityLive` | ✅ |
+| `app/layout.tsx` async, `<SanityLive />` + conditional `<VisualEditing />` mounted | ✅ |
+| `app/api/revalidate/route.ts` POST handler with parseBody-true | ✅ |
+| `bun run typecheck` clean | ✅ |
+| `bun run build` clean, `/api/revalidate` in route table as Dynamic | ✅ |
+| Unsigned POST → 401 verified | ✅ |
+| 3 commits + push to origin | ✅ (`07c1e65`, `53015de`, `74f0170`) |
+| Notepad findings appended | ✅ |
+
