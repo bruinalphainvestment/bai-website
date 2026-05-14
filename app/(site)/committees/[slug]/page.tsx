@@ -111,8 +111,9 @@ export function generateStaticParams() {
   ];
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const committee = committees[params.slug as keyof typeof committees];
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const committee = committees[slug as keyof typeof committees];
   if (!committee) return { title: 'Committee Not Found' };
   
   return {
@@ -121,8 +122,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function CommitteePage({ params }: { params: { slug: string } }) {
-  const committee = committees[params.slug as keyof typeof committees];
+export default async function CommitteePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const committee = committees[slug as keyof typeof committees];
   
   if (!committee) {
     notFound();
@@ -179,7 +181,7 @@ export default function CommitteePage({ params }: { params: { slug: string } }) 
 
         <section>
           <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
-            What You'll Learn
+            What You&apos;ll Learn
           </h2>
           <ul className="grid md:grid-cols-2 gap-4">
             {committee.learn.map((item, idx) => (

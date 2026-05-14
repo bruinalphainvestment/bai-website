@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Projects & Research — Bruin Alpha Investment',
+  title: 'Projects & Research — Bruin Alpha Investment at UCLA',
   description: 'Explore the hands-on initiatives, research, and engagements led by our specialized committees.',
 };
 

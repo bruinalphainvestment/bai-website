@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Team | Bruin Alpha Investment",
+  title: "Team — Bruin Alpha Investment at UCLA",
   description: "Meet the founding class, members, and alumni of Bruin Alpha Investment.",
 };
 

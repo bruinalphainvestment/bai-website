@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export const metadata = {
-  title: "Committees | Bruin Alpha Investment",
+  title: "Committees — Bruin Alpha Investment at UCLA",
   description: "Explore our four core committees: Wealth Management, Trading, Accounting & Consulting, and Investment Banking.",
 };
 
@@ -88,7 +88,7 @@ export default function CommitteesIndexPage() {
                   {committee.description}
                 </p>
                 <div className="bg-cream/50 rounded-lg p-5 mb-8">
-                  <h3 className="font-semibold text-navy mb-3">What you'll do:</h3>
+                  <h3 className="font-semibold text-navy mb-3">What you&apos;ll do:</h3>
                   <ul className="space-y-2">
                     {committee.bullets.map((bullet, i) => (
                       <li key={i} className="flex items-start text-sm text-navy/80">
@@ -116,7 +116,7 @@ export default function CommitteesIndexPage() {
           <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6 text-cream">Connected by Design</h2>
           <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
           <p className="text-lg text-cream/90 font-sans leading-relaxed mb-6">
-            We don't believe in silos. Our unique rotational program ensures that every member gains exposure to all four disciplines during their early tenure. You might specialize in Wealth Management, but you'll understand how a trader sizes positions, how a consultant audits operations, and how an investment banker builds a DCF.
+            We don&apos;t believe in silos. Our unique rotational program ensures that every member gains exposure to all four disciplines during their early tenure. You might specialize in Wealth Management, but you&apos;ll understand how a trader sizes positions, how a consultant audits operations, and how an investment banker builds a DCF.
           </p>
           <p className="text-lg text-cream/90 font-sans leading-relaxed">
             This cross-pollination comes to life in our unified all-club projects, where members from different committees collaborate to tackle complex, multi-faceted financial challenges. We build well-rounded professionals who understand the entire financial ecosystem.

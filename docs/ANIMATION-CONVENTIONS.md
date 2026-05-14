@@ -163,3 +163,21 @@ When adding a new animation:
 1.  **Categorize**: Is it scroll-linked or a timeline? Use GSAP. Is it a UI micro-interaction? Use Motion.
 2.  **Check the Catalog**: Does a similar pattern already exist?
 3.  **Test Accessibility**: Ensure it feels natural with `Lenis` and respects `prefers-reduced-motion`.
+
+---
+
+## Accepted Drifts
+
+The following intentional deviations from the strict GSAP/Motion separation are documented and accepted for v1.
+
+### Marquee — CSS @keyframes
+*File: `app/_components/sections/marquee.tsx` + `app/globals.css`*
+
+Marquee currently uses CSS `@keyframes` for v1 simplicity. The spec preferred a GSAP infinite loop, but CSS works correctly on resize via dynamic transform width. The current implementation is performant, lightweight, and ships fewer JS bytes for an above-the-fold, decorative element.
+
+Future iteration may swap to GSAP for finer control over pause-on-hover behavior, variable speed, and seamless directional reversal. Until those requirements emerge, the CSS approach is the supported pattern for this single component.
+
+**Rationale**:
+- CSS `@keyframes` with `transform: translateX` is GPU-accelerated and trivially honors `prefers-reduced-motion` via a media-query override.
+- No additional JS payload, no React-tree subscription overhead.
+- Rewriting to GSAP is a non-trivial refactor (ref management, ScrollTrigger context, cleanup) that v1's hardcoded content does not justify.

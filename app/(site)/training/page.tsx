@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Training & Rotational Program — Bruin Alpha Investment',
+  title: 'Training & Rotational Program — Bruin Alpha Investment at UCLA',
   description: 'Our 10-week rotational program exposes analysts to Wealth Management, Trading, Accounting & Consulting, and Investment Banking before specialization.',
 };
 
