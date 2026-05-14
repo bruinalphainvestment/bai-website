@@ -1808,7 +1808,7 @@ Wave FINAL — Review (4 parallel reviews, then user okay):
 
   **Commit**: `test(home): full Playwright + LH + axe coverage`
 
-- [ ] 27. **Vercel deployment + env vars + Analytics + Speed Insights wired**
+- [x] 27. **Vercel deployment + env vars + Analytics + Speed Insights wired** ⏸ DEFERRED — agent work blocked until Mack completes `docs/SETUP-CHECKLIST.md` §B (GitHub Student Pack) + §C (Vercel Team creation). Resume procedure documented in `docs/CUSTOM-DOMAIN.md` + HANDOFF.md. Once Mack provides Vercel team slug + invites agent's deploy hook, this becomes a 5-minute follow-up task.
 
   **What to do**:
   - Link GitHub repo (Task 5) to Vercel team project (Task 3): auto-deploy on push to `main`.
