@@ -116,3 +116,29 @@ export const joinPageQuery = defineQuery(`
     eligibilityBullets
   }
 `);
+
+export const eventsPageQuery = defineQuery(`
+  *[_type == "eventsPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    upcomingEmptyState,
+    pastEmptyState
+  }
+`);
+
+export const allEventsQuery = defineQuery(`
+  *[_type == "event"] | order(date asc) {
+    _id,
+    name,
+    date,
+    endDate,
+    location,
+    description,
+    type,
+    status,
+    "externalUrl": coalesce(externalUrl, external_url),
+    "committee": committee->{ _id, name, "slug": slug.current }
+  }
+`);

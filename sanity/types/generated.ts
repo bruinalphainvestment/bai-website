@@ -1412,6 +1412,51 @@ export type JoinPageQueryResult = {
   eligibilityBullets: Array<string> | null;
 } | null;
 
+// Source: sanity/lib/queries.ts
+// Variable: eventsPageQuery
+// Query: *[_type == "eventsPage"][0] {    title,    seo,    hero,    intro,    upcomingEmptyState,    pastEmptyState  }
+export type EventsPageQueryResult = {
+  title: string | null;
+  seo: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  } | null;
+  hero: {
+    heading?: string;
+    subheading?: string;
+  } | null;
+  intro: string | null;
+  upcomingEmptyState: string | null;
+  pastEmptyState: string | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: allEventsQuery
+// Query: *[_type == "event"] | order(date asc) {    _id,    name,    date,    endDate,    location,    description,    type,    status,    "externalUrl": coalesce(externalUrl, external_url),    "committee": committee->{ _id, name, "slug": slug.current }  }
+export type AllEventsQueryResult = Array<{
+  _id: string;
+  name: string | null;
+  date: string | null;
+  endDate: string | null;
+  location: string | null;
+  description: string | null;
+  type: 'comp' | 'fair' | 'recruitment' | 'social' | 'speaker' | null;
+  status: 'past' | 'scheduled' | 'tbd' | null;
+  externalUrl: string | null;
+  committee: {
+    _id: string;
+    name: string | null;
+    slug: string | null;
+  } | null;
+}>;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1424,5 +1469,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    hero,\n    mission,\n    history,\n    signatureTrip,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
     '\n  *[_type == "trainingPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    curriculum,\n    programs,\n    signatureCertifications\n  }\n': TrainingPageQueryResult;
     '\n  *[_type == "joinPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    timeline,\n    applicationForm,\n    faqs,\n    eligibilityHeading,\n    eligibilityBullets\n  }\n': JoinPageQueryResult;
+    '\n  *[_type == "eventsPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    upcomingEmptyState,\n    pastEmptyState\n  }\n': EventsPageQueryResult;
+    '\n  *[_type == "event"] | order(date asc) {\n    _id,\n    name,\n    date,\n    endDate,\n    location,\n    description,\n    type,\n    status,\n    "externalUrl": coalesce(externalUrl, external_url),\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllEventsQueryResult;
   }
 }
