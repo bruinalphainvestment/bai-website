@@ -26,6 +26,8 @@ This document serves as the master record for Bruin Alpha Investment (BAI) websi
 | **Tally.so** | tally.so | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Recruitment forms hub |
 | **Domain Registrar** | [TO BE FILLED] | [TO BE FILLED] | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | [TO BE FILLED] | Target: `bruinalpha.com` |
 | **Password Vault** | bitwarden.com | BAI Shared Vault | Mack Haymond, [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | Bitwarden Free Org |
+| **LinkedIn Page** | linkedin.com | `bai-ucla` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md) |
+| **Instagram** | instagram.com | `@bruinalphainvestment` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [INSTAGRAM-SETUP.md](./launch/INSTAGRAM-SETUP.md) |
 
 ## Credentials Vault
 All sensitive credentials, including service passwords and 2FA recovery codes, are stored in the **Bitwarden Shared Vault**.

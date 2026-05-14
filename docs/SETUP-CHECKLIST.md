@@ -59,5 +59,14 @@ Optional but highly recommended for extra features.
 
 ---
 
+## Section G: Socials & UBS Directory (15 mins)
+These guides unblock official club registration and directory listing.
+
+1. [ ] **LinkedIn Page**: Follow [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md) to create the official page.
+2. [ ] **Instagram Account**: Follow [INSTAGRAM-SETUP.md](./launch/INSTAGRAM-SETUP.md) to set up the profile.
+3. [ ] **UBS Directory**: Once the website, LinkedIn, and Instagram are live, follow [UBS-SUBMISSION.md](./launch/UBS-SUBMISSION.md) to submit the club to the official directory.
+
+---
+
 **Next Steps:**
 Once these accounts are created and the IDs are recorded in `docs/HANDOFF.md`, the technical implementation (Wave 1A) can proceed with the standard foundation scaffold.
