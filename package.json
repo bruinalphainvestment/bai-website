@@ -11,7 +11,8 @@
     "analyze": "ANALYZE=true next build",
     "test:e2e": "playwright test",
     "test:lh": "lhci autorun",
-    "seed": "bunx tsx sanity/seed/seed.ts"
+    "seed": "bunx tsx sanity/seed/seed.ts",
+    "backup": "bunx sanity dataset export production backup-$(date +%Y%m%d).tar.gz"
   },
   "dependencies": {
     "@portabletext/react": "^6.2.0",

@@ -74,17 +74,33 @@ If Sanity removes the free tier or the Growth tier (Startup Program) expires:
 2. Ensure a calendar reminder is set in the club Gmail calendar for 3 months prior to expiry.
 
 ## Backup Recovery
-Weekly automated backups are performed via GitHub Actions (Task 34).
+Weekly automated backups are performed via GitHub Actions every **Sunday at 04:00 UTC** (`.github/workflows/sanity-backup.yml`). Artifacts are retained for **90 days** under the name `sanity-backup-<run_id>` and downloadable from the GitHub Actions UI.
 
-**Manual Export Command:**
+### Required GitHub Secret
+The workflow requires repository secret **`SANITY_AUTH_TOKEN`** (Sanity convention).
+
+**Officer setup (one-time):**
+1. Generate a deploy token at `https://www.sanity.io/manage/project/<projectId>/api` → *Tokens* → *Add API token* with **Viewer** (read-only) permissions.
+2. In GitHub: repo Settings → Secrets and variables → Actions → New repository secret.
+3. Name: `SANITY_AUTH_TOKEN`, Value: paste token.
+4. Manually trigger via Actions tab → "Weekly Sanity Dataset Backup" → Run workflow to verify.
+
+### Manual Export Command
+Run locally via `bun run backup`, or directly:
 ```bash
-npx sanity dataset export production backup-YYYY-MM-DD.tar.gz
+bunx sanity dataset export production backup-YYYYMMDD.tar.gz
 ```
 
-**Manual Import Command:**
-```bash
-npx sanity dataset import backup-YYYY-MM-DD.tar.gz production
-```
+### Recovery Procedure (Restore From Backup)
+1. Download the most recent artifact from the Actions tab → "Weekly Sanity Dataset Backup" run → `sanity-backup-<run_id>`.
+2. Unzip the artifact to get the `.tar.gz` dataset.
+3. Run the import with `--replace`:
+   ```bash
+   bunx sanity dataset import backup-YYYYMMDD.tar.gz production --replace
+   ```
+
+> [!WARNING]
+> **`--replace` overwrites the current production dataset.** Every document with a matching `_id` is replaced; documents that exist in production but not in the backup are deleted. Only use `--replace` when intentionally rolling back to a prior snapshot. For partial recovery, omit `--replace` and import into a staging dataset first (`bunx sanity dataset import backup-YYYYMMDD.tar.gz staging`), then copy specific documents back via Studio.
 
 ### First-Run Seeding (one-time)
 After completing [`SETUP-CHECKLIST.md`](SETUP-CHECKLIST.md) Section D (real
