@@ -134,7 +134,7 @@ The repo includes an idempotent seeder that populates the 14 baseline documents 
    | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Your 8-char ID | Production, Preview, Development |
    | `NEXT_PUBLIC_SANITY_DATASET` | `production` | Production, Preview, Development |
    | `NEXT_PUBLIC_SANITY_API_VERSION` | `2025-01-01` | Production, Preview, Development |
-   | `NEXT_PUBLIC_SITE_URL` | `https://bai-website.vercel.app` (update after custom domain) | Production |
+   | `NEXT_PUBLIC_SITE_URL` | The actual `*.vercel.app` URL Vercel assigns (e.g. `https://bai-website-nu.vercel.app`) — update after the first deploy when you know the alias. Replace with the custom domain later. | Production |
    | `SANITY_API_WRITE_TOKEN` | The seed-script token | Production, Preview |
    | `SANITY_STUDIO_PREVIEW_SECRET` | The hex secret | Production, Preview |
 
@@ -143,7 +143,14 @@ The repo includes an idempotent seeder that populates the 14 baseline documents 
    - Home page renders.
    - `/studio` loads and you can edit (auth via your Sanity-linked Google account).
    - `/about`, `/committees`, `/team`, `/join` all return 200.
-7. [ ] **Update `docs/HANDOFF.md`** Vercel Team row → Slug field with the actual project slug.
+7. [ ] **Update `docs/HANDOFF.md`** Vercel row → URL + project slug with the actual values.
+
+> **Gotchas we hit on the original deploy (May 2026), check these if smoke test 404s or 401s:**
+>
+> 1. **GitHub auto-deploy on Hobby requires a PUBLIC repo if the repo is org-owned.** Org-private repos error with `409 — not supported on Hobby plan`. Either keep the repo public, transfer to personal scope, or move to Cloudflare Pages.
+> 2. **Framework auto-detection silently fails when you use `vercel link --yes`** — the project is created with `framework: null` and only the middleware deploys, leaving every route as a Vercel platform 404. Fix: set the framework in Project Settings → General to **Next.js** (or via API: `PATCH /v9/projects/bai-website` with `{"framework":"nextjs"}`).
+> 3. **New Hobby projects have SSO "Deployment Protection" enabled by default**, returning 401 with a `_vercel_sso_nonce` cookie on every URL. Fix: Project Settings → Deployment Protection → Vercel Authentication → **Standard Protection: Disabled** (or API `PATCH` with `{"ssoProtection":null}`).
+> 4. **EADDRNOTAVAIL during `vercel --prod` from laptop** = local ephemeral port exhaustion. Skip CLI uploads entirely — rely on GitHub auto-deploys (push triggers a server-side build at Vercel).
 
 ### 5b. Authorize Sanity → Vercel preview origin
 
