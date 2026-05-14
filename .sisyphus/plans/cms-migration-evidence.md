@@ -719,3 +719,96 @@ or `sanity.config.ts`, nor run typegen / typecheck / build / commit / push.
 | 3 commits + push to origin | ✅ (`07c1e65`, `53015de`, `74f0170`) |
 | Notepad findings appended | ✅ |
 
+
+---
+
+## Session: Phase 1 Infrastructure (2026-05-14 — Sisyphus-Junior continuation)
+
+This session completed the remainder of Phase 1 on top of Delegation D (which had landed T1.1–T1.3 as commits `07c1e65`, `53015de`, `74f0170`). T1.4 is the manual Sanity-dashboard webhook config step performed by Mack — NOT executed here; tracked as a deferred user-action in `notepads/cms-migration/issues.md`.
+
+### T1.1 — `sanity/lib/live.ts` (already landed `07c1e65`; re-verified)
+- File present, exports `{ sanityFetch, SanityLive }`
+- Imports `defineLive` from `next-sanity/live` (subpath export, NOT root — `next-sanity@12.4.5` root only re-exports `stegaClean`/`createClient`)
+- Server + browser tokens both passed through `process.env`; both optional per next-sanity contract
+- Used downstream by T1.5, T1.6, T1.7, T1.8 — verified at build time
+
+### T1.2 — Root layout async + `<SanityLive />` + `<VisualEditing />` (already landed `53015de`; re-verified)
+- `RootLayout` is `async function`
+- `<SanityLive />` mounted unconditionally in `<body>`
+- `<VisualEditing />` mounted only when `(await draftMode()).isEnabled`
+- Build output shows `/` and `/_not-found` etc still pre-render correctly
+
+### T1.3 — `/api/revalidate/route.ts` (already landed `74f0170`; re-verified)
+- `parseBody(req, secret, true)` — third arg `true` mandatory (Metis §2.11)
+- `revalidateTag(tag, 'max')` — Next 16 requires cache-life profile arg; `'max'` matches next-sanity's own `live/server-actions` idiom
+- 14 doc types wired in `LIST_PATHS`
+- Curl test (fresh run this session): unsigned POST → **401 "Invalid signature"** ✅
+- Route table at build time: `ƒ /api/revalidate` (Dynamic — correct)
+
+### T1.5 — Footer schema fix (commit `d2cddd7`)
+- **Bug fixed**: footer used to query `disclaimer` + `socials[]` which never existed; real fields are `disclaimerText` / `disclaimer_text` (deprecated alias) + `instagramUrl` / `linkedinUrl` / `clubEmail`
+- `siteSettingsQuery` rewritten with `coalesce(disclaimerText, disclaimer_text)` plus all new Phase 0 fields (brandName, titleSuffix, navLinks, defaultMetaDescription, defaultOgImage, organizationDescription, sameAs, errorCopy)
+- `SiteFooter` extracted into server wrapper (`SiteFooter`) + presentation component (`FooterRender`) in same file
+- Honors `NEXT_PUBLIC_USE_SANITY !== 'true'` → renders `footerFallback` (typed against `NonNullable<SiteSettingsQueryResult>`)
+- D21 honored: disclaimer renders `''` (empty string) when Sanity returns null — NOT the hardcoded legal copy (which lives only in fallback + Sanity initialValue)
+- Files: `sanity/lib/queries.ts`, `sanity/types/generated.ts`, `app/_components/site-footer.tsx`, `app/_components/fallbacks/footer.ts` (new)
+- LSP: clean
+
+### T1.6 — Header refactor (commit `be42e0b`)
+- **Discovery**: original `site-header.tsx` was `"use client"` with motion/scroll/mobile-menu interactivity — cannot directly call `sanityFetch`
+- **Strategy**: split into server wrapper (`site-header.tsx`, async, calls `sanityFetch`) + client component (`site-header-client.tsx`, preserves ALL existing interactivity)
+- Server filters nav links missing `label` or `href` (defensive against partial Sanity edits) using `flatMap`
+- Alt text derives from `uclaName` (preferred Metis-compliant "Bruin Alpha Investment at UCLA") with `brandName` + hardcoded fallback chain
+- `headerFallback` typed module mirrors current main verbatim (5 nav links: Home/Committees/Training/Team/Join, brandAlt = "Bruin Alpha Investment at UCLA")
+- Files: `app/_components/site-header.tsx`, `app/_components/site-header-client.tsx` (new), `app/_components/fallbacks/header.ts` (new)
+- LSP: clean
+
+### T1.7 — Root layout `generateMetadata` + JSON-LD from siteSettings (commit `81cc7d1`)
+- Replaced static `export const metadata` with `export async function generateMetadata(): Promise<Metadata>`
+- Imports `stegaClean` from `next-sanity` (root export) — wraps EVERY Sanity-fetched value before non-DOM serialization (Metis §2.4 mandate)
+- Title = `brandName + titleSuffix` (Metis-mandated " — Bruin Alpha Investment at UCLA")
+- Description from `defaultMetaDescription`
+- OG images derived via `urlForImage(defaultOgImage).width(1200).height(630).url()`
+- JSON-LD Organization schema also stegaClean'd: name = brandName, description = organizationDescription, sameAs = sameAs[]
+- Honors `NEXT_PUBLIC_USE_SANITY` flag → falls back to `footerFallback` (reused — same shape)
+- Single `loadSettings()` helper deduplicates fetch between metadata + body render
+- LSP: clean
+
+### T1.8 — Sitemap from Sanity (commit `af3a46d`)
+- New `sitemapCommitteesQuery`: `*[_type == "committee" && defined(slug.current)] | order(order asc) { "slug": slug.current, _updatedAt }`
+- `app/sitemap.ts` fetches via `sanityFetch`, stegaCleans the result (sitemap URLs are XML-serialized — non-DOM — MUST be stegaClean'd per Metis §2.4)
+- Emits: 1 home + 7 static (`/about /team /projects /events /training /join /committees`) + N dynamic `/committees/[slug]`
+- `lastModified` per-committee from `_updatedAt` (per-entry freshness signal)
+- Flag-OFF fallback: 4 known committee slugs (`trading`, `asset-management`, `wealth-management`, `sales-trading`)
+- Defensive `filter` excludes committees with null slug
+- Curl-verified sitemap.xml emitted **12 `<loc>` entries** (1 + 7 + 4) ✅
+- LSP: clean
+
+### Phase 1 (this session) — gate summary
+| Gate | Command | Result |
+| --- | --- | --- |
+| TypeScript strict | `bun run typecheck` | exit 0 |
+| Type generation | `bun run typegen` | 5 queries, 49 schema types |
+| Build (flag ON) | `NEXT_PUBLIC_USE_SANITY=true bun run build` | exit 0 |
+| Build (flag OFF) | `NEXT_PUBLIC_USE_SANITY=false bun run build` | exit 0 |
+| `/api/revalidate` unsigned POST | `curl -X POST ...` | **401** ✅ |
+| `/studio` loads | `curl /studio` | **200** ✅ |
+| Homepage loads | `curl /` | **200** ✅ |
+| Sitemap entries | `curl /sitemap.xml \| grep -c '<loc>'` | **12** ✅ (≥ 12 target) |
+| LSP errors on changed files | `lsp_diagnostics` | **0** across 9 files |
+| `as any` / `@ts-ignore` introduced | grep | **0** |
+| Commits + pushed | `git log + git push` | 5 new this session + 3 prior |
+
+### Commits this session
+| SHA | Task | Title |
+| --- | --- | --- |
+| `d2cddd7` | T1.5 | fix(cms-migration): T1.5 footer schema-mismatch + sanityFetch + fallback (Metis §2.15) |
+| `be42e0b` | T1.6 | feat(cms-migration): T1.6 site-header server wrapper + sanityFetch nav/brand |
+| `81cc7d1` | T1.7 | feat(cms-migration): T1.7 root layout metadata + JSON-LD from siteSettings (D1/D2) |
+| `af3a46d` | T1.8 | feat(cms-migration): T1.8 sitemap from Sanity with stegaClean + fallback (D13) |
+
+(Prior commits from Delegation D: `07c1e65` T1.1, `53015de` T1.2, `74f0170` T1.3.)
+
+### T1.4 — DEFERRED to user manual step
+T1.4 (Sanity Manage UI webhook configuration) is a dashboard-only task that cannot be automated from this session. Tracked in `notepads/cms-migration/issues.md` as a user-action TODO. Once Mack creates the webhook with URL `https://www.bruinalphainvestment.com/api/revalidate`, secret `$SANITY_REVALIDATE_SECRET`, and trigger on create/update/delete, the full Phase 1 acceptance criteria are satisfied.
+
