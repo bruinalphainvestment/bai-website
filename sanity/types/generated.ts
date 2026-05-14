@@ -1277,6 +1277,54 @@ export type AllFoundingMembersQueryResult = Array<{
   monogramOverride: string | null;
 }>;
 
+// Source: sanity/lib/queries.ts
+// Variable: aboutPageQuery
+// Query: *[_type == "aboutPage"][0] {    title,    seo,    hero,    mission,    history,    signatureTrip,    values,    sections  }
+export type AboutPageQueryResult = {
+  title: string | null;
+  seo: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  } | null;
+  hero: {
+    heading?: string;
+    subheading?: string;
+  } | null;
+  mission: {
+    heading?: string;
+    body?: string;
+  } | null;
+  history: {
+    heading?: string;
+    body?: string;
+  } | null;
+  signatureTrip: {
+    headline?: string;
+    status?: string;
+    body?: string;
+    visible?: boolean;
+  } | null;
+  values: Array<{
+    title?: string;
+    body?: string;
+    _type: 'value';
+    _key: string;
+  }> | null;
+  sections: Array<{
+    heading?: string;
+    body?: string;
+    _type: 'section';
+    _key: string;
+  }> | null;
+} | null;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1286,5 +1334,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    order,\n    accentColor,\n    "director": director-> {\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee\n    }\n  }\n': AllCommitteesQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] | order(order asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SitemapCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
+    '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    hero,\n    mission,\n    history,\n    signatureTrip,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
   }
 }

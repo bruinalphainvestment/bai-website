@@ -77,3 +77,16 @@ export const allFoundingMembersQuery = defineQuery(`
     monogramOverride
   }
 `);
+
+export const aboutPageQuery = defineQuery(`
+  *[_type == "aboutPage"][0] {
+    title,
+    seo,
+    hero,
+    mission,
+    history,
+    signatureTrip,
+    values,
+    sections
+  }
+`);
