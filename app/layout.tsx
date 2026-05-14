@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, Geist_Mono } from "next/font/google";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 import "./globals.css";
 import { LenisProvider } from "./_components/lenis-provider";
 import { GsapLenisBridge } from "./_components/gsap-lenis-bridge";
 import { RouteChangeHandler } from "./_components/route-change-handler";
 import { ReducedMotionGuard } from "./_components/reduced-motion-guard";
+import { SanityLive } from "@/sanity/lib/live";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -50,7 +53,7 @@ const jsonLd = {
   description: metadata.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -76,6 +79,9 @@ export default function RootLayout({
             {children}
           </div>
         </LenisProvider>
+
+        {(await draftMode()).isEnabled && <VisualEditing />}
+        <SanityLive />
 
         {/* Note: JSON-LD script is the one allowed exception for dangerouslySetInnerHTML */}
         <script
