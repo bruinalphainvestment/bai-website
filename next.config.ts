@@ -6,7 +6,15 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        pathname: "/images/u1y6t81y/**",
+      },
+    ],
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);
