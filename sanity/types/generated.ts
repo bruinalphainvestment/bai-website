@@ -411,6 +411,10 @@ export type Committee = {
   director_quote?: string;
   order?: number;
   accentColor?: 'gold' | 'navy';
+  learn?: Array<string>;
+  differentiator?: string;
+  directorPlaceholder?: string;
+  redirectsFrom?: Array<string>;
 };
 
 export type FoundingMember = {
