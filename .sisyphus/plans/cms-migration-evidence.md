@@ -19,6 +19,41 @@ Format per task:
 
 ## Session: ses_1d78f4346ffeRMM3s4ezdCboT4 — Started 2026-05-14T21:46:55.971Z
 
+### Phase 1 Exit Gate — PASS 12/12 (T1.4 manual deferred)
+
+Independent verification of Phase 1 deliverables (run after `f2c450a`):
+
+| # | Check | Result |
+|---|---|---|
+| 1 | `sanity/lib/live.ts` exists with `defineLive`/`sanityFetch`/`SanityLive` | ✓ |
+| 2 | `<SanityLive />` mounted in `app/layout.tsx` | ✓ |
+| 3 | `app/api/revalidate/route.ts` exists | ✓ |
+| 4 | `parseBody(req, secret, true)` — third arg `true` for Content Lake propagation | ✓ |
+| 5 | `site-footer.tsx` uses `sanityFetch` (schema-mismatch bug fixed) | ✓ |
+| 6 | `app/_components/fallbacks/footer.ts` typed fallback exists | ✓ |
+| 7 | `site-header.tsx` uses `sanityFetch` (nav from `siteSettings.navLinks`) | ✓ |
+| 8 | `app/layout.tsx` has async `generateMetadata` | ✓ |
+| 9 | `stegaClean()` called in `app/layout.tsx` (metadata + JSON-LD path) | ✓ |
+| 10 | `app/sitemap.ts` uses `sanityFetch` + `stegaClean` | ✓ |
+| 11 | `bun run typecheck` exit 0 | ✓ |
+| 12 | `bun run build` exit 0 | ✓ |
+
+**T1.4 — Sanity dashboard webhook config — DEFERRED (USER MANUAL)**
+
+Mack must configure in Sanity Manage UI (https://www.sanity.io/manage → BAI project u1y6t81y → API → Webhooks → Create):
+- **URL**: `https://www.bruinalphainvestment.com/api/revalidate`
+- **Dataset filter**: `_dataset == "production"` (and separately `_dataset == "migration"` if a second webhook is desired for preview-environment live updates)
+- **Trigger**: `_type in [...]` for all editable types (or leave broad — handler is defensive)
+- **HTTP method**: POST
+- **Secret**: paste the value of `SANITY_REVALIDATE_SECRET` from `.env.local`
+- **Verification**: trigger a manual webhook test from the dashboard; check Vercel logs for 200 response from `/api/revalidate`
+
+Tracked in `.sisyphus/notepads/cms-migration/issues.md`.
+
+**Phase 1 complete.** 7 code commits + 2 evidence commits, all clean. Moving to Phase 2 (page refactors).
+
+---
+
 ### Phase 0 Exit Gate — PASS 18/18 (2026-05-14T22:35:00Z)
 
 All gate checks against `feature/cms-migration` at SHA `0b6792b`:
