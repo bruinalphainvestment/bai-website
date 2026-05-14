@@ -2,7 +2,7 @@
 
 This guide is for the **incoming President** (or any officer Mack hands website editing duties to). You do **not** need to be a developer to use it. If you can edit a Google Doc, you can edit this site.
 
-The website you're editing lives at `bruinalpha.com` (or whatever domain we end up using — check [HANDOFF.md](HANDOFF.md) for the current domain).
+The website you're editing lives at [www.bruinalphainvestment.com](https://www.bruinalphainvestment.com).
 
 ---
 
@@ -10,7 +10,7 @@ The website you're editing lives at `bruinalpha.com` (or whatever domain we end 
 Before you can edit, you need access to the Sanity project.
 
 1. **Get Invited:** Mack (or the current admin) must invite you at [sanity.io/manage](https://www.sanity.io/manage). You'll receive an email invite.
-2. **Navigate to the Studio:** Go to `bruinalpha.com/studio`.
+2. **Navigate to the Studio:** Go to `www.bruinalphainvestment.com/studio`.
 3. **Login:** Click the **Login** button.
 4. **Choose Provider:** Sign in with your Google account (if that's the email Mack invited) or use the personal Sanity invite link.
 5. **Dashboard:** Once logged in, you'll see the dashboard sidebar on the left.
@@ -22,7 +22,7 @@ Before you can edit, you need access to the Sanity project.
 ## 2. What is "the Studio"? Where do I find it?
 The **Studio** is the editing dashboard for the website. Think of it like the back office of a Squarespace site — you log in, change things, click "Publish," and the live site updates.
 
-- **URL:** `https://bruinalpha.com/studio`
+- **URL:** `https://www.bruinalphainvestment.com/studio`
 - **What it looks like:** A dark sidebar on the left with categories like *Site Settings*, *Home Page*, *Founding Members*, *Committees*. The big area on the right is where you edit fields.
 
 <!-- TODO: screenshot of the main Studio dashboard with the sidebar visible -->

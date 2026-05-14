@@ -1,86 +1,76 @@
-# Custom Domain Setup Procedure
+# Custom Domain — Reference
 
-This guide outlines the steps to purchase and configure a custom domain (e.g., `bruinalpha.com`) for the Bruin Alpha Investment (BAI) website.
+The club domain `bruinalphainvestment.com` is **live** as of 2026-05-14, registered at Cloudflare Registrar, pointing at Vercel. This doc captures the canonical configuration + the playbook for future renewals/transfers.
 
-## 1. Purchase the Domain
+## Live Configuration
 
-We recommend the following domain names in order of preference:
-1. `bruinalpha.com`
-2. `bruinalphainvestment.com`
-3. `bruinalpha.org`
+- **Domain:** `bruinalphainvestment.com` (registered 2026-05-14, expires 2027-05-14)
+- **Canonical URL:** `https://www.bruinalphainvestment.com` — apex `bruinalphainvestment.com` 301-redirects to `www`.
+- **Registrar:** [Cloudflare Registrar](https://dash.cloudflare.com/) (at-cost, ~$10/yr)
+- **Nameservers:** `bradley.ns.cloudflare.com`, `khloe.ns.cloudflare.com` (Cloudflare default)
+- **DNS:** Managed at Cloudflare, pointing at Vercel
+  - `www` CNAME → `b49552747d4d03fe.vercel-dns-017.com` (Vercel's project-specific dynamic CNAME)
+  - apex `@` A records → Vercel anycast IPs
+- **SSL:** Automatic, provisioned + renewed by Vercel (Let's Encrypt)
 
-### Recommended Registrars
-*   **Cloudflare Registrar**: Highly recommended. They provide domains at-cost (~$10/year for .com) with excellent security and DNS management.
-*   **Porkbun**: A popular alternative with transparent pricing and a clean interface.
+## How It Was Wired Up
 
-**Strategy**: If the budget allows, prepay for **5 years** immediately to avoid annual renewal anxiety and potential price hikes.
+### 1. Purchase
+Registered `bruinalphainvestment.com` at Cloudflare Registrar (Mack's personal Cloudflare account). The original docs floated `bruinalpha.com` as the preferred name, but `bruinalphainvestment.com` was chosen because it matches the GitHub org (`bruinalphainvestment`) and is unambiguous to anyone Googling the club.
 
----
+> **Stewardship:** Recovery email set to `bruinalphainvestment26@gmail.com`. Registrar login + 2FA backup codes stored in Bitwarden vault. Recorded in [HANDOFF.md](./HANDOFF.md) Accounts Inventory.
 
-## 2. Stewardship & Recovery
+> **Renewal:** Auto-renew on. Cloudflare bills the card on file in May 2027. Calendar reminder in club Gmail set for **April 2027** to verify funding.
 
-Per the [HANDOFF.md](./HANDOFF.md) strategy, the domain should be registered using the current President's personal email (Mack Haymond) to leverage existing OAuth setups, but with the following strict mitigations:
+### 2. DNS
+The previous setup floated either "use Vercel nameservers" or "keep DNS at registrar." We kept DNS at Cloudflare so we can use Cloudflare's other features (analytics, page rules) if needed later. Vercel's dashboard generates **project-specific dynamic CNAMEs** (e.g. `cname.vercel-dns-017.com`) — always copy what Vercel shows for this project rather than hardcoding legacy values (`cname.vercel-dns.com` / `76.76.21.21`).
 
-1.  **Recovery Email**: Set to `bruinalphainvestment26@gmail.com`.
-2.  **Shared Access**: Store the registrar login credentials and 2FA backup codes in the **Bitwarden Shared Vault**.
-3.  **Inventory**: Immediately update the "Accounts Inventory" table in [HANDOFF.md](./HANDOFF.md) with the registrar name and renewal date.
+### 3. Vercel Project Settings
+1. Vercel Dashboard → `bai-website` project → **Settings → Domains**.
+2. Added both `bruinalphainvestment.com` (apex) and `www.bruinalphainvestment.com`.
+3. Vercel configured the apex as redirect target → www; `www` serves the app directly.
+4. SSL certificate provisioned automatically on verification.
 
----
+### 4. Sanity Configuration
+- **CORS origins:** Both `https://www.bruinalphainvestment.com` and `https://bruinalphainvestment.com` added with `allowCredentials: true` (Studio Presentation tool previews require this).
+- **Site Settings (Studio):** `canonicalUrl` field, if added later to the `siteSettings` schema, should be `https://www.bruinalphainvestment.com`. Currently the canonical comes from the `NEXT_PUBLIC_SITE_URL` env var.
 
-## 3. DNS Configuration
+### 5. Vercel Environment Variable
+`NEXT_PUBLIC_SITE_URL` set to `https://www.bruinalphainvestment.com` on the **Production** target. Used by Next.js for canonical tags, sitemap URLs, OG card metadata.
 
-Once purchased, point the domain to Vercel.
+### 6. External Directory Updates
+- **LinkedIn page Website field:** [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md) → use `https://www.bruinalphainvestment.com`.
+- **Instagram bio link:** [INSTAGRAM-SETUP.md](./launch/INSTAGRAM-SETUP.md).
+- **UBS directory:** [UBS-SUBMISSION.md](./launch/UBS-SUBMISSION.md).
 
-1.  **Vercel Nameservers (Recommended)**: Change the nameservers at your registrar to the ones provided by Vercel. This allows Vercel to handle SSL and DNS records automatically.
-2.  **CNAME/A Records (alternative)**: If you prefer to keep DNS at the registrar (e.g., Cloudflare), add the domain in Vercel **first** (Project → Settings → Domains → Add) and then copy the **exact records Vercel displays** — they are now project-specific dynamic values such as `cname.vercel-dns-016.com` rather than the legacy generic `cname.vercel-dns.com`. The legacy values still work but are deprecated.
-    *   Reference (legacy, still functional): A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com`.
-    *   Always prefer whatever Vercel's dashboard shows for your specific project.
+## Verification
 
----
+```bash
+# All should return 200 with valid SSL
+curl -I https://www.bruinalphainvestment.com/
+curl -I https://www.bruinalphainvestment.com/sitemap.xml
 
-## 4. Vercel Project Settings
+# Should return 301 redirect to www
+curl -I https://bruinalphainvestment.com/
 
-1.  Go to the [Vercel Dashboard](https://vercel.com).
-2.  Select the `bruin-alpha-investment` project.
-3.  Navigate to **Settings** → **Domains**.
-4.  Click **Add**.
-5.  Enter `bruinalpha.com`.
-6.  Vercel will check your DNS. Once verified, it will automatically provision an SSL certificate (Let's Encrypt).
+# OG cards: https://www.opengraph.xyz/url/https%3A%2F%2Fwww.bruinalphainvestment.com
+```
 
----
+## Future Changes
 
-## 5. Sanity Configuration
+### To migrate the domain to a new registrar
+1. Unlock the domain at Cloudflare → request transfer code.
+2. Initiate transfer at new registrar with the code.
+3. After 5–7 day ICANN window, update HANDOFF.md Domain Registrar row.
 
-The website needs to know its own URL for metadata and canonical links.
+### To change the canonical URL (e.g. drop the `www`)
+1. In Vercel → Settings → Domains, swap which domain is the redirect target.
+2. Update `NEXT_PUBLIC_SITE_URL` env var.
+3. Update Sanity CORS origins.
+4. Trigger a redeploy so Next.js sitemap/canonical tags rebuild.
 
-1.  Open the **Sanity Studio** (`/studio`).
-2.  Navigate to **Site Settings**.
-3.  Update the **Canonical URL** field to `https://bruinalpha.com`.
-4.  Click **Publish**.
-
----
-
-## 6. External Directory Updates
-
-After the domain is live, update the links in the following locations:
-*   **LinkedIn**: Update the "Website" field on the BAI page.
-*   **Instagram**: Update the link in the bio.
-*   **UBS Directory**: Ensure the club's entry in the Undergraduate Business Society directory points to the new domain.
-
----
-
-## 7. Verification & Testing
-
-Run these checks to ensure everything is working:
-
-1.  **Status Check**: Run `curl -I https://bruinalpha.com`. It should return a `200 OK` status.
-2.  **Redirects**: Verify that `http://bruinalpha.com` (non-SSL) and `https://www.bruinalpha.com` both redirect to `https://bruinalpha.com`.
-3.  **Metadata**: Share the link on Slack or LinkedIn to verify the **Open Graph (OG) cards** display correctly with the new URL.
-4.  **Sitemap**: Visit `https://bruinalpha.com/sitemap.xml` to ensure it reflects the new domain.
-
----
-
-## 8. Financial Prep
-
-*   Add the **Renewal Date** to the club's shared Google Calendar.
-*   Ensure the payment method on file at the registrar is either a club-issued card or a reliable personal card with a reminder to reimburse.
+### Renewal Lapse Recovery
+If Cloudflare auto-renew fails:
+1. Cloudflare keeps the domain in grace period for 30 days post-expiry.
+2. After grace, ICANN redemption period (~30 more days) with high recovery fee.
+3. After ~75 days total, the domain re-enters the public pool and can be claimed by anyone — this would be catastrophic. Ensure the calendar reminder + multiple officers have access to the Cloudflare account.

@@ -134,7 +134,7 @@ The repo includes an idempotent seeder that populates the 14 baseline documents 
    | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Your 8-char ID | Production, Preview, Development |
    | `NEXT_PUBLIC_SANITY_DATASET` | `production` | Production, Preview, Development |
    | `NEXT_PUBLIC_SANITY_API_VERSION` | `2025-01-01` | Production, Preview, Development |
-   | `NEXT_PUBLIC_SITE_URL` | The actual `*.vercel.app` URL Vercel assigns (e.g. `https://bai-website-nu.vercel.app`) — update after the first deploy when you know the alias. Replace with the custom domain later. | Production |
+   | `NEXT_PUBLIC_SITE_URL` | `https://www.bruinalphainvestment.com` (live domain). For a brand-new deploy with no custom domain yet, set it to the assigned `*.vercel.app` alias and swap once the real domain is wired up. | Production |
    | `SANITY_API_WRITE_TOKEN` | The seed-script token | Production, Preview |
    | `SANITY_STUDIO_PREVIEW_SECRET` | The hex secret | Production, Preview |
 
@@ -157,8 +157,10 @@ The repo includes an idempotent seeder that populates the 14 baseline documents 
 The Studio's Presentation tool previews edits against the live site.
 
 1. [ ] In Sanity dashboard → your project → **API** → **CORS Origins** → **Add origin**.
-2. [ ] Add your Vercel production URL (e.g., `https://bai-website.vercel.app`). Tick **Allow credentials**.
+2. [ ] Add your live production URL — for BAI: `https://www.bruinalphainvestment.com` (apex `https://bruinalphainvestment.com` should also be added). Tick **Allow credentials**.
 3. [ ] Also add `http://localhost:3000` if not already present (for local Studio).
+
+> Already done for the BAI project: both `bruinalphainvestment.com` variants + `localhost:3000` were added on 2026-05-14 via the Sanity management API.
 
 ---
 
@@ -170,7 +172,7 @@ The site uses ISR with a 1-hour revalidate window, but editors will want changes
 
 1. [ ] In Sanity dashboard → your project → **API** → **Webhooks** → **Create webhook**.
 2. [ ] **Name:** `Vercel revalidate (production)`
-3. [ ] **URL:** `https://bai-website.vercel.app/api/revalidate` (replace with custom domain when ready).
+3. [ ] **URL:** `https://www.bruinalphainvestment.com/api/revalidate`.
 4. [ ] **Dataset:** `production`. **Trigger on:** Create, Update, Delete.
 5. [ ] **HTTP method:** POST. **Secret:** generate a new random hex (`openssl rand -hex 32`), paste it both here AND as a new Vercel env var `SANITY_WEBHOOK_SECRET`.
 6. [ ] Save. Test by editing a Site Settings field in Studio and confirming the public page updates within ~5 seconds.
@@ -200,25 +202,18 @@ Not deploy-blockers. Do once the site has a stable URL.
 
 ---
 
-## 9. Custom domain (when ready, ~15 mins)
+## 9. Custom domain — DONE for BAI
 
-Follow [CUSTOM-DOMAIN.md](./CUSTOM-DOMAIN.md). Summary:
+✅ `bruinalphainvestment.com` is live as of 2026-05-14 (Cloudflare Registrar, points at Vercel). Canonical URL is `https://www.bruinalphainvestment.com`; apex redirects to www. See [CUSTOM-DOMAIN.md](./CUSTOM-DOMAIN.md) for the full reference + future renewal/transfer playbook.
 
-1. [ ] Buy `bruinalpha.com` at Cloudflare Registrar or Porkbun (~$10/yr, prepay 5 years if budget allows).
-2. [ ] Add the domain to the Vercel project → Settings → Domains.
-3. [ ] **Use the exact DNS records Vercel shows in the dashboard** — they're project-specific now (e.g., `cname.vercel-dns-016.com`). The legacy values (`76.76.21.21` A record, `cname.vercel-dns.com` CNAME) still work but are deprecated.
-4. [ ] After DNS propagates, update:
-   - `NEXT_PUBLIC_SITE_URL` Vercel env var → `https://bruinalpha.com`.
-   - Sanity CORS origins.
-   - Sanity webhook URL.
-   - Site Settings → Canonical URL in Studio.
+The post-domain-go-live config (env var, Sanity CORS, Studio canonical) was applied at the same time.
 
 ---
 
 ## Verification checklist (final)
 
-- [ ] [https://bai-website.vercel.app](https://bai-website.vercel.app) (or custom domain) returns 200 on `/`, `/about`, `/committees`, `/committees/wealth-management`, `/team`, `/projects`, `/events`, `/join`, `/training`.
-- [ ] `/studio` loads, you can sign in, all 11 seeded documents are visible.
+- [ ] [https://www.bruinalphainvestment.com](https://www.bruinalphainvestment.com) returns 200 on `/`, `/about`, `/committees`, `/committees/wealth-management`, `/team`, `/projects`, `/events`, `/join`, `/training`.
+- [ ] `/studio` loads, you can sign in, all 14 seeded documents are visible (Site Settings, Home Page, 4 Committees, 8 Founding Members).
 - [ ] Editing Site Settings → Slogan in Studio → public site reflects within ~5s (if step 6 done) or ~1h (without webhook).
 - [ ] Open Graph card renders correctly when the URL is shared (test on LinkedIn or via [opengraph.xyz](https://www.opengraph.xyz/)).
 - [ ] `bun run build` passes locally without warnings about placeholder project ID.

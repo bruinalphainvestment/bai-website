@@ -20,11 +20,11 @@ This document serves as the master record for Bruin Alpha Investment (BAI) websi
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Root Email** | gmail.com | Mack's Personal | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | OAuth root for all services |
 | **Club Gmail** | gmail.com | `bruinalphainvestment26` | Mack, Max, Sam | Personal Backup | N/A | Primary recovery hub |
-| **Vercel (Hobby)** | [bai-website-nu.vercel.app](https://bai-website-nu.vercel.app) | `spyicydevs-projects/bai-website` (personal scope) | Mack Haymond (sole deployer) | `bruinalphainvestment26@gmail.com` | N/A | Hobby tier — single deployer; multi-member Teams are Pro-only. GitHub auto-deploy wired (org-owned PUBLIC repo). Project ID: `prj_9jBvG1wSuDCPn2GaydfltePKWv84`. SSO Protection disabled. |
-| **Sanity Org** | sanity.io | `bruin-alpha-investment` (org `oAQMAXlMm`) | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Project ID: `u1y6t81y` · Dataset: `production` (public) · Tokens: `seed-script` (Editor) |
+| **Vercel (Hobby)** | [www.bruinalphainvestment.com](https://www.bruinalphainvestment.com) | `spyicydevs-projects/bai-website` (personal scope) | Mack Haymond (sole deployer) | `bruinalphainvestment26@gmail.com` | N/A | Hobby tier — single deployer; multi-member Teams are Pro-only. GitHub auto-deploy wired (org-owned PUBLIC repo). Project ID: `prj_9jBvG1wSuDCPn2GaydfltePKWv84`. Canonical: `www`; apex redirects. Fallback alias: `bai-website-nu.vercel.app`. SSO Protection disabled. |
+| **Sanity Org** | sanity.io | `Bruin Alpha Investment` (org `oAQMAXlMm`) | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Project ID: `u1y6t81y` · Dataset: `production` (public) · Tokens: `seed-script` (Editor). Sanity orgs use display name + numeric IDs; no URL slug. |
 | **GitHub Org + Repo** | [github.com/bruinalphainvestment/bai-website](https://github.com/bruinalphainvestment/bai-website) | `bruinalphainvestment/bai-website` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Private repo under the `bruinalphainvestment` GitHub Free org. Apply for free GitHub Team via faculty advisor at [github.com/edu](https://github.com/edu/teachers) once a sponsor is identified. |
-| **Tally.so** | tally.so | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Recruitment forms hub |
-| **Domain Registrar** | [TO BE FILLED] | [TO BE FILLED] | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | [TO BE FILLED] | Target: `bruinalpha.com` |
+| **Tally.so** | tally.so | `bruinalphainvestment` (planned — not yet provisioned) | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Recruitment forms hub |
+| **Domain Registrar** | [Cloudflare Registrar](https://dash.cloudflare.com/) | `bruinalphainvestment.com` | Mack Haymond | `bruinalphainvestment26@gmail.com` | 2027-05-14 | At-cost ~$10/yr. Nameservers `bradley.ns.cloudflare.com` + `khloe.ns.cloudflare.com`. `www` → Vercel via dynamic CNAME `b49552747d4d03fe.vercel-dns-017.com`; apex via Vercel A records. |
 | **Password Vault** | bitwarden.com | BAI Shared Vault | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Bitwarden Free Org (2-user cap) — upgrade to Families ($3.99/mo, 6 seats) if all 5 officers need access |
 | **LinkedIn Page** | linkedin.com | `bai-ucla` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md) |
 | **Instagram** | instagram.com | `@bruinalphainvestment` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [INSTAGRAM-SETUP.md](./launch/INSTAGRAM-SETUP.md) |
@@ -107,7 +107,7 @@ If Sanity removes the free tier or the Growth tier (Startup Program) expires:
 2. Migrate to an open-source alternative like **Payload CMS** or **Strapi** (documented as an escape hatch in the project backlog).
 
 ### Scenario E: Domain Renewal Lapses
-1. The domain `bruinalpha.com` (target) should be prepaid for 5 years whenever possible.
+1. The domain `bruinalphainvestment.com` (live since 2026-05-14, Cloudflare Registrar) should be set to auto-renew. Consider prepaying multiple years when the next renewal cycle approaches.
 2. Ensure a calendar reminder is set in the club Gmail calendar for 3 months prior to expiry.
 
 ## Backup Recovery
