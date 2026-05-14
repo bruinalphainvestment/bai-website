@@ -16,7 +16,6 @@ const team = [
 export default function TeamPage() {
   return (
     <main className="min-h-screen bg-cream text-navy pt-32 pb-24">
-      {/* Hero Section */}
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-20 md:mb-32">
         <h1 className="font-display text-5xl md:text-7xl mb-6">The Team</h1>
         <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
@@ -24,7 +23,6 @@ export default function TeamPage() {
         </p>
       </section>
 
-      {/* Founding Class Section */}
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
         <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
           Founding Class — Spring 2026
@@ -52,7 +50,6 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* Members Section */}
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
         <h2 className="font-display text-3xl md:text-4xl mb-8">Members</h2>
         <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
@@ -62,7 +59,6 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* Alumni Section */}
       <section className="px-4 md:px-8 max-w-7xl mx-auto">
         <h2 className="font-display text-3xl md:text-4xl mb-8">Alumni</h2>
         <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
