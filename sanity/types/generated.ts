@@ -1369,6 +1369,49 @@ export type TrainingPageQueryResult = {
   }> | null;
 } | null;
 
+// Source: sanity/lib/queries.ts
+// Variable: joinPageQuery
+// Query: *[_type == "joinPage"][0] {    title,    seo,    hero,    intro,    timeline,    applicationForm,    faqs,    eligibilityHeading,    eligibilityBullets  }
+export type JoinPageQueryResult = {
+  title: string | null;
+  seo: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  } | null;
+  hero: {
+    heading?: string;
+    subheading?: string;
+  } | null;
+  intro: string | null;
+  timeline: Array<{
+    stepNumber?: number;
+    title?: string;
+    body?: string;
+    _type: 'timelineStep';
+    _key: string;
+  }> | null;
+  applicationForm: {
+    heading?: string;
+    body?: string;
+    formUrl?: string;
+  } | null;
+  faqs: Array<{
+    question?: string;
+    answer?: string;
+    _type: 'faq';
+    _key: string;
+  }> | null;
+  eligibilityHeading: string | null;
+  eligibilityBullets: Array<string> | null;
+} | null;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1380,5 +1423,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
     '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    hero,\n    mission,\n    history,\n    signatureTrip,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
     '\n  *[_type == "trainingPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    curriculum,\n    programs,\n    signatureCertifications\n  }\n': TrainingPageQueryResult;
+    '\n  *[_type == "joinPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    timeline,\n    applicationForm,\n    faqs,\n    eligibilityHeading,\n    eligibilityBullets\n  }\n': JoinPageQueryResult;
   }
 }

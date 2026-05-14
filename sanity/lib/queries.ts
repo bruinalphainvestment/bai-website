@@ -102,3 +102,17 @@ export const trainingPageQuery = defineQuery(`
     signatureCertifications
   }
 `);
+
+export const joinPageQuery = defineQuery(`
+  *[_type == "joinPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    timeline,
+    applicationForm,
+    faqs,
+    eligibilityHeading,
+    eligibilityBullets
+  }
+`);
