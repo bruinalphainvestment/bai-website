@@ -19,6 +19,27 @@ Format per task:
 
 ## Session: ses_1d78f4346ffeRMM3s4ezdCboT4 — Started 2026-05-14T21:46:55.971Z
 
+### Phase 0 Exit Gate — PASS 18/18 (2026-05-14T22:35:00Z)
+
+All gate checks against `feature/cms-migration` at SHA `0b6792b`:
+
+| # | Check | Result |
+|---|---|---|
+| 1 | `next.config.ts` has `cdn.sanity.io` in remotePatterns | ✓ PASS |
+| 2-6 | 5 new deps in package.json (visual-editing, preview-url-secret, webhook, codegen, next-sanity) | ✓ PASS (5/5) |
+| 7-13 | 7 new singleton types exported in `sanity/types/generated.ts` (AboutPage, TrainingPage, JoinPage, EventsPage, ProjectsPage, TeamPage, CommitteesIndexPage) | ✓ PASS (7/7) |
+| 14 | `bun run typecheck` exit 0 | ✓ PASS |
+| 15 | `bun run build` exit 0 | ✓ PASS |
+| 16 | `bunx sanity dataset list` shows `migration` | ✓ PASS |
+| 17 | migration dataset doc count ≥ 30 | ✓ PASS (32 docs) |
+| 18 | production dataset untouched at 14 docs | ✓ PASS (14, unchanged) |
+
+**Phase 0 complete.** Foundation locked in: schemas extended/added, types generated, deps installed, build clean, migration dataset populated with 32 docs covering every editable surface from the audit, production preserved intact.
+
+Phase 1 (Infrastructure — live API, webhook, site chrome) next.
+
+
+
 ### T-1.1 — Backup production Sanity dataset
 - Started: 2026-05-14T21:47:55Z
 - Completed: 2026-05-14T21:48:07Z

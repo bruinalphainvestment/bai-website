@@ -1,6 +1,14 @@
 {
   "active_plan": "/Users/mackhaymond/Desktop/coding/projects/bai_website/.sisyphus/plans/cms-migration.md",
   "started_at": "2026-05-14T21:46:55.971Z",
-  "session_ids": ["ses_1d78f4346ffeRMM3s4ezdCboT4"],
-  "plan_name": "cms-migration"
+  "session_ids": [
+    "ses_1d78f4346ffeRMM3s4ezdCboT4",
+    "ses_1d768a26bffeCFwLxnPxeH487W"
+  ],
+  "plan_name": "cms-migration",
+  "session_origins": {
+    "ses_1d78f4346ffeRMM3s4ezdCboT4": "direct",
+    "ses_1d768a26bffeCFwLxnPxeH487W": "appended"
+  },
+  "task_sessions": {}
 }
