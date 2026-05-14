@@ -567,6 +567,54 @@ export type SiteSettings = {
   linkedinUrl?: string;
   slackInviteUrl?: string;
   domain_renewal_date?: string;
+  brandName?: string;
+  titleSuffix?: string;
+  defaultMetaDescription?: string;
+  defaultOgImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  foundedYear?: number;
+  foundedTerm?: string;
+  navLinks?: Array<{
+    label?: string;
+    href?: string;
+    _type: 'navLink';
+    _key: string;
+  }>;
+  organizationDescription?: string;
+  sameAs?: Array<string>;
+  errorCopy?: {
+    notFoundHeading?: string;
+    notFoundBody?: string;
+    errorHeading?: string;
+    errorBody?: string;
+    loadingLabel?: string;
+  };
+  disclaimerText?: string;
+  uclaCompliantName?: string;
+  missionStatement?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: 'span';
+      _key: string;
+    }>;
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote';
+    listItem?: 'bullet' | 'number';
+    markDefs?: Array<{
+      href?: string;
+      _type: 'link';
+      _key: string;
+    }>;
+    level?: number;
+    _type: 'block';
+    _key: string;
+  }>;
+  domainRenewalDate?: string;
 };
 
 export type SanityImagePaletteSwatch = {
