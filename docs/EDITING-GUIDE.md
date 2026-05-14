@@ -136,4 +136,5 @@ This file is `docs/EDITING-GUIDE.md` in the project repository. To update it, ed
 
 Related reading:
 - [HANDOFF.md](HANDOFF.md) — leadership transition + account stewardship
+- [CUSTOM-DOMAIN.md](CUSTOM-DOMAIN.md) — how to set up the official URL
 - [SETUP-CHECKLIST.md](SETUP-CHECKLIST.md) — what Mack had to do to bootstrap everything (mostly one-time)

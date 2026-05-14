@@ -159,5 +159,6 @@ Log the completion of the quarterly access audit here.
 - [Setup Checklist](SETUP-CHECKLIST.md)
 - [Editing Guide](EDITING-GUIDE.md)
 - [Animation Conventions](ANIMATION-CONVENTIONS.md)
+- [Custom Domain Setup](CUSTOM-DOMAIN.md)
 - [Sanity Documentation](https://www.sanity.io/docs)
 - [Vercel Documentation](https://vercel.com/docs)
