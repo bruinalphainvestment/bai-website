@@ -509,6 +509,266 @@ export type Page = {
   >;
 };
 
+export type CommitteesIndexPage = {
+  _id: string;
+  _type: 'committeesIndexPage';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
+  hero?: {
+    heading?: string;
+    subheading?: string;
+  };
+  intro?: string;
+  connectedByDesign?: {
+    heading?: string;
+    body?: string;
+    paragraphs?: Array<string>;
+  };
+};
+
+export type TeamPage = {
+  _id: string;
+  _type: 'teamPage';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
+  hero?: {
+    heading?: string;
+    subheading?: string;
+  };
+  intro?: string;
+  foundingClassHeading?: string;
+  membersHeading?: string;
+  membersPlaceholder?: string;
+  alumniHeading?: string;
+  alumniPlaceholder?: string;
+};
+
+export type ProjectsPage = {
+  _id: string;
+  _type: 'projectsPage';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
+  hero?: {
+    heading?: string;
+    subheading?: string;
+  };
+  intro?: string;
+  emptyState?: string;
+  statusLegend?: Array<{
+    status?: 'planning' | 'active' | 'completed';
+    description?: string;
+    _type: 'statusLegendEntry';
+    _key: string;
+  }>;
+};
+
+export type EventsPage = {
+  _id: string;
+  _type: 'eventsPage';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
+  hero?: {
+    heading?: string;
+    subheading?: string;
+  };
+  intro?: string;
+  upcomingEmptyState?: string;
+  pastEmptyState?: string;
+};
+
+export type JoinPage = {
+  _id: string;
+  _type: 'joinPage';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
+  hero?: {
+    heading?: string;
+    subheading?: string;
+  };
+  intro?: string;
+  timeline?: Array<{
+    stepNumber?: number;
+    title?: string;
+    body?: string;
+    _type: 'timelineStep';
+    _key: string;
+  }>;
+  applicationForm?: {
+    heading?: string;
+    body?: string;
+    formUrl?: string;
+  };
+  faqs?: Array<{
+    question?: string;
+    answer?: string;
+    _type: 'faq';
+    _key: string;
+  }>;
+  eligibilityHeading?: string;
+  eligibilityBullets?: Array<string>;
+};
+
+export type TrainingPage = {
+  _id: string;
+  _type: 'trainingPage';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
+  hero?: {
+    heading?: string;
+    subheading?: string;
+  };
+  intro?: string;
+  curriculum?: Array<{
+    week?: string;
+    topic?: string;
+    body?: string;
+    _type: 'curriculumEntry';
+    _key: string;
+  }>;
+  programs?: Array<{
+    name?: string;
+    description?: string;
+    format?: string;
+    duration?: string;
+    _type: 'program';
+    _key: string;
+  }>;
+  signatureCertifications?: Array<{
+    title?: string;
+    body?: string;
+    _type: 'certification';
+    _key: string;
+  }>;
+};
+
+export type AboutPage = {
+  _id: string;
+  _type: 'aboutPage';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
+  hero?: {
+    heading?: string;
+    subheading?: string;
+  };
+  mission?: {
+    heading?: string;
+    body?: string;
+  };
+  history?: {
+    heading?: string;
+    body?: string;
+  };
+  signatureTrip?: {
+    headline?: string;
+    status?: string;
+    body?: string;
+    visible?: boolean;
+  };
+  values?: Array<{
+    title?: string;
+    body?: string;
+    _type: 'value';
+    _key: string;
+  }>;
+  sections?: Array<{
+    heading?: string;
+    body?: string;
+    _type: 'section';
+    _key: string;
+  }>;
+};
+
 export type HomePage = {
   _id: string;
   _type: 'homePage';
@@ -757,6 +1017,13 @@ export type AllSanitySchemaTypes =
   | Committee
   | FoundingMember
   | Page
+  | CommitteesIndexPage
+  | TeamPage
+  | ProjectsPage
+  | EventsPage
+  | JoinPage
+  | TrainingPage
+  | AboutPage
   | HomePage
   | SiteSettings
   | SanityImagePaletteSwatch

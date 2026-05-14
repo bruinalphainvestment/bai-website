@@ -1,13 +1,20 @@
 import type { SchemaTypeDefinition } from 'sanity';
 
+import { aboutPage } from './aboutPage';
 import { committee } from './committee';
+import { committeesIndexPage } from './committeesIndexPage';
 import { event } from './event';
+import { eventsPage } from './eventsPage';
 import { faq } from './faq';
 import { foundingMember } from './foundingMember';
 import { homePage } from './homePage';
+import { joinPage } from './joinPage';
 import { page } from './page';
 import { project } from './project';
+import { projectsPage } from './projectsPage';
 import { siteSettings } from './siteSettings';
+import { teamPage } from './teamPage';
+import { trainingPage } from './trainingPage';
 
 import { committeesTeaserSection } from './objects/committeesTeaserSection';
 import { ctaSection } from './objects/ctaSection';
@@ -32,6 +39,14 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   // Singletons
   siteSettings,
   homePage,
+  // Page singletons
+  aboutPage,
+  trainingPage,
+  joinPage,
+  eventsPage,
+  projectsPage,
+  teamPage,
+  committeesIndexPage,
   // Documents
   page,
   committee,
