@@ -1,92 +1,176 @@
 import type { Metadata } from 'next';
+import { stegaClean } from 'next-sanity';
 
-export const metadata: Metadata = {
-  title: 'Projects & Research — Bruin Alpha Investment at UCLA',
-  description: 'Explore the hands-on initiatives, research, and engagements led by our specialized committees.',
+import { footerFallback } from '@/app/_components/fallbacks/footer';
+import {
+  projectsListFallback,
+  projectsPageFallback,
+} from '@/app/_components/fallbacks/projects-page';
+import { sanityFetch } from '@/sanity/lib/live';
+import {
+  allProjectsQuery,
+  projectsPageQuery,
+  siteSettingsQuery,
+} from '@/sanity/lib/queries';
+import type {
+  AllProjectsQueryResult,
+  ProjectsPageQueryResult,
+  SiteSettingsQueryResult,
+} from '@/sanity/types/generated';
+
+type ProjectsPageData = NonNullable<ProjectsPageQueryResult>;
+type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
+type ProjectEntry = AllProjectsQueryResult[number];
+type StatusKey = NonNullable<ProjectEntry['status']>;
+
+const STATUS_DISPLAY: Record<StatusKey, { label: string; dot: string; emphasis: boolean }> = {
+  planning: { label: 'Planning', dot: 'bg-gold-start', emphasis: true },
+  active: { label: 'Active', dot: 'bg-green-500', emphasis: false },
+  completed: { label: 'Completed', dot: 'bg-navy', emphasis: false },
 };
 
-const PROJECTS = [
-  {
-    title: 'Event-Contract Modeling Research',
-    committee: 'Trading',
-    status: 'Planning',
-    summary: 'A quantitative initiative focused on pricing and analyzing probability-based event contracts. Analysts will build predictive models to evaluate mispricings in event-driven markets.',
-  },
-  {
-    title: 'UCLA Club Audit Initiative',
-    committee: 'Accounting & Consulting',
-    status: 'Planning',
-    summary: 'Pro-bono financial reviews for other campus organizations. Members will assess cash flow, budget allocations, and operational efficiency, culminating in a formalized advisory report.',
-  },
-  {
-    title: 'Spring Stock Pitch',
-    committee: 'Investment Banking (All-Club)',
-    status: 'Planning',
-    summary: 'Our capstone event where analysts across all committees form teams to deliver comprehensive investment pitches, emphasizing rigorous valuation, market sizing, and strategic rationale.',
-  },
-  {
-    title: 'Wealth Advisory Mock Engagement',
-    committee: 'Wealth Management',
-    status: 'Planning',
-    summary: 'Simulated client engagements requiring analysts to construct diversified portfolios based on specific risk profiles, tax considerations, and long-term financial objectives.',
-  },
-  {
-    title: 'UCLA-Wide Stock Trading Competition',
-    committee: 'Trading (Aspirational)',
-    status: 'Planning',
-    summary: 'A campus-wide initiative currently in the planning phase. The goal is to democratize market access and test trading strategies in a competitive, simulated environment.',
-  },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const [pageRaw, settingsRaw] = await Promise.all([
+    loadProjectsPageData(),
+    loadSiteSettings(),
+  ]);
+  const page = stegaClean(pageRaw);
+  const settings = stegaClean(settingsRaw);
 
-export default function ProjectsPage() {
+  const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
+  const fallbackTitle = `Projects & Research${suffix}`;
+  const title = page.seo?.title ?? fallbackTitle;
+  const description =
+    page.seo?.description ??
+    settings.defaultMetaDescription ??
+    projectsPageFallback.seo?.description ??
+    '';
+
+  return { title, description };
+}
+
+export default async function ProjectsPage() {
+  const [page, projects] = await Promise.all([
+    loadProjectsPageData(),
+    loadProjectsList(),
+  ]);
+
+  const heading = page.hero?.heading ?? projectsPageFallback.hero?.heading ?? 'What We Build';
+  const subheading = page.hero?.subheading ?? projectsPageFallback.hero?.subheading ?? '';
+  const intro = page.intro ?? projectsPageFallback.intro;
+  const emptyState = page.emptyState ?? projectsPageFallback.emptyState ?? '';
+  const statusLegend = page.statusLegend ?? projectsPageFallback.statusLegend ?? [];
+
   return (
     <div className="bg-cream text-navy min-h-screen pt-32 pb-24">
       <section className="px-6 md:px-12 lg:px-24 mb-24 max-w-7xl mx-auto">
-        <h1 className="font-serif text-h1 font-light tracking-tight mb-6">What We Build</h1>
+        <h1 className="font-serif text-h1 font-light tracking-tight mb-6">{heading}</h1>
         <p className="text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
-          At Bruin Alpha Investment, theory is immediately put into practice. Our committees drive independent research and structured deliverables.
+          {subheading}
         </p>
+        {intro ? (
+          <p className="mt-6 text-lg leading-relaxed opacity-80 max-w-3xl">{intro}</p>
+        ) : null}
       </section>
 
       <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {PROJECTS.map((project) => (
-            <div key={project.title} className="bg-offwhite border border-border-subtle p-8 flex flex-col hover:border-gold-start transition-colors">
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="bg-navy text-cream text-xs font-bold uppercase tracking-widest px-3 py-1">
-                  {project.committee}
-                </span>
-                <span className="border border-gold-start text-gold-start text-xs font-bold uppercase tracking-widest px-3 py-1 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-gold-start animate-pulse"></span>
-                  {project.status}
-                </span>
-              </div>
-              <h2 className="font-serif text-2xl mb-4">{project.title}</h2>
-              <p className="opacity-80 leading-relaxed mt-auto">
-                {project.summary}
-              </p>
-            </div>
-          ))}
-        </div>
+        {projects.length === 0 ? (
+          <p className="opacity-70">{emptyState}</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {projects.map((project) => {
+              const statusKey = project.status ?? 'planning';
+              const statusInfo = STATUS_DISPLAY[statusKey];
+              return (
+                <div
+                  key={project._id}
+                  className="bg-offwhite border border-border-subtle p-8 flex flex-col hover:border-gold-start transition-colors"
+                >
+                  <div className="flex flex-wrap items-center gap-3 mb-6">
+                    {project.committee?.name ? (
+                      <span className="bg-navy text-cream text-xs font-bold uppercase tracking-widest px-3 py-1">
+                        {project.committee.name}
+                      </span>
+                    ) : null}
+                    <span className="border border-gold-start text-gold-start text-xs font-bold uppercase tracking-widest px-3 py-1 flex items-center gap-2">
+                      <span
+                        className={`w-2 h-2 rounded-full ${statusInfo.dot} ${statusInfo.emphasis ? 'animate-pulse' : ''}`}
+                      ></span>
+                      {statusInfo.label}
+                    </span>
+                  </div>
+                  <h2 className="font-serif text-2xl mb-4">{project.name ?? ''}</h2>
+                  {project.summary ? (
+                    <p className="opacity-80 leading-relaxed mt-auto">{project.summary}</p>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
-      <section className="px-6 md:px-12 lg:px-24 max-w-7xl mx-auto border-t border-border-subtle pt-12">
-        <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-70">Status Legend</h3>
-        <ul className="flex flex-col sm:flex-row gap-6 sm:gap-12 text-sm">
-          <li className="flex items-center gap-3">
-            <span className="w-3 h-3 rounded-full bg-gold-start"></span>
-            <span><strong className="block">Planning</strong> Scope and deliverables are currently being finalized.</span>
-          </li>
-          <li className="flex items-center gap-3 opacity-50 grayscale">
-            <span className="w-3 h-3 rounded-full bg-green-500"></span>
-            <span><strong className="block">Active</strong> Project is currently in execution phase.</span>
-          </li>
-          <li className="flex items-center gap-3 opacity-50 grayscale">
-            <span className="w-3 h-3 rounded-full bg-navy"></span>
-            <span><strong className="block">Completed</strong> Final deliverable has been published.</span>
-          </li>
-        </ul>
-      </section>
+      {statusLegend.length > 0 ? (
+        <section className="px-6 md:px-12 lg:px-24 max-w-7xl mx-auto border-t border-border-subtle pt-12">
+          <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-70">
+            Status Legend
+          </h3>
+          <ul className="flex flex-col sm:flex-row gap-6 sm:gap-12 text-sm">
+            {statusLegend.map((entry) => {
+              const key = entry.status ?? 'planning';
+              const info = STATUS_DISPLAY[key];
+              const showDimmed = key !== 'planning';
+              return (
+                <li
+                  key={entry._key}
+                  className={`flex items-center gap-3 ${showDimmed ? 'opacity-50 grayscale' : ''}`}
+                >
+                  <span className={`w-3 h-3 rounded-full ${info.dot}`}></span>
+                  <span>
+                    <strong className="block">{info.label}</strong>
+                    {entry.description ?? ''}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ) : null}
     </div>
   );
+}
+
+async function loadProjectsPageData(): Promise<ProjectsPageData> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return projectsPageFallback;
+  try {
+    const { data } = await sanityFetch({ query: projectsPageQuery });
+    return data ? (stegaClean(data) as ProjectsPageData) : projectsPageFallback;
+  } catch (err) {
+    console.error('[projects] page fetch failed; using fallback:', err);
+    return projectsPageFallback;
+  }
+}
+
+async function loadProjectsList(): Promise<AllProjectsQueryResult> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return projectsListFallback;
+  try {
+    const { data } = await sanityFetch({ query: allProjectsQuery });
+    return data && data.length > 0
+      ? (stegaClean(data) as AllProjectsQueryResult)
+      : projectsListFallback;
+  } catch (err) {
+    console.error('[projects] list fetch failed; using fallback:', err);
+    return projectsListFallback;
+  }
+}
+
+async function loadSiteSettings(): Promise<SiteSettingsData> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return footerFallback;
+  try {
+    const { data } = await sanityFetch({ query: siteSettingsQuery });
+    return data ?? footerFallback;
+  } catch (err) {
+    console.error('[projects] siteSettings fetch failed; using fallback:', err);
+    return footerFallback;
+  }
 }

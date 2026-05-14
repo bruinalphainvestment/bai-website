@@ -142,3 +142,26 @@ export const allEventsQuery = defineQuery(`
     "committee": committee->{ _id, name, "slug": slug.current }
   }
 `);
+
+export const projectsPageQuery = defineQuery(`
+  *[_type == "projectsPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    emptyState,
+    statusLegend
+  }
+`);
+
+export const allProjectsQuery = defineQuery(`
+  *[_type == "project"] | order(_createdAt asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    summary,
+    status,
+    tags,
+    "committee": committee->{ _id, name, "slug": slug.current }
+  }
+`);

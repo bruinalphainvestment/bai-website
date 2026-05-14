@@ -1457,6 +1457,53 @@ export type AllEventsQueryResult = Array<{
   } | null;
 }>;
 
+// Source: sanity/lib/queries.ts
+// Variable: projectsPageQuery
+// Query: *[_type == "projectsPage"][0] {    title,    seo,    hero,    intro,    emptyState,    statusLegend  }
+export type ProjectsPageQueryResult = {
+  title: string | null;
+  seo: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  } | null;
+  hero: {
+    heading?: string;
+    subheading?: string;
+  } | null;
+  intro: string | null;
+  emptyState: string | null;
+  statusLegend: Array<{
+    status?: 'active' | 'completed' | 'planning';
+    description?: string;
+    _type: 'statusLegendEntry';
+    _key: string;
+  }> | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: allProjectsQuery
+// Query: *[_type == "project"] | order(_createdAt asc) {    _id,    name,    "slug": slug.current,    summary,    status,    tags,    "committee": committee->{ _id, name, "slug": slug.current }  }
+export type AllProjectsQueryResult = Array<{
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  summary: string | null;
+  status: 'active' | 'completed' | 'planning' | null;
+  tags: Array<string> | null;
+  committee: {
+    _id: string;
+    name: string | null;
+    slug: string | null;
+  } | null;
+}>;
+
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
@@ -1471,5 +1518,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "joinPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    timeline,\n    applicationForm,\n    faqs,\n    eligibilityHeading,\n    eligibilityBullets\n  }\n': JoinPageQueryResult;
     '\n  *[_type == "eventsPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    upcomingEmptyState,\n    pastEmptyState\n  }\n': EventsPageQueryResult;
     '\n  *[_type == "event"] | order(date asc) {\n    _id,\n    name,\n    date,\n    endDate,\n    location,\n    description,\n    type,\n    status,\n    "externalUrl": coalesce(externalUrl, external_url),\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllEventsQueryResult;
+    '\n  *[_type == "projectsPage"][0] {\n    title,\n    seo,\n    hero,\n    intro,\n    emptyState,\n    statusLegend\n  }\n': ProjectsPageQueryResult;
+    '\n  *[_type == "project"] | order(_createdAt asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    summary,\n    status,\n    tags,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllProjectsQueryResult;
   }
 }
