@@ -20,14 +20,47 @@ This document serves as the master record for Bruin Alpha Investment (BAI) websi
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Root Email** | gmail.com | Mack's Personal | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | OAuth root for all services |
 | **Club Gmail** | gmail.com | `bruinalphainvestment26` | Mack, Max, Sam | Personal Backup | N/A | Primary recovery hub |
-| **Vercel Team** | vercel.com | `bruin-alpha-investment` | Mack Haymond, [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | [TO BE FILLED] | Pro tier via Student Pack |
-| **Sanity Org** | sanity.io | `bruin-alpha-investment` | Mack Haymond, [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | Project ID: [TO BE FILLED] |
-| **GitHub Org** | github.com | `bruin-alpha-investment` | Mack Haymond, [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | Private repo: `bai-website` |
+| **Vercel Team** | vercel.com | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Pro tier via Student Pack |
+| **Sanity Org** | sanity.io | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Project ID: `v6m6t4z6` |
+| **GitHub Org** | github.com | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Private repo: `bai-website` |
 | **Tally.so** | tally.so | `bruin-alpha-investment` | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Recruitment forms hub |
 | **Domain Registrar** | [TO BE FILLED] | [TO BE FILLED] | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | [TO BE FILLED] | Target: `bruinalpha.com` |
-| **Password Vault** | bitwarden.com | BAI Shared Vault | Mack Haymond, [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | Bitwarden Free Org |
+| **Password Vault** | bitwarden.com | BAI Shared Vault | Mack Haymond | `bruinalphainvestment26@gmail.com` | N/A | Bitwarden Free Org |
 | **LinkedIn Page** | linkedin.com | `bai-ucla` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md) |
 | **Instagram** | instagram.com | `@bruinalphainvestment` | [TO BE FILLED] | `bruinalphainvestment26@gmail.com` | N/A | [INSTAGRAM-SETUP.md](./launch/INSTAGRAM-SETUP.md) |
+
+## Site Routes
+The following live routes are implemented and verified:
+- `/`: Home Page (dynamic sections)
+- `/about`: Mission, history, and values
+- `/committees`: Overview of all 4 active committees
+- `/committees/[slug]`: Dedicated pages for Wealth Management, Trading, Accounting & Consulting, and Investment Banking
+- `/training`: Educational resources and curriculum overview
+- `/projects`: Gallery of active and past investment projects
+- `/team`: Full roster of founding members and directors
+- `/events`: Upcoming workshops, guest speakers, and recruitment dates
+- `/join`: Recruitment information and Tally form integration
+- `/studio`: Sanity CMS editing dashboard
+
+## Tech Stack Reference
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **UI & Styling:** React 19 + Tailwind CSS v4
+- **Content Management:** Sanity v3 + Presentation (Visual Editing)
+- **Animation:** Lenis (Smooth Scroll) + GSAP + Framer Motion
+- **Testing:** Playwright (E2E) + Lighthouse CI
+- **Package Manager:** Bun
+- **Deployment:** Vercel
+
+## Build & Deploy Commands
+- `bun install`: Install dependencies
+- `bun run dev`: Start local development server
+- `bun run build`: Create production build
+- `bun run typecheck`: Run TypeScript compiler check
+- `bun run lint`: Run ESLint static analysis
+- `bun run test:e2e`: Run Playwright end-to-end tests
+- `bun run test:lh`: Run Lighthouse performance audit
+- `bun run analyze`: Inspect bundle size via @next/bundle-analyzer
 
 ## Credentials Vault
 All sensitive credentials, including service passwords and 2FA recovery codes, are stored in the **Bitwarden Shared Vault**.
@@ -155,10 +188,26 @@ Log the completion of the quarterly access audit here.
 | Spring 2026 | 2026-05-13 | Antigravity (Agent) | SKELETON CREATED |
 | Fall 2026 | [Date] | [Name] | [Status] |
 
+## Mitigations
+- **Recovery Hub:** All accounts use `bruinalphainvestment26@gmail.com` as the primary recovery email.
+- **Admin Redundancy:** At least two officers (currently Mack and [Next Officer]) have admin access to Vercel and Sanity.
+- **Automated Backups:** Sanity datasets are exported weekly to GitHub to prevent data loss.
+
+## Evidence of Completed Agent Work
+The initial site architecture and content were bootstrapped by Antigravity (AI Agent) in May 2026.
+- **Commits:** 17+ commits covering design tokens, CMS schemas, and page implementations.
+- **Files:** 119+ managed files in the repository.
+- **CMS:** 11 baseline documents seeded (Settings, Home, Members, Committees).
+- **Automation:** GitHub Actions for Sanity backups and Lighthouse CI audits configured.
+
 ## References
 - [Setup Checklist](SETUP-CHECKLIST.md)
 - [Editing Guide](EDITING-GUIDE.md)
+- [Contributing Guide](CONTRIBUTING.md)
 - [Animation Conventions](ANIMATION-CONVENTIONS.md)
 - [Custom Domain Setup](CUSTOM-DOMAIN.md)
+- [LinkedIn Setup](./launch/LINKEDIN-SETUP.md)
+- [Instagram Setup](./launch/INSTAGRAM-SETUP.md)
+- [UBS Submission](./launch/UBS-SUBMISSION.md)
 - [Sanity Documentation](https://www.sanity.io/docs)
 - [Vercel Documentation](https://vercel.com/docs)

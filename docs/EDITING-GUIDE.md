@@ -6,86 +6,78 @@ The website you're editing lives at `bruinalpha.com` (or whatever domain we end 
 
 ---
 
-## 1. What is "the Studio"? Where do I find it?
+## 1. First-Time Login Walkthrough
+Before you can edit, you need access to the Sanity project.
 
-The **Studio** is the editing dashboard for the website. Think of it like the back office of a Squarespace site — you log in, change things, click "Publish," and the live site updates.
+1. **Get Invited:** Mack (or the current admin) must invite you at [sanity.io/manage](https://www.sanity.io/manage). You'll receive an email invite.
+2. **Navigate to the Studio:** Go to `bruinalpha.com/studio`.
+3. **Login:** Click the **Login** button.
+4. **Choose Provider:** Sign in with your Google account (if that's the email Mack invited) or use the personal Sanity invite link.
+5. **Dashboard:** Once logged in, you'll see the dashboard sidebar on the left.
 
-- **URL:** `https://bruinalpha.com/studio` (or `http://localhost:3000/studio` if you're running the site locally on your computer for testing).
-- **How to log in:**
-  1. Open the URL above in any web browser.
-  2. Click **"Log in with Google"** (or whichever provider Mack set up).
-  3. Use the email Mack added you to. If you don't have access, message Mack — he needs to invite you on [sanity.io/manage](https://www.sanity.io/manage).
-- **What it looks like:** a dark sidebar on the left with categories like *Site Settings*, *Home Page*, *Founding Members*, *Committees*. The big area on the right is where you edit fields.
-
-<!-- TODO(Task 48): screenshot of Studio login screen -->
-<!-- TODO(Task 48): screenshot of Studio dashboard with sidebar visible -->
+<!-- TODO: screenshot of the Studio login page with "Login" button highlighted -->
 
 ---
 
-## 2. Editing the home page sections
+## 2. What is "the Studio"? Where do I find it?
+The **Studio** is the editing dashboard for the website. Think of it like the back office of a Squarespace site — you log in, change things, click "Publish," and the live site updates.
 
-The home page is built from **eight stackable sections** (Hero, Mission, Stats, Values, Committees Teaser, Founding Team, Marquee, and Call-to-Action). You can re-order, hide, or update the content inside each section.
+- **URL:** `https://bruinalpha.com/studio`
+- **What it looks like:** A dark sidebar on the left with categories like *Site Settings*, *Home Page*, *Founding Members*, *Committees*. The big area on the right is where you edit fields.
+
+<!-- TODO: screenshot of the main Studio dashboard with the sidebar visible -->
+
+---
+
+## 3. Editing the home page sections
+The home page is built from **stackable sections** (Hero, Mission, Stats, Values, Committees Teaser, Founding Team, Marquee, and Call-to-Action). You can re-order, hide, or update the content inside each section.
 
 **To edit a section:**
-
 1. In the Studio sidebar, click **Home Page**.
 2. You'll see a list called **Sections**. Each item in the list is one section of the page.
 3. Click any section to open its fields (headline, body text, button label, etc.).
 4. Make your changes.
-5. Click the **Publish** button (top right) to push it live.
+5. Click the **Publish** button (bottom right) to push it live.
+
+<!-- TODO: screenshot of the Home Page editor showing the list of Sections -->
 
 > **Tip:** You can drag-and-drop the sections to re-order them. The order in the Studio matches the order visitors see on the page.
 
-> **Warning:** if a section field looks empty in the Studio, the website will fall back to a hardcoded default. That's intentional — it means the site never looks broken even before you've filled in everything.
-
-<!-- TODO(Task 48): screenshot of Home Page → Sections list -->
-
 ---
 
-## 3. Adding / editing a founding member
-
+## 4. Adding / editing a founding member
 The **Founding Team** section pulls from a list called *Founding Members* in the Studio.
 
 **To add a member:**
-
 1. In the sidebar, click **Founding Members**.
-2. Click the **+** button at the top of the list (or "Create new").
-3. Fill in:
-   - **First Name** and **Last Name**
-   - **Role** (e.g. "Treasurer", "Trading Co-Director")
-   - **Committee** — pick from the dropdown (Wealth Management, Trading, etc.)
-   - **Graduation Year**
-   - **Bio** (optional — a short paragraph)
-   - **LinkedIn URL** (optional)
-   - **Photo Release Obtained** — ⚠️ **read the next paragraph carefully**
-   - **Headshot** (optional)
-   - **Monogram Override** (optional) — by default we use the person's initials (e.g. "MH"). You can override if you want different letters.
-4. Click **Publish**.
+2. Click the **+** button at the top of the list.
+3. Fill in the fields (Name, Role, Committee, Bio, LinkedIn).
+4. **Photo Release:** Ensure the "Photo Release Obtained" box is checked if you're uploading a headshot.
+5. Click **Publish**.
 
-> ⚠️ **Photo Release rule (read this!):** the **Photo Release Obtained** checkbox is a hard gate. The headshot photo **will not appear** on the public website unless this box is checked. This protects the club from privacy / image-rights complaints. **Only check the box if the member has signed (or verbally confirmed in writing — Slack DM is fine) that they're OK with their face on the public site.** If the box is unchecked, we fall back to a gold-on-navy monogram tile, which looks great anyway.
-
-**To edit an existing member:** click their name in the list, change fields, hit Publish.
-
-**To remove a member:** open them, click the three-dot menu (top right), → "Delete." Deletion is permanent — they disappear from the live site within ~1 hour (or instantly if you have webhook revalidation set up).
-
-<!-- TODO(Task 48): screenshot of a Founding Member edit form -->
+<!-- TODO: screenshot of the Founding Member creation form -->
 
 ---
 
-## 4. Changing the application URL
+## 5. Common Edits (Mini-FAQ)
 
-We use [Tally.so](https://tally.so/) for recruitment forms. When you change the application form (new quarter, new questions), you don't need to update every page on the site — you just update **one field** in the Studio.
+**How do I change the site slogan or mission statement?**
+Go to **Site Settings** in the sidebar. You'll find fields for the slogan, mission, and the legal disclaimer.
 
-1. Sidebar → **Site Settings**.
-2. Find the field labeled **Application URL (Tally)**.
-3. Paste the new Tally form URL (it should start with `https://tally.so/r/...`).
-4. Click **Publish**.
+**How do I update the "Join Us" application URL?**
+Go to **Site Settings** and find the **Application URL (Tally)** field. Paste your new link there and hit Publish.
 
-Every "Apply Now" / "Join Us" button on the entire site will now point to the new URL within ~1 hour.
+**How do I add a new committee?**
+Go to **Committees** in the sidebar and click the **+** button. Fill in the committee name, director, and description.
+
+**How do I update a member's headshot?**
+Find the member under **Founding Members**, click their name, and upload a new image in the **Headshot** field. Remember to check the "Photo Release" box.
+
+<!-- TODO: screenshot of the Site Settings panel showing where the Slogan and Application URL are -->
 
 ---
 
-## 5. What I CANNOT change without a developer
+## 6. What I CANNOT change without a developer
 
 The Studio lets you edit **text, links, images, and the order of sections**. It does **not** let you change:
 
