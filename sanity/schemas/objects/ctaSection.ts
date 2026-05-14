@@ -22,6 +22,16 @@ export const ctaSection = defineType({
       title: 'CTA Label',
       type: 'string',
     }),
+    defineField({
+      name: 'secondaryCtaLabel',
+      title: 'Secondary CTA Label',
+      type: 'string',
+    }),
+    defineField({
+      name: 'secondaryCtaHref',
+      title: 'Secondary CTA Href',
+      type: 'string',
+    }),
   ],
   preview: {
     select: { title: 'heading' },

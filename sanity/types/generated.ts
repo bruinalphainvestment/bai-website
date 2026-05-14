@@ -155,6 +155,8 @@ export type CtaSection = {
   heading?: string;
   body?: string;
   ctaLabel?: string;
+  secondaryCtaLabel?: string;
+  secondaryCtaHref?: string;
 };
 
 export type StatsSection = {
@@ -817,6 +819,8 @@ export type HomePageQueryResult = {
         heading?: string;
         body?: string;
         ctaLabel?: string;
+        secondaryCtaLabel?: string;
+        secondaryCtaHref?: string;
       }
     | {
         _key: string;
