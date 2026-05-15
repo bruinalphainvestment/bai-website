@@ -1,38 +1,42 @@
 /**
  * Centralised access to Sanity env vars with safe fallbacks.
  *
- * The fallback `pPLACEHOLDR` is a syntactically tolerable string so the Studio
- * + client modules don't crash at build/import time before the real project
- * is provisioned. Real Sanity project IDs are 8-character lowercase
- * alphanumeric (e.g. `v6m6t4z6`); the placeholder will never resolve a real
- * API call. See `docs/SETUP-CHECKLIST.md` Section 1 — Mack swaps the real ID
- * in once Sanity org+project exist.
+ * IMPORTANT: NEXT_PUBLIC_* vars MUST be accessed via direct
+ * `process.env.NEXT_PUBLIC_X` syntax — Next.js statically replaces those at
+ * build time. Indirect access (e.g. `process.env[name]`) is NOT replaced,
+ * which causes the browser to fall through to placeholder values.
  */
 
-function readEnv(name: string): string | undefined {
-  const raw = (process.env as Record<string, string | undefined>)[name];
+function normalize(raw: string | undefined): string | undefined {
   if (typeof raw !== 'string') return undefined;
   const trimmed = raw.trim();
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
+function readServerEnv(name: string): string | undefined {
+  const raw = (process.env as Record<string, string | undefined>)[name];
+  return normalize(raw);
+}
+
 export const PLACEHOLDER_PROJECT_ID = 'pPLACEHOLDR';
 
+// NEXT_PUBLIC_* vars: direct access for Next.js build-time inlining.
 export const projectId =
-  readEnv('NEXT_PUBLIC_SANITY_PROJECT_ID') ?? PLACEHOLDER_PROJECT_ID;
+  normalize(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) ?? PLACEHOLDER_PROJECT_ID;
 
-export const dataset = readEnv('NEXT_PUBLIC_SANITY_DATASET') ?? 'production';
+export const dataset =
+  normalize(process.env.NEXT_PUBLIC_SANITY_DATASET) ?? 'production';
 
 export const apiVersion =
-  readEnv('NEXT_PUBLIC_SANITY_API_VERSION') ?? '2025-01-01';
+  normalize(process.env.NEXT_PUBLIC_SANITY_API_VERSION) ?? '2025-01-01';
 
 /**
  * Server-only. Used by webhook handlers + on-demand revalidation. NEVER
  * expose via NEXT_PUBLIC_*.
  */
-export const writeToken = readEnv('SANITY_API_WRITE_TOKEN');
+export const writeToken = readServerEnv('SANITY_API_WRITE_TOKEN');
 
-export const readToken = readEnv('SANITY_API_READ_TOKEN');
+export const readToken = readServerEnv('SANITY_API_READ_TOKEN');
 
 /**
  * CDN-cached client by default for prod RSC fetches. Disabled when a write
