@@ -4,10 +4,6 @@ import { draftMode } from "next/headers";
 import { stegaClean } from "next-sanity";
 import { VisualEditing } from "next-sanity/visual-editing";
 import "./globals.css";
-import { LenisProvider } from "./_components/lenis-provider";
-import { GsapLenisBridge } from "./_components/gsap-lenis-bridge";
-import { RouteChangeHandler } from "./_components/route-change-handler";
-import { ReducedMotionGuard } from "./_components/reduced-motion-guard";
 import { footerFallback } from "./_components/fallbacks/footer";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { urlForImage } from "@/sanity/lib/imageUrl";
@@ -118,15 +114,9 @@ export default async function RootLayout({
         >
           Skip to main content
         </a>
-        <LenisProvider>
-          <GsapLenisBridge />
-          <RouteChangeHandler />
-          <ReducedMotionGuard />
-          
-          <div id="root-content" className="flex-grow flex flex-col">
-            {children}
-          </div>
-        </LenisProvider>
+        <div id="root-content" className="flex-grow flex flex-col">
+          {children}
+        </div>
 
         {/* JSON-LD Organization schema — only allowed dangerouslySetInnerHTML usage. */}
         <script
