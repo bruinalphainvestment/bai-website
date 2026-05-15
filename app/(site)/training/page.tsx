@@ -176,7 +176,8 @@ async function loadTrainingData(): Promise<TrainingData> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return trainingPageFallback;
   try {
     const { data } = await sanityFetch({ query: trainingPageQuery });
-    return data ? (stegaClean(data) as TrainingData) : trainingPageFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? trainingPageFallback;
   } catch (err) {
     console.error('[training] sanityFetch failed; using fallback:', err);
     return trainingPageFallback;

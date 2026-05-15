@@ -198,7 +198,8 @@ async function loadJoinData(): Promise<JoinData> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return joinPageFallback;
   try {
     const { data } = await sanityFetch({ query: joinPageQuery });
-    return data ? (stegaClean(data) as JoinData) : joinPageFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? joinPageFallback;
   } catch (err) {
     console.error('[join] sanityFetch failed; using fallback:', err);
     return joinPageFallback;

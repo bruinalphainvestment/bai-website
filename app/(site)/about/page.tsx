@@ -129,7 +129,8 @@ async function loadAboutData(): Promise<AboutData> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return aboutPageFallback;
   try {
     const { data } = await sanityFetch({ query: aboutPageQuery });
-    return data ? (stegaClean(data) as AboutData) : aboutPageFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? aboutPageFallback;
   } catch (err) {
     console.error('[about] sanityFetch failed; using fallback:', err);
     return aboutPageFallback;

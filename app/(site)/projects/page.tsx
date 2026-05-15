@@ -151,7 +151,8 @@ async function loadProjectsPageData(): Promise<ProjectsPageData> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return projectsPageFallback;
   try {
     const { data } = await sanityFetch({ query: projectsPageQuery });
-    return data ? (stegaClean(data) as ProjectsPageData) : projectsPageFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? projectsPageFallback;
   } catch (err) {
     console.error('[projects] page fetch failed; using fallback:', err);
     return projectsPageFallback;
@@ -162,9 +163,8 @@ async function loadProjectsList(): Promise<AllProjectsQueryResult> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return projectsListFallback;
   try {
     const { data } = await sanityFetch({ query: allProjectsQuery });
-    return data && data.length > 0
-      ? (stegaClean(data) as AllProjectsQueryResult)
-      : projectsListFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data && data.length > 0 ? data : projectsListFallback;
   } catch (err) {
     console.error('[projects] list fetch failed; using fallback:', err);
     return projectsListFallback;

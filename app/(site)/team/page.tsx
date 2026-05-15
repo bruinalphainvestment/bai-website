@@ -141,7 +141,8 @@ async function loadTeamPageData(): Promise<TeamPageData> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return teamPageFallback;
   try {
     const { data } = await sanityFetch({ query: teamPageQuery });
-    return data ? (stegaClean(data) as TeamPageData) : teamPageFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? teamPageFallback;
   } catch (err) {
     console.error('[team] page fetch failed; using fallback:', err);
     return teamPageFallback;
@@ -152,9 +153,8 @@ async function loadFoundingMembers(): Promise<AllFoundingMembersQueryResult> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return foundingMembersFallback;
   try {
     const { data } = await sanityFetch({ query: allFoundingMembersQuery });
-    return data && data.length > 0
-      ? (stegaClean(data) as AllFoundingMembersQueryResult)
-      : foundingMembersFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data && data.length > 0 ? data : foundingMembersFallback;
   } catch (err) {
     console.error('[team] members fetch failed; using fallback:', err);
     return foundingMembersFallback;

@@ -1,5 +1,3 @@
-import { stegaClean } from 'next-sanity';
-
 import { SectionRenderer } from '@/app/_components/sections/section-renderer';
 import CommitteesTeaser from '@/app/_components/sections/committees-teaser';
 import FoundingTeam from '@/app/_components/sections/founding-team';
@@ -37,7 +35,9 @@ async function loadHomeData(): Promise<HomePageQueryResult | null> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return null;
   try {
     const { data } = await sanityFetch({ query: homePageQuery });
-    return data ? (stegaClean(data) as HomePageQueryResult) : null;
+    /* stega-encoded data flows directly into JSX so Visual Editing
+       overlays can attribute each rendered string to its Sanity source. */
+    return data ?? null;
   } catch (err) {
     console.error('[Home] sanityFetch failed; rendering fallback:', err);
     return null;

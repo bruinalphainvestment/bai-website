@@ -186,7 +186,8 @@ async function loadEventsPageData(): Promise<EventsPageData> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return eventsPageFallback;
   try {
     const { data } = await sanityFetch({ query: eventsPageQuery });
-    return data ? (stegaClean(data) as EventsPageData) : eventsPageFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? eventsPageFallback;
   } catch (err) {
     console.error('[events] page fetch failed; using fallback:', err);
     return eventsPageFallback;
@@ -197,7 +198,8 @@ async function loadEventsList(): Promise<AllEventsQueryResult> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return eventsListFallback;
   try {
     const { data } = await sanityFetch({ query: allEventsQuery });
-    return data && data.length > 0 ? (stegaClean(data) as AllEventsQueryResult) : eventsListFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data && data.length > 0 ? data : eventsListFallback;
   } catch (err) {
     console.error('[events] list fetch failed; using fallback:', err);
     return eventsListFallback;

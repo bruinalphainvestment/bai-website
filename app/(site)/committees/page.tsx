@@ -184,7 +184,8 @@ async function loadCommitteesIndexData(): Promise<CommitteesIndexData> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return committeesIndexPageFallback;
   try {
     const { data } = await sanityFetch({ query: committeesIndexPageQuery });
-    return data ? (stegaClean(data) as CommitteesIndexData) : committeesIndexPageFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? committeesIndexPageFallback;
   } catch (err) {
     console.error('[committees] page fetch failed; using fallback:', err);
     return committeesIndexPageFallback;
@@ -195,9 +196,8 @@ async function loadCommitteesList(): Promise<AllCommitteesIndexQueryResult> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return committeesIndexListFallback;
   try {
     const { data } = await sanityFetch({ query: allCommitteesIndexQuery });
-    return data && data.length > 0
-      ? (stegaClean(data) as AllCommitteesIndexQueryResult)
-      : committeesIndexListFallback;
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data && data.length > 0 ? data : committeesIndexListFallback;
   } catch (err) {
     console.error('[committees] list fetch failed; using fallback:', err);
     return committeesIndexListFallback;
