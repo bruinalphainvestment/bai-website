@@ -20,7 +20,9 @@ export async function GET(request: Request): Promise<Response> {
 
   try {
     const result = await validatePreviewUrl(
-      client.withConfig({ token: process.env.SANITY_API_READ_TOKEN }),
+      client.withConfig({
+        token: process.env.SANITY_API_READ_TOKEN ?? process.env.SANITY_API_WRITE_TOKEN,
+      }),
       request.url,
     );
     isValid = result.isValid;
