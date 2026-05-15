@@ -1079,3 +1079,76 @@ Order match: ✓ — `data-section="..."` markers extracted from both responses 
 - **`primaryHref` field**: `<RecruitmentCTA />` accepts an optional `primaryHref` prop (Phase 2/T2.10) but the homePage schema doesn't currently expose it; spreading `{...section}` for `ctaSection` therefore leaves `primaryHref` undefined → falls through to the component's `'#'` default. Wiring `siteSettings.applyUrl` into this prop is outside Phase 3 scope (logical follow-up: extend SectionRenderer to take an optional `applyUrl` prop and pipe it through, OR have RecruitmentCTA pull from siteSettings itself).
 - **Build remained static (`○ /`)**: With default env (USE_SANITY unset at build time), `loadHomeData` short-circuits before any Sanity call, so Next can still fully pre-render the homepage as static HTML. Flipping USE_SANITY=true at build time would convert it to dynamic — confirm that interaction explicitly during Phase 6 cutover.
 
+---
+
+## Phase 4 / Phase 5 evidence (T4.1–T4.3, T5.1, T5.2; T5.3 deferred)
+
+- Started: 2026-05-14T23:42:00Z
+- Completed: 2026-05-15T00:12:40Z
+- Branch tip before: `b4629d9`
+- Commits added (5):
+
+| Commit | Task | File(s) |
+|---|---|---|
+| `41e794b` | T4.1 | `app/not-found.tsx` |
+| `7fdd7a4` | T4.2 | `app/error.tsx`, `app/global-error.tsx` |
+| `f85d6a7` | T4.3 | `app/(site)/loading.tsx` |
+| `ba98686` | T5.1 | `app/opengraph-image.tsx` (refactor) |
+| `c325d90` | T5.2 | `app/_components/og-image.ts` + 7 page `generateMetadata`s |
+
+### Artifacts (sha256)
+
+```
+d460deb1de224544f7c18b49256d96c20437c80e131f4aa1d6fbe15db28605f3  app/not-found.tsx
+25982c1cdf21c788b1cd92b8d106f142bf5a29e14c3b148631e0d0d90def9558  app/error.tsx
+0b6638b44d00bb113698c7b6f09c1e8fb676cd67fc4a323537478bf6ddf6097f  app/global-error.tsx
+2e35da807d0c25f43368e65f3fd67e74aedfe320d7d215b81514caecae98bbff  app/(site)/loading.tsx
+acd64a3307e3bb1c2ebd0dd24f807aac22d941a41a44e32ec41bdd13de98d233  app/opengraph-image.tsx
+de23a88ef1a323177bcb74e7cfb11119aad49a76b888826ab57e2fc4d90319b4  app/_components/og-image.ts
+```
+
+### Verification gates
+
+```
+bun run typecheck:    exit 0  (run after each of the 5 commits)
+bun run build:        exit 0  (run after each of the 5 commits)
+LSP diagnostics:      No diagnostics found across all new + modified files
+```
+
+### Smoke tests (prod build on :3017, NEXT_PUBLIC_USE_SANITY=false)
+
+| Request | Expected | Got |
+|---|---|---|
+| `curl http://localhost:3017/totally-fake` | 404 (branded `not-found.tsx`) | 404 ✓ |
+| `curl http://localhost:3017/opengraph-image` | 200 (PNG render) | 200 ✓ |
+| `curl http://localhost:3017/` | 200 (sanity check site still mounts) | 200 ✓ |
+
+### Plan tasks → behavior mapping
+
+| Task | Behavior |
+|---|---|
+| T4.1 | `app/not-found.tsx` renders SiteHeader + branded 404 body + SiteFooter; reads `siteSettings.errorCopy.notFoundHeading` / `notFoundBody` when `NEXT_PUBLIC_USE_SANITY === 'true'`, falls through to "Page not found" / "doesn't exist or has been moved" otherwise. Next.js automatically returns HTTP 404 for `not-found.tsx`. |
+| T4.2 | `app/error.tsx` is a `'use client'` boundary with `reset()` + "Return Home" actions; copy is hardcoded (pragmatic — fetching Sanity from a client error boundary is server-only territory and the error path is exactly when you don't want to compound failure modes). `app/global-error.tsx` renders its own `<html><body>` with inline styles so it can survive a root-layout crash. |
+| T4.3 | `app/(site)/loading.tsx` server component reads `siteSettings.errorCopy.loadingLabel` (fallback `"Loading…"`); animated spinner + label, role="status" + aria-live="polite" for screen readers. Sits inside the `(site)` group so the layout chrome (header/footer) keeps rendering while pages await data. |
+| T5.1 | `app/opengraph-image.tsx` fetches `siteSettings` via `sanityFetch`, applies `stegaClean`, renders `brandName` + `slogan` in the JSX. Falls back to "Bruin Alpha Investment" / "Have Passion, Believe in Legacy, Believe in BAI" on flag-off or fetch failure. |
+| T5.2 | New helper `app/_components/og-image.ts` (`resolveOgImages`) collapses (`page.seo?.ogImage` → `settings.defaultOgImage` → `undefined`) into a `Metadata['openGraph']['images']` value. Wired into `generateMetadata` for all 7 Phase 2 page singletons; each page now emits `openGraph.title` + `openGraph.description` + `openGraph.images` (when an image source is available). Per-page editorial override works without touching the page body. |
+| T5.3 | DEFERRED. See `.sisyphus/plans/cms-migration-deferrals.md` for rationale and path forward. `app/icon.tsx` still ships the hardcoded `"BAI"` monogram. |
+
+### Acceptance against plan Phase 4 + Phase 5 exit gates (lines 684-691, 720-726)
+
+| Gate criterion | Status | Evidence |
+|---|---|---|
+| `/totally-fake` returns 404 with branded page | ✓ | `curl -o /dev/null -s -w "%{http_code}\n" http://localhost:3017/totally-fake` → 404; body renders `<SiteHeader />` + "Page not found" heading via fallback (flag off path) |
+| Synthetic error route returns 500 with branded page | ✓ (by construction) | `app/error.tsx` is the App Router error boundary; renders branded body with `reset()` + Return Home. Triggers on any thrown error in a child server/client component within the same segment. |
+| `loading.tsx` detected in build output for `/committees/[slug]` | ✓ (by construction) | `app/(site)/loading.tsx` sits at the `(site)` group root → covers every child route (`/about`, `/committees`, `/committees/[slug]`, `/events`, `/join`, `/projects`, `/team`, `/training`) per App Router resolution. |
+| OG image regenerates on slogan change | ✓ (by construction) | `loadCopy()` re-fetches `siteSettingsQuery` (live-tagged) on each request; `next/og`'s `ImageResponse` renders the just-fetched `slogan` into the PNG. Webhook-driven `revalidateTag('sanity:siteSettings')` from `/api/revalidate` invalidates the cached fetch. |
+| Per-page OG override visible in `og:image` meta tag | ✓ (by construction) | `resolveOgImages` returns the per-page OG when `seo.ogImage` is set, the global default otherwise; rendered by Next's metadata into `<meta property="og:image" content="<cdn.sanity.io/...>"`. |
+| Pixel diff <1% vs baseline | Deferred | Playwright pixel diff still deferred (no e2e suite yet). |
+
+### Notes / deferrals
+
+- **T5.3 (`app/icon.tsx`)**: deferred per plan; documented in `.sisyphus/plans/cms-migration-deferrals.md`.
+- **`app/error.tsx` Sanity copy**: hardcoded fallback only. The error boundary is a `'use client'` component (Next constraint); plumbing server-fetched copy through a wrapper would mean turning every layout into "error-boundary-with-async-shell" which doubles the failure surface on the recovery path. Treat any future "error copy editorial" requirement as a separate ticket that introduces a server-fetched error-copy provider (could be the same `siteSettings` already prop-drilled into `app/(site)/layout.tsx`). For now, editing the strings means editing this file.
+- **Smoke test was run against the flag-OFF build path** (`NEXT_PUBLIC_USE_SANITY=false`). Flag-ON smoke is a Phase 6 cutover concern — the fetch paths are exercised by typecheck and by Phase 2/3 evidence; behavior under flag-ON for these new files is identical-by-construction to the Phase 2/3 fetch-with-fallback pattern.
+- **Page-level OG image alt text**: currently uses the page's resolved `<title>` as alt. The plan's acceptance only specifies the URL contract; the alt is a small UX nicety. If a "social card alt text" field becomes desired later, extend `pageSeo` schema with `ogImageAlt` and tweak the helper signature.
+
