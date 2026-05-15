@@ -1,60 +1,32 @@
+import { validatePreviewUrl } from '@sanity/preview-url-secret';
 import { draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { timingSafeEqual } from 'node:crypto';
+
+import { client } from '@/sanity/lib/client';
 
 /**
  * GET /api/draft-mode/enable
  *
- * Sanity Presentation Tool hits this handler with `?sanity-preview-secret=...&sanity-preview-pathname=...`.
- * We verify the shared secret against `SANITY_STUDIO_PREVIEW_SECRET` using a
- * constant-time comparison, then enable Next.js draft mode and redirect to
- * the target preview path. Without a valid secret we return 401 — never leak
- * draft content into production.
+ * Sanity Presentation Tool hits this handler with a dynamic per-session
+ * `sanity-preview-secret` query param. We validate via the @sanity/preview-url-secret
+ * package which looks up the secret doc in the Sanity dataset.
  *
- * NOTE: We accept both `sanity-preview-secret` (modern Presentation) and
- * `secret` (legacy fallback) so manual smoke tests via curl keep working.
+ * If valid, enable Next.js draft mode and redirect to the target preview path.
+ * Otherwise 401.
  */
-
 export async function GET(request: Request): Promise<Response> {
-  const expected = process.env.SANITY_STUDIO_PREVIEW_SECRET;
-
-  if (typeof expected !== 'string' || expected.length === 0) {
-    return new Response(
-      'Draft mode is not configured. Set SANITY_STUDIO_PREVIEW_SECRET in the deployment environment.',
-      { status: 500 },
-    );
-  }
-
-  const url = new URL(request.url);
-  const provided =
-    url.searchParams.get('sanity-preview-secret') ??
-    url.searchParams.get('secret');
-
-  if (provided === null) {
-    return new Response('Missing preview secret', { status: 401 });
-  }
-
-  const providedBuf = Buffer.from(provided);
-  const expectedBuf = Buffer.from(expected);
-  const isValid =
-    providedBuf.length === expectedBuf.length &&
-    timingSafeEqual(providedBuf, expectedBuf);
+  const { isValid, redirectTo = '/' } = await validatePreviewUrl(
+    client.withConfig({ token: process.env.SANITY_API_READ_TOKEN }),
+    request.url,
+  );
 
   if (!isValid) {
     return new Response('Invalid preview secret', { status: 401 });
   }
 
-  const requestedPath =
-    url.searchParams.get('sanity-preview-pathname') ??
-    url.searchParams.get('redirect') ??
-    '/';
-  // Defensive: only allow same-origin internal redirects (paths starting
-  // with a single forward slash). Reject `//evil.com`, full URLs, and
-  // anything else that could be used for an open-redirect.
+  // Defensive: only allow same-origin internal redirects
   const safePath =
-    requestedPath.startsWith('/') && !requestedPath.startsWith('//')
-      ? requestedPath
-      : '/';
+    redirectTo.startsWith('/') && !redirectTo.startsWith('//') ? redirectTo : '/';
 
   const draft = await draftMode();
   draft.enable();
