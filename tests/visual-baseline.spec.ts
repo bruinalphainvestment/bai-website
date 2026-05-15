@@ -42,10 +42,6 @@ test.beforeAll(() => {
   fs.mkdirSync(SNAPSHOT_DIR, { recursive: true });
 });
 
-test.use({
-  reducedMotion: 'reduce',
-});
-
 async function settle(page: Page): Promise<void> {
   // Disable transitions/animations + image-lazy-load to stabilize.
   await page.addStyleTag({

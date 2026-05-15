@@ -15,10 +15,20 @@ import { client } from '@/sanity/lib/client';
  * Otherwise 401.
  */
 export async function GET(request: Request): Promise<Response> {
-  const { isValid, redirectTo = '/' } = await validatePreviewUrl(
-    client.withConfig({ token: process.env.SANITY_API_READ_TOKEN }),
-    request.url,
-  );
+  let isValid = false;
+  let redirectTo = '/';
+
+  try {
+    const result = await validatePreviewUrl(
+      client.withConfig({ token: process.env.SANITY_API_READ_TOKEN }),
+      request.url,
+    );
+    isValid = result.isValid;
+    if (result.redirectTo) redirectTo = result.redirectTo;
+  } catch (err) {
+    console.error('[draft-mode/enable] validatePreviewUrl threw:', err);
+    return new Response('Invalid preview secret', { status: 401 });
+  }
 
   if (!isValid) {
     return new Response('Invalid preview secret', { status: 401 });
