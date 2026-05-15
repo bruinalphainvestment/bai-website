@@ -1,4 +1,8 @@
 import { ImageResponse } from 'next/og';
+import { stegaClean } from 'next-sanity';
+
+import { sanityFetch } from '@/sanity/lib/live';
+import { siteSettingsQuery } from '@/sanity/lib/queries';
 
 export const alt = 'Bruin Alpha Investment at UCLA';
 export const size = {
@@ -8,7 +12,14 @@ export const size = {
 
 export const contentType = 'image/png';
 
+const FALLBACK = {
+  brandName: 'Bruin Alpha Investment',
+  slogan: 'Have Passion, Believe in Legacy, Believe in BAI',
+};
+
 export default async function Image() {
+  const { brandName, slogan } = await loadCopy();
+
   return new ImageResponse(
     (
       <div
@@ -47,7 +58,7 @@ export default async function Image() {
               marginBottom: '24px',
             }}
           >
-            Bruin Alpha Investment
+            {brandName}
           </div>
           <div
             style={{
@@ -66,7 +77,7 @@ export default async function Image() {
               fontWeight: 400,
             }}
           >
-            Have Passion, Believe in Legacy, Believe in BAI
+            {slogan}
           </div>
         </div>
       </div>
@@ -75,4 +86,20 @@ export default async function Image() {
       ...size,
     }
   );
+}
+
+async function loadCopy(): Promise<{ brandName: string; slogan: string }> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return FALLBACK;
+  try {
+    const { data } = await sanityFetch({ query: siteSettingsQuery });
+    if (!data) return FALLBACK;
+    const clean = stegaClean(data);
+    return {
+      brandName: clean.brandName ?? FALLBACK.brandName,
+      slogan: clean.slogan ?? FALLBACK.slogan,
+    };
+  } catch (error) {
+    console.error('[opengraph-image] siteSettings fetch failed; using fallback:', error);
+    return FALLBACK;
+  }
 }
