@@ -3,6 +3,7 @@ import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { joinPageFallback } from '@/app/_components/fallbacks/join-page';
+import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import { joinPageQuery, siteSettingsQuery } from '@/sanity/lib/queries';
 import type {
@@ -32,7 +33,13 @@ export async function generateMetadata(): Promise<Metadata> {
     joinPageFallback.seo?.description ??
     '';
 
-  return { title, description };
+  const images = resolveOgImages(join.seo?.ogImage, settings.defaultOgImage, title);
+
+  return {
+    title,
+    description,
+    openGraph: images ? { title, description, images } : { title, description },
+  };
 }
 
 export default async function JoinPage() {

@@ -6,6 +6,7 @@ import {
   foundingMembersFallback,
   teamPageFallback,
 } from '@/app/_components/fallbacks/team-page';
+import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   allFoundingMembersQuery,
@@ -39,7 +40,13 @@ export async function generateMetadata(): Promise<Metadata> {
     teamPageFallback.seo?.description ??
     '';
 
-  return { title, description };
+  const images = resolveOgImages(page.seo?.ogImage, settings.defaultOgImage, title);
+
+  return {
+    title,
+    description,
+    openGraph: images ? { title, description, images } : { title, description },
+  };
 }
 
 export default async function TeamPage() {

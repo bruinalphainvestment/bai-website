@@ -3,6 +3,7 @@ import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { trainingPageFallback } from '@/app/_components/fallbacks/training-page';
+import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import { siteSettingsQuery, trainingPageQuery } from '@/sanity/lib/queries';
 import type {
@@ -30,7 +31,13 @@ export async function generateMetadata(): Promise<Metadata> {
     trainingPageFallback.seo?.description ??
     '';
 
-  return { title, description };
+  const images = resolveOgImages(training.seo?.ogImage, settings.defaultOgImage, title);
+
+  return {
+    title,
+    description,
+    openGraph: images ? { title, description, images } : { title, description },
+  };
 }
 
 export default async function TrainingPage() {

@@ -6,6 +6,7 @@ import {
   projectsListFallback,
   projectsPageFallback,
 } from '@/app/_components/fallbacks/projects-page';
+import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   allProjectsQuery,
@@ -46,7 +47,13 @@ export async function generateMetadata(): Promise<Metadata> {
     projectsPageFallback.seo?.description ??
     '';
 
-  return { title, description };
+  const images = resolveOgImages(page.seo?.ogImage, settings.defaultOgImage, title);
+
+  return {
+    title,
+    description,
+    openGraph: images ? { title, description, images } : { title, description },
+  };
 }
 
 export default async function ProjectsPage() {

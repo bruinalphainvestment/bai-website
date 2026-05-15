@@ -8,6 +8,7 @@ import {
   committeesIndexPageFallback,
 } from '@/app/_components/fallbacks/committees-index-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
+import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   allCommitteesIndexQuery,
@@ -40,7 +41,14 @@ export async function generateMetadata(): Promise<Metadata> {
     settings.defaultMetaDescription ??
     committeesIndexPageFallback.seo?.description ??
     '';
-  return { title, description };
+
+  const images = resolveOgImages(page.seo?.ogImage, settings.defaultOgImage, title);
+
+  return {
+    title,
+    description,
+    openGraph: images ? { title, description, images } : { title, description },
+  };
 }
 
 export default async function CommitteesIndexPage() {

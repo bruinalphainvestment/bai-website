@@ -6,6 +6,7 @@ import {
   eventsPageFallback,
 } from '@/app/_components/fallbacks/events-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
+import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   allEventsQuery,
@@ -39,7 +40,13 @@ export async function generateMetadata(): Promise<Metadata> {
     eventsPageFallback.seo?.description ??
     '';
 
-  return { title, description };
+  const images = resolveOgImages(page.seo?.ogImage, settings.defaultOgImage, title);
+
+  return {
+    title,
+    description,
+    openGraph: images ? { title, description, images } : { title, description },
+  };
 }
 
 export default async function EventsPage() {
