@@ -283,7 +283,7 @@ const homePageSections = [
     _type: 'statsSection',
     stats: [
       { _key: 'stat-est', value: '2026', label: 'Est.' },
-      { _key: 'stat-members', value: '5', label: 'Founding Members' },
+      { _key: 'stat-members', value: '8', label: 'Founding Members' },
       { _key: 'stat-committees', value: '4', label: 'Committees' },
       { _key: 'stat-recruit', value: 'Fall 2026', label: 'Recruitment' },
     ],
@@ -359,7 +359,7 @@ const homePageSections = [
     _key: 'cta-7',
     _type: 'ctaSection',
     heading: 'Join the Founding Cohort',
-    body: 'Priority application closes [date — placeholder TBD]. Applications open to all current and incoming UCLA students.',
+    body: 'Priority application closes early Fall 2026. Applications open to all current and incoming UCLA students.',
     ctaLabel: 'Apply Now',
     secondaryCtaLabel: 'Email Us',
     secondaryCtaHref: `mailto:${CLUB_EMAIL}`,

@@ -13,9 +13,12 @@ export type FoundingTeamMemberItem = {
 };
 
 export const foundingTeamMembersFallback: FoundingTeamMemberItem[] = [
-  { monogram: 'MH', name: 'Mack Haymond', role: 'President' },
-  { monogram: 'MX', name: 'Max', role: 'Trading Director' },
-  { monogram: 'SM', name: 'Sam', role: 'Operations' },
-  { monogram: 'KX', name: 'Kai', role: 'Trading Co-Director' },
-  { monogram: 'HM', name: 'Helmer', role: 'Accounting & Consulting Director' },
+  { monogram: 'MW', name: 'Matt Walker', role: 'President & Wealth Management Director' },
+  { monogram: 'BR', name: 'Ben Robinson', role: 'Accounting & Consulting Co-Director' },
+  { monogram: 'MP', name: 'Michael Prosser', role: 'Accounting & Consulting Co-Director' },
+  { monogram: 'MH', name: 'Mack Haymond', role: 'Founder & Trading Co-Director' },
+  { monogram: 'KH', name: 'Kai Hata', role: 'Trading Co-Director' },
+  { monogram: 'SJ', name: 'Samuel Jiang', role: 'Trading Co-Director' },
+  { monogram: 'MX', name: 'Max Helmer', role: 'Investment Banking Co-Director' },
+  { monogram: 'RA', name: 'Rhett Adkins', role: 'Investment Banking Co-Director' },
 ];
