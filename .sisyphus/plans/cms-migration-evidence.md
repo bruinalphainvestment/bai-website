@@ -978,3 +978,104 @@ All editorial copy lives in `app/_components/fallbacks/sections/*.ts` (8 modules
 - **Dev-server flake on /committees/[slug]**: Turbopack dev mode produced a transient ChunkLoadError for the dynamic route. The production build (`bun run start`) renders all 4 slugs cleanly with HTTP 200. Filed as dev-only quirk; production behavior unaffected.
 - **Editor-side defaults**: Each fallback module is typed against `NonNullable<XQueryResult>`, so when the editor seeds these singletons in `migration` dataset, the same shape applies — no client-side schema drift.
 
+---
+
+## Session: Phase 3 Polymorphic Homepage
+
+Branch tip: `cb63617` (was `68a3eba` after Phase 2)
+Date: 2026-05-14T23:58Z
+
+### T3.1 — `<SectionRenderer />` build
+
+**Commit**: `14be4ba feat(cms-migration): T3.1 build <SectionRenderer /> with discriminated union switch`
+
+New file `app/_components/sections/section-renderer.tsx` (48 lines):
+- Imports 8 section components (Hero, Mission, Values, Stats, Marquee, RecruitmentCTA, FoundingTeam, CommitteesTeaser)
+- `type Section = NonNullable<HomePage['sections']>[number]` — pulls union from generated `HomePage` type
+- `switch (section._type)` with 8 cases — each spreads `{...section}` into the component except `marqueeSection` which uses `items={section.items ?? []}` explicitly (matches plan and triggers Marquee's empty-array fallback path correctly)
+- Default branch:
+  - `const _exhaustiveCheck: never = section` — compile-time check; TS will fail here if a new section type is added without updating this switch
+  - `console.warn` only in `NODE_ENV !== 'production'` (graceful degradation in prod)
+  - returns `null`
+
+**Verification**:
+```
+bun run typecheck: exit 0 (after rm -rf .next to clear stale `.next/types/*.d 2.ts` duplicates — known issue per learnings.md)
+LSP diagnostics: No diagnostics found
+```
+
+### T3.2 — Homepage wiring
+
+**Commit**: `cb63617 feat(cms-migration): T3.2 wire homepage to render sections[] via SectionRenderer`
+
+Refactored `app/(site)/page.tsx` (23 → 60 lines) from a sync 8-section component into an async server component:
+
+```tsx
+export default async function Home() {
+  const data = await loadHomeData();
+  const sections = data?.sections ?? [];
+  if (sections.length === 0) return <FallbackHome />;
+  return (
+    <>
+      {sections.map((section, index) => (
+        <SectionRenderer key={section._key ?? `section-${index}`} section={section} />
+      ))}
+    </>
+  );
+}
+
+async function loadHomeData(): Promise<HomePageQueryResult | null> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return null;
+  try {
+    const { data } = await sanityFetch({ query: homePageQuery });
+    return data ? (stegaClean(data) as HomePageQueryResult) : null;
+  } catch (err) {
+    console.error('[Home] sanityFetch failed; rendering fallback:', err);
+    return null;
+  }
+}
+
+function FallbackHome() { /* 8 hardcoded sections in original order */ }
+```
+
+**Design choices**:
+- Inline `FallbackHome` (preferred per task brief — each section component already has internal fallback behavior when called with no props, so this is a tiny 10-line component, well under the 30-line cutoff for extraction)
+- Reuses existing `homePageQuery` from `sanity/lib/queries.ts` (no need to inline — query was already defined in Phase 0/1)
+- Three layers of fallback: USE_SANITY off → null → FallbackHome; fetch throws → null → FallbackHome; empty sections → FallbackHome
+- `stegaClean()` cast as `HomePageQueryResult` — safe because the prior `data ? ... : null` guards against null
+
+**Verification**:
+
+```
+bun run typecheck:           exit 0
+bun run build:               exit 0; / still prerenders as static (○) in default env
+bun run typegen:             exit 0 (no new types — SectionRenderer consumes existing generated types)
+LSP diagnostics page.tsx:    No diagnostics found
+LSP diagnostics renderer:    No diagnostics found
+```
+
+**Smoke test** — `bun run dev` on :3000:
+
+| Mode | Env | HTTP | size | sections order |
+|---|---|---|---|---|
+| Fallback | (default) | 200 | 81,430 B | hero · mission · stats · values · committees · team · marquee · cta |
+| CMS      | `NEXT_PUBLIC_USE_SANITY=true NEXT_PUBLIC_SANITY_DATASET=migration` | 200 | 85,687 B | hero · mission · stats · values · committees · team · marquee · cta |
+
+Order match: ✓ — `data-section="..."` markers extracted from both responses are identical in order. The ~4 KB size delta between fallback and CMS responses traces to the `<template data-dgst="BAILOUT_TO_CLIENT_SIDE_RENDERING">` wrapper that `SanityLive` emits in the CMS path (a normal Server/Client boundary marker for the live-content subscription, not an error). Visible content is byte-identical because the `migration` seed mirrors the production hardcode verbatim per the cutover invariant.
+
+### Acceptance against plan Phase 3 exit gate (lines 651-659)
+
+| Gate criterion | Status | Evidence |
+|---|---|---|
+| Homepage returns 200 on preview with USE_SANITY=true | ✓ | curl localhost:3000 → 200 with `USE_SANITY=true DATASET=migration` |
+| Reordering sections in dataset → reflects on next page load | ✓ (by construction) | `sections.map(...)` iterates in array order; SectionRenderer dispatches based on `_type`; no static ordering enforced in renderer |
+| Removing a section from dataset → page doesn't crash | ✓ (by construction) | Renderer is null-safe per-section; if sections array becomes empty entirely, FallbackHome takes over |
+| Adding an unknown section type → renderer returns null + dev warn | ✓ (by construction) | Default branch returns null + `console.warn` in dev; compile-time `_exhaustiveCheck: never` would force a TS error before the new type ever reaches the runtime, so the prod path only ever sees known `_type`s |
+| Pixel diff <1% vs baseline | Deferred | Playwright pixel diff deferred per task brief (no e2e suite yet); visual parity confirmed by HTML order match + identical headline/copy/values count in fallback vs CMS HTML |
+
+### Notes / deferrals
+
+- **Playwright pixel-diff e2e specs intentionally skipped** per task brief — to land with Phase 4+.
+- **`primaryHref` field**: `<RecruitmentCTA />` accepts an optional `primaryHref` prop (Phase 2/T2.10) but the homePage schema doesn't currently expose it; spreading `{...section}` for `ctaSection` therefore leaves `primaryHref` undefined → falls through to the component's `'#'` default. Wiring `siteSettings.applyUrl` into this prop is outside Phase 3 scope (logical follow-up: extend SectionRenderer to take an optional `applyUrl` prop and pipe it through, OR have RecruitmentCTA pull from siteSettings itself).
+- **Build remained static (`○ /`)**: With default env (USE_SANITY unset at build time), `loadHomeData` short-circuits before any Sanity call, so Next can still fully pre-render the homepage as static HTML. Flipping USE_SANITY=true at build time would convert it to dynamic — confirm that interaction explicitly during Phase 6 cutover.
+
