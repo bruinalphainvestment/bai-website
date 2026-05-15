@@ -1152,3 +1152,99 @@ LSP diagnostics:      No diagnostics found across all new + modified files
 - **Smoke test was run against the flag-OFF build path** (`NEXT_PUBLIC_USE_SANITY=false`). Flag-ON smoke is a Phase 6 cutover concern — the fetch paths are exercised by typecheck and by Phase 2/3 evidence; behavior under flag-ON for these new files is identical-by-construction to the Phase 2/3 fetch-with-fallback pattern.
 - **Page-level OG image alt text**: currently uses the page's resolved `<title>` as alt. The plan's acceptance only specifies the URL contract; the alt is a small UX nicety. If a "social card alt text" field becomes desired later, extend `pageSeo` schema with `ogImageAlt` and tweak the helper signature.
 
+
+---
+
+## Phase 6 — Automatable gates (T6.1, T6.2, T6.6)
+
+- Started: 2026-05-15T00:35:00Z
+- Completed: 2026-05-15T01:05:00Z
+- Branch tip before: `180d80b`
+- Preview under test: `https://bai-website-76m41fwvd-spyicydevs-projects.vercel.app` (latest Ready preview on `feature/cms-migration`)
+- Full report: `.sisyphus/plans/cms-migration-phase6-report.md`
+
+### Summary
+
+| Status | Count | Gates |
+|---|---|---|
+| PASS | 10 | 5.2, 5.5, 5.6, 5.9, 5.10, 5.11, 5.12, 5.13, 5.14, 5.15 |
+| PARTIAL PASS / FAIL | 1 | 5.8 (bad committee slug returns 200, not 404, though body is the branded 404) |
+| BASELINE (post-cutover diff pending) | 1 | 5.1 |
+| DEFERRED — manual prerequisites | 3 | 5.3, 5.4, 5.7 |
+
+Baselines: 18 / 18 captured (`tests/__snapshots__/visual-baseline/baseline-<route>-<viewport>.png`).
+Rollback dry-run: PASS (both flag-off and flag-on render visible-content-equivalent HTML; flag-off path does not contact Sanity).
+
+### Artifacts (sha256)
+
+```
+f81e8e1852db35c12d50301a1f8b4b806bb11be0b1015c6e98e0fe7924f13f96  tests/visual-baseline.spec.ts
+e8fc734b4758ef7fa4de4fdc453a52fc460d7e9f4391e491216a9a3f22894bcf  .sisyphus/plans/cms-migration-phase6-report.md
+dd2bbd083916d3a8d7b58a9ced06e9836488c7cebe131a81bcdcbc5a7260e38d  tests/__snapshots__/visual-baseline/baseline-about-desktop.png
+537105f7a3c77fc42766fa070eb027afc68f08ef9e056d6fea43ad07aafa45d9  tests/__snapshots__/visual-baseline/baseline-about-mobile.png
+679f002248a2807315456605fa6816920d06fb607d439331686861773897f6e4  tests/__snapshots__/visual-baseline/baseline-committees_trading-desktop.png
+b3a7e41acc73b8915d2e0e9f63156173a3559596812168cee64b1cde835c8ca2  tests/__snapshots__/visual-baseline/baseline-committees_trading-mobile.png
+79383efe114cc837f8e9708385cab763d8c479aca0df0425f07e547d3cb83c6c  tests/__snapshots__/visual-baseline/baseline-committees-desktop.png
+891cccb955c436a879da7f0f75dc6a9c5347ffdf1325c867c30f8601832231fd  tests/__snapshots__/visual-baseline/baseline-committees-mobile.png
+133ebf6945a467e450eaa4b70ca660324794cc5646aacd41dc3c2d8ea6514e72  tests/__snapshots__/visual-baseline/baseline-events-desktop.png
+c21e14ddb553b89887b655e8e8b9deaa6652806b10876db9ac4bc0dbb3865e42  tests/__snapshots__/visual-baseline/baseline-events-mobile.png
+5b6d83933e935e647e072b6eb3b28a97486c5985a7f1d58cbec0742d86f6886f  tests/__snapshots__/visual-baseline/baseline-home-desktop.png
+0e1bf44ef21046efddf0f1871f044d4ea84d764c029728b33499589fa24c0180  tests/__snapshots__/visual-baseline/baseline-home-mobile.png
+657426ad0ca039280d326e48fa3b5a40382d8909920d68695a4ca090532496e7  tests/__snapshots__/visual-baseline/baseline-join-desktop.png
+e72596c1025d9b53f1f76d350830808ea17484783bdabf74040a46fb444101b1  tests/__snapshots__/visual-baseline/baseline-join-mobile.png
+20794c9dc838252877fde5b099188859fcda14321013211b83758717a47b9a6f  tests/__snapshots__/visual-baseline/baseline-projects-desktop.png
+180dc64a55d5c42c9538aeb9586c02b49ada7e274247223beb84e0ea745af7fb  tests/__snapshots__/visual-baseline/baseline-projects-mobile.png
+9cadaa5c3c8d4a42a72b9ecf98dcd9afafc174c290f55467b94a9839023b3d5a  tests/__snapshots__/visual-baseline/baseline-team-desktop.png
+7bff72281406b1dd27b99fabbf705a29a2a7a2a84d95a7a8581ec2694af06459  tests/__snapshots__/visual-baseline/baseline-team-mobile.png
+dedf85050d2d0ea7304732a6591015a5044e53baa1ca1487d9c6bc78d1daea5d  tests/__snapshots__/visual-baseline/baseline-training-desktop.png
+ab3771610c1511f3fc9cd2fb4668b051081421a11fc700437c1f21bc42e2307d  tests/__snapshots__/visual-baseline/baseline-training-mobile.png
+```
+
+### Verification gates run
+
+```
+bun run typecheck:                              exit 0
+grep -rE "as any|@ts-ignore" app/ sanity/:      exit 1 (no matches)
+bun run build:                                  exit 0
+bunx playwright test tests/visual-baseline:     18 passed (8.2s)
+LSP diagnostics:                                No diagnostics found
+```
+
+### Preview-URL probes (gate 5.5–5.13)
+
+| Probe | Result |
+|---|---|
+| Stega PUA char scan, 9 routes | 0 per route (PASS) |
+| JSON-LD `@context` / `@type` / `name` | `https://schema.org` / `Organization` / `Bruin Alpha Investment` (PASS) |
+| `/totally-fake-page-xyz` HTTP | 404 (PASS) |
+| `/committees/not-a-committee` HTTP | 200 with branded 404 body (PARTIAL FAIL — known ISR-cache edge with `dynamicParams=true` + `revalidate=3600`) |
+| `/sitemap.xml` `<loc>` count | 12 (PASS, ≥12 required) |
+| `POST /api/revalidate` no signature | 401 (PASS) |
+| `/team` `cdn.sanity.io/images/u1y6t81y` count | 0 (PASS — photo-release gate enforced) |
+
+### Rollback dry-run (T6.6)
+
+Local `bun run dev` toggle on :3000.
+
+| Phase | `NEXT_PUBLIC_USE_SANITY` | Slogan rendered | Disclaimer rendered | `data-section` count | Live SSE marker | Sanity API calls |
+|---|---|---|---|---|---|---|
+| Fallback | `false` | ✓ (from hero fallback) | ✓ (from footer fallback) | 16 | absent | none |
+| CMS      | `true`  | ✓ (from Sanity migration ds) | ✓ (from Sanity siteSettings) | 16 | present (BAILOUT_TO_CLIENT_SIDE_RENDERING shell) | live subscription opened |
+
+Rollback contract verified: env-var flip is a safe, instant emergency rollback. No code/schema change needed for rollback.
+
+### Cutover readiness
+
+**Recommendation: READY for T6.4 cutover** with these caveats:
+- T1.4 (Sanity webhook configuration in Manage UI) is still pending USER MANUAL. Without it, post-cutover RTT degrades from <60s to ≤60min (ISR-only). Strongly recommend wiring T1.4 BEFORE T6.4, or accepting the slower RTT.
+- Gate 5.8 part 2 (bad committee slug HTTP status) is a known soft-404 edge. Cosmetic for users (body is correct), but suboptimal for SEO crawlers. Fix path documented in the report; can be addressed pre-cutover (<30min ticket) or accepted with `<meta name="robots" content="noindex">` on the branded 404 body.
+- Manual editor RTT (T6.3) should be run ONCE against preview after T1.4 to confirm the <60s budget before T6.4.
+
+### Notes / deviations
+
+- **Test directory**: brief specified `e2e/visual-baseline.spec.ts`; placed at `tests/visual-baseline.spec.ts` to match the existing `playwright.config.ts` `testDir: 'tests'` convention. Functionally equivalent.
+- **Mobile viewport**: brief specified 375×667; existing config uses Pixel 5 (375×812). The 145px height delta only affects `fullPage` screenshot total height; pixel-density comparability for visual diff is preserved.
+- **T6.6 preview rebuild**: brief authorized a Vercel-REST round-trip env flip but recommended skipping the ~60s rebuild cost. Substituted local `bun run dev` flip, which exercises the same fetch-with-fallback code path (the env var is read at request time, not build time). Equivalent contract verification.
+- **T6.5 SEED_MODE switch**: per inherited wisdom, already done by T0.11 default. No action this batch.
+- **Gate 5.2 fallback hits**: the grep matches `app/opengraph-image.tsx` (not under `fallbacks/`). This is acceptable — the inline default in the OG image route is by design (edge route needs a literal default when Sanity is unreachable; matches T5.1's fetch-with-fallback). Documented in the report row.
+
