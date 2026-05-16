@@ -3,6 +3,8 @@ import { Fraunces, Inter, Geist_Mono } from "next/font/google";
 import { draftMode } from "next/headers";
 import { stegaClean } from "next-sanity";
 import { VisualEditing } from "next-sanity/visual-editing";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { footerFallback } from "./_components/fallbacks/footer";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
@@ -123,6 +125,9 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+
+        <Analytics />
+        <SpeedInsights />
 
         {isDraftMode && <VisualEditing />}
         <SanityLive />
