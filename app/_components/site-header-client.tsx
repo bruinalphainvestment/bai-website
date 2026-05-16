@@ -49,16 +49,16 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
         <div className="container mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/brand/logo-mark.svg"
-              alt={brandAlt}
-              width={48}
-              height={48}
-              className="w-12 h-12"
-            />
-          </Link>
+             <img
+               src="/brand/logo.png"
+               alt={brandAlt}
+               width={48}
+               height={48}
+               className="w-12 h-12"
+             />
+           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link._key}
@@ -96,13 +96,13 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
             <div className="container mx-auto px-4 h-20 flex items-center justify-between">
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/brand/logo-mark.svg"
-                  alt={brandAlt}
-                  width={48}
-                  height={48}
-                  className="w-12 h-12"
-                />
+               <img
+                   src="/brand/logo.png"
+                   alt={brandAlt}
+                   width={48}
+                   height={48}
+                   className="w-12 h-12"
+                 />
               </Link>
               <button
                 className="p-2 text-[#002147] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]"
