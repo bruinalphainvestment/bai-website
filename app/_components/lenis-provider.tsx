@@ -23,13 +23,14 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     <ReactLenis
       root
       options={{
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+        syncTouch: false,
         anchors: true,
         stopInertiaOnNavigate: true,
-        syncTouch: false,
-        lerp: 0.15,
-        duration: 0.9,
-        wheelMultiplier: 0.9,
-        easing: (t) => 1 - Math.pow(1 - t, 3),
       }}
     >
       {children}
