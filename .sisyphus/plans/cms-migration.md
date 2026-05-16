@@ -868,12 +868,12 @@ None — all decisions pre-resolved in the table above per user authorization. O
 
 Per Phase 6 exit gate. Plan is complete when:
 
-- [ ] All 15 verification gates exit 0 against production URL
-- [ ] Backup tarball stored + sha256 recorded
-- [ ] `NEXT_PUBLIC_USE_SANITY=true` set on production
-- [ ] Studio member list audit logged in evidence file
-- [ ] Rollback dry-run executed on preview
-- [ ] One real human (Max / Sam / Matt / Kai / Ben / Michael / Helmer / Rhett) has edited a field in Studio and verified it appears on prod within 60s
+- [x] All 15 verification gates exit 0 against production URL
+- [x] Backup tarball stored + sha256 recorded
+- [x] `NEXT_PUBLIC_USE_SANITY=true` set on production
+- [x] Studio member list audit logged in evidence file
+- [x] Rollback dry-run executed on preview
+- [x] One real human (Max / Sam / Matt / Kai / Ben / Michael / Helmer / Rhett) has edited a field in Studio and verified it appears on prod within 60s
 
 If any box unchecked, the plan is not complete and cannot be marked closed.
 
