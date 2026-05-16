@@ -4,128 +4,114 @@ export const committee = defineType({
   name: 'committee',
   title: 'Committee',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content', default: true },
+    { name: 'leadership', title: 'Leadership' },
+    { name: 'projects', title: 'Projects' },
+    { name: 'display', title: 'Display & SEO' },
+  ],
   fields: [
     defineField({
       name: 'name',
       title: 'Name',
       type: 'string',
+      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      group: 'content',
       options: { source: 'name', maxLength: 96 },
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'director',
-      title: 'Director',
-      type: 'reference',
-      to: [{ type: 'foundingMember' }],
     }),
     defineField({
       name: 'tagline',
       title: 'Tagline',
       type: 'string',
+      group: 'content',
+      description: 'Short tagline shown on Committees teaser cards.',
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'array',
+      group: 'content',
       of: [{ type: 'block' }],
     }),
     defineField({
       name: 'curriculum',
       title: 'Curriculum',
       type: 'array',
+      group: 'content',
       of: [{ type: 'block' }],
       description:
         'Full curriculum outline (portable text). Rendered on the committee subpage.',
     }),
     defineField({
-      name: 'signature_projects',
-      title: 'Signature Projects',
+      name: 'learn',
+      title: "What You'll Learn (bullets, max 4)",
       type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          to: [{ type: 'project' }],
-        }),
-      ],
-      description: 'Projects affiliated with this committee.',
+      group: 'content',
+      of: [{ type: 'string' }],
+      validation: (rule) => rule.max(4),
+      description: 'Bullet points displayed on the committee subpage.',
     }),
     defineField({
-      name: 'comp_calendar',
-      title: 'Competition Calendar',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          name: 'compCalendarEntry',
-          fields: [
-            defineField({
-              name: 'name',
-              title: 'Name',
-              type: 'string',
-              validation: (rule) => rule.required(),
-            }),
-            defineField({
-              name: 'date',
-              title: 'Date',
-              type: 'datetime',
-              validation: (rule) => rule.required(),
-            }),
-            defineField({
-              name: 'url',
-              title: 'URL',
-              type: 'url',
-              validation: (rule) =>
-                rule.uri({ scheme: ['http', 'https'] }),
-            }),
-            defineField({
-              name: 'type',
-              title: 'Type',
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Recruitment', value: 'recruitment' },
-                  { title: 'Competition', value: 'comp' },
-                  { title: 'Social', value: 'social' },
-                  { title: 'Speaker', value: 'speaker' },
-                ],
-                layout: 'dropdown',
-              },
-              validation: (rule) => rule.required(),
-            }),
-          ],
-          preview: {
-            select: { title: 'name', subtitle: 'type', date: 'date' },
-            prepare({ title, subtitle, date }) {
-              const when =
-                typeof date === 'string'
-                  ? new Date(date).toLocaleDateString()
-                  : '';
-              return {
-                title: title ?? 'Entry',
-                subtitle: [subtitle, when].filter(Boolean).join(' • '),
-              };
-            },
-          },
-        }),
-      ],
+      name: 'differentiator',
+      title: 'Differentiator Pitch',
+      type: 'text',
+      group: 'content',
+      rows: 3,
+      description: 'Short pitch explaining what sets this committee apart.',
+    }),
+    defineField({
+      name: 'director',
+      title: 'Director',
+      type: 'reference',
+      group: 'leadership',
+      to: [{ type: 'foundingMember' }],
+      options: { disableNew: true },
+      description:
+        'Optional. Pick a Founding Member already in the database (use Team Page → Founding Members to add new people).',
+    }),
+    defineField({
+      name: 'directorPlaceholder',
+      title: 'Director Placeholder',
+      type: 'string',
+      group: 'leadership',
+      description:
+        'Shown when no director is selected, e.g. "TBD — announcement coming soon".',
     }),
     defineField({
       name: 'director_quote',
       title: 'Director Quote',
       type: 'text',
+      group: 'leadership',
       rows: 3,
       description: 'Short pull-quote from the committee director.',
+    }),
+    defineField({
+      name: 'signature_projects',
+      title: 'Signature Projects',
+      type: 'array',
+      group: 'projects',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{ type: 'project' }],
+          options: { disableNew: true },
+        }),
+      ],
+      description:
+        'Projects affiliated with this committee. Add new projects under Projects Page → All Projects first.',
     }),
     defineField({
       name: 'order',
       title: 'Order',
       type: 'number',
+      group: 'display',
       description: 'Display order on Committees page (lower = earlier).',
       validation: (rule) => rule.integer().min(0),
     }),
@@ -133,6 +119,7 @@ export const committee = defineType({
       name: 'accentColor',
       title: 'Accent Color',
       type: 'string',
+      group: 'display',
       options: {
         list: [
           { title: 'Gold', value: 'gold' },
@@ -144,33 +131,12 @@ export const committee = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'learn',
-      title: "What You'll Learn (bullets, max 4)",
-      type: 'array',
-      of: [{ type: 'string' }],
-      validation: (rule) => rule.max(4),
-      description: 'Bullet points displayed on the committee subpage.',
-    }),
-    defineField({
-      name: 'differentiator',
-      title: 'Differentiator Pitch',
-      type: 'text',
-      rows: 3,
-      description: 'Short pitch explaining what sets this committee apart.',
-    }),
-    defineField({
-      name: 'directorPlaceholder',
-      title: 'Director Placeholder',
-      type: 'string',
-      description:
-        'Shown when director ref is null, e.g. "TBD — announcement coming soon"',
-    }),
-    defineField({
       name: 'redirectsFrom',
       title: 'Redirects From',
       type: 'array',
+      group: 'display',
       of: [{ type: 'string' }],
-      description: 'Old slugs that 301 to current slug',
+      description: 'Old slugs that 301 to current slug.',
     }),
   ],
   orderings: [

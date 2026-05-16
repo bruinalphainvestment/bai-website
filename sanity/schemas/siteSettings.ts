@@ -24,124 +24,36 @@ export const siteSettings = defineType({
   name: 'siteSettings',
   title: 'Site Settings',
   type: 'document',
+  groups: [
+    { name: 'brand', title: 'Brand', default: true },
+    { name: 'contact', title: 'Contact & Social' },
+    { name: 'navigation', title: 'Navigation' },
+    { name: 'seo', title: 'SEO & Metadata' },
+    { name: 'errors', title: 'Error Copy' },
+    { name: 'legal', title: 'Legal & Locked' },
+    { name: 'admin', title: 'Admin' },
+  ],
   fields: [
-    // ---- Existing fields (snake_case ones marked Deprecated; kept for migration safety) ----
     defineField({
-      name: 'ucla_compliant_name',
-      title: 'UCLA-Compliant Club Name (Deprecated)',
+      name: 'brandName',
+      title: 'Brand Name',
       type: 'string',
-      initialValue: 'Bruin Alpha Investment at UCLA',
-      validation: (rule) => rule.required(),
-      readOnly: true,
-      description:
-        'Locked: use "Bruin Alpha Investment at UCLA" — NEVER "UCLA Bruin Alpha Investment". Deprecated — use the camelCase field; will be removed after migration.',
+      group: 'brand',
+      initialValue: 'Bruin Alpha Investment',
     }),
     defineField({
       name: 'slogan',
       title: 'Club Slogan',
       type: 'string',
+      group: 'brand',
       initialValue: 'Have Passion, Believe in Legacy, Believe in BAI',
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'mission_statement',
-      title: 'Mission Statement (Deprecated)',
-      type: 'array',
-      of: [{ type: 'block' }],
-      readOnly: true,
-      description:
-        'UCLA-approved verbatim mission statement (portable text). Edits require leadership review for regulatory and brand compliance. Deprecated — use the camelCase field; will be removed after migration.',
-      validation: (rule) => rule.required().min(1),
-      initialValue: LOCKED_MISSION,
-    }),
-    defineField({
-      name: 'disclaimer_text',
-      title: 'Site-Wide Disclaimer (Deprecated)',
-      type: 'text',
-      rows: 5,
-      initialValue: LOCKED_DISCLAIMER,
-      validation: (rule) => rule.required(),
-      readOnly: true,
-      description:
-        'LOCKED Metis-mandated copy. Do not edit without legal review. Deprecated — use the camelCase field; will be removed after migration.',
-    }),
-    defineField({
-      name: 'applyUrl',
-      title: 'Application URL (Tally)',
-      type: 'url',
-      initialValue: 'https://tally.so/r/placeholder',
-      validation: (rule) =>
-        rule.required().uri({ scheme: ['http', 'https'] }),
-      description: 'Replace with real Tally form URL once created.',
-    }),
-    defineField({
-      name: 'clubEmail',
-      title: 'Club Email',
-      type: 'string',
-      initialValue: 'bruinalphainvestment26@gmail.com',
-      validation: (rule) => rule.required().email(),
-    }),
-    defineField({
-      name: 'instagramUrl',
-      title: 'Instagram URL',
-      type: 'url',
-      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
-    }),
-    defineField({
-      name: 'linkedinUrl',
-      title: 'LinkedIn URL',
-      type: 'url',
-      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
-    }),
-    defineField({
-      name: 'slackInviteUrl',
-      title: 'Slack Invite URL',
-      type: 'url',
-      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
-    }),
-    defineField({
-      name: 'domain_renewal_date',
-      title: 'Domain Renewal Date (Deprecated)',
-      type: 'date',
-      readOnly: true,
-      description:
-        'Track renewal so handoffs flag it before lapse. Deprecated — use the camelCase field; will be removed after migration.',
-    }),
-
-    // ---- New fields (D1, D2, D5, D9, D10, D13, D14, D18 from plan) ----
-    defineField({
-      name: 'brandName',
-      title: 'Brand Name',
-      type: 'string',
-      initialValue: 'Bruin Alpha Investment',
-    }),
-    defineField({
-      name: 'titleSuffix',
-      title: 'Title Suffix',
-      type: 'string',
-      initialValue: ' — Bruin Alpha Investment at UCLA',
-      description:
-        'Appended to each page <title> tag. Per D2: default " — Bruin Alpha Investment at UCLA".',
-    }),
-    defineField({
-      name: 'defaultMetaDescription',
-      title: 'Default Meta Description',
-      type: 'text',
-      rows: 3,
-      description: 'Fallback <meta name="description"> when a page omits its own.',
-    }),
-    defineField({
-      name: 'defaultOgImage',
-      title: 'Default OG Image',
-      type: 'image',
-      options: { hotspot: true },
-      description:
-        'Fallback Open Graph image when a page omits its own (per D3).',
     }),
     defineField({
       name: 'foundedYear',
       title: 'Founded Year',
       type: 'number',
+      group: 'brand',
       validation: (rule) => rule.required().integer().min(2020).max(2030),
       description: 'Numeric founded year (used in copyright).',
     }),
@@ -149,12 +61,54 @@ export const siteSettings = defineType({
       name: 'foundedTerm',
       title: 'Founded Term',
       type: 'string',
+      group: 'brand',
       description: 'Textual founded term (e.g. "Spring 2026").',
     }),
+
+    defineField({
+      name: 'applyUrl',
+      title: 'Application URL (Tally)',
+      type: 'url',
+      group: 'contact',
+      initialValue: 'https://tally.so/r/placeholder',
+      validation: (rule) => rule.required().uri({ scheme: ['http', 'https'] }),
+      description: 'Replace with real Tally form URL once created.',
+    }),
+    defineField({
+      name: 'clubEmail',
+      title: 'Club Email',
+      type: 'string',
+      group: 'contact',
+      initialValue: 'bruinalphainvestment26@gmail.com',
+      validation: (rule) => rule.required().email(),
+    }),
+    defineField({
+      name: 'instagramUrl',
+      title: 'Instagram URL',
+      type: 'url',
+      group: 'contact',
+      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'linkedinUrl',
+      title: 'LinkedIn URL',
+      type: 'url',
+      group: 'contact',
+      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'slackInviteUrl',
+      title: 'Slack Invite URL',
+      type: 'url',
+      group: 'contact',
+      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
+    }),
+
     defineField({
       name: 'navLinks',
       title: 'Navigation Links',
       type: 'array',
+      group: 'navigation',
       validation: (rule) => rule.required().min(1).max(8),
       of: [
         {
@@ -180,68 +134,73 @@ export const siteSettings = defineType({
         },
       ],
     }),
+
+    defineField({
+      name: 'titleSuffix',
+      title: 'Title Suffix',
+      type: 'string',
+      group: 'seo',
+      initialValue: ' — Bruin Alpha Investment at UCLA',
+      description:
+        'Appended to each page <title> tag. Default " — Bruin Alpha Investment at UCLA".',
+    }),
+    defineField({
+      name: 'defaultMetaDescription',
+      title: 'Default Meta Description',
+      type: 'text',
+      group: 'seo',
+      rows: 3,
+      validation: (rule) =>
+        rule.max(160).warning('May be truncated in search results.'),
+      description: 'Fallback <meta name="description"> when a page omits its own.',
+    }),
+    defineField({
+      name: 'defaultOgImage',
+      title: 'Default OG Image',
+      type: 'image',
+      group: 'seo',
+      options: { hotspot: true },
+      description: 'Fallback Open Graph image when a page omits its own.',
+    }),
     defineField({
       name: 'organizationDescription',
       title: 'Organization Description',
       type: 'text',
+      group: 'seo',
       description:
-        'Used in <Organization> structured data for Google Knowledge Graph',
+        'Used in <Organization> structured data for Google Knowledge Graph.',
     }),
     defineField({
       name: 'sameAs',
       title: 'Same As (Structured Data sameAs[])',
       type: 'array',
+      group: 'seo',
       of: [{ type: 'url' }],
       description:
         'External profile URLs (Instagram, LinkedIn, etc.) emitted as Organization sameAs[] in JSON-LD.',
     }),
+
     defineField({
       name: 'errorCopy',
       title: 'Error / Loading Copy',
       type: 'object',
-      description: 'Copy for not-found, error, and loading screens (D14).',
+      group: 'errors',
+      description: 'Copy for not-found, error, and loading screens.',
+      options: { collapsible: true, collapsed: false },
       fields: [
-        defineField({
-          name: 'notFoundHeading',
-          title: '404 Heading',
-          type: 'string',
-        }),
-        defineField({
-          name: 'notFoundBody',
-          title: '404 Body',
-          type: 'text',
-        }),
-        defineField({
-          name: 'errorHeading',
-          title: '500 Heading',
-          type: 'string',
-        }),
-        defineField({
-          name: 'errorBody',
-          title: '500 Body',
-          type: 'text',
-        }),
-        defineField({
-          name: 'loadingLabel',
-          title: 'Loading Label',
-          type: 'string',
-        }),
+        defineField({ name: 'notFoundHeading', title: '404 Heading', type: 'string' }),
+        defineField({ name: 'notFoundBody', title: '404 Body', type: 'text' }),
+        defineField({ name: 'errorHeading', title: '500 Heading', type: 'string' }),
+        defineField({ name: 'errorBody', title: '500 Body', type: 'text' }),
+        defineField({ name: 'loadingLabel', title: 'Loading Label', type: 'string' }),
       ],
     }),
-    defineField({
-      name: 'disclaimerText',
-      title: 'Site-Wide Disclaimer',
-      type: 'text',
-      rows: 5,
-      initialValue: LOCKED_DISCLAIMER,
-      validation: (rule) => rule.required(),
-      description:
-        'LOCKED Metis-mandated copy. Do not edit without legal review.',
-    }),
+
     defineField({
       name: 'uclaCompliantName',
       title: 'UCLA-Compliant Club Name',
       type: 'string',
+      group: 'legal',
       initialValue: 'Bruin Alpha Investment at UCLA',
       validation: (rule) => rule.required(),
       description:
@@ -251,24 +210,38 @@ export const siteSettings = defineType({
       name: 'missionStatement',
       title: 'Mission Statement',
       type: 'array',
+      group: 'legal',
       of: [{ type: 'block' }],
-      description:
-        'UCLA-approved verbatim mission statement (portable text). Edits require leadership review for regulatory and brand compliance.',
       validation: (rule) => rule.required().min(1),
       initialValue: LOCKED_MISSION,
+      description:
+        'UCLA-approved verbatim mission statement (portable text). Edits require leadership review for regulatory and brand compliance.',
     }),
+    defineField({
+      name: 'disclaimerText',
+      title: 'Site-Wide Disclaimer',
+      type: 'text',
+      group: 'legal',
+      rows: 5,
+      initialValue: LOCKED_DISCLAIMER,
+      validation: (rule) => rule.required(),
+      description:
+        'LOCKED Metis-mandated copy. Do not edit without legal review.',
+    }),
+
     defineField({
       name: 'domainRenewalDate',
       title: 'Domain Renewal Date',
       type: 'date',
+      group: 'admin',
       description: 'Track renewal so handoffs flag it before lapse.',
     }),
   ],
   preview: {
-    select: { title: 'uclaCompliantName', legacyTitle: 'ucla_compliant_name' },
-    prepare({ title, legacyTitle }) {
+    select: { title: 'uclaCompliantName' },
+    prepare({ title }) {
       return {
-        title: (title as string | undefined) ?? (legacyTitle as string | undefined) ?? 'Site Settings',
+        title: (title as string | undefined) ?? 'Site Settings',
         subtitle: 'Singleton',
       };
     },

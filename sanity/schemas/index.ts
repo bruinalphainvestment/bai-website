@@ -5,11 +5,9 @@ import { committee } from './committee';
 import { committeesIndexPage } from './committeesIndexPage';
 import { event } from './event';
 import { eventsPage } from './eventsPage';
-import { faq } from './faq';
 import { foundingMember } from './foundingMember';
 import { homePage } from './homePage';
 import { joinPage } from './joinPage';
-import { page } from './page';
 import { project } from './project';
 import { projectsPage } from './projectsPage';
 import { siteSettings } from './siteSettings';
@@ -18,7 +16,6 @@ import { trainingPage } from './trainingPage';
 
 import { committeesTeaserSection } from './objects/committeesTeaserSection';
 import { ctaSection } from './objects/ctaSection';
-import { faqListSection } from './objects/faqListSection';
 import { foundingTeamSection } from './objects/foundingTeamSection';
 import { gallerySection } from './objects/gallerySection';
 import { heroSection } from './objects/heroSection';
@@ -36,10 +33,8 @@ import { teamGridSection } from './objects/teamGridSection';
 import { valuesSection } from './objects/valuesSection';
 
 export const schemaTypes: SchemaTypeDefinition[] = [
-  // Singletons
   siteSettings,
   homePage,
-  // Page singletons
   aboutPage,
   trainingPage,
   joinPage,
@@ -47,14 +42,10 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   projectsPage,
   teamPage,
   committeesIndexPage,
-  // Documents
-  page,
   committee,
   foundingMember,
   project,
   event,
-  faq,
-  // Section blocks
   heroSection,
   missionSection,
   valuesSection,
@@ -68,7 +59,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   numberedListSection,
   statsRowSection,
   quoteSection,
-  faqListSection,
   projectGridSection,
   teamGridSection,
   gallerySection,

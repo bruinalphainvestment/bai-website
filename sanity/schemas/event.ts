@@ -27,6 +27,7 @@ export const event = defineType({
       name: 'location',
       title: 'Location',
       type: 'string',
+      description: 'Venue name or address.',
     }),
     defineField({
       name: 'description',
@@ -65,15 +66,6 @@ export const event = defineType({
       initialValue: 'tbd',
     }),
     defineField({
-      name: 'external_url',
-      title: 'External URL (Deprecated)',
-      type: 'url',
-      readOnly: true,
-      description:
-        'Optional. Use for CME, IMC Prosperity, or other external event pages. Deprecated — use the camelCase field; will be removed after migration.',
-      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
-    }),
-    defineField({
       name: 'externalUrl',
       title: 'External URL',
       type: 'url',
@@ -86,6 +78,7 @@ export const event = defineType({
       title: 'Committee',
       type: 'reference',
       to: [{ type: 'committee' }],
+      options: { disableNew: true },
       description:
         'Optional. Link this event to a committee (e.g. Quant Bootcamp social).',
     }),
@@ -103,13 +96,13 @@ export const event = defineType({
     },
   ],
   preview: {
-    select: { title: 'name', subtitle: 'type', date: 'date' },
-    prepare({ title, subtitle, date }) {
+    select: { title: 'name', subtitle: 'type', date: 'date', location: 'location' },
+    prepare({ title, subtitle, date, location }) {
       const when =
         typeof date === 'string' ? new Date(date).toLocaleDateString() : '';
       return {
         title: title ?? 'Event',
-        subtitle: [subtitle, when].filter(Boolean).join(' • '),
+        subtitle: [subtitle, when, location].filter(Boolean).join(' • '),
       };
     },
   },

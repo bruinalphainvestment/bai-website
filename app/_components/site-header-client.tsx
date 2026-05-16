@@ -47,16 +47,16 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
         transition={{ duration: 0.5 }}
       >
         <div className="container mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]">
+          <Link href="/" className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img
-               src="/brand/logo.png"
-               alt={brandAlt}
-               width={48}
-               height={48}
-               className="w-12 h-12"
-             />
-           </Link>
+            <img
+              src="/brand/logo.png"
+              alt={brandAlt}
+              width={71}
+              height={48}
+              className="h-12 w-auto md:h-14"
+            />
+          </Link>
 
            <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
@@ -94,15 +94,15 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
             aria-modal="true"
           >
             <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-               <img
-                   src="/brand/logo.png"
-                   alt={brandAlt}
-                   width={48}
-                   height={48}
-                   className="w-12 h-12"
-                 />
+                <img
+                  src="/brand/logo.png"
+                  alt={brandAlt}
+                  width={71}
+                  height={48}
+                  className="h-12 w-auto"
+                />
               </Link>
               <button
                 className="p-2 text-[#002147] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]"

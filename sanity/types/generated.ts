@@ -42,6 +42,22 @@ export type GallerySection = {
   }>;
 };
 
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop';
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot';
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type FoundingMemberReference = {
   _ref: string;
   _type: 'reference';
@@ -64,23 +80,6 @@ export type ProjectGridSection = {
   heading?: string;
   project_filter?: string;
   status_filter?: 'planning' | 'active' | 'completed';
-};
-
-export type FaqReference = {
-  _ref: string;
-  _type: 'reference';
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: 'faq';
-};
-
-export type FaqListSection = {
-  _type: 'faqListSection';
-  heading?: string;
-  faqs?: Array<
-    {
-      _key: string;
-    } & FaqReference
-  >;
 };
 
 export type QuoteSection = {
@@ -233,35 +232,6 @@ export type HeroSection = {
   accentDark?: boolean;
 };
 
-export type Faq = {
-  _id: string;
-  _type: 'faq';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  question?: string;
-  answer?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: 'span';
-      _key: string;
-    }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote';
-    listItem?: 'bullet' | 'number';
-    markDefs?: Array<{
-      href?: string;
-      _type: 'link';
-      _key: string;
-    }>;
-    level?: number;
-    _type: 'block';
-    _key: string;
-  }>;
-  category?: 'general' | 'application' | 'training' | 'committees';
-  order?: number;
-};
-
 export type CommitteeReference = {
   _ref: string;
   _type: 'reference';
@@ -282,7 +252,6 @@ export type Event = {
   description?: string;
   type?: 'recruitment' | 'comp' | 'social' | 'speaker' | 'fair';
   status?: 'tbd' | 'scheduled' | 'past';
-  external_url?: string;
   externalUrl?: string;
   committee?: CommitteeReference;
 };
@@ -296,50 +265,9 @@ export type Project = {
   name?: string;
   slug?: Slug;
   summary?: string;
-  narrative?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: 'span';
-      _key: string;
-    }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote';
-    listItem?: 'bullet' | 'number';
-    markDefs?: Array<{
-      href?: string;
-      _type: 'link';
-      _key: string;
-    }>;
-    level?: number;
-    _type: 'block';
-    _key: string;
-  }>;
   committee?: CommitteeReference;
   status?: 'planning' | 'active' | 'completed';
   tags?: Array<string>;
-  hero_image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: 'image';
-  };
-};
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop';
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot';
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type Slug = {
@@ -363,7 +291,6 @@ export type Committee = {
   _rev: string;
   name?: string;
   slug?: Slug;
-  director?: FoundingMemberReference;
   tagline?: string;
   description?: Array<{
     children?: Array<{
@@ -401,25 +328,18 @@ export type Committee = {
     _type: 'block';
     _key: string;
   }>;
+  learn?: Array<string>;
+  differentiator?: string;
+  director?: FoundingMemberReference;
+  directorPlaceholder?: string;
+  director_quote?: string;
   signature_projects?: Array<
     {
       _key: string;
     } & ProjectReference
   >;
-  comp_calendar?: Array<{
-    name?: string;
-    date?: string;
-    url?: string;
-    type?: 'recruitment' | 'comp' | 'social' | 'speaker';
-    _type: 'compCalendarEntry';
-    _key: string;
-  }>;
-  director_quote?: string;
   order?: number;
   accentColor?: 'gold' | 'navy';
-  learn?: Array<string>;
-  differentiator?: string;
-  directorPlaceholder?: string;
   redirectsFrom?: Array<string>;
 };
 
@@ -441,7 +361,6 @@ export type FoundingMember = {
     | 'president';
   gradYear?: number;
   bio?: string;
-  linkedinUrl?: string;
   photoReleaseObtained?: boolean;
   headshot?: {
     asset?: SanityImageAssetReference;
@@ -451,62 +370,7 @@ export type FoundingMember = {
     _type: 'image';
   };
   monogramOverride?: string;
-};
-
-export type Page = {
-  _id: string;
-  _type: 'page';
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  seo_title?: string;
-  seo_description?: string;
-  sections?: Array<
-    | ({
-        _key: string;
-      } & HeroSection)
-    | ({
-        _key: string;
-      } & RichTextSection)
-    | ({
-        _key: string;
-      } & ImageCalloutSection)
-    | ({
-        _key: string;
-      } & NumberedListSection)
-    | ({
-        _key: string;
-      } & StatsRowSection)
-    | ({
-        _key: string;
-      } & QuoteSection)
-    | ({
-        _key: string;
-      } & FaqListSection)
-    | ({
-        _key: string;
-      } & ProjectGridSection)
-    | ({
-        _key: string;
-      } & TeamGridSection)
-    | ({
-        _key: string;
-      } & MarqueeSection)
-    | ({
-        _key: string;
-      } & GallerySection)
-    | ({
-        _key: string;
-      } & SpacerSection)
-    | ({
-        _key: string;
-      } & CommitteesTeaserSection)
-    | ({
-        _key: string;
-      } & CtaSection)
-  >;
+  linkedinUrl?: string;
 };
 
 export type CommitteesIndexPage = {
@@ -635,17 +499,6 @@ export type JoinPage = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  seo?: {
-    title?: string;
-    description?: string;
-    ogImage?: {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: 'image';
-    };
-  };
   hero?: {
     heading?: string;
     subheading?: string;
@@ -671,6 +524,17 @@ export type JoinPage = {
   }>;
   eligibilityHeading?: string;
   eligibilityBullets?: Array<string>;
+  seo?: {
+    title?: string;
+    description?: string;
+    ogImage?: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+  };
 };
 
 export type TrainingPage = {
@@ -810,34 +674,21 @@ export type SiteSettings = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  ucla_compliant_name?: string;
+  brandName?: string;
   slogan?: string;
-  mission_statement?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: 'span';
-      _key: string;
-    }>;
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote';
-    listItem?: 'bullet' | 'number';
-    markDefs?: Array<{
-      href?: string;
-      _type: 'link';
-      _key: string;
-    }>;
-    level?: number;
-    _type: 'block';
-    _key: string;
-  }>;
-  disclaimer_text?: string;
+  foundedYear?: number;
+  foundedTerm?: string;
   applyUrl?: string;
   clubEmail?: string;
   instagramUrl?: string;
   linkedinUrl?: string;
   slackInviteUrl?: string;
-  domain_renewal_date?: string;
-  brandName?: string;
+  navLinks?: Array<{
+    label?: string;
+    href?: string;
+    _type: 'navLink';
+    _key: string;
+  }>;
   titleSuffix?: string;
   defaultMetaDescription?: string;
   defaultOgImage?: {
@@ -847,14 +698,6 @@ export type SiteSettings = {
     crop?: SanityImageCrop;
     _type: 'image';
   };
-  foundedYear?: number;
-  foundedTerm?: string;
-  navLinks?: Array<{
-    label?: string;
-    href?: string;
-    _type: 'navLink';
-    _key: string;
-  }>;
   organizationDescription?: string;
   sameAs?: Array<string>;
   errorCopy?: {
@@ -864,7 +707,6 @@ export type SiteSettings = {
     errorBody?: string;
     loadingLabel?: string;
   };
-  disclaimerText?: string;
   uclaCompliantName?: string;
   missionStatement?: Array<{
     children?: Array<{
@@ -884,6 +726,7 @@ export type SiteSettings = {
     _type: 'block';
     _key: string;
   }>;
+  disclaimerText?: string;
   domainRenewalDate?: string;
 };
 
@@ -988,11 +831,11 @@ export type AllSanitySchemaTypes =
   | SpacerSection
   | SanityImageAssetReference
   | GallerySection
+  | SanityImageCrop
+  | SanityImageHotspot
   | FoundingMemberReference
   | TeamGridSection
   | ProjectGridSection
-  | FaqReference
-  | FaqListSection
   | QuoteSection
   | StatsRowSection
   | NumberedListSection
@@ -1006,17 +849,13 @@ export type AllSanitySchemaTypes =
   | ValuesSection
   | MissionSection
   | HeroSection
-  | Faq
   | CommitteeReference
   | Event
   | Project
-  | SanityImageCrop
-  | SanityImageHotspot
   | Slug
   | ProjectReference
   | Committee
   | FoundingMember
-  | Page
   | CommitteesIndexPage
   | TeamPage
   | ProjectsPage

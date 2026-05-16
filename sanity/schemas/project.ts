@@ -23,20 +23,14 @@ export const project = defineType({
       title: 'Summary',
       type: 'text',
       rows: 3,
-      description: 'One-paragraph elevator pitch for grid cards.',
-    }),
-    defineField({
-      name: 'narrative',
-      title: 'Narrative',
-      type: 'array',
-      of: [{ type: 'block' }],
-      description: 'Long-form portable text shown on the project detail view.',
+      description: 'One-paragraph elevator pitch shown on Projects grid cards.',
     }),
     defineField({
       name: 'committee',
       title: 'Committee',
       type: 'reference',
       to: [{ type: 'committee' }],
+      options: { disableNew: true },
       description:
         'Optional. Leave blank for club-wide projects not tied to a single committee.',
     }),
@@ -61,12 +55,7 @@ export const project = defineType({
       type: 'array',
       of: [{ type: 'string' }],
       options: { layout: 'tags' },
-    }),
-    defineField({
-      name: 'hero_image',
-      title: 'Hero Image',
-      type: 'image',
-      options: { hotspot: true },
+      description: 'Searchable tags for categorizing the project.',
     }),
   ],
   preview: {
@@ -74,11 +63,10 @@ export const project = defineType({
       title: 'name',
       status: 'status',
       committee: 'committee.name',
-      media: 'hero_image',
     },
-    prepare({ title, status, committee, media }) {
+    prepare({ title, status, committee }) {
       const subtitle = [committee, status].filter(Boolean).join(' • ');
-      return { title: title ?? 'Project', subtitle, media };
+      return { title: title ?? 'Project', subtitle };
     },
   },
 });

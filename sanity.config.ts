@@ -58,24 +58,9 @@ export default defineConfig({
               .title('📝 Join Page')
               .id('joinPage')
               .child(
-                S.list()
-                  .title('Join Page')
-                  .items([
-                    S.listItem()
-                      .title('Page Content')
-                      .id('joinPageContent')
-                      .child(
-                        S.document()
-                          .schemaType('joinPage')
-                          .documentId('joinPage'),
-                      ),
-                    S.divider(),
-                    S.documentTypeListItem('faq')
-                      .title('FAQs')
-                      .child(
-                        S.documentTypeList('faq').title('FAQs'),
-                      ),
-                  ]),
+                S.document()
+                  .schemaType('joinPage')
+                  .documentId('joinPage'),
               ),
             S.listItem()
               .title('📅 Events Page')

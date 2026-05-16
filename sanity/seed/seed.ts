@@ -208,28 +208,12 @@ function portableText(text: string, keyPrefix: string) {
   ];
 }
 
-// ---------------------------------------------------------------------------
-// siteSettings singleton — D10 deprecation pattern: legacy snake_case fields
-// AND new camelCase fields both populated to identical canonical values so
-// querysites can read either while we migrate the rendering layer.
-// ---------------------------------------------------------------------------
-
 const siteSettingsDoc = {
   _id: IDS.siteSettings,
   _type: 'siteSettings',
-  // --- Legacy snake_case (Deprecated; readOnly in schema; do NOT remove yet) ---
-  ucla_compliant_name: LOCKED_NAME,
   slogan: LOCKED_SLOGAN,
-  mission_statement: portableText(LOCKED_MISSION_TEXT, 'mission-legacy'),
-  disclaimer_text: LOCKED_DISCLAIMER,
-  domain_renewal_date: DOMAIN_RENEWAL_DATE,
-  // --- Existing fields kept as-is ---
   applyUrl: APPLY_URL,
   clubEmail: CLUB_EMAIL,
-  // instagramUrl + linkedinUrl + slackInviteUrl left unset — editors fill once
-  // real URLs exist.
-  // --- New camelCase fields populated explicitly so editor sees real data on
-  // Day 1 (schema defaults are not applied to existing docs during migration). ---
   brandName: BRAND_NAME,
   titleSuffix: TITLE_SUFFIX,
   defaultMetaDescription: DEFAULT_META_DESCRIPTION,
@@ -1007,10 +991,6 @@ const projects = [
     slug: { _type: 'slug', current: 'event-contract-modeling-research' },
     summary:
       'A quantitative initiative focused on pricing and analyzing probability-based event contracts. Analysts will build predictive models to evaluate mispricings in event-driven markets.',
-    narrative: portableText(
-      'A quantitative initiative focused on pricing and analyzing probability-based event contracts. Analysts will build predictive models to evaluate mispricings in event-driven markets.',
-      'proj-evtmod',
-    ),
     committee: { _type: 'reference', _ref: IDS.committees.trading },
     status: 'planning',
     tags: ['research', 'quantitative', 'modeling'],
@@ -1022,10 +1002,6 @@ const projects = [
     slug: { _type: 'slug', current: 'ucla-club-audit-initiative' },
     summary:
       'Pro-bono financial reviews for other campus organizations. Members will assess cash flow, budget allocations, and operational efficiency, culminating in a formalized advisory report.',
-    narrative: portableText(
-      'Pro-bono financial reviews for other campus organizations. Members will assess cash flow, budget allocations, and operational efficiency, culminating in a formalized advisory report.',
-      'proj-audit',
-    ),
     committee: { _type: 'reference', _ref: IDS.committees.accounting },
     status: 'planning',
     tags: ['advisory', 'pro-bono', 'audit'],
@@ -1037,10 +1013,6 @@ const projects = [
     slug: { _type: 'slug', current: 'spring-stock-pitch' },
     summary:
       'Our capstone event where analysts across all committees form teams to deliver comprehensive investment pitches, emphasizing rigorous valuation, market sizing, and strategic rationale.',
-    narrative: portableText(
-      'Our capstone event where analysts across all committees form teams to deliver comprehensive investment pitches, emphasizing rigorous valuation, market sizing, and strategic rationale.',
-      'proj-pitch',
-    ),
     committee: { _type: 'reference', _ref: IDS.committees.ib },
     status: 'planning',
     tags: ['capstone', 'all-club', 'pitch'],
@@ -1052,10 +1024,6 @@ const projects = [
     slug: { _type: 'slug', current: 'wealth-advisory-mock-engagement' },
     summary:
       'Simulated client engagements requiring analysts to construct diversified portfolios based on specific risk profiles, tax considerations, and long-term financial objectives.',
-    narrative: portableText(
-      'Simulated client engagements requiring analysts to construct diversified portfolios based on specific risk profiles, tax considerations, and long-term financial objectives.',
-      'proj-wealth',
-    ),
     committee: { _type: 'reference', _ref: IDS.committees.wealth },
     status: 'planning',
     tags: ['simulation', 'portfolio'],
@@ -1067,10 +1035,6 @@ const projects = [
     slug: { _type: 'slug', current: 'ucla-wide-stock-trading-competition' },
     summary:
       'A campus-wide initiative currently in the planning phase. The goal is to democratize market access and test trading strategies in a competitive, simulated environment.',
-    narrative: portableText(
-      'A campus-wide initiative currently in the planning phase. The goal is to democratize market access and test trading strategies in a competitive, simulated environment.',
-      'proj-tradecomp',
-    ),
     committee: { _type: 'reference', _ref: IDS.committees.trading },
     status: 'planning',
     tags: ['competition', 'aspirational'],
