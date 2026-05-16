@@ -53,3 +53,6 @@ next-env.d.ts
 /test-results
 meeting_transcripts/
 test-results/
+
+# Sisyphus plan/evidence/notepad work-state — local only
+.sisyphus/
