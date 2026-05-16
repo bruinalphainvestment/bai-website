@@ -5,10 +5,6 @@ import { client } from '@/sanity/lib/client';
 import { committeeRedirectMapQuery } from '@/sanity/lib/queries';
 import type { CommitteeRedirectMapQueryResult } from '@/sanity/types/generated';
 
-const STUDIO_HOST = 'studio.bruinalphainvestment.com';
-const WWW_HOST = 'www.bruinalphainvestment.com';
-const APEX_HOST = 'bruinalphainvestment.com';
-
 const loadRedirectMap = unstable_cache(
   async (): Promise<Record<string, string>> => {
     if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return {};
@@ -37,34 +33,7 @@ const loadRedirectMap = unstable_cache(
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const hostname = req.nextUrl.hostname;
   const url = req.nextUrl.clone();
-
-  // Studio subdomain handling
-  if (hostname === STUDIO_HOST) {
-    // Bare subdomain → redirect to /studio
-    if (pathname === '/' || pathname === '') {
-      url.pathname = '/studio';
-      return NextResponse.redirect(url, 308);
-    }
-    // Anything other than /studio, /api, /_next, /brand → bounce to www
-    if (
-      !pathname.startsWith('/studio') &&
-      !pathname.startsWith('/api') &&
-      !pathname.startsWith('/_next') &&
-      !pathname.startsWith('/brand')
-    ) {
-      url.hostname = WWW_HOST;
-      return NextResponse.redirect(url, 301);
-    }
-    // /studio paths fall through (Studio renders normally)
-  }
-
-  // www / apex: canonicalize /studio to subdomain
-  if ((hostname === WWW_HOST || hostname === APEX_HOST) && pathname.startsWith('/studio')) {
-    url.hostname = STUDIO_HOST;
-    return NextResponse.redirect(url, 301);
-  }
 
   if (pathname.startsWith('/committees/')) {
     const slug = pathname.replace('/committees/', '').split('/')[0];
@@ -89,5 +58,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)'],
+  matcher: ['/committees/:path*', '/studio/:path*', '/api/:path*'],
 };

@@ -73,15 +73,19 @@ function FooterRender({ data }: { data: FooterData }) {
             </ul>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Legal</h3>
-            {disclaimer ? (
-              <p className="text-gray-400 text-xs leading-relaxed">{disclaimer}</p>
-            ) : null}
-            <p className="text-gray-400 text-xs mt-4">
-              &copy; {year} {brandAlt}. All rights reserved.
-            </p>
-          </div>
+           <div className="flex flex-col gap-4">
+             <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Legal</h3>
+             {disclaimer ? (
+               <p className="text-gray-400 text-xs leading-relaxed">{disclaimer}</p>
+             ) : null}
+             <p className="text-gray-400 text-xs mt-4">
+               &copy; {year} {brandAlt}. All rights reserved.
+               {' '}
+               <Link href="/studio" className="text-gray-500 hover:text-gray-300 underline-offset-2 hover:underline">
+                 Admin
+               </Link>
+             </p>
+           </div>
         </div>
       </div>
     </footer>
