@@ -6,7 +6,6 @@ import {
   eventsPageFallback,
 } from '@/app/_components/fallbacks/events-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
@@ -68,58 +67,46 @@ export default async function EventsPage() {
   return (
     <div className="min-h-screen bg-cream text-navy pt-32 pb-24">
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-20 md:mb-32">
-        <StaggerGroup trigger="mount">
-          <StaggerItem>
-            <h1 className="font-display text-5xl md:text-7xl mb-6">{heading}</h1>
-          </StaggerItem>
-          <StaggerItem>
-            <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
-              {subheading}
-            </p>
-          </StaggerItem>
-          {intro ? (
-            <StaggerItem>
-              <p className="font-sans mt-6 text-lg text-navy/70 max-w-3xl">{intro}</p>
-            </StaggerItem>
-          ) : null}
-        </StaggerGroup>
+        <h1 className="font-display text-5xl md:text-7xl mb-6">{heading}</h1>
+        <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
+          {subheading}
+        </p>
+        {intro ? (
+          <p className="font-sans mt-6 text-lg text-navy/70 max-w-3xl">{intro}</p>
+        ) : null}
       </section>
 
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-        <FadeUp>
-          <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-            Upcoming &amp; Ongoing
-          </h2>
-        </FadeUp>
+        <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+          Upcoming &amp; Ongoing
+        </h2>
         {upcoming.length === 0 ? (
           <p className="font-sans text-navy/70">{upcomingEmpty}</p>
         ) : (
-          <StaggerGroup className="space-y-8">
+          <div className="space-y-8">
             {upcoming.map((event, i) => (
-              <StaggerItem key={event._id}>
-                <UpcomingCard event={event} variant={i === 0 ? 'filled' : 'outlined'} />
-              </StaggerItem>
+              <UpcomingCard key={event._id} event={event} variant={i === 0 ? 'filled' : 'outlined'} />
             ))}
-          </StaggerGroup>
+          </div>
         )}
       </section>
 
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-        <FadeUp>
-          <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-            Competitions
-          </h2>
-        </FadeUp>
+        <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+          Competitions
+        </h2>
         {competitions.length === 0 ? (
           <p className="font-sans text-navy/70">{pastEmpty}</p>
         ) : (
-          <StaggerGroup className="space-y-8">
+          <div className="space-y-8">
             {competitions.map((event, i) => (
-              <StaggerItem key={event._id}>
-                <CompetitionRow event={event} isLast={i === competitions.length - 1} />
-              </StaggerItem>
+              <CompetitionRow
+                key={event._id}
+                event={event}
+                isLast={i === competitions.length - 1}
+              />
             ))}
-          </StaggerGroup>
+          </div>
         )}
       </section>
     </div>

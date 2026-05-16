@@ -8,7 +8,6 @@ import {
   committeesIndexPageFallback,
 } from '@/app/_components/fallbacks/committees-index-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
@@ -79,60 +78,48 @@ export default async function CommitteesIndexPage() {
     <div className="bg-cream min-h-screen text-navy pt-24 pb-16">
       <div className="container mx-auto px-4 md:px-8">
         <section className="mb-20 text-center max-w-3xl mx-auto">
-          <StaggerGroup trigger="mount">
-            <StaggerItem>
-              <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-navy">
-                {headingFirstHalf}
-                {headingSecondHalf ? (
-                  <>
-                    <br className="hidden md:block" /> {headingSecondHalf}
-                  </>
-                ) : null}
-              </h1>
-            </StaggerItem>
-            <StaggerItem>
-              <p className="text-lg md:text-xl text-navy/80 font-sans leading-relaxed">
-                {subheading}
-              </p>
-            </StaggerItem>
-            {intro ? (
-              <StaggerItem>
-                <p className="mt-6 text-base md:text-lg text-navy/70 font-sans leading-relaxed">
-                  {intro}
-                </p>
-              </StaggerItem>
+          <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-navy">
+            {headingFirstHalf}
+            {headingSecondHalf ? (
+              <>
+                <br className="hidden md:block" /> {headingSecondHalf}
+              </>
             ) : null}
-          </StaggerGroup>
+          </h1>
+          <p className="text-lg md:text-xl text-navy/80 font-sans leading-relaxed">
+            {subheading}
+          </p>
+          {intro ? (
+            <p className="mt-6 text-base md:text-lg text-navy/70 font-sans leading-relaxed">
+              {intro}
+            </p>
+          ) : null}
         </section>
 
-        <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {committees.map((committee) => (
-            <StaggerItem key={committee._id}>
-              <CommitteeCardItem committee={committee} />
-            </StaggerItem>
+            <CommitteeCardItem key={committee._id} committee={committee} />
           ))}
-        </StaggerGroup>
+        </section>
 
-        <FadeUp>
-          <section className="bg-navy text-white rounded-2xl p-8 md:p-16 text-center max-w-4xl mx-auto border border-gold/20">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6 text-cream">
-              {connectedHeading}
-            </h2>
-            <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
-            {connectedParagraphs.length > 0
-              ? connectedParagraphs.map((p, i) => (
-                  <p
-                    key={`connected-paragraph-${i}`}
-                    className={`text-lg text-cream/90 font-sans leading-relaxed ${i < connectedParagraphs.length - 1 ? 'mb-6' : ''}`}
-                  >
-                    {p}
-                  </p>
-                ))
-              : connectedBody
-              ? <p className="text-lg text-cream/90 font-sans leading-relaxed">{connectedBody}</p>
-              : null}
-          </section>
-        </FadeUp>
+        <section className="bg-navy text-white rounded-2xl p-8 md:p-16 text-center max-w-4xl mx-auto border border-gold/20">
+          <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6 text-cream">
+            {connectedHeading}
+          </h2>
+          <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
+          {connectedParagraphs.length > 0
+            ? connectedParagraphs.map((p, i) => (
+                <p
+                  key={`connected-paragraph-${i}`}
+                  className={`text-lg text-cream/90 font-sans leading-relaxed ${i < connectedParagraphs.length - 1 ? 'mb-6' : ''}`}
+                >
+                  {p}
+                </p>
+              ))
+            : connectedBody
+            ? <p className="text-lg text-cream/90 font-sans leading-relaxed">{connectedBody}</p>
+            : null}
+        </section>
       </div>
     </div>
   );

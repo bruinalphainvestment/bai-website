@@ -3,7 +3,6 @@ import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { joinPageFallback } from '@/app/_components/fallbacks/join-page';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import { joinPageQuery, siteSettingsQuery } from '@/sanity/lib/queries';
@@ -61,32 +60,22 @@ export default async function JoinPage() {
   return (
     <div className="min-h-screen bg-cream text-navy pt-32 pb-24">
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-20 md:mb-32">
-        <StaggerGroup trigger="mount">
-          <StaggerItem>
-            <h1 className="font-display text-5xl md:text-7xl mb-6">{heading}</h1>
-          </StaggerItem>
-          <StaggerItem>
-            <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
-              {subheading}
-            </p>
-          </StaggerItem>
-          {intro ? (
-            <StaggerItem>
-              <p className="font-sans mt-6 text-lg text-navy/70 max-w-3xl">{intro}</p>
-            </StaggerItem>
-          ) : null}
-        </StaggerGroup>
+        <h1 className="font-display text-5xl md:text-7xl mb-6">{heading}</h1>
+        <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
+          {subheading}
+        </p>
+        {intro ? (
+          <p className="font-sans mt-6 text-lg text-navy/70 max-w-3xl">{intro}</p>
+        ) : null}
       </section>
 
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-        <FadeUp>
-          <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-            Application Process
-          </h2>
-        </FadeUp>
-        <StaggerGroup className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 mb-16">
+        <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+          Application Process
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 mb-16">
           {APPLICATION_STEPS.map((step, index) => (
-            <StaggerItem
+            <div
               key={step}
               className="bg-navy text-cream p-8 rounded-sm relative overflow-hidden group"
             >
@@ -94,90 +83,79 @@ export default async function JoinPage() {
                 0{index + 1}
               </div>
               <h3 className="font-display text-2xl relative z-10">{step}</h3>
-            </StaggerItem>
+            </div>
           ))}
-        </StaggerGroup>
+        </div>
 
         {timeline.length > 0 ? (
-          <FadeUp>
-            <div className="bg-deep/5 p-8 md:p-12 rounded-sm mb-16">
-              <h3 className="font-display text-2xl mb-6">Recruitment Timeline</h3>
-              <StaggerGroup as="ul" className="space-y-6">
-                {timeline.map((step, i) => (
-                  <StaggerItem
-                    key={step._key}
-                    as="li"
-                    className={`flex flex-col md:flex-row md:items-center gap-2 md:gap-8 ${i !== timeline.length - 1 ? 'border-b border-navy/10 pb-4' : 'pb-4'}`}
-                  >
-                    <span className="font-sans font-medium text-navy/80 md:w-1/4">
-                      {step.title ?? ''}
-                    </span>
-                    <span className="font-sans text-navy">{step.body ?? ''}</span>
-                  </StaggerItem>
-                ))}
-              </StaggerGroup>
-            </div>
-          </FadeUp>
+          <div className="bg-deep/5 p-8 md:p-12 rounded-sm mb-16">
+            <h3 className="font-display text-2xl mb-6">Recruitment Timeline</h3>
+            <ul className="space-y-6">
+              {timeline.map((step, i) => (
+                <li
+                  key={step._key}
+                  className={`flex flex-col md:flex-row md:items-center gap-2 md:gap-8 ${i !== timeline.length - 1 ? 'border-b border-navy/10 pb-4' : 'pb-4'}`}
+                >
+                  <span className="font-sans font-medium text-navy/80 md:w-1/4">
+                    {step.title ?? ''}
+                  </span>
+                  <span className="font-sans text-navy">{step.body ?? ''}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : null}
       </section>
 
       {applicationForm ? (
         <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-          <FadeUp>
-            <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-              {applicationForm.heading ?? 'Application Form'}
-            </h2>
-          </FadeUp>
-          <FadeUp>
-            <div className="aspect-[4/3] md:aspect-[21/9] w-full bg-cream border border-navy/10 rounded-sm relative overflow-hidden flex items-center justify-center flex-col">
-              <p className="font-display text-2xl md:text-3xl mb-4">
-                {applicationForm.body ?? ''}
-              </p>
-              <a
-                href={applicationForm.formUrl ?? '#'}
-                className="font-sans border border-navy px-6 py-3 hover:bg-navy hover:text-cream transition-colors duration-300"
-              >
-                Link to Application
-              </a>
-              <iframe
-                src="about:blank"
-                data-tally-placeholder="true"
-                className="absolute inset-0 w-full h-full opacity-0 pointer-events-none"
-                title="Application Form"
-              />
-            </div>
-          </FadeUp>
+          <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+            {applicationForm.heading ?? 'Application Form'}
+          </h2>
+          <div className="aspect-[4/3] md:aspect-[21/9] w-full bg-cream border border-navy/10 rounded-sm relative overflow-hidden flex items-center justify-center flex-col">
+            <p className="font-display text-2xl md:text-3xl mb-4">
+              {applicationForm.body ?? ''}
+            </p>
+            <a
+              href={applicationForm.formUrl ?? '#'}
+              className="font-sans border border-navy px-6 py-3 hover:bg-navy hover:text-cream transition-colors duration-300"
+            >
+              Link to Application
+            </a>
+            <iframe
+              src="about:blank"
+              data-tally-placeholder="true"
+              className="absolute inset-0 w-full h-full opacity-0 pointer-events-none"
+              title="Application Form"
+            />
+          </div>
         </section>
       ) : null}
 
       {faqs.length > 0 ? (
         <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-          <FadeUp>
-            <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-              FAQ
-            </h2>
-          </FadeUp>
-          <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+          <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+            FAQ
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
             {faqs.map((faq) => (
-              <StaggerItem key={faq._key} className="flex flex-col">
+              <div key={faq._key} className="flex flex-col">
                 <h3 className="font-display text-xl mb-3">{faq.question ?? ''}</h3>
                 <p className="font-sans text-navy/70 leading-relaxed">
                   {faq.answer ?? ''}
                 </p>
-              </StaggerItem>
+              </div>
             ))}
-          </StaggerGroup>
+          </div>
         </section>
       ) : null}
 
       <section className="px-4 md:px-8 max-w-7xl mx-auto">
-        <FadeUp>
-          <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-            Get in Touch
-          </h2>
-        </FadeUp>
-        <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <StaggerItem className="bg-deep/5 p-8 rounded-sm hover:bg-deep/10 transition-colors duration-300">
+        <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+          Get in Touch
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-deep/5 p-8 rounded-sm hover:bg-deep/10 transition-colors duration-300">
             <span className="block font-sans text-sm text-navy/60 mb-2 uppercase tracking-wider">
               Email
             </span>
@@ -187,8 +165,8 @@ export default async function JoinPage() {
             >
               {clubEmail || 'Contact us'}
             </a>
-          </StaggerItem>
-          <StaggerItem className="bg-deep/5 p-8 rounded-sm hover:bg-deep/10 transition-colors duration-300">
+          </div>
+          <div className="bg-deep/5 p-8 rounded-sm hover:bg-deep/10 transition-colors duration-300">
             <span className="block font-sans text-sm text-navy/60 mb-2 uppercase tracking-wider">
               Instagram
             </span>
@@ -198,8 +176,8 @@ export default async function JoinPage() {
             >
               @bruinalphainvestment
             </a>
-          </StaggerItem>
-          <StaggerItem className="bg-deep/5 p-8 rounded-sm hover:bg-deep/10 transition-colors duration-300">
+          </div>
+          <div className="bg-deep/5 p-8 rounded-sm hover:bg-deep/10 transition-colors duration-300">
             <span className="block font-sans text-sm text-navy/60 mb-2 uppercase tracking-wider">
               LinkedIn
             </span>
@@ -209,8 +187,8 @@ export default async function JoinPage() {
             >
               Bruin Alpha Investment
             </a>
-          </StaggerItem>
-        </StaggerGroup>
+          </div>
+        </div>
       </section>
     </div>
   );

@@ -10,7 +10,6 @@ import {
   committeeDetailFallbackCurriculum,
 } from '@/app/_components/fallbacks/committee-detail';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   committeeBySlugQuery,
@@ -94,101 +93,81 @@ export default async function CommitteeDetailPage({
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-gray-900 font-sans pb-24">
       <section className="pt-32 pb-16 px-6 md:px-12 max-w-5xl mx-auto">
-        <StaggerGroup trigger="mount">
-          <StaggerItem>
-            <Link
-              href="/committees"
-              className="inline-flex items-center text-[#0A192F] hover:text-blue-700 transition-colors mb-8 font-medium"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Committees
-            </Link>
-          </StaggerItem>
+        <Link
+          href="/committees"
+          className="inline-flex items-center text-[#0A192F] hover:text-blue-700 transition-colors mb-8 font-medium"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Committees
+        </Link>
 
-          <StaggerItem>
-            <h1 className="text-5xl md:text-6xl font-serif text-[#0A192F] mb-6 leading-tight">
-              {committee.name ?? ''}
-            </h1>
-          </StaggerItem>
+        <h1 className="text-5xl md:text-6xl font-serif text-[#0A192F] mb-6 leading-tight">
+          {committee.name ?? ''}
+        </h1>
 
-          {committee.tagline ? (
-            <StaggerItem>
-              <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mb-8 leading-relaxed font-light">
-                {committee.tagline}
-              </p>
-            </StaggerItem>
-          ) : null}
+        {committee.tagline ? (
+          <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mb-8 leading-relaxed font-light">
+            {committee.tagline}
+          </p>
+        ) : null}
 
-          <StaggerItem>
-            <div className="inline-flex items-center bg-[#0A192F] text-[#FAF9F6] px-5 py-2.5 rounded-full text-sm font-medium tracking-wide">
-              Director: {directorLabel}
-            </div>
-          </StaggerItem>
-        </StaggerGroup>
+        <div className="inline-flex items-center bg-[#0A192F] text-[#FAF9F6] px-5 py-2.5 rounded-full text-sm font-medium tracking-wide">
+          Director: {directorLabel}
+        </div>
       </section>
 
       <div className="px-6 md:px-12 max-w-5xl mx-auto space-y-20">
         {committee.differentiator || committee.directorQuote ? (
-          <StaggerGroup className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             {committee.differentiator ? (
-              <StaggerItem>
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                  <h2 className="text-2xl font-serif text-[#0A192F] mb-4">
-                    The BAI Difference
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed">
-                    {committee.differentiator}
-                  </p>
-                </div>
-              </StaggerItem>
+              <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <h2 className="text-2xl font-serif text-[#0A192F] mb-4">
+                  The BAI Difference
+                </h2>
+                <p className="text-gray-700 leading-relaxed">
+                  {committee.differentiator}
+                </p>
+              </div>
             ) : null}
 
             {committee.directorQuote ? (
-              <StaggerItem>
-                <blockquote className="text-xl md:text-2xl font-serif italic text-[#0A192F] leading-relaxed border-l-4 border-[#0A192F] pl-6 py-2">
-                  {committee.directorQuote}
-                </blockquote>
-              </StaggerItem>
+              <blockquote className="text-xl md:text-2xl font-serif italic text-[#0A192F] leading-relaxed border-l-4 border-[#0A192F] pl-6 py-2">
+                {committee.directorQuote}
+              </blockquote>
             ) : null}
-          </StaggerGroup>
+          </div>
         ) : null}
 
         {committee.description && committee.description.length > 0 ? (
-          <FadeUp>
-            <section className="prose prose-lg max-w-none">
-              <PortableText value={committee.description} />
-            </section>
-          </FadeUp>
+          <section className="prose prose-lg max-w-none">
+            <PortableText value={committee.description} />
+          </section>
         ) : null}
 
         {learnBullets.length > 0 ? (
           <section>
-            <FadeUp>
-              <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
-                What You&apos;ll Learn
-              </h2>
-            </FadeUp>
-            <StaggerGroup className="grid md:grid-cols-2 gap-4">
+            <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
+              What You&apos;ll Learn
+            </h2>
+            <ul className="grid md:grid-cols-2 gap-4">
               {learnBullets.map((item) => (
-                <StaggerItem key={item} className="flex items-start">
+                <li key={item} className="flex items-start">
                   <span className="text-[#0A192F] mr-3 mt-1">•</span>
                   <span className="text-gray-700 leading-relaxed">{item}</span>
-                </StaggerItem>
+                </li>
               ))}
-            </StaggerGroup>
+            </ul>
           </section>
         ) : null}
 
         {projects.length > 0 ? (
           <section>
-            <FadeUp>
-              <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
-                Signature Projects
-              </h2>
-            </FadeUp>
-            <StaggerGroup className="grid md:grid-cols-2 gap-6">
+            <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
+              Signature Projects
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
               {projects.map((project) => (
-                <StaggerItem
+                <div
                   key={project._id}
                   className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
                 >
@@ -198,24 +177,22 @@ export default async function CommitteeDetailPage({
                   {project.summary ? (
                     <p className="text-gray-600 leading-relaxed">{project.summary}</p>
                   ) : null}
-                </StaggerItem>
+                </div>
               ))}
-            </StaggerGroup>
+            </div>
           </section>
         ) : null}
 
         {curriculumBlocks.length > 0 ? (
-          <FadeUp>
-            <section>
-              <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
-                Curriculum{' '}
-                <span className="text-gray-400 text-2xl font-sans ml-2">(Fall 2026)</span>
-              </h2>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden px-6 py-4 prose prose-lg max-w-none">
-                <PortableText value={curriculumBlocks} />
-              </div>
-            </section>
-          </FadeUp>
+          <section>
+            <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
+              Curriculum{' '}
+              <span className="text-gray-400 text-2xl font-sans ml-2">(Fall 2026)</span>
+            </h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden px-6 py-4 prose prose-lg max-w-none">
+              <PortableText value={curriculumBlocks} />
+            </div>
+          </section>
         ) : null}
       </div>
     </div>

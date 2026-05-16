@@ -6,8 +6,6 @@ import {
   missionFirstLetter,
 } from '../fallbacks/sections/mission';
 
-import { StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
-
 export default function Mission(props: Partial<MissionSection> = {}) {
   const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
   const data = useSanity && props.heading ? props : missionFallback;
@@ -22,21 +20,21 @@ export default function Mission(props: Partial<MissionSection> = {}) {
       className="bg-cream text-navy py-24 md:py-32 px-4 md:px-8"
     >
       <div className="mx-auto max-w-7xl">
-        <StaggerGroup className="grid grid-cols-1 md:grid-cols-12 gap-12">
-          <StaggerItem className="md:col-span-4 lg:col-span-3">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+          <div className="md:col-span-4 lg:col-span-3">
             <h2 className="font-display text-2xl md:text-3xl sticky top-32">
               {heading}
             </h2>
-          </StaggerItem>
-          <StaggerItem className="md:col-span-8 lg:col-span-9">
+          </div>
+          <div className="md:col-span-8 lg:col-span-9">
             <p className="font-sans text-lg md:text-2xl leading-relaxed md:leading-[1.6]">
               <span className="float-left text-6xl md:text-8xl font-display leading-none mr-4 mt-2 text-[#8B6F38]">
                 {dropCap}
               </span>
               {rest}
             </p>
-          </StaggerItem>
-        </StaggerGroup>
+          </div>
+        </div>
       </div>
     </section>
   );

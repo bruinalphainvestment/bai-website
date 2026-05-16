@@ -3,7 +3,6 @@ import { stegaClean } from 'next-sanity';
 
 import { aboutPageFallback, aboutQuoteFallback } from '@/app/_components/fallbacks/about-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import { aboutPageQuery, siteSettingsQuery } from '@/sanity/lib/queries';
@@ -58,82 +57,68 @@ export default async function AboutPage() {
   return (
     <div className="bg-cream text-navy min-h-screen pt-32 pb-24 selection:bg-navy selection:text-cream">
       <section className="px-6 md:px-12 lg:px-24 mb-24 max-w-7xl mx-auto">
-        <StaggerGroup trigger="mount">
-          <StaggerItem>
-            <h1 className="font-serif text-h1 font-light tracking-tight mb-6">{heading}</h1>
-          </StaggerItem>
-          <StaggerItem>
-            <p className="text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
-              {subheading}
-            </p>
-          </StaggerItem>
-        </StaggerGroup>
+        <h1 className="font-serif text-h1 font-light tracking-tight mb-6">{heading}</h1>
+        <p className="text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
+          {subheading}
+        </p>
       </section>
 
       {historyParagraphs.length > 0 ? (
         <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-4xl mx-auto">
-          <StaggerGroup className="prose prose-lg prose-navy max-w-none space-y-6 text-lg leading-relaxed opacity-90">
+          <div className="prose prose-lg prose-navy max-w-none space-y-6 text-lg leading-relaxed opacity-90">
             {historyParagraphs.map((paragraph, i) => (
-              <StaggerItem key={`history-paragraph-${i}`}>
-                <p>{paragraph}</p>
-              </StaggerItem>
+              <p key={`history-paragraph-${i}`}>{paragraph}</p>
             ))}
-          </StaggerGroup>
+          </div>
         </section>
       ) : null}
 
       <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-5xl mx-auto">
-        <FadeUp>
-          <blockquote className="border-l-4 border-gold-start pl-8 py-4">
-            <p className="font-serif text-h2 font-light leading-snug mb-6">
-              &ldquo;{aboutQuoteFallback.body}&rdquo;
-            </p>
-            <footer className="text-sm tracking-widest uppercase opacity-70">
-              &mdash; {aboutQuoteFallback.attribution}
-            </footer>
-          </blockquote>
-        </FadeUp>
+        <blockquote className="border-l-4 border-gold-start pl-8 py-4">
+          <p className="font-serif text-h2 font-light leading-snug mb-6">
+            &ldquo;{aboutQuoteFallback.body}&rdquo;
+          </p>
+          <footer className="text-sm tracking-widest uppercase opacity-70">
+            &mdash; {aboutQuoteFallback.attribution}
+          </footer>
+        </blockquote>
       </section>
 
       {values.length > 0 ? (
         <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-7xl mx-auto">
-          <FadeUp>
-            <h2 className="font-serif text-h2 font-light mb-12 border-b border-border-subtle pb-4">
-              What Sets Us Apart
-            </h2>
-          </FadeUp>
-          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <h2 className="font-serif text-h2 font-light mb-12 border-b border-border-subtle pb-4">
+            What Sets Us Apart
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {values.map((value) => (
-              <StaggerItem key={value._key}>
+              <div key={value._key}>
                 <h3 className="font-serif text-2xl mb-4 text-gold-start">
                   {value.title ?? ''}
                 </h3>
                 <p className="opacity-80 leading-relaxed">{value.body ?? ''}</p>
-              </StaggerItem>
+              </div>
             ))}
-          </StaggerGroup>
+          </div>
         </section>
       ) : null}
 
       {showSignatureTrip && signatureTrip ? (
         <section className="px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
-          <FadeUp>
-            <div className="bg-offwhite border border-border-subtle p-12 md:p-24 text-center rounded-sm">
-              <h2 className="font-serif text-h2 font-light mb-4">
-                {signatureTrip.headline ?? 'Signature Trip'}
-              </h2>
-              {signatureTrip.status ? (
-                <p className="text-lg opacity-70 uppercase tracking-widest">
-                  {signatureTrip.status}
-                </p>
-              ) : null}
-              {signatureTrip.body ? (
-                <p className="text-lg opacity-80 mt-6 max-w-2xl mx-auto">
-                  {signatureTrip.body}
-                </p>
-              ) : null}
-            </div>
-          </FadeUp>
+          <div className="bg-offwhite border border-border-subtle p-12 md:p-24 text-center rounded-sm">
+            <h2 className="font-serif text-h2 font-light mb-4">
+              {signatureTrip.headline ?? 'Signature Trip'}
+            </h2>
+            {signatureTrip.status ? (
+              <p className="text-lg opacity-70 uppercase tracking-widest">
+                {signatureTrip.status}
+              </p>
+            ) : null}
+            {signatureTrip.body ? (
+              <p className="text-lg opacity-80 mt-6 max-w-2xl mx-auto">
+                {signatureTrip.body}
+              </p>
+            ) : null}
+          </div>
         </section>
       ) : null}
     </div>
