@@ -4,82 +4,69 @@ export const teamPage = defineType({
   name: 'teamPage',
   title: 'Team Page',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Internal Title',
       type: 'string',
+      group: 'content',
       initialValue: 'Team Page',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'object',
-      fields: [
-        defineField({ name: 'title', title: 'Title', type: 'string' }),
-        defineField({
-          name: 'description',
-          title: 'Description',
-          type: 'text',
-          rows: 3,
-        }),
-        defineField({
-          name: 'ogImage',
-          title: 'OG Image',
-          type: 'image',
-          options: { hotspot: true },
-        }),
-      ],
-    }),
-    defineField({
       name: 'hero',
       title: 'Hero',
-      type: 'object',
-      fields: [
-        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
-        defineField({
-          name: 'subheading',
-          title: 'Subheading',
-          type: 'text',
-          rows: 2,
-        }),
-      ],
+      type: 'pageHero',
+      group: 'content',
     }),
     defineField({
       name: 'intro',
       title: 'Intro',
       type: 'text',
+      group: 'content',
       rows: 4,
     }),
     defineField({
       name: 'foundingClassHeading',
       title: 'Founding Class Heading',
       type: 'string',
-      description: 'Per Metis §1.18: founding-class section heading.',
+      group: 'content',
     }),
     defineField({
       name: 'membersHeading',
       title: 'Members Heading',
       type: 'string',
+      group: 'content',
     }),
     defineField({
       name: 'membersPlaceholder',
       title: 'Members Placeholder',
       type: 'string',
-      description:
-        'Per plan D8: empty-state copy when there are no general members to display yet.',
+      group: 'content',
+      description: 'Empty-state copy when there are no general members yet.',
     }),
     defineField({
       name: 'alumniHeading',
       title: 'Alumni Heading',
       type: 'string',
+      group: 'content',
     }),
     defineField({
       name: 'alumniPlaceholder',
       title: 'Alumni Placeholder',
       type: 'string',
-      description: 'Empty-state copy when there are no alumni to display yet.',
+      group: 'content',
+      description: 'Empty-state copy when there are no alumni yet.',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

@@ -11,14 +11,14 @@ export const projectGridSection = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'project_filter',
+      name: 'projectFilter',
       title: 'Project Filter — Committee Slug',
       type: 'string',
       description:
-        'Optional. When set, only projects linked to this committee slug are rendered.',
+        'Optional. Enter the committee slug (e.g. "trading", "wealth-management") to filter projects.',
     }),
     defineField({
-      name: 'status_filter',
+      name: 'statusFilter',
       title: 'Project Filter — Status',
       type: 'string',
       options: {
@@ -35,8 +35,8 @@ export const projectGridSection = defineType({
   preview: {
     select: {
       title: 'heading',
-      committee: 'project_filter',
-      status: 'status_filter',
+      committee: 'projectFilter',
+      status: 'statusFilter',
     },
     prepare({ title, committee, status }) {
       const filters = [committee, status].filter(Boolean).join(' • ');

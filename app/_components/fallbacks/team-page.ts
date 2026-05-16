@@ -6,11 +6,13 @@ import type {
 export const teamPageFallback: NonNullable<TeamPageQueryResult> = {
   title: 'Team Page',
   seo: {
+    _type: 'seo' as const,
     title: 'Team — Bruin Alpha Investment at UCLA',
     description:
       'Meet the founding class, members, and alumni of Bruin Alpha Investment.',
   },
   hero: {
+    _type: 'pageHero' as const,
     heading: 'The Team',
     subheading:
       'Meet the minds behind Bruin Alpha Investment. A dedicated group of students pushing the boundaries of undergraduate finance.',

@@ -3,11 +3,13 @@ import type { JoinPageQueryResult } from '@/sanity/types/generated';
 export const joinPageFallback: NonNullable<JoinPageQueryResult> = {
   title: 'Join Page',
   seo: {
+    _type: 'seo' as const,
     title: 'Join — Bruin Alpha Investment at UCLA',
     description:
       'Apply to Bruin Alpha Investment. Learn about our recruitment timeline, application process, and FAQ.',
   },
   hero: {
+    _type: 'pageHero' as const,
     heading: 'Join the Cohort',
     subheading:
       'Four disciplines. One structured rotational program. Build your foundation in finance without locking into a single track on day one.',

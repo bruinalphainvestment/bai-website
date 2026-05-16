@@ -11,13 +11,14 @@ export const teamGridSection = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'member_filter',
+      name: 'memberFilter',
       title: 'Member Filter',
       type: 'array',
       of: [
         defineArrayMember({
           type: 'reference',
           to: [{ type: 'foundingMember' }],
+          options: { disableNew: true },
         }),
       ],
       description:

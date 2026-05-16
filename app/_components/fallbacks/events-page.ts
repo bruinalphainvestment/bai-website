@@ -6,11 +6,13 @@ import type {
 export const eventsPageFallback: NonNullable<EventsPageQueryResult> = {
   title: 'Events Page',
   seo: {
+    _type: 'seo' as const,
     title: 'Events — Bruin Alpha Investment at UCLA',
     description:
       'Find Bruin Alpha Investment at campus events, competitions, and speaker series.',
   },
   hero: {
+    _type: 'pageHero' as const,
     heading: 'Where to Find Us',
     subheading:
       'Connect with us across campus and track our participation in premier collegiate competitions.',

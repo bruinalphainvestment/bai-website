@@ -13,18 +13,18 @@ export const quoteSection = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'attribution_name',
+      name: 'attributionName',
       title: 'Attribution — Name',
       type: 'string',
     }),
     defineField({
-      name: 'attribution_role',
+      name: 'attributionRole',
       title: 'Attribution — Role',
       type: 'string',
     }),
   ],
   preview: {
-    select: { quote: 'quote', name: 'attribution_name' },
+    select: { quote: 'quote', name: 'attributionName' },
     prepare({ quote, name }) {
       const snippet =
         typeof quote === 'string'

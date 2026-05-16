@@ -22,18 +22,8 @@ export const joinPage = defineType({
     defineField({
       name: 'hero',
       title: 'Hero',
-      type: 'object',
+      type: 'pageHero',
       group: 'content',
-      options: { collapsible: true, collapsed: false },
-      fields: [
-        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
-        defineField({
-          name: 'subheading',
-          title: 'Subheading',
-          type: 'text',
-          rows: 2,
-        }),
-      ],
     }),
     defineField({
       name: 'intro',
@@ -172,32 +162,8 @@ export const joinPage = defineType({
     defineField({
       name: 'seo',
       title: 'SEO',
-      type: 'object',
+      type: 'seo',
       group: 'seo',
-      options: { collapsible: true, collapsed: false },
-      fields: [
-        defineField({
-          name: 'title',
-          title: 'Meta Title',
-          type: 'string',
-          validation: (rule) =>
-            rule.max(65).warning('May be truncated in search results.'),
-        }),
-        defineField({
-          name: 'description',
-          title: 'Meta Description',
-          type: 'text',
-          rows: 3,
-          validation: (rule) =>
-            rule.max(160).warning('May be truncated in search results.'),
-        }),
-        defineField({
-          name: 'ogImage',
-          title: 'OG Image',
-          type: 'image',
-          options: { hotspot: true },
-        }),
-      ],
     }),
   ],
   preview: {

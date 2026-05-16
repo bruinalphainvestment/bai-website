@@ -23,9 +23,11 @@ import { imageCalloutSection } from './objects/imageCalloutSection';
 import { marqueeSection } from './objects/marqueeSection';
 import { missionSection } from './objects/missionSection';
 import { numberedListSection } from './objects/numberedListSection';
+import { pageHero } from './objects/pageHero';
 import { projectGridSection } from './objects/projectGridSection';
 import { quoteSection } from './objects/quoteSection';
 import { richTextSection } from './objects/richTextSection';
+import { seo } from './objects/seo';
 import { spacerSection } from './objects/spacerSection';
 import { statsRowSection } from './objects/statsRowSection';
 import { statsSection } from './objects/statsSection';
@@ -46,6 +48,8 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   foundingMember,
   project,
   event,
+  seo,
+  pageHero,
   heroSection,
   missionSection,
   valuesSection,

@@ -117,7 +117,7 @@ export default async function CommitteeDetailPage({
       </section>
 
       <div className="px-6 md:px-12 max-w-5xl mx-auto space-y-20">
-        {committee.differentiator || committee.director_quote ? (
+        {committee.differentiator || committee.directorQuote ? (
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {committee.differentiator ? (
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
@@ -130,9 +130,9 @@ export default async function CommitteeDetailPage({
               </div>
             ) : null}
 
-            {committee.director_quote ? (
+            {committee.directorQuote ? (
               <blockquote className="text-xl md:text-2xl font-serif italic text-[#0A192F] leading-relaxed border-l-4 border-[#0A192F] pl-6 py-2">
-                {committee.director_quote}
+                {committee.directorQuote}
               </blockquote>
             ) : null}
           </div>

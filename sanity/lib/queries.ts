@@ -5,9 +5,9 @@ export const siteSettingsQuery = defineQuery(`
     brandName,
     titleSuffix,
     slogan,
-    "disclaimer": coalesce(disclaimerText, disclaimer_text),
-    "uclaName": coalesce(uclaCompliantName, ucla_compliant_name),
-    "mission": coalesce(missionStatement, mission_statement),
+    "disclaimer": disclaimerText,
+    "uclaName": uclaCompliantName,
+    "mission": missionStatement,
     applyUrl,
     clubEmail,
     instagramUrl,
@@ -21,7 +21,7 @@ export const siteSettingsQuery = defineQuery(`
     organizationDescription,
     sameAs,
     errorCopy,
-    "domainRenewal": coalesce(domainRenewalDate, domain_renewal_date)
+    "domainRenewal": domainRenewalDate
   }
 `);
 
@@ -138,7 +138,7 @@ export const allEventsQuery = defineQuery(`
     description,
     type,
     status,
-    "externalUrl": coalesce(externalUrl, external_url),
+    externalUrl,
     "committee": committee->{ _id, name, "slug": slug.current }
   }
 `);
@@ -218,7 +218,7 @@ export const committeeBySlugQuery = defineQuery(`
     curriculum,
     learn,
     differentiator,
-    director_quote,
+    directorQuote,
     redirectsFrom,
     accentColor,
     order,
@@ -233,7 +233,7 @@ export const committeeBySlugQuery = defineQuery(`
       photoReleaseObtained,
       monogramOverride
     },
-    "projects": signature_projects[]->{
+    "projects": signatureProjects[]->{
       _id,
       name,
       "slug": slug.current,

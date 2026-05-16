@@ -6,11 +6,13 @@ import type {
 export const committeesIndexPageFallback: NonNullable<CommitteesIndexPageQueryResult> = {
   title: 'Committees Index Page',
   seo: {
+    _type: 'seo' as const,
     title: 'Committees — Bruin Alpha Investment at UCLA',
     description:
       'Explore our four core committees: Wealth Management, Trading, Accounting & Consulting, and Investment Banking.',
   },
   hero: {
+    _type: 'pageHero' as const,
     heading: 'Four Committees. One Club.',
     subheading:
       'Bruin Alpha Investment is structured around four core committees. While each has a distinct focus, they work together to provide a comprehensive financial education through our rotational program.',

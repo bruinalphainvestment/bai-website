@@ -3,11 +3,13 @@ import type { TrainingPageQueryResult } from '@/sanity/types/generated';
 export const trainingPageFallback: NonNullable<TrainingPageQueryResult> = {
   title: 'Training Page',
   seo: {
+    _type: 'seo' as const,
     title: 'Training & Rotational Program — Bruin Alpha Investment at UCLA',
     description:
       'Our 10-week rotational program exposes analysts to Wealth Management, Trading, Accounting & Consulting, and Investment Banking before specialization.',
   },
   hero: {
+    _type: 'pageHero' as const,
     heading: 'The Rotational Program',
     subheading:
       'A rigorous 10-week pipeline designed to build comprehensive financial acumen. Analysts rotate through every discipline before committing to a specialized committee.',

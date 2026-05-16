@@ -85,7 +85,7 @@ export const committee = defineType({
         'Shown when no director is selected, e.g. "TBD — announcement coming soon".',
     }),
     defineField({
-      name: 'director_quote',
+      name: 'directorQuote',
       title: 'Director Quote',
       type: 'text',
       group: 'leadership',
@@ -93,7 +93,7 @@ export const committee = defineType({
       description: 'Short pull-quote from the committee director.',
     }),
     defineField({
-      name: 'signature_projects',
+      name: 'signatureProjects',
       title: 'Signature Projects',
       type: 'array',
       group: 'projects',

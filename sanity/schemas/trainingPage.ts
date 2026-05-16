@@ -4,59 +4,39 @@ export const trainingPage = defineType({
   name: 'trainingPage',
   title: 'Training Page',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Internal Title',
       type: 'string',
+      group: 'content',
       initialValue: 'Training Page',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'object',
-      fields: [
-        defineField({ name: 'title', title: 'Title', type: 'string' }),
-        defineField({
-          name: 'description',
-          title: 'Description',
-          type: 'text',
-          rows: 3,
-        }),
-        defineField({
-          name: 'ogImage',
-          title: 'OG Image',
-          type: 'image',
-          options: { hotspot: true },
-        }),
-      ],
-    }),
-    defineField({
       name: 'hero',
       title: 'Hero',
-      type: 'object',
-      fields: [
-        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
-        defineField({
-          name: 'subheading',
-          title: 'Subheading',
-          type: 'text',
-          rows: 2,
-        }),
-      ],
+      type: 'pageHero',
+      group: 'content',
     }),
     defineField({
       name: 'intro',
       title: 'Intro',
       type: 'text',
+      group: 'content',
       rows: 4,
     }),
     defineField({
       name: 'curriculum',
       title: 'Curriculum',
       type: 'array',
+      group: 'content',
       description: 'Rotational program week-by-week curriculum entries.',
+      validation: (rule) => rule.max(20),
       of: [
         defineArrayMember({
           type: 'object',
@@ -92,6 +72,8 @@ export const trainingPage = defineType({
       name: 'programs',
       title: 'Programs',
       type: 'array',
+      group: 'content',
+      validation: (rule) => rule.max(10),
       of: [
         defineArrayMember({
           type: 'object',
@@ -126,6 +108,8 @@ export const trainingPage = defineType({
       name: 'signatureCertifications',
       title: 'Signature Certifications',
       type: 'array',
+      group: 'content',
+      validation: (rule) => rule.max(10),
       of: [
         defineArrayMember({
           type: 'object',
@@ -149,6 +133,12 @@ export const trainingPage = defineType({
           },
         }),
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

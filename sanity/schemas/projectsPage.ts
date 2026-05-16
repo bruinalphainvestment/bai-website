@@ -4,58 +4,37 @@ export const projectsPage = defineType({
   name: 'projectsPage',
   title: 'Projects Page',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Internal Title',
       type: 'string',
+      group: 'content',
       initialValue: 'Projects Page',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'object',
-      fields: [
-        defineField({ name: 'title', title: 'Title', type: 'string' }),
-        defineField({
-          name: 'description',
-          title: 'Description',
-          type: 'text',
-          rows: 3,
-        }),
-        defineField({
-          name: 'ogImage',
-          title: 'OG Image',
-          type: 'image',
-          options: { hotspot: true },
-        }),
-      ],
-    }),
-    defineField({
       name: 'hero',
       title: 'Hero',
-      type: 'object',
-      fields: [
-        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
-        defineField({
-          name: 'subheading',
-          title: 'Subheading',
-          type: 'text',
-          rows: 2,
-        }),
-      ],
+      type: 'pageHero',
+      group: 'content',
     }),
     defineField({
       name: 'intro',
       title: 'Intro',
       type: 'text',
+      group: 'content',
       rows: 4,
     }),
     defineField({
       name: 'emptyState',
       title: 'Empty-State Copy',
       type: 'string',
+      group: 'content',
       description:
         'Shown when there are no projects. Projects themselves are queried from the `project` document schema.',
     }),
@@ -63,8 +42,9 @@ export const projectsPage = defineType({
       name: 'statusLegend',
       title: 'Status Legend',
       type: 'array',
+      group: 'content',
       description:
-        'Per plan D9: 3 entries (planning, active, completed) explaining the project-status indicator system.',
+        '3 entries (planning, active, completed) explaining the project-status indicator system.',
       validation: (rule) => rule.max(3),
       of: [
         defineArrayMember({
@@ -98,6 +78,12 @@ export const projectsPage = defineType({
           },
         }),
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

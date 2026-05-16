@@ -9,11 +9,13 @@ import type { AboutPageQueryResult } from '@/sanity/types/generated';
 export const aboutPageFallback: NonNullable<AboutPageQueryResult> = {
   title: 'About Page',
   seo: {
+    _type: 'seo' as const,
     title: 'About — Bruin Alpha Investment at UCLA',
     description:
       'Bruin Alpha Investment was founded in Spring 2026 to provide blanket coverage across finance disciplines through specialized committees and real project work.',
   },
   hero: {
+    _type: 'pageHero' as const,
     heading: 'Our Story',
     subheading:
       "Founded in Spring 2026, Bruin Alpha Investment was built to bridge the gap in UCLA's finance club landscape by combining broad accessibility with deep, specialized training.",

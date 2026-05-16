@@ -6,11 +6,13 @@ import type {
 export const projectsPageFallback: NonNullable<ProjectsPageQueryResult> = {
   title: 'Projects Page',
   seo: {
+    _type: 'seo' as const,
     title: 'Projects & Research — Bruin Alpha Investment at UCLA',
     description:
       'Explore the hands-on initiatives, research, and engagements led by our specialized committees.',
   },
   hero: {
+    _type: 'pageHero' as const,
     heading: 'What We Build',
     subheading:
       'At Bruin Alpha Investment, theory is immediately put into practice. Our committees drive independent research and structured deliverables.',

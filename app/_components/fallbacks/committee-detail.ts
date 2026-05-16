@@ -29,7 +29,7 @@ export const committeeDetailFallback: Record<string, CommitteeDetail> = {
     ],
     differentiator:
       'The only finance club at UCLA emphasizing the wealth advisory career path with hands-on practice.',
-    director_quote:
+    directorQuote:
       '"Wealth management is the long game — built on conviction, rejection-handling, and the relationships you cultivate quarter after quarter." — Mack Haymond',
     redirectsFrom: null,
     accentColor: 'gold',
@@ -80,7 +80,7 @@ export const committeeDetailFallback: Record<string, CommitteeDetail> = {
     ],
     differentiator:
       'A unique focus on hands-on quant and market structure across alternative asset classes.',
-    director_quote:
+    directorQuote:
       '"The market is an incredible teacher. We focus on removing emotion and finding repeatable edge through systematic analysis." — Max',
     redirectsFrom: null,
     accentColor: 'gold',
@@ -138,7 +138,7 @@ export const committeeDetailFallback: Record<string, CommitteeDetail> = {
     ],
     differentiator:
       'Why Both? We explain the accounting-consulting overlap and why a unified committee best prepares you for both career paths.',
-    director_quote:
+    directorQuote:
       '"Understanding both the underlying accounting and the overarching strategy makes you significantly more dangerous in any advisory room." — Helmer',
     redirectsFrom: null,
     accentColor: 'gold',
@@ -189,7 +189,7 @@ export const committeeDetailFallback: Record<string, CommitteeDetail> = {
     ],
     differentiator:
       'A rotational program first approach, transitioning to specialized IB prep with tight cohort camaraderie and access to a smaller community.',
-    director_quote:
+    directorQuote:
       '"Success in banking isn\'t just about building the model perfectly—it\'s about understanding the "why" behind the transaction and clearly communicating that narrative." — Director',
     redirectsFrom: null,
     accentColor: 'gold',

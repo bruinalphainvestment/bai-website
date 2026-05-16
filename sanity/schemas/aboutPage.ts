@@ -4,52 +4,31 @@ export const aboutPage = defineType({
   name: 'aboutPage',
   title: 'About Page',
   type: 'document',
+  groups: [
+    { name: 'content', title: 'Content', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Internal Title',
       type: 'string',
+      group: 'content',
       initialValue: 'About Page',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'object',
-      fields: [
-        defineField({ name: 'title', title: 'Title', type: 'string' }),
-        defineField({
-          name: 'description',
-          title: 'Description',
-          type: 'text',
-          rows: 3,
-        }),
-        defineField({
-          name: 'ogImage',
-          title: 'OG Image',
-          type: 'image',
-          options: { hotspot: true },
-        }),
-      ],
-    }),
-    defineField({
       name: 'hero',
       title: 'Hero',
-      type: 'object',
-      fields: [
-        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
-        defineField({
-          name: 'subheading',
-          title: 'Subheading',
-          type: 'text',
-          rows: 2,
-        }),
-      ],
+      type: 'pageHero',
+      group: 'content',
     }),
     defineField({
       name: 'mission',
       title: 'Mission',
       type: 'object',
+      group: 'content',
+      options: { collapsible: true, collapsed: false },
       fields: [
         defineField({ name: 'heading', title: 'Heading', type: 'string' }),
         defineField({ name: 'body', title: 'Body', type: 'text', rows: 6 }),
@@ -59,6 +38,8 @@ export const aboutPage = defineType({
       name: 'history',
       title: 'History',
       type: 'object',
+      group: 'content',
+      options: { collapsible: true, collapsed: false },
       fields: [
         defineField({ name: 'heading', title: 'Heading', type: 'string' }),
         defineField({ name: 'body', title: 'Body', type: 'text', rows: 8 }),
@@ -68,8 +49,9 @@ export const aboutPage = defineType({
       name: 'signatureTrip',
       title: 'Signature Trip',
       type: 'object',
-      description:
-        'Per plan D7: signature trip / event teaser. Toggle "visible" to surface on page.',
+      group: 'content',
+      options: { collapsible: true, collapsed: false },
+      description: 'Signature trip / event teaser. Toggle "visible" to surface on page.',
       fields: [
         defineField({ name: 'headline', title: 'Headline', type: 'string' }),
         defineField({ name: 'status', title: 'Status', type: 'string' }),
@@ -86,7 +68,8 @@ export const aboutPage = defineType({
       name: 'values',
       title: 'Values',
       type: 'array',
-      description: 'Per Metis §1.15: 7 core values.',
+      group: 'content',
+      description: 'Per Metis §1.15: max 7 core values.',
       validation: (rule) => rule.max(7),
       of: [
         defineArrayMember({
@@ -116,6 +99,7 @@ export const aboutPage = defineType({
       name: 'sections',
       title: 'Generic Sections',
       type: 'array',
+      group: 'content',
       description: 'Additional generic heading/body sections beyond the named ones above.',
       of: [
         defineArrayMember({
@@ -140,6 +124,12 @@ export const aboutPage = defineType({
           },
         }),
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {
