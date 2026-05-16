@@ -20,7 +20,18 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ReactLenis root options={{ anchors: true, stopInertiaOnNavigate: true, syncTouch: false, lerp: 0.1 }}>
+    <ReactLenis
+      root
+      options={{
+        anchors: true,
+        stopInertiaOnNavigate: true,
+        syncTouch: false,
+        lerp: 0.15,
+        duration: 0.9,
+        wheelMultiplier: 0.9,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+      }}
+    >
       {children}
     </ReactLenis>
   );

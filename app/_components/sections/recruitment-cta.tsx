@@ -4,6 +4,8 @@ import type { CtaSection } from '@/sanity/types/generated';
 
 import { recruitmentCtaFallback } from '../fallbacks/sections/recruitment-cta';
 
+import { StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
+
 type Props = Partial<CtaSection> & {
   primaryHref?: string;
 };
@@ -23,12 +25,16 @@ export default function RecruitmentCTA(props: Props = {}) {
 
   return (
     <section data-section="cta" className="bg-cream text-navy py-32 px-4 md:px-8">
-      <div className="mx-auto max-w-4xl text-center">
-        <h2 className="font-display text-4xl md:text-6xl mb-6">{heading}</h2>
-        <p className="font-sans text-lg md:text-2xl text-navy/80 mb-12 max-w-2xl mx-auto font-light">
-          {body}
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+      <StaggerGroup className="mx-auto max-w-4xl text-center">
+        <StaggerItem>
+          <h2 className="font-display text-4xl md:text-6xl mb-6">{heading}</h2>
+        </StaggerItem>
+        <StaggerItem>
+          <p className="font-sans text-lg md:text-2xl text-navy/80 mb-12 max-w-2xl mx-auto font-light">
+            {body}
+          </p>
+        </StaggerItem>
+        <StaggerItem className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <Link
             href={primaryHref}
             className="bg-navy text-cream px-8 py-4 font-sans uppercase tracking-widest text-sm hover:bg-[#C5A059] transition-colors w-full sm:w-auto text-center"
@@ -42,8 +48,8 @@ export default function RecruitmentCTA(props: Props = {}) {
           >
             {secondaryLabel}
           </a>
-        </div>
-      </div>
+        </StaggerItem>
+      </StaggerGroup>
     </section>
   );
 }

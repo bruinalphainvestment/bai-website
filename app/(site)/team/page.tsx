@@ -6,6 +6,7 @@ import {
   foundingMembersFallback,
   teamPageFallback,
 } from '@/app/_components/fallbacks/team-page';
+import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { resolveOgImages } from '@/app/_components/og-image';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
@@ -67,39 +68,55 @@ export default async function TeamPage() {
   return (
     <div className="min-h-screen bg-cream text-navy pt-32 pb-24">
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-20 md:mb-32">
-        <h1 className="font-display text-5xl md:text-7xl mb-6">{heading}</h1>
-        <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
-          {subheading}
-        </p>
-        {intro ? (
-          <p className="font-sans mt-6 text-lg text-navy/70 max-w-3xl">{intro}</p>
-        ) : null}
+        <StaggerGroup trigger="mount">
+          <StaggerItem>
+            <h1 className="font-display text-5xl md:text-7xl mb-6">{heading}</h1>
+          </StaggerItem>
+          <StaggerItem>
+            <p className="font-sans text-xl md:text-2xl text-navy/80 max-w-3xl">
+              {subheading}
+            </p>
+          </StaggerItem>
+          {intro ? (
+            <StaggerItem>
+              <p className="font-sans mt-6 text-lg text-navy/70 max-w-3xl">{intro}</p>
+            </StaggerItem>
+          ) : null}
+        </StaggerGroup>
       </section>
 
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-        <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-          {foundingHeading}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <FadeUp>
+          <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+            {foundingHeading}
+          </h2>
+        </FadeUp>
+        <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {members.map((member) => (
-            <FoundingMemberCard key={member._id} member={member} />
+            <StaggerItem key={member._id}>
+              <FoundingMemberCard member={member} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </section>
 
-      <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-        <h2 className="font-display text-3xl md:text-4xl mb-8">{membersHeading}</h2>
-        <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
-          <p className="font-sans text-lg text-navy/70">{membersPlaceholder}</p>
-        </div>
-      </section>
+      <FadeUp>
+        <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
+          <h2 className="font-display text-3xl md:text-4xl mb-8">{membersHeading}</h2>
+          <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
+            <p className="font-sans text-lg text-navy/70">{membersPlaceholder}</p>
+          </div>
+        </section>
+      </FadeUp>
 
-      <section className="px-4 md:px-8 max-w-7xl mx-auto">
-        <h2 className="font-display text-3xl md:text-4xl mb-8">{alumniHeading}</h2>
-        <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
-          <p className="font-sans text-lg text-navy/70">{alumniPlaceholder}</p>
-        </div>
-      </section>
+      <FadeUp>
+        <section className="px-4 md:px-8 max-w-7xl mx-auto">
+          <h2 className="font-display text-3xl md:text-4xl mb-8">{alumniHeading}</h2>
+          <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
+            <p className="font-sans text-lg text-navy/70">{alumniPlaceholder}</p>
+          </div>
+        </section>
+      </FadeUp>
     </div>
   );
 }
