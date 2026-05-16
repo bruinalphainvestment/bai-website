@@ -94,7 +94,7 @@ export default async function RootLayout({
     "@type": "Organization",
     name: settings.brandName ?? "Bruin Alpha Investment",
     url: siteUrl,
-    logo: `${siteUrl}/brand/logo.png`,
+    logo: `${siteUrl}/brand/BAI_full_on_white.png`,
     description:
       settings.organizationDescription ??
       settings.defaultMetaDescription ??

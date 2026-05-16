@@ -50,7 +50,7 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
           <Link href="/" className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/logo.png"
+              src="/brand/BAI_mark.svg"
               alt={brandAlt}
               width={71}
               height={48}
@@ -97,7 +97,7 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
               <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/brand/logo.png"
+                  src="/brand/BAI_mark.svg"
                   alt={brandAlt}
                   width={71}
                   height={48}
