@@ -12,7 +12,7 @@
     "test:e2e": "playwright test",
     "test:lh": "lhci autorun",
     "seed": "bunx tsx sanity/seed/seed.ts",
-    "migrate:camelcase": "bunx tsx sanity/seed/migrate-to-camelcase.ts",
+    "migrate:camelcase": "bun run --bun sanity/seed/migrate-to-camelcase.ts",
     "backup": "bunx sanity dataset export production backup-$(date +%Y%m%d).tar.gz",
     "typegen:schema": "bunx sanity@latest schema extract --workspace default --path ./sanity.schema.json",
     "typegen": "bun run typegen:schema && bunx sanity typegen generate"
