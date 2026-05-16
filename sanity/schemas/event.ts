@@ -18,6 +18,12 @@ export const event = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'endDate',
+      title: 'End Date',
+      type: 'datetime',
+      description: 'Optional. Set for multi-hour or multi-day events.',
+    }),
+    defineField({
       name: 'location',
       title: 'Location',
       type: 'string',
@@ -45,12 +51,43 @@ export const event = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'TBD', value: 'tbd' },
+          { title: 'Scheduled', value: 'scheduled' },
+          { title: 'Past', value: 'past' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'tbd',
+    }),
+    defineField({
       name: 'external_url',
+      title: 'External URL (Deprecated)',
+      type: 'url',
+      readOnly: true,
+      description:
+        'Optional. Use for CME, IMC Prosperity, or other external event pages. Deprecated — use the camelCase field; will be removed after migration.',
+      validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'externalUrl',
       title: 'External URL',
       type: 'url',
       description:
         'Optional. Use for CME, IMC Prosperity, or other external event pages.',
       validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'committee',
+      title: 'Committee',
+      type: 'reference',
+      to: [{ type: 'committee' }],
+      description:
+        'Optional. Link this event to a committee (e.g. Quant Bootcamp social).',
     }),
   ],
   orderings: [

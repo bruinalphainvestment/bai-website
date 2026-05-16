@@ -1,40 +1,41 @@
-import Link from "next/link";
-import { sanityClient } from "@/sanity/lib/client";
+import Link from 'next/link';
 
-interface Social {
-  platform: string;
-  url: string;
+import { sanityFetch } from '@/sanity/lib/live';
+import { siteSettingsQuery } from '@/sanity/lib/queries';
+import type { SiteSettingsQueryResult } from '@/sanity/types/generated';
+
+import { footerFallback } from './fallbacks/footer';
+
+type FooterData = NonNullable<SiteSettingsQueryResult>;
+
+export async function SiteFooter() {
+  const data = await loadFooterData();
+  return <FooterRender data={data} />;
 }
 
-const FALLBACK_DISCLAIMER = "Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.";
-
-async function getSiteSettings() {
+async function loadFooterData(): Promise<FooterData> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') {
+    return footerFallback;
+  }
   try {
-    const settings = await sanityClient.fetch(
-      `*[_type == "siteSettings"][0]{
-        slogan,
-        disclaimer,
-        socials
-      }`,
-      {},
-      { next: { revalidate: 3600 } }
-    );
-    return settings || {};
+    const { data } = await sanityFetch({ query: siteSettingsQuery });
+    return data ?? footerFallback;
   } catch (error) {
-    console.error("Failed to fetch site settings:", error);
-    return {};
+    console.error('[SiteFooter] sanityFetch failed; using fallback:', error);
+    return footerFallback;
   }
 }
 
-export async function SiteFooter() {
-  const settings = await getSiteSettings();
-  const disclaimer = settings?.disclaimer || FALLBACK_DISCLAIMER;
-  const slogan = settings?.slogan || "Investing in Bruin excellence.";
-  
-  const socials = settings?.socials || [];
-  const instagram = socials.find((s: Social) => s.platform === 'instagram')?.url || 'https://instagram.com';
-  const linkedin = socials.find((s: Social) => s.platform === 'linkedin')?.url || 'https://linkedin.com';
-  const email = socials.find((s: Social) => s.platform === 'email')?.url || 'mailto:contact@bruinalpha.com';
+function FooterRender({ data }: { data: FooterData }) {
+  /* D21: disclaimer is empty string when Sanity returns null, NOT the hardcoded
+     legal copy — that copy belongs only in the fallback module + Sanity initialValue. */
+  const disclaimer = data.disclaimer ?? '';
+  const slogan = data.slogan ?? '';
+  const brandAlt = data.brandName ?? data.uclaName ?? 'Bruin Alpha Investment';
+  const instagramHref = data.instagramUrl ?? '#';
+  const linkedinHref = data.linkedinUrl ?? '#';
+  const emailHref = data.clubEmail ? `mailto:${data.clubEmail}` : '#';
+  const year = data.foundedYear ?? new Date().getFullYear();
 
   return (
     <footer className="bg-[#002147] text-white py-16">
@@ -44,10 +45,12 @@ export async function SiteFooter() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/logo-full.svg"
-              alt="Bruin Alpha Investment"
+              alt={brandAlt}
               className="w-48 h-auto"
             />
-            <p className="text-gray-300 text-sm mt-4 max-w-xs">{slogan}</p>
+            {slogan ? (
+              <p className="text-gray-300 text-sm mt-4 max-w-xs">{slogan}</p>
+            ) : null}
           </div>
 
           <div className="flex flex-col gap-4">
@@ -64,20 +67,19 @@ export async function SiteFooter() {
           <div className="flex flex-col gap-4">
             <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Connect</h3>
             <ul className="flex flex-col gap-2">
-              <li><a href={instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Instagram</a></li>
-              <li><a href={linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">LinkedIn</a></li>
-              <li><a href={email} className="text-gray-300 hover:text-white transition-colors">Email Us</a></li>
+              <li><a href={instagramHref} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Instagram</a></li>
+              <li><a href={linkedinHref} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">LinkedIn</a></li>
+              <li><a href={emailHref} className="text-gray-300 hover:text-white transition-colors">Email Us</a></li>
             </ul>
           </div>
 
           <div className="flex flex-col gap-4">
             <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Legal</h3>
-            <p className="text-gray-400 text-xs leading-relaxed">
-              {disclaimer}
-            </p>
-            {/* Update annually during Spring Handoff Ritual — see docs/HANDOFF.md */}
+            {disclaimer ? (
+              <p className="text-gray-400 text-xs leading-relaxed">{disclaimer}</p>
+            ) : null}
             <p className="text-gray-400 text-xs mt-4">
-              &copy; 2026 Bruin Alpha Investment. All rights reserved.
+              &copy; {year} {brandAlt}. All rights reserved.
             </p>
           </div>
         </div>

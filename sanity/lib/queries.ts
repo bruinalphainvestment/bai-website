@@ -2,16 +2,26 @@ import { defineQuery } from 'next-sanity';
 
 export const siteSettingsQuery = defineQuery(`
   *[_type == "siteSettings"][0] {
-    ucla_compliant_name,
+    brandName,
+    titleSuffix,
     slogan,
-    mission_statement,
-    disclaimer_text,
+    "disclaimer": coalesce(disclaimerText, disclaimer_text),
+    "uclaName": coalesce(uclaCompliantName, ucla_compliant_name),
+    "mission": coalesce(missionStatement, mission_statement),
     applyUrl,
     clubEmail,
     instagramUrl,
     linkedinUrl,
     slackInviteUrl,
-    domain_renewal_date
+    navLinks,
+    foundedYear,
+    foundedTerm,
+    defaultMetaDescription,
+    defaultOgImage,
+    organizationDescription,
+    sameAs,
+    errorCopy,
+    "domainRenewal": coalesce(domainRenewalDate, domain_renewal_date)
   }
 `);
 
@@ -45,6 +55,13 @@ export const allCommitteesQuery = defineQuery(`
   }
 `);
 
+export const sitemapCommitteesQuery = defineQuery(`
+  *[_type == "committee" && defined(slug.current)] | order(order asc) {
+    "slug": slug.current,
+    _updatedAt
+  }
+`);
+
 export const allFoundingMembersQuery = defineQuery(`
   *[_type == "foundingMember"] | order(lastName asc) {
     _id,
@@ -58,5 +75,183 @@ export const allFoundingMembersQuery = defineQuery(`
     photoReleaseObtained,
     headshot,
     monogramOverride
+  }
+`);
+
+export const aboutPageQuery = defineQuery(`
+  *[_type == "aboutPage"][0] {
+    title,
+    seo,
+    hero,
+    mission,
+    history,
+    signatureTrip,
+    values,
+    sections
+  }
+`);
+
+export const trainingPageQuery = defineQuery(`
+  *[_type == "trainingPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    curriculum,
+    programs,
+    signatureCertifications
+  }
+`);
+
+export const joinPageQuery = defineQuery(`
+  *[_type == "joinPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    timeline,
+    applicationForm,
+    faqs,
+    eligibilityHeading,
+    eligibilityBullets
+  }
+`);
+
+export const eventsPageQuery = defineQuery(`
+  *[_type == "eventsPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    upcomingEmptyState,
+    pastEmptyState
+  }
+`);
+
+export const allEventsQuery = defineQuery(`
+  *[_type == "event"] | order(date asc) {
+    _id,
+    name,
+    date,
+    endDate,
+    location,
+    description,
+    type,
+    status,
+    "externalUrl": coalesce(externalUrl, external_url),
+    "committee": committee->{ _id, name, "slug": slug.current }
+  }
+`);
+
+export const projectsPageQuery = defineQuery(`
+  *[_type == "projectsPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    emptyState,
+    statusLegend
+  }
+`);
+
+export const allProjectsQuery = defineQuery(`
+  *[_type == "project"] | order(_createdAt asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    summary,
+    status,
+    tags,
+    "committee": committee->{ _id, name, "slug": slug.current }
+  }
+`);
+
+export const teamPageQuery = defineQuery(`
+  *[_type == "teamPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    foundingClassHeading,
+    membersHeading,
+    membersPlaceholder,
+    alumniHeading,
+    alumniPlaceholder
+  }
+`);
+
+export const committeesIndexPageQuery = defineQuery(`
+  *[_type == "committeesIndexPage"][0] {
+    title,
+    seo,
+    hero,
+    intro,
+    connectedByDesign
+  }
+`);
+
+export const allCommitteesIndexQuery = defineQuery(`
+  *[_type == "committee"] | order(order asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    tagline,
+    learn,
+    accentColor,
+    order,
+    directorPlaceholder,
+    "director": director->{
+      firstName,
+      lastName,
+      role
+    }
+  }
+`);
+
+export const committeeBySlugQuery = defineQuery(`
+  *[_type == "committee" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    tagline,
+    description,
+    curriculum,
+    learn,
+    differentiator,
+    director_quote,
+    redirectsFrom,
+    accentColor,
+    order,
+    directorPlaceholder,
+    "director": director->{
+      _id,
+      firstName,
+      lastName,
+      role,
+      committee,
+      headshot,
+      photoReleaseObtained,
+      monogramOverride
+    },
+    "projects": signature_projects[]->{
+      _id,
+      name,
+      "slug": slug.current,
+      summary,
+      status
+    }
+  }
+`);
+
+export const committeeSlugsQuery = defineQuery(`
+  *[_type == "committee" && defined(slug.current)] {
+    "slug": slug.current
+  }
+`);
+
+export const committeeRedirectMapQuery = defineQuery(`
+  *[_type == "committee" && defined(slug.current)] {
+    "slug": slug.current,
+    redirectsFrom
   }
 `);

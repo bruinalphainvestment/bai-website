@@ -143,6 +143,35 @@ export const committee = defineType({
       initialValue: 'gold',
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'learn',
+      title: "What You'll Learn (bullets, max 4)",
+      type: 'array',
+      of: [{ type: 'string' }],
+      validation: (rule) => rule.max(4),
+      description: 'Bullet points displayed on the committee subpage.',
+    }),
+    defineField({
+      name: 'differentiator',
+      title: 'Differentiator Pitch',
+      type: 'text',
+      rows: 3,
+      description: 'Short pitch explaining what sets this committee apart.',
+    }),
+    defineField({
+      name: 'directorPlaceholder',
+      title: 'Director Placeholder',
+      type: 'string',
+      description:
+        'Shown when director ref is null, e.g. "TBD — announcement coming soon"',
+    }),
+    defineField({
+      name: 'redirectsFrom',
+      title: 'Redirects From',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Old slugs that 301 to current slug',
+    }),
   ],
   orderings: [
     {

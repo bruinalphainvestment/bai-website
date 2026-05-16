@@ -17,7 +17,7 @@ export const client: SanityClient = createClient({
   apiVersion,
   useCdn,
   perspective: 'published',
-  stega: { studioUrl: studioBasePath },
+  stega: { studioUrl: studioBasePath, enabled: false },
 });
 
 export const sanityClient = client;

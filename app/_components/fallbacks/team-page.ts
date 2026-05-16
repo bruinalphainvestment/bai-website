@@ -1,0 +1,92 @@
+import type {
+  AllFoundingMembersQueryResult,
+  TeamPageQueryResult,
+} from '@/sanity/types/generated';
+
+export const teamPageFallback: NonNullable<TeamPageQueryResult> = {
+  title: 'Team Page',
+  seo: {
+    title: 'Team — Bruin Alpha Investment at UCLA',
+    description:
+      'Meet the founding class, members, and alumni of Bruin Alpha Investment.',
+  },
+  hero: {
+    heading: 'The Team',
+    subheading:
+      'Meet the minds behind Bruin Alpha Investment. A dedicated group of students pushing the boundaries of undergraduate finance.',
+  },
+  intro: null,
+  foundingClassHeading: 'Founding Class — Spring 2026',
+  membersHeading: 'Members',
+  membersPlaceholder: 'Our first cohort joins Fall 2026 — check back after recruitment.',
+  alumniHeading: 'Alumni',
+  alumniPlaceholder: 'Our first alumni graduate in 2027.',
+};
+
+export const foundingMembersFallback: AllFoundingMembersQueryResult = [
+  {
+    _id: 'fallback-member-haymond',
+    firstName: 'Mack',
+    lastName: 'Haymond',
+    role: 'President',
+    committee: 'president',
+    gradYear: null,
+    bio: "Leading Bruin Alpha Investment's overall strategy and operations.",
+    linkedinUrl: null,
+    photoReleaseObtained: null,
+    headshot: null,
+    monogramOverride: 'MH',
+  },
+  {
+    _id: 'fallback-member-max',
+    firstName: 'Max',
+    lastName: null,
+    role: 'Trading Director',
+    committee: 'trading',
+    gradYear: null,
+    bio: 'Directing quantitative and discretionary trading initiatives.',
+    linkedinUrl: null,
+    photoReleaseObtained: null,
+    headshot: null,
+    monogramOverride: 'MX',
+  },
+  {
+    _id: 'fallback-member-sam',
+    firstName: 'Sam',
+    lastName: null,
+    role: 'Operations',
+    committee: 'operations',
+    gradYear: null,
+    bio: 'Managing internal processes, structure, and organizational growth.',
+    linkedinUrl: null,
+    photoReleaseObtained: null,
+    headshot: null,
+    monogramOverride: 'SM',
+  },
+  {
+    _id: 'fallback-member-kai',
+    firstName: 'Kai',
+    lastName: null,
+    role: 'Trading Co-Director',
+    committee: 'trading',
+    gradYear: null,
+    bio: 'Co-directing trading strategies and market research.',
+    linkedinUrl: null,
+    photoReleaseObtained: null,
+    headshot: null,
+    monogramOverride: 'KX',
+  },
+  {
+    _id: 'fallback-member-helmer',
+    firstName: 'Helmer',
+    lastName: null,
+    role: 'Accounting & Consulting Director',
+    committee: 'accounting-consulting',
+    gradYear: null,
+    bio: 'Overseeing accounting principles, financial analysis, and consulting projects.',
+    linkedinUrl: null,
+    photoReleaseObtained: null,
+    headshot: null,
+    monogramOverride: 'HM',
+  },
+];
