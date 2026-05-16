@@ -31,112 +31,140 @@ export default defineConfig({
           .title('Content')
           .items([
             S.listItem()
-              .title('Pages')
-              .id('pagesGroup')
+              .title('🏠 Home Page')
+              .id('homePage')
+              .child(
+                S.document()
+                  .schemaType('homePage')
+                  .documentId('homePage'),
+              ),
+            S.listItem()
+              .title('👥 About Page')
+              .id('aboutPage')
+              .child(
+                S.document()
+                  .schemaType('aboutPage')
+                  .documentId('aboutPage'),
+              ),
+            S.listItem()
+              .title('🎓 Training Page')
+              .id('trainingPage')
+              .child(
+                S.document()
+                  .schemaType('trainingPage')
+                  .documentId('trainingPage'),
+              ),
+            S.listItem()
+              .title('📝 Join Page')
+              .id('joinPage')
               .child(
                 S.list()
-                  .title('Pages')
+                  .title('Join Page')
                   .items([
                     S.listItem()
-                      .title('Home Page')
-                      .id('homePage')
-                      .child(
-                        S.document()
-                          .schemaType('homePage')
-                          .documentId('homePage'),
-                      ),
-                    S.listItem()
-                      .title('About Page')
-                      .id('aboutPage')
-                      .child(
-                        S.document()
-                          .schemaType('aboutPage')
-                          .documentId('aboutPage'),
-                      ),
-                    S.listItem()
-                      .title('Training Page')
-                      .id('trainingPage')
-                      .child(
-                        S.document()
-                          .schemaType('trainingPage')
-                          .documentId('trainingPage'),
-                      ),
-                    S.listItem()
-                      .title('Join Page')
-                      .id('joinPage')
+                      .title('Page Content')
+                      .id('joinPageContent')
                       .child(
                         S.document()
                           .schemaType('joinPage')
                           .documentId('joinPage'),
                       ),
+                    S.divider(),
+                    S.documentTypeListItem('faq')
+                      .title('FAQs')
+                      .child(
+                        S.documentTypeList('faq').title('FAQs'),
+                      ),
+                  ]),
+              ),
+            S.listItem()
+              .title('📅 Events Page')
+              .id('eventsPage')
+              .child(
+                S.list()
+                  .title('Events Page')
+                  .items([
                     S.listItem()
-                      .title('Events Page')
-                      .id('eventsPage')
+                      .title('Page Content')
+                      .id('eventsPageContent')
                       .child(
                         S.document()
                           .schemaType('eventsPage')
                           .documentId('eventsPage'),
                       ),
+                    S.divider(),
+                    S.documentTypeListItem('event')
+                      .title('All Events'),
+                  ]),
+              ),
+            S.listItem()
+              .title('💼 Projects Page')
+              .id('projectsPage')
+              .child(
+                S.list()
+                  .title('Projects Page')
+                  .items([
                     S.listItem()
-                      .title('Projects Page')
-                      .id('projectsPage')
+                      .title('Page Content')
+                      .id('projectsPageContent')
                       .child(
                         S.document()
                           .schemaType('projectsPage')
                           .documentId('projectsPage'),
                       ),
+                    S.divider(),
+                    S.documentTypeListItem('project')
+                      .title('All Projects'),
+                  ]),
+              ),
+            S.listItem()
+              .title('👨‍👩‍👧‍👦 Team Page')
+              .id('teamPage')
+              .child(
+                S.list()
+                  .title('Team Page')
+                  .items([
                     S.listItem()
-                      .title('Team Page')
-                      .id('teamPage')
+                      .title('Page Content')
+                      .id('teamPageContent')
                       .child(
                         S.document()
                           .schemaType('teamPage')
                           .documentId('teamPage'),
                       ),
+                    S.divider(),
+                    S.documentTypeListItem('foundingMember')
+                      .title('Founding Members'),
+                  ]),
+              ),
+            S.listItem()
+              .title('🏛️ Committees')
+              .id('committeesIndexPage')
+              .child(
+                S.list()
+                  .title('Committees')
+                  .items([
                     S.listItem()
-                      .title('Committees Index Page')
-                      .id('committeesIndexPage')
+                      .title('Index Page')
+                      .id('committeesIndexPageContent')
                       .child(
                         S.document()
                           .schemaType('committeesIndexPage')
                           .documentId('committeesIndexPage'),
                       ),
                     S.divider(),
-                    S.documentTypeListItem('page').title('All Pages'),
+                    S.documentTypeListItem('committee')
+                      .title('All Committees'),
                   ]),
               ),
+            S.divider(),
             S.listItem()
-              .title('Content')
-              .id('contentGroup')
+              .title('⚙️ Site Settings')
+              .id('siteSettings')
               .child(
-                S.list()
-                  .title('Content')
-                  .items([
-                    S.documentTypeListItem('committee').title('Committees'),
-                    S.documentTypeListItem('foundingMember').title(
-                      'Founding Members',
-                    ),
-                    S.documentTypeListItem('project').title('Projects'),
-                    S.documentTypeListItem('event').title('Events'),
-                    S.documentTypeListItem('faq').title('FAQs'),
-                  ]),
-              ),
-            S.listItem()
-              .title('Settings')
-              .id('settingsGroup')
-              .child(
-                S.list()
-                  .title('Settings')
-                  .items([
-                    S.listItem()
-                      .title('Site Settings')
-                      .id('siteSettings')
-                      .child(
-                        S.document()
-                          .schemaType('siteSettings')
-                          .documentId('siteSettings'),
-                      ),
-                  ]),
+                S.document()
+                  .schemaType('siteSettings')
+                  .documentId('siteSettings'),
               ),
           ]),
     }),
