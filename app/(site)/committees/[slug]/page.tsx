@@ -25,7 +25,7 @@ type CommitteeData = NonNullable<CommitteeBySlugQueryResult>;
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
 
 export const revalidate = 3600;
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') {
