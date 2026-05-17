@@ -1,29 +1,28 @@
-name: Lighthouse on Preview
+name: Lighthouse
 
 on:
-  repository_dispatch:
-    types:
-      - vercel.deployment.ready
+  deployment_status:
 
 jobs:
   lighthouse:
-    name: Lighthouse CI (desktop)
+    name: Lighthouse
+    if: >
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment_status.environment != 'Production' &&
+      github.event.deployment_status.target_url != ''
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
-      - name: Report pending status to Vercel
-        uses: vercel/repository-dispatch/actions/status@v1
-        with:
-          name: "Lighthouse"
-
       - name: Checkout deployment ref
-        uses: vercel/repository-dispatch/actions/checkout@v1
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
 
       - name: Compose target URLs
         id: urls
         env:
-          PREVIEW_URL: ${{ github.event.client_payload.url }}
+          PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
         run: |
           {
             echo "list<<EOF"
@@ -44,5 +43,3 @@ jobs:
           uploadArtifacts: true
           temporaryPublicStorage: true
           runs: 1
-        env:
-          LHCI_EXTRA_HEADERS: '{"x-vercel-protection-bypass":"${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}","x-vercel-set-bypass-cookie":"true"}'
