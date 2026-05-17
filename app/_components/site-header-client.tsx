@@ -50,11 +50,15 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
           <Link href="/" className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/logo.png"
+              src={
+                isScrolled
+                  ? '/brand/logo/png/navy/BAI_mark_navy@2x.png'
+                  : '/brand/logo/png/cream/BAI_mark_cream@2x.png'
+              }
               alt={brandAlt}
-              width={71}
-              height={48}
-              className="h-12 w-auto md:h-14"
+              width={400}
+              height={272}
+              className="h-12 w-auto md:h-14 transition-opacity duration-300"
             />
           </Link>
 
@@ -63,7 +67,9 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
               <Link
                 key={link._key}
                 href={link.href}
-                className="text-sm font-medium text-[#002147] hover:text-[#C5A059] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]"
+                className={`text-sm font-medium hover:text-[#C5A059] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] ${
+                  isScrolled ? 'text-[#002147]' : 'text-[#FAF7F2]'
+                }`}
               >
                 {link.label}
               </Link>
@@ -71,7 +77,9 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
           </nav>
 
           <button
-            className="md:hidden p-2 text-[#002147] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]"
+            className={`md:hidden p-2 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] ${
+              isScrolled ? 'text-[#002147]' : 'text-[#FAF7F2]'
+            }`}
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open mobile menu"
             aria-expanded={mobileMenuOpen}
@@ -97,10 +105,10 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
               <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/brand/logo.png"
+                  src="/brand/logo/png/navy/BAI_mark_navy@2x.png"
                   alt={brandAlt}
-                  width={71}
-                  height={48}
+                  width={400}
+                  height={272}
                   className="h-12 w-auto"
                 />
               </Link>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, Geist_Mono } from "next/font/google";
 import { draftMode } from "next/headers";
 import { stegaClean } from "next-sanity";
@@ -81,6 +81,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+export const viewport: Viewport = {
+  themeColor: "#031E42",
+};
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -94,7 +98,7 @@ export default async function RootLayout({
     "@type": "Organization",
     name: settings.brandName ?? "Bruin Alpha Investment",
     url: siteUrl,
-    logo: `${siteUrl}/brand/logo.png`,
+    logo: `${siteUrl}/brand/logo/png/on-white/BAI_full_on-white@2x.png`,
     description:
       settings.organizationDescription ??
       settings.defaultMetaDescription ??

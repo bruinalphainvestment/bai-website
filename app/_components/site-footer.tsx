@@ -43,11 +43,13 @@ function FooterRender({ data }: { data: FooterData }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
           <div className="flex flex-col gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img
-               src="/brand/logo.png"
-               alt={brandAlt}
-               className="w-48 h-auto"
-             />
+            <img
+              src="/brand/logo/png/cream/BAI_full_cream@2x.png"
+              alt={brandAlt}
+              width={800}
+              height={501}
+              className="w-56 h-auto"
+            />
             {slogan ? (
               <p className="text-gray-300 text-sm mt-4 max-w-xs">{slogan}</p>
             ) : null}
