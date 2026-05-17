@@ -63,4 +63,7 @@ jobs:
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
-          runs: 1
+          # 3 runs → median scoring smooths out single-run noise from cold
+          # Vercel function starts, GitHub runner CPU jitter, and network
+          # variance. Adds ~4 min to CI; well under the 15-min timeout.
+          runs: 3
