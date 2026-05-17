@@ -22,10 +22,24 @@ jobs:
         with:
           name: "Lighthouse"
 
+      - name: Decide whether to audit
+        id: gate
+        env:
+          REF: ${{ github.event.client_payload.git.ref }}
+        run: |
+          if [[ "$REF" == dependabot/* || "$REF" == refs/heads/dependabot/* ]]; then
+            echo "Skipping Lighthouse audit for dependabot branch: $REF"
+            echo "audit=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "audit=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout deployment ref
+        if: steps.gate.outputs.audit == 'true'
         uses: vercel/repository-dispatch/actions/checkout@v1
 
       - name: Compose target URLs
+        if: steps.gate.outputs.audit == 'true'
         id: urls
         env:
           PREVIEW_URL: ${{ github.event.client_payload.url }}
@@ -41,6 +55,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Audit URLs with Lighthouse
+        if: steps.gate.outputs.audit == 'true'
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v12
         with:
