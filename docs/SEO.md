@@ -63,40 +63,72 @@ not the SEO copy you've written in the CMS.
 
 ### Before going live
 
-- [ ] Set `NEXT_PUBLIC_SITE_URL=https://bruinalphainvestment.com` in Vercel
-- [ ] Set `NEXT_PUBLIC_USE_SANITY=true` in Vercel
-- [ ] Deploy. Confirm `https://bruinalphainvestment.com/sitemap.xml` lists
+- [x] Set `NEXT_PUBLIC_SITE_URL=https://www.bruinalphainvestment.com` in Vercel
+- [x] Set `NEXT_PUBLIC_USE_SANITY=true` in Vercel
+- [x] Deploy. `https://www.bruinalphainvestment.com/sitemap.xml` lists
       all expected URLs with the production domain.
-- [ ] Confirm `https://bruinalphainvestment.com/robots.txt` references the
+- [x] `https://www.bruinalphainvestment.com/robots.txt` references the
       production sitemap URL.
-- [ ] View source on `/` and verify `<title>` matches Sanity (not the
-      "Bruin Alpha Investment — Bruin Alpha Investment at UCLA" fallback).
+- [x] `<title>` on `/` matches Sanity copy (not the fallback).
+- [x] `siteSettings.defaultOgImage` uploaded — composited BAI full logo on
+      navy 1200×630 canvas (Sanity asset
+      `image-28bea2a14774a0e6c2a9ad546388880e937c41bc-1200x630-png`).
 - [ ] Open Sanity Studio → Site Settings → Contact & Social — populate
       `instagramUrl`, `linkedinUrl`, and any other social profiles. These
       flow into the Organization JSON-LD `sameAs[]` (Knowledge Graph signal).
-- [ ] Open Sanity Studio → Site Settings → SEO — upload a `defaultOgImage`
-      (1200×630, JPG or PNG). Used when individual pages don't override.
 - [ ] Replace the `applyUrl` placeholder (`https://tally.so/r/placeholder`)
       with the real Tally form URL.
 
-### Google Search Console (do this on launch day)
+### Google Search Console (DNS-verified, do these next)
 
-1. Go to https://search.google.com/search-console.
-2. Add a property → URL prefix → `https://bruinalphainvestment.com`.
-3. Verify via "HTML tag" method:
-   - Copy the `content="..."` value (only the token, not the full meta tag).
-   - Set `NEXT_PUBLIC_GSC_VERIFICATION` in Vercel to that value.
-   - Redeploy. Verify in GSC.
-4. Once verified, in GSC: Sitemaps → submit `sitemap.xml`.
-5. Indexing → Request indexing for `/` and any key pages you want crawled
-   immediately. Otherwise Google typically crawls within a few days.
+Domain property verified via DNS — that grants access to all subdomains
+(www + apex) and protocols at once, which is ideal. Now finish the setup:
 
-### Google Analytics 4 (optional)
+1. **Submit sitemap** — Sitemaps → enter `sitemap.xml` (just the path) →
+   Submit. Status should show "Success" within a minute. This is the
+   biggest accelerator for first-time indexing.
+2. **Request indexing for key pages** — Use the URL Inspection tool at
+   the top: paste each URL → "Request Indexing" pushes it into Google's
+   priority crawl queue. Do this for at minimum:
+   `https://www.bruinalphainvestment.com/`,
+   `https://www.bruinalphainvestment.com/about`,
+   `https://www.bruinalphainvestment.com/join`,
+   `https://www.bruinalphainvestment.com/committees`. Limit: ~10 requests
+   per day per property.
+3. **Confirm preferred host** — GSC no longer has a manual "preferred
+   domain" setting; it auto-detects via canonical tags. Our canonicals
+   all point to `https://www.bruinalphainvestment.com`, so Google will
+   index that variant. Verify on day 2-3 by inspecting any URL and
+   checking "User-declared canonical" matches what you expect.
+4. **Watch for issues** after 2-3 days:
+   - **Pages** report → look at "Not indexed" reasons. Common false
+     positives early on: "Discovered – currently not indexed" (Google
+     just hasn't gotten to it yet, fine to wait), "Crawled – currently
+     not indexed" (also fine early on).
+   - **Experience → Core Web Vitals** populates from real Chrome user
+     data once you have traffic. Will say "Not enough data" until then.
+   - **Enhancements** section will eventually show validation reports
+     for the BreadcrumbList JSON-LD we emit on `/committees/[slug]`.
+5. **Performance report** — shows queries/clicks/impressions. Empty
+   until you're indexed and people start finding you. Check weekly.
 
-1. https://analytics.google.com → Admin → Create Property → Web stream.
+> The `NEXT_PUBLIC_GSC_VERIFICATION` env var is **not needed** when using
+> DNS verification — that meta tag method is only for URL prefix
+> verification.
+
+### Google Analytics 4
+
+1. https://analytics.google.com → Admin → Create Property → Web stream
+   pointed at `https://www.bruinalphainvestment.com`.
 2. Copy the measurement ID (`G-XXXXXXXXXX`).
-3. Set `NEXT_PUBLIC_GA_ID` in Vercel. Redeploy.
-4. Verify hits land in GA4 Realtime within a couple minutes.
+3. Add the env var to Vercel:
+   ```bash
+   echo "G-XXXXXXXXXX" | vercel env add NEXT_PUBLIC_GA_ID production
+   ```
+4. Redeploy (`vercel --prod --yes` or push any commit). The script is
+   already wired in `app/layout.tsx` and only loads when this var is set.
+5. Open the site in a private window, navigate around, then check GA4
+   → Reports → Realtime → users in last 30 min. Should show 1.
 
 ### Post-launch verification tools
 
