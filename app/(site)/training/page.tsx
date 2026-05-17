@@ -98,27 +98,34 @@ export default async function TrainingPage() {
                 Class Hierarchy
               </h2>
             </FadeUp>
-            <StaggerGroup className="flex flex-col space-y-4">
-              <StaggerItem className="p-6 bg-navy text-cream flex items-center justify-between">
+            <StaggerGroup className="flex flex-col items-end space-y-4">
+              <StaggerItem className="p-6 bg-navy text-cream flex items-center justify-between w-full">
                 <div>
-                  <h3 className="font-serif text-2xl mb-1">Analyst</h3>
-                  <p className="opacity-70 text-sm">Year 1</p>
+                  <h3 className="font-serif text-2xl mb-1">Executive Board</h3>
+                  <p className="opacity-70 text-sm">Leadership</p>
+                </div>
+                <span className="text-gold-start text-xl">✦</span>
+              </StaggerItem>
+              <StaggerItem className="p-6 bg-navy/90 text-cream flex items-center justify-between w-[85%]">
+                <div>
+                  <h3 className="font-serif text-2xl mb-1">Director</h3>
+                  <p className="opacity-70 text-sm">Committee Lead</p>
                 </div>
                 <span className="text-gold-start text-xl">&uarr;</span>
               </StaggerItem>
-              <StaggerItem className="p-6 bg-navy/90 text-cream flex items-center justify-between ml-4">
+              <StaggerItem className="p-6 bg-navy/80 text-cream flex items-center justify-between w-[70%]">
                 <div>
                   <h3 className="font-serif text-2xl mb-1">Associate</h3>
                   <p className="opacity-70 text-sm">Year 2</p>
                 </div>
                 <span className="text-gold-start text-xl">&uarr;</span>
               </StaggerItem>
-              <StaggerItem className="p-6 bg-navy/80 text-cream flex items-center justify-between ml-8">
+              <StaggerItem className="p-6 bg-navy/70 text-cream flex items-center justify-between w-[55%]">
                 <div>
-                  <h3 className="font-serif text-2xl mb-1">Director</h3>
-                  <p className="opacity-70 text-sm">Committee Lead</p>
+                  <h3 className="font-serif text-2xl mb-1">Analyst</h3>
+                  <p className="opacity-70 text-sm">Year 1</p>
                 </div>
-                <span className="text-gold-start text-xl">✦</span>
+                <span className="text-gold-start text-xl">&uarr;</span>
               </StaggerItem>
             </StaggerGroup>
           </div>
