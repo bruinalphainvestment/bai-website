@@ -67,7 +67,9 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
               <Link
                 key={link._key}
                 href={link.href}
-                className="text-sm font-medium text-[#002147] hover:text-[#C5A059] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]"
+                className={`text-sm font-medium hover:text-[#C5A059] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] ${
+                  isScrolled ? 'text-[#002147]' : 'text-[#FAF7F2]'
+                }`}
               >
                 {link.label}
               </Link>
@@ -75,7 +77,9 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
           </nav>
 
           <button
-            className="md:hidden p-2 text-[#002147] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]"
+            className={`md:hidden p-2 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] ${
+              isScrolled ? 'text-[#002147]' : 'text-[#FAF7F2]'
+            }`}
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open mobile menu"
             aria-expanded={mobileMenuOpen}
