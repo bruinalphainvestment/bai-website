@@ -201,3 +201,5 @@ If you add a new singleton page or routable document:
   on-page search box, which it doesn't.
 
 <!-- smoke test trigger for CI workflows: 2026-05-17T21:39:04Z -->
+
+<!-- retrigger: 2026-05-17T21:42:25Z -->
