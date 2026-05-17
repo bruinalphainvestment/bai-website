@@ -11,17 +11,13 @@ permissions:
   checks: write
 
 jobs:
-  lighthouse:
-    name: Lighthouse
+  gate:
+    name: Gate
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    timeout-minutes: 2
+    outputs:
+      audit: ${{ steps.gate.outputs.audit }}
     steps:
-      - name: Report pending status to Vercel
-        uses: vercel/repository-dispatch/actions/status@v1
-        with:
-          name: "Lighthouse"
-
       - name: Decide whether to audit
         id: gate
         env:
@@ -34,36 +30,80 @@ jobs:
             echo "audit=true" >> "$GITHUB_OUTPUT"
           fi
 
+  pending:
+    name: Report pending
+    needs: gate
+    if: needs.gate.outputs.audit == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Report pending status to Vercel
+        uses: vercel/repository-dispatch/actions/status@v1
+        with:
+          name: "Lighthouse"
+
+  audit:
+    name: Audit ${{ matrix.path }}
+    needs: gate
+    if: needs.gate.outputs.audit == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      # fail-fast off so a regression on one URL doesn't hide regressions on
+      # the other URLs in the same run. We need full visibility.
+      fail-fast: false
+      matrix:
+        path:
+          - "/"
+          - "/about"
+          - "/committees"
+          - "/committees/trading"
+          - "/join"
+    steps:
       - name: Checkout deployment ref
-        if: steps.gate.outputs.audit == 'true'
         uses: vercel/repository-dispatch/actions/checkout@v1
 
-      - name: Compose target URLs
-        if: steps.gate.outputs.audit == 'true'
-        id: urls
+      - name: Sanitize matrix path for artifact name
+        id: slug
         env:
-          PREVIEW_URL: ${{ github.event.client_payload.url }}
+          MATRIX_PATH: ${{ matrix.path }}
         run: |
-          {
-            echo "list<<EOF"
-            echo "${PREVIEW_URL}/"
-            echo "${PREVIEW_URL}/about"
-            echo "${PREVIEW_URL}/committees"
-            echo "${PREVIEW_URL}/committees/trading"
-            echo "${PREVIEW_URL}/join"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          slug=$(echo "$MATRIX_PATH" | sed 's|/|-|g; s|^-||; s|-$||')
+          [[ -z "$slug" ]] && slug="home"
+          echo "value=$slug" >> "$GITHUB_OUTPUT"
 
-      - name: Audit URLs with Lighthouse
-        if: steps.gate.outputs.audit == 'true'
-        id: lighthouse_audit
+      - name: Audit URL with Lighthouse
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: ${{ steps.urls.outputs.list }}
+          urls: ${{ github.event.client_payload.url }}${{ matrix.path }}
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
           # 3 runs → median scoring smooths out single-run noise from cold
           # Vercel function starts, GitHub runner CPU jitter, and network
-          # variance. Adds ~4 min to CI; well under the 15-min timeout.
+          # variance. Each matrix job runs on its own isolated runner, so
+          # the 3 runs per URL stay sequential (CPU contention would defeat
+          # the point of multi-run median) while different URLs are audited
+          # in parallel.
           runs: 3
+          artifactName: lighthouse-${{ steps.slug.outputs.value }}
+
+  aggregate:
+    # Single unified Lighthouse pass/fail signal. Vercel watches the workflow's
+    # overall state; this job rolls up the matrix result into one clear status.
+    name: Lighthouse
+    needs: [gate, audit]
+    if: always() && needs.gate.outputs.audit == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Roll up matrix result
+        env:
+          AUDIT_RESULT: ${{ needs.audit.result }}
+        run: |
+          if [[ "$AUDIT_RESULT" == "success" ]]; then
+            echo "All Lighthouse audits passed"
+            exit 0
+          fi
+          echo "One or more Lighthouse audits failed (matrix result: $AUDIT_RESULT)"
+          exit 1
