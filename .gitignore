@@ -60,3 +60,4 @@ test-results/
 
 # sanity dataset backups (local only)
 /.sanity-backups
+.lighthouseci/
