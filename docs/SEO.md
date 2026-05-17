@@ -199,3 +199,5 @@ If you add a new singleton page or routable document:
   `keywords`, `twitterCardType` for per-page overrides.
 - **`SearchAction` in WebSite JSON-LD** — only useful if the site has an
   on-page search box, which it doesn't.
+
+<!-- smoke test trigger for CI workflows: 2026-05-17T21:39:04Z -->
