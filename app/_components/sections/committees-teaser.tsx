@@ -8,6 +8,8 @@ import {
   type TeaserCommitteeItem,
 } from '../fallbacks/sections/committees-teaser';
 
+import { FadeUp, StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
+
 type Props = Partial<CommitteesTeaserSection> & {
   items?: TeaserCommitteeItem[];
 };
@@ -29,35 +31,40 @@ export default function CommitteesTeaser(props: Props = {}) {
       className="bg-cream text-navy py-24 px-4 md:px-8"
     >
       <div className="mx-auto max-w-7xl">
-        <h2 className="font-display text-4xl md:text-5xl mb-12">{heading}</h2>
+        <FadeUp>
+          <h2 className="font-display text-4xl md:text-5xl mb-12">{heading}</h2>
+        </FadeUp>
         {subheading ? (
-          <p className="font-sans text-lg text-navy/70 max-w-3xl mb-12 -mt-6">
-            {subheading}
-          </p>
+          <FadeUp>
+            <p className="font-sans text-lg text-navy/70 max-w-3xl mb-12 -mt-6">
+              {subheading}
+            </p>
+          </FadeUp>
         ) : null}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {items.map((c) => (
-            <Link
-              key={c.slug}
-              href={`/committees/${c.slug}`}
-              className="group block bg-navy text-cream p-8 md:p-12 transition-transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:ring-offset-2 focus:ring-offset-cream"
-            >
-              <div className="flex flex-col h-full justify-between min-h-[240px]">
-                <div>
-                  <h3 className="font-display text-3xl md:text-4xl mb-4 group-hover:text-[#C5A059] transition-colors">
-                    {c.name}
-                  </h3>
-                  <p className="font-sans text-cream/80 text-lg">{c.tagline}</p>
+            <StaggerItem key={c.slug}>
+              <Link
+                href={`/committees/${c.slug}`}
+                className="group block bg-navy text-cream p-8 md:p-12 transition-transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:ring-offset-2 focus:ring-offset-cream"
+              >
+                <div className="flex flex-col h-full justify-between min-h-[240px]">
+                  <div>
+                    <h3 className="font-display text-3xl md:text-4xl mb-4 group-hover:text-[#C5A059] transition-colors">
+                      {c.name}
+                    </h3>
+                    <p className="font-sans text-cream/80 text-lg">{c.tagline}</p>
+                  </div>
+                  <div className="flex justify-end mt-8">
+                    <span className="font-mono uppercase tracking-widest text-sm text-[#C5A059] flex items-center gap-2 group-hover:gap-4 transition-all">
+                      Explore <span>&rarr;</span>
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-end mt-8">
-                  <span className="font-mono uppercase tracking-widest text-sm text-[#C5A059] flex items-center gap-2 group-hover:gap-4 transition-all">
-                    Explore <span>&rarr;</span>
-                  </span>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

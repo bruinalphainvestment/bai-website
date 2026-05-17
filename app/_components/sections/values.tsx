@@ -2,6 +2,8 @@ import type { ValuesSection } from '@/sanity/types/generated';
 
 import { valuesFallback } from '../fallbacks/sections/values';
 
+import { StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
+
 export default function Values(props: Partial<ValuesSection> = {}) {
   const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
   const data = useSanity && props.values && props.values.length > 0 ? props : valuesFallback;

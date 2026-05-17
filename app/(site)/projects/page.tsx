@@ -6,6 +6,7 @@ import {
   projectsListFallback,
   projectsPageFallback,
 } from '@/app/_components/fallbacks/projects-page';
+import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
@@ -62,25 +63,33 @@ export default async function ProjectsPage() {
   return (
     <div className="bg-cream text-navy min-h-screen pt-32 pb-24">
       <section className="px-6 md:px-12 lg:px-24 mb-24 max-w-7xl mx-auto">
-        <h1 className="font-serif text-h1 font-light tracking-tight mb-6">{heading}</h1>
-        <p className="text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
-          {subheading}
-        </p>
-        {intro ? (
-          <p className="mt-6 text-lg leading-relaxed opacity-80 max-w-3xl">{intro}</p>
-        ) : null}
+        <StaggerGroup trigger="mount">
+          <StaggerItem>
+            <h1 className="font-serif text-h1 font-light tracking-tight mb-6">{heading}</h1>
+          </StaggerItem>
+          <StaggerItem>
+            <p className="text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
+              {subheading}
+            </p>
+          </StaggerItem>
+          {intro ? (
+            <StaggerItem>
+              <p className="mt-6 text-lg leading-relaxed opacity-80 max-w-3xl">{intro}</p>
+            </StaggerItem>
+          ) : null}
+        </StaggerGroup>
       </section>
 
       <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-7xl mx-auto">
         {projects.length === 0 ? (
           <p className="opacity-70">{emptyState}</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {projects.map((project) => {
               const statusKey = project.status ?? 'planning';
               const statusInfo = STATUS_DISPLAY[statusKey];
               return (
-                <div
+                <StaggerItem
                   key={project._id}
                   className="bg-offwhite border border-border-subtle p-8 flex flex-col hover:border-gold-start transition-colors"
                 >
@@ -101,38 +110,40 @@ export default async function ProjectsPage() {
                   {project.summary ? (
                     <p className="opacity-80 leading-relaxed mt-auto">{project.summary}</p>
                   ) : null}
-                </div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerGroup>
         )}
       </section>
 
       {statusLegend.length > 0 ? (
-        <section className="px-6 md:px-12 lg:px-24 max-w-7xl mx-auto border-t border-border-subtle pt-12">
-          <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-70">
-            Status Legend
-          </h3>
-          <ul className="flex flex-col sm:flex-row gap-6 sm:gap-12 text-sm">
-            {statusLegend.map((entry) => {
-              const key = entry.status ?? 'planning';
-              const info = STATUS_DISPLAY[key];
-              const showDimmed = key !== 'planning';
-              return (
-                <li
-                  key={entry._key}
-                  className={`flex items-center gap-3 ${showDimmed ? 'opacity-50 grayscale' : ''}`}
-                >
-                  <span className={`w-3 h-3 rounded-full ${info.dot}`}></span>
-                  <span>
-                    <strong className="block">{info.label}</strong>
-                    {entry.description ?? ''}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
+        <FadeUp>
+          <section className="px-6 md:px-12 lg:px-24 max-w-7xl mx-auto border-t border-border-subtle pt-12">
+            <h3 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-70">
+              Status Legend
+            </h3>
+            <ul className="flex flex-col sm:flex-row gap-6 sm:gap-12 text-sm">
+              {statusLegend.map((entry) => {
+                const key = entry.status ?? 'planning';
+                const info = STATUS_DISPLAY[key];
+                const showDimmed = key !== 'planning';
+                return (
+                  <li
+                    key={entry._key}
+                    className={`flex items-center gap-3 ${showDimmed ? 'opacity-50 grayscale' : ''}`}
+                  >
+                    <span className={`w-3 h-3 rounded-full ${info.dot}`}></span>
+                    <span>
+                      <strong className="block">{info.label}</strong>
+                      {entry.description ?? ''}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        </FadeUp>
       ) : null}
     </div>
   );
