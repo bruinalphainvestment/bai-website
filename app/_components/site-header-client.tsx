@@ -50,11 +50,11 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
           <Link href="/" className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/BAI_mark.svg"
+              src={isScrolled ? '/brand/BAI_mark.svg' : '/brand/BAI_mark_cream.svg'}
               alt={brandAlt}
               width={71}
               height={48}
-              className="h-12 w-auto md:h-14"
+              className="h-12 w-auto md:h-14 transition-opacity duration-300"
             />
           </Link>
 

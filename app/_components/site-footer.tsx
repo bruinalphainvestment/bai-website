@@ -44,10 +44,10 @@ function FooterRender({ data }: { data: FooterData }) {
           <div className="flex flex-col gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/BAI_full_on_navy.png"
+              src="/brand/BAI_full_cream.svg"
               alt={brandAlt}
-              width={3000}
-              height={1878}
+              width={906}
+              height={567}
               className="w-56 h-auto"
             />
             {slogan ? (
