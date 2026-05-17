@@ -1,28 +1,29 @@
 name: Lighthouse
 
 on:
-  deployment_status:
+  repository_dispatch:
+    types:
+      - vercel.deployment.ready
 
 jobs:
   lighthouse:
     name: Lighthouse
-    if: >
-      github.event.deployment_status.state == 'success' &&
-      github.event.deployment_status.environment != 'Production' &&
-      github.event.deployment_status.target_url != ''
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
-      - name: Checkout deployment ref
-        uses: actions/checkout@v4
+      - name: Report pending status to Vercel
+        uses: vercel/repository-dispatch/actions/status@v1
         with:
-          ref: ${{ github.event.deployment.sha }}
+          name: "Lighthouse"
+
+      - name: Checkout deployment ref
+        uses: vercel/repository-dispatch/actions/checkout@v1
 
       - name: Compose target URLs
         id: urls
         env:
-          PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
+          PREVIEW_URL: ${{ github.event.client_payload.url }}
         run: |
           {
             echo "list<<EOF"
