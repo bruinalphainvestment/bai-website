@@ -21,10 +21,10 @@ export const headerFallback: HeaderFallback = {
   brandName: 'Bruin Alpha Investment',
   brandAlt: 'Bruin Alpha Investment at UCLA',
   navLinks: [
-    { _key: 'nav-home', label: 'Home', href: '/#home' },
-    { _key: 'nav-committees', label: 'Committees', href: '/#committees' },
-    { _key: 'nav-training', label: 'Training', href: '/#training' },
-    { _key: 'nav-team', label: 'Team', href: '/#team' },
-    { _key: 'nav-join', label: 'Join', href: '/#join' },
+    { _key: 'nav-home', label: 'Home', href: '/' },
+    { _key: 'nav-committees', label: 'Committees', href: '/committees' },
+    { _key: 'nav-training', label: 'Training', href: '/training' },
+    { _key: 'nav-team', label: 'Team', href: '/team' },
+    { _key: 'nav-join', label: 'Join', href: '/join' },
   ],
 };
