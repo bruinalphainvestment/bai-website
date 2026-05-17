@@ -50,10 +50,14 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
           <Link href="/" className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002147]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={isScrolled ? '/brand/BAI_mark.svg' : '/brand/BAI_mark_cream.svg'}
+              src={
+                isScrolled
+                  ? '/brand/logo/png/navy/BAI_mark_navy@2x.png'
+                  : '/brand/logo/png/cream/BAI_mark_cream@2x.png'
+              }
               alt={brandAlt}
-              width={71}
-              height={48}
+              width={400}
+              height={272}
               className="h-12 w-auto md:h-14 transition-opacity duration-300"
             />
           </Link>
@@ -97,10 +101,10 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
               <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/brand/BAI_mark.svg"
+                  src="/brand/logo/png/navy/BAI_mark_navy@2x.png"
                   alt={brandAlt}
-                  width={71}
-                  height={48}
+                  width={400}
+                  height={272}
                   className="h-12 w-auto"
                 />
               </Link>

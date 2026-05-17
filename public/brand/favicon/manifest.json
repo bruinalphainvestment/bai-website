@@ -1,0 +1,22 @@
+{
+  "name": "BAI - Bruin Alpha Investment",
+  "short_name": "BAI",
+  "icons": [
+    {
+      "src": "/favicon/png/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon/png/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#031E42",
+  "background_color": "#FAF7F2",
+  "display": "standalone",
+  "start_url": "/"
+}
