@@ -1,39 +1,27 @@
 'use client';
 
-import { ReactLenis } from 'lenis/react';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
+const LenisRuntime = dynamic(
+  () => import('./lenis-runtime').then((m) => m.LenisRuntime),
+  { ssr: false, loading: () => null },
+);
+
 export function LenisProvider({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);
   const [isIframed, setIsIframed] = useState(false);
 
   useEffect(() => {
-    // Detect if rendered inside an iframe (e.g., Sanity Presentation tool).
-    // Skip Lenis initialization in that case so native browser scroll works.
     if (typeof window !== 'undefined' && window.self !== window.top) {
       setIsIframed(true);
     }
+    setMounted(true);
   }, []);
 
-  // If iframed, skip Lenis and use native browser scroll.
-  if (isIframed) {
+  if (!mounted || isIframed) {
     return <>{children}</>;
   }
 
-  return (
-    <ReactLenis
-      root
-      options={{
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        wheelMultiplier: 1,
-        touchMultiplier: 2,
-        syncTouch: false,
-        anchors: true,
-        stopInertiaOnNavigate: true,
-      }}
-    >
-      {children}
-    </ReactLenis>
-  );
+  return <LenisRuntime>{children}</LenisRuntime>;
 }
