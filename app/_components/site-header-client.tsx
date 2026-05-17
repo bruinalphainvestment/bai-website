@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import type { HeaderNavLink } from './fallbacks/header';
@@ -11,7 +12,10 @@ type Props = {
   navLinks: HeaderNavLink[];
 };
 
+const DARK_HERO_ROUTES = new Set(['/']);
+
 export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -19,6 +23,8 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setIsScrolled(latest > 50);
   });
+
+  const isOverDarkHero = DARK_HERO_ROUTES.has(pathname) && !isScrolled;
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -51,9 +57,9 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={
-                isScrolled
-                  ? '/brand/logo/png/navy/BAI_mark_navy@2x.png'
-                  : '/brand/logo/png/cream/BAI_mark_cream@2x.png'
+                isOverDarkHero
+                  ? '/brand/logo/png/cream/BAI_mark_cream@2x.png'
+                  : '/brand/logo/png/navy/BAI_mark_navy@2x.png'
               }
               alt={brandAlt}
               width={400}
@@ -68,7 +74,7 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
                 key={link._key}
                 href={link.href}
                 className={`text-sm font-medium hover:text-[#C5A059] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] ${
-                  isScrolled ? 'text-[#002147]' : 'text-[#FAF7F2]'
+                  isOverDarkHero ? 'text-[#FAF7F2]' : 'text-[#002147]'
                 }`}
               >
                 {link.label}
@@ -78,7 +84,7 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
 
           <button
             className={`md:hidden p-2 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059] ${
-              isScrolled ? 'text-[#002147]' : 'text-[#FAF7F2]'
+              isOverDarkHero ? 'text-[#FAF7F2]' : 'text-[#002147]'
             }`}
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open mobile menu"
