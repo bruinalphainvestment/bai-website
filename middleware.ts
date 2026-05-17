@@ -33,7 +33,6 @@ const loadRedirectMap = unstable_cache(
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const url = req.nextUrl.clone();
 
   if (pathname.startsWith('/committees/')) {
     const slug = pathname.replace('/committees/', '').split('/')[0];

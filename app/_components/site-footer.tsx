@@ -82,8 +82,12 @@ function FooterRender({ data }: { data: FooterData }) {
              ) : null}
              <p className="text-gray-400 text-xs mt-4">
                &copy; {year} {brandAlt}. All rights reserved.
-               {' '}
-               <Link href="/studio" className="text-gray-500 hover:text-gray-300 underline-offset-2 hover:underline">
+             </p>
+             <p className="text-xs mt-2">
+               <Link
+                 href="/studio"
+                 className="text-gray-300 underline underline-offset-2 hover:text-white focus:text-white"
+               >
                  Admin
                </Link>
              </p>

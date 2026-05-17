@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 type ErrorProps = {
@@ -39,12 +40,12 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
           >
             Try Again
           </button>
-          <a
+          <Link
             href="/"
             className="inline-block border border-navy text-navy font-semibold py-3 px-8 rounded-full hover:bg-navy hover:text-cream transition-colors"
           >
             Return Home
-          </a>
+          </Link>
         </div>
         {error.digest ? (
           <p className="font-mono text-xs text-navy/40 mt-10">

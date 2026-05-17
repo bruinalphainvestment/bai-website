@@ -17,16 +17,21 @@ interface ScrollRevealProps {
   as?: Tag;
 }
 
+// Static lookup map so component references are stable across renders.
+// (Calling motion.{tag} inside the component body returns a new component
+// reference each render, which trips `react-hooks/static-components` and
+// resets internal state on every re-render.)
+const MOTION_TAGS = {
+  div: motion.div,
+  section: motion.section,
+  ul: motion.ul,
+  li: motion.li,
+  span: motion.span,
+  article: motion.article,
+} as const satisfies Record<Tag, unknown>;
+
 function pickMotionTag(tag: Tag = 'div') {
-  switch (tag) {
-    case 'section': return motion.section;
-    case 'ul': return motion.ul;
-    case 'li': return motion.li;
-    case 'span': return motion.span;
-    case 'article': return motion.article;
-    case 'div':
-    default: return motion.div;
-  }
+  return MOTION_TAGS[tag];
 }
 
 function pickStaticTag(tag: Tag = 'div'): React.ElementType {

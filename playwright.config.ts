@@ -7,8 +7,13 @@ export default defineConfig({
   testDir: 'tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // 1 retry instead of 2: balances flake tolerance with run time.
+  // Each retry re-runs from scratch with a fresh browser context.
+  retries: process.env.CI ? 1 : 0,
+  // GitHub-hosted ubuntu-latest runners have 4 vCPU / 16 GB RAM. Running 4
+  // workers (was 1) cuts wall-clock by ~3-4x on a 110-test suite while
+  // staying inside memory headroom for full-page visual-baseline screenshots.
+  workers: process.env.CI ? 4 : undefined,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: BASE_URL,

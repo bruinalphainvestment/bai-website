@@ -34,7 +34,10 @@ for (const route of SITE_ROUTES) {
         TITLE_FRAGMENT,
       );
 
-      const footerText = await page.locator('footer').first().innerText();
+      // Site footer is the last <footer> in the DOM. The .first() footer can
+      // be a <blockquote><footer>...</footer></blockquote> attribution element
+      // (e.g. on /about), which doesn't contain the disclaimer.
+      const footerText = await page.locator('footer').last().innerText();
       expect(
         footerText,
         `disclaimer missing in footer on ${route}`,
