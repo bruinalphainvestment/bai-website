@@ -10,6 +10,7 @@ import {
   committeeDetailFallbackCurriculum,
 } from '@/app/_components/fallbacks/committee-detail';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
+import { absoluteUrl, buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   committeeBySlugQuery,
@@ -53,17 +54,22 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const committee = await loadCommittee(slug);
-  if (!committee) return { title: 'Committee Not Found' };
+  if (!committee) return { title: 'Committee Not Found', robots: { index: false, follow: false } };
 
   const cleaned = stegaClean(committee);
   const settings = stegaClean(await loadSiteSettings());
 
-  const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
-  const title = `${cleaned.name ?? 'Committee'}${suffix}`;
-  const description =
-    cleaned.tagline ?? settings.defaultMetaDescription ?? '';
+  const seoFromCommittee = cleaned.seo ?? null;
+  const fallbackTitle = cleaned.name ?? 'Committee';
+  const fallbackDescription = cleaned.tagline ?? undefined;
 
-  return { title, description };
+  return buildPageMetadata({
+    path: `/committees/${slug}`,
+    seo: seoFromCommittee,
+    settings,
+    fallbackTitle,
+    fallbackDescription,
+  });
 }
 
 export default async function CommitteeDetailPage({
@@ -75,6 +81,7 @@ export default async function CommitteeDetailPage({
   const committee = await loadCommittee(slug);
   if (!committee) notFound();
 
+  const cleaned = stegaClean(committee);
   const directorName = committee.director
     ? [committee.director.firstName, committee.director.lastName]
         .filter(Boolean)
@@ -90,8 +97,32 @@ export default async function CommitteeDetailPage({
   const learnBullets = committee.learn ?? [];
   const projects = committee.projects ?? [];
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Committees',
+        item: absoluteUrl('/committees'),
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: cleaned.name ?? 'Committee',
+        item: absoluteUrl(`/committees/${slug}`),
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-gray-900 font-sans pb-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <section className="pt-32 pb-16 px-6 md:px-12 max-w-5xl mx-auto">
         <Link
           href="/committees"

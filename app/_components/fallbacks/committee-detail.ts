@@ -15,6 +15,8 @@ function block(text: string, key: string): NonNullable<CommitteeDetail['descript
 export const committeeDetailFallback: Record<string, CommitteeDetail> = {
   'wealth-management': {
     _id: 'fallback-committee-wealth-management',
+    _updatedAt: '2026-05-15T00:00:00Z',
+    seo: null,
     name: 'Wealth Management',
     slug: 'wealth-management',
     tagline:
@@ -66,6 +68,8 @@ export const committeeDetailFallback: Record<string, CommitteeDetail> = {
   },
   trading: {
     _id: 'fallback-committee-trading',
+    _updatedAt: '2026-05-15T00:00:00Z',
+    seo: null,
     name: 'Trading',
     slug: 'trading',
     tagline:
@@ -124,6 +128,8 @@ export const committeeDetailFallback: Record<string, CommitteeDetail> = {
   },
   'accounting-consulting': {
     _id: 'fallback-committee-accounting-consulting',
+    _updatedAt: '2026-05-15T00:00:00Z',
+    seo: null,
     name: 'Accounting & Consulting',
     slug: 'accounting-consulting',
     tagline:
@@ -175,6 +181,8 @@ export const committeeDetailFallback: Record<string, CommitteeDetail> = {
   },
   'investment-banking': {
     _id: 'fallback-committee-investment-banking',
+    _updatedAt: '2026-05-15T00:00:00Z',
+    seo: null,
     name: 'Investment Banking',
     slug: 'investment-banking',
     tagline:

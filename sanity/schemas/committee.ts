@@ -138,6 +138,14 @@ export const committee = defineType({
       of: [{ type: 'string' }],
       description: 'Old slugs that 301 to current slug.',
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'display',
+      description:
+        'Meta title, description, and Open Graph image for this committee subpage. Falls back to tagline + Site Settings defaults when blank.',
+    }),
   ],
   orderings: [
     {

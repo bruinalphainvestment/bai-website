@@ -28,6 +28,8 @@ export const siteSettingsQuery = defineQuery(`
 export const homePageQuery = defineQuery(`
   *[_type == "homePage"][0] {
     title,
+    seo,
+    _updatedAt,
     sections[] {
       _key,
       _type,
@@ -82,6 +84,7 @@ export const aboutPageQuery = defineQuery(`
   *[_type == "aboutPage"][0] {
     title,
     seo,
+    _updatedAt,
     hero,
     mission,
     history,
@@ -95,6 +98,7 @@ export const trainingPageQuery = defineQuery(`
   *[_type == "trainingPage"][0] {
     title,
     seo,
+    _updatedAt,
     hero,
     intro,
     curriculum,
@@ -107,6 +111,7 @@ export const joinPageQuery = defineQuery(`
   *[_type == "joinPage"][0] {
     title,
     seo,
+    _updatedAt,
     hero,
     intro,
     timeline,
@@ -121,6 +126,7 @@ export const eventsPageQuery = defineQuery(`
   *[_type == "eventsPage"][0] {
     title,
     seo,
+    _updatedAt,
     hero,
     intro,
     upcomingEmptyState,
@@ -147,6 +153,7 @@ export const projectsPageQuery = defineQuery(`
   *[_type == "projectsPage"][0] {
     title,
     seo,
+    _updatedAt,
     hero,
     intro,
     emptyState,
@@ -170,6 +177,7 @@ export const teamPageQuery = defineQuery(`
   *[_type == "teamPage"][0] {
     title,
     seo,
+    _updatedAt,
     hero,
     intro,
     foundingClassHeading,
@@ -184,6 +192,7 @@ export const committeesIndexPageQuery = defineQuery(`
   *[_type == "committeesIndexPage"][0] {
     title,
     seo,
+    _updatedAt,
     hero,
     intro,
     connectedByDesign
@@ -223,6 +232,8 @@ export const committeeBySlugQuery = defineQuery(`
     accentColor,
     order,
     directorPlaceholder,
+    seo,
+    _updatedAt,
     "director": director->{
       _id,
       firstName,
@@ -253,5 +264,21 @@ export const committeeRedirectMapQuery = defineQuery(`
   *[_type == "committee" && defined(slug.current)] {
     "slug": slug.current,
     redirectsFrom
+  }
+`);
+
+export const sitemapPagesQuery = defineQuery(`
+  *[_type in [
+    "homePage",
+    "aboutPage",
+    "teamPage",
+    "projectsPage",
+    "eventsPage",
+    "trainingPage",
+    "joinPage",
+    "committeesIndexPage"
+  ]] {
+    _type,
+    _updatedAt
   }
 `);

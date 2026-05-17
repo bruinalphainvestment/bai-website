@@ -5,6 +5,7 @@ import type {
 
 export const committeesIndexPageFallback: NonNullable<CommitteesIndexPageQueryResult> = {
   title: 'Committees Index Page',
+  _updatedAt: '2026-05-15T00:00:00Z',
   seo: {
     _type: 'seo' as const,
     title: 'Committees — Bruin Alpha Investment at UCLA',

@@ -2,6 +2,7 @@ import type { JoinPageQueryResult } from '@/sanity/types/generated';
 
 export const joinPageFallback: NonNullable<JoinPageQueryResult> = {
   title: 'Join Page',
+  _updatedAt: '2026-05-15T00:00:00Z',
   seo: {
     _type: 'seo' as const,
     title: 'Join — Bruin Alpha Investment at UCLA',

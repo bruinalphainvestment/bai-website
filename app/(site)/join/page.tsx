@@ -3,7 +3,7 @@ import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { joinPageFallback } from '@/app/_components/fallbacks/join-page';
-import { resolveOgImages } from '@/app/_components/og-image';
+import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import { joinPageQuery, siteSettingsQuery } from '@/sanity/lib/queries';
 import type {
@@ -24,22 +24,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const join = stegaClean(joinRaw);
   const settings = stegaClean(settingsRaw);
 
-  const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
-  const fallbackTitle = `Join${suffix}`;
-  const title = join.seo?.title ?? fallbackTitle;
-  const description =
-    join.seo?.description ??
-    settings.defaultMetaDescription ??
-    joinPageFallback.seo?.description ??
-    '';
-
-  const images = resolveOgImages(join.seo?.ogImage, settings.defaultOgImage, title);
-
-  return {
-    title,
-    description,
-    openGraph: images ? { title, description, images } : { title, description },
-  };
+  return buildPageMetadata({
+    path: '/join',
+    seo: join.seo,
+    settings,
+    fallbackTitle: 'Join',
+    fallbackDescription: joinPageFallback.seo?.description ?? undefined,
+  });
 }
 
 export default async function JoinPage() {

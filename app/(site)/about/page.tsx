@@ -3,7 +3,7 @@ import { stegaClean } from 'next-sanity';
 
 import { aboutPageFallback, aboutQuoteFallback } from '@/app/_components/fallbacks/about-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { resolveOgImages } from '@/app/_components/og-image';
+import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import { aboutPageQuery, siteSettingsQuery } from '@/sanity/lib/queries';
 import type {
@@ -22,23 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const about = stegaClean(aboutRaw);
   const settings = stegaClean(settingsRaw);
 
-  const brand = settings.brandName ?? 'Bruin Alpha Investment';
-  const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
-  const fallbackTitle = `About — ${brand}${suffix}`.replace(/\s+—\s+—\s+/, ' — ');
-  const title = about.seo?.title ?? fallbackTitle;
-  const description =
-    about.seo?.description ??
-    settings.defaultMetaDescription ??
-    aboutPageFallback.seo?.description ??
-    '';
-
-  const images = resolveOgImages(about.seo?.ogImage, settings.defaultOgImage, title);
-
-  return {
-    title,
-    description,
-    openGraph: images ? { title, description, images } : { title, description },
-  };
+  return buildPageMetadata({
+    path: '/about',
+    seo: about.seo,
+    settings,
+    fallbackTitle: 'About',
+    fallbackDescription: aboutPageFallback.seo?.description ?? undefined,
+  });
 }
 
 export default async function AboutPage() {

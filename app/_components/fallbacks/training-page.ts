@@ -2,6 +2,7 @@ import type { TrainingPageQueryResult } from '@/sanity/types/generated';
 
 export const trainingPageFallback: NonNullable<TrainingPageQueryResult> = {
   title: 'Training Page',
+  _updatedAt: '2026-05-15T00:00:00Z',
   seo: {
     _type: 'seo' as const,
     title: 'Training & Rotational Program — Bruin Alpha Investment at UCLA',

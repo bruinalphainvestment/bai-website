@@ -8,7 +8,7 @@ import {
   committeesIndexPageFallback,
 } from '@/app/_components/fallbacks/committees-index-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { resolveOgImages } from '@/app/_components/og-image';
+import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   allCommitteesIndexQuery,
@@ -33,22 +33,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const page = stegaClean(pageRaw);
   const settings = stegaClean(settingsRaw);
 
-  const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
-  const fallbackTitle = `Committees${suffix}`;
-  const title = page.seo?.title ?? fallbackTitle;
-  const description =
-    page.seo?.description ??
-    settings.defaultMetaDescription ??
-    committeesIndexPageFallback.seo?.description ??
-    '';
-
-  const images = resolveOgImages(page.seo?.ogImage, settings.defaultOgImage, title);
-
-  return {
-    title,
-    description,
-    openGraph: images ? { title, description, images } : { title, description },
-  };
+  return buildPageMetadata({
+    path: '/committees',
+    seo: page.seo,
+    settings,
+    fallbackTitle: 'Committees',
+    fallbackDescription: committeesIndexPageFallback.seo?.description ?? undefined,
+  });
 }
 
 export default async function CommitteesIndexPage() {

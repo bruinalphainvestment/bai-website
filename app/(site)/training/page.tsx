@@ -3,7 +3,7 @@ import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { trainingPageFallback } from '@/app/_components/fallbacks/training-page';
-import { resolveOgImages } from '@/app/_components/og-image';
+import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import { siteSettingsQuery, trainingPageQuery } from '@/sanity/lib/queries';
 import type {
@@ -22,22 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const training = stegaClean(trainingRaw);
   const settings = stegaClean(settingsRaw);
 
-  const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
-  const fallbackTitle = `Training & Rotational Program${suffix}`;
-  const title = training.seo?.title ?? fallbackTitle;
-  const description =
-    training.seo?.description ??
-    settings.defaultMetaDescription ??
-    trainingPageFallback.seo?.description ??
-    '';
-
-  const images = resolveOgImages(training.seo?.ogImage, settings.defaultOgImage, title);
-
-  return {
-    title,
-    description,
-    openGraph: images ? { title, description, images } : { title, description },
-  };
+  return buildPageMetadata({
+    path: '/training',
+    seo: training.seo,
+    settings,
+    fallbackTitle: 'Training & Rotational Program',
+    fallbackDescription: trainingPageFallback.seo?.description ?? undefined,
+  });
 }
 
 export default async function TrainingPage() {

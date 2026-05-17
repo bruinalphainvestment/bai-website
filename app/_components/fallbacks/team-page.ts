@@ -5,6 +5,7 @@ import type {
 
 export const teamPageFallback: NonNullable<TeamPageQueryResult> = {
   title: 'Team Page',
+  _updatedAt: '2026-05-15T00:00:00Z',
   seo: {
     _type: 'seo' as const,
     title: 'Team — Bruin Alpha Investment at UCLA',
