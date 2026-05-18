@@ -15,7 +15,16 @@
     "migrate:camelcase": "bun run --bun sanity/seed/migrate-to-camelcase.ts",
     "backup": "bunx sanity dataset export production backup-$(date +%Y%m%d).tar.gz",
     "typegen:schema": "bunx sanity@latest schema extract --workspace default --path ./sanity.schema.json",
-    "typegen": "bun run typegen:schema && bunx sanity typegen generate"
+    "typegen": "bun run typegen:schema && bunx sanity typegen generate",
+    "prepare": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "bunx lint-staged",
+    "pre-push": "bun run typecheck && bun run lint"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": "eslint --fix --max-warnings=0",
+    "*.{json,md,css,yml,yaml}": "prettier --write"
   },
   "dependencies": {
     "@portabletext/react": "^6.2.0",
@@ -40,6 +49,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",
+    "@lhci/cli": "^0.15.1",
     "@next/bundle-analyzer": "^16.2.6",
     "@playwright/test": "^1.60.0",
     "@sanity/codegen": "^6.1.0",
@@ -52,11 +62,12 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "eslint-plugin-tailwindcss": "^3",
+    "lint-staged": "^17.0.5",
     "prettier": "^3",
     "prettier-plugin-tailwindcss": "^0.6",
+    "simple-git-hooks": "^2.13.1",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "@lhci/cli": "^0.15.1"
+    "typescript": "^5"
   },
   "overrides": {
     "yargs-parser": "^21.1.1"
