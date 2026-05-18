@@ -9,7 +9,7 @@ export function LenisRuntime({ children }: { children: React.ReactNode }) {
     <ReactLenis
       root
       options={{
-        lerp: 0.1,
+        lerp: 0.15,
         smoothWheel: true,
         wheelMultiplier: 1,
         syncTouch: false,
