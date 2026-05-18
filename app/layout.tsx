@@ -145,6 +145,14 @@ export default async function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link
+          rel="preconnect"
+          href="https://cdn.sanity.io"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+      </head>
       <body className="min-h-full flex flex-col font-body-family">
         <a
           href="#main-content"
