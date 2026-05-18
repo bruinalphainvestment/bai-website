@@ -181,8 +181,12 @@ export default async function RootLayout({
         <Analytics />
         <SpeedInsights />
 
-        {isDraftMode && <VisualEditing />}
-        <SanityLive />
+        {isDraftMode ? (
+          <>
+            <VisualEditing />
+            <SanityLive />
+          </>
+        ) : null}
       </body>
     </html>
   );
