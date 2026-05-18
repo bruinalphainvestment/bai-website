@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
@@ -8,6 +9,7 @@ import {
 } from '@/app/_components/fallbacks/team-page';
 import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { buildPageMetadata } from '@/app/_components/seo';
+import { urlForImage } from '@/sanity/lib/imageUrl';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   allFoundingMembersQuery,
@@ -115,13 +117,32 @@ export default async function TeamPage() {
 function FoundingMemberCard({ member }: { member: FoundingMember }) {
   const fullName = [member.firstName, member.lastName].filter(Boolean).join(' ').trim();
   const monogram = member.monogramOverride ?? deriveMonogram(member.firstName, member.lastName);
+  const headshotUrl =
+    member.photoReleaseObtained === true && member.headshot
+      ? urlForImage(member.headshot).width(800).height(800).fit('crop').auto('format').url()
+      : null;
+
   return (
     <div className="flex flex-col group">
-      <div className="aspect-square bg-deep flex items-center justify-center mb-6 overflow-hidden relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-navy to-deep opacity-80" />
-        <span className="relative z-10 font-display text-5xl md:text-6xl bg-gradient-to-br from-[#C5A059] to-[#8B6F38] bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-500">
-          {monogram}
-        </span>
+      <div className="aspect-square bg-deep mb-6 overflow-hidden relative">
+        {headshotUrl ? (
+          <Image
+            src={headshotUrl}
+            alt={fullName ? `${fullName} headshot` : 'Founding team member headshot'}
+            fill
+            sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-navy to-deep opacity-80" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="font-display text-5xl md:text-6xl bg-gradient-to-br from-[#C5A059] to-[#8B6F38] bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-500">
+                {monogram}
+              </span>
+            </div>
+          </>
+        )}
       </div>
       <h3 className="font-display text-xl md:text-2xl mb-1">{fullName || 'TBD'}</h3>
       {member.role ? (
