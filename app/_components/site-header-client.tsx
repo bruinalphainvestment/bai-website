@@ -46,7 +46,7 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
     <>
       <motion.header
         className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
-          isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
+          isScrolled ? 'bg-white shadow-sm' : 'bg-transparent'
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
