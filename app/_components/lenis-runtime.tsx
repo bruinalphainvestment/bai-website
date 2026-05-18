@@ -9,11 +9,9 @@ export function LenisRuntime({ children }: { children: React.ReactNode }) {
     <ReactLenis
       root
       options={{
-        duration: 0.6,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        lerp: 0.1,
         smoothWheel: true,
         wheelMultiplier: 1,
-        touchMultiplier: 2,
         syncTouch: false,
         anchors: true,
         stopInertiaOnNavigate: true,
