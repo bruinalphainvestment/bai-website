@@ -139,17 +139,21 @@ function CommitteeCardItem({ committee }: { committee: CommitteeCard }) {
   const name = committee.name ?? '';
   const slug = committee.slug ?? '';
   const initial = name.charAt(0) || '?';
+  const isNavyAccent = committee.accentColor === 'navy';
+  const cardBorder = isNavyAccent ? 'border-navy/30' : 'border-gold/20';
+  const initialBg = isNavyAccent ? 'bg-navy/10 text-navy' : 'bg-gold/10 text-gold';
+  const directorAccent = isNavyAccent ? 'text-navy' : 'text-gold';
 
   return (
-    <div className="bg-white border border-gold/20 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full">
+    <div className={`bg-white border ${cardBorder} p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full`}>
       <div className="mb-6">
         <div className="flex justify-between items-start mb-4">
           <h2 className="text-2xl font-bold font-heading text-navy">{name}</h2>
-          <div className="w-10 h-10 bg-gold/10 text-gold flex items-center justify-center rounded-full font-bold font-heading text-lg">
+          <div className={`w-10 h-10 ${initialBg} flex items-center justify-center rounded-full font-bold font-heading text-lg`}>
             {initial}
           </div>
         </div>
-        <p className="text-sm text-gold font-semibold uppercase tracking-wider mb-4">
+        <p className={`text-sm ${directorAccent} font-semibold uppercase tracking-wider mb-4`}>
           Director: {directorLabel}
         </p>
         {committee.tagline ? (

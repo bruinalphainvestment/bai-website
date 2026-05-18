@@ -141,6 +141,16 @@ function UpcomingCard({ event, variant }: { event: EventEntry; variant: 'filled'
         {event.description ? (
           <p className="font-sans text-navy/80 leading-relaxed">{event.description}</p>
         ) : null}
+        {event.externalUrl ? (
+          <a
+            href={event.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-sm text-navy underline underline-offset-4 decoration-navy/30 hover:decoration-navy mt-4 inline-block"
+          >
+            Learn more &rarr;
+          </a>
+        ) : null}
       </div>
     </div>
   );
@@ -168,6 +178,16 @@ function CompetitionRow({ event, isLast }: { event: EventEntry; isLast: boolean 
         {event.description ? (
           <p className="font-sans text-navy/80 text-sm">{event.description}</p>
         ) : null}
+        {event.externalUrl ? (
+          <a
+            href={event.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-sm text-navy underline underline-offset-4 decoration-navy/30 hover:decoration-navy mt-3 inline-block"
+          >
+            Learn more &rarr;
+          </a>
+        ) : null}
       </div>
     </div>
   );
@@ -175,7 +195,28 @@ function CompetitionRow({ event, isLast }: { event: EventEntry; isLast: boolean 
 
 function formatDateLabel(event: EventEntry): string {
   if (event.date) {
-    return new Date(event.date).toLocaleDateString('en-US', {
+    const start = new Date(event.date);
+    if (event.endDate) {
+      const end = new Date(event.endDate);
+      const sameYear = start.getFullYear() === end.getFullYear();
+      const sameMonth = sameYear && start.getMonth() === end.getMonth();
+      if (sameMonth) {
+        const month = start.toLocaleDateString('en-US', { month: 'short' });
+        return `${month} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
+      }
+      const startStr = start.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        ...(sameYear ? {} : { year: 'numeric' }),
+      });
+      const endStr = end.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+      return `${startStr} – ${endStr}`;
+    }
+    return start.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',

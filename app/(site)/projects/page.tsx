@@ -108,7 +108,19 @@ export default async function ProjectsPage() {
                   </div>
                   <h2 className="font-serif text-2xl mb-4">{project.name ?? ''}</h2>
                   {project.summary ? (
-                    <p className="opacity-80 leading-relaxed mt-auto">{project.summary}</p>
+                    <p className="opacity-80 leading-relaxed">{project.summary}</p>
+                  ) : null}
+                  {project.tags && project.tags.length > 0 ? (
+                    <ul className="flex flex-wrap gap-2 mt-4 mt-auto pt-4">
+                      {project.tags.map((tag) => (
+                        <li
+                          key={tag}
+                          className="text-xs font-sans uppercase tracking-widest text-navy/70 border border-navy/20 px-2 py-1 rounded-sm"
+                        >
+                          {tag}
+                        </li>
+                      ))}
+                    </ul>
                   ) : null}
                 </StaggerItem>
               );

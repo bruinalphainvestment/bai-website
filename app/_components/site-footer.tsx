@@ -35,7 +35,10 @@ function FooterRender({ data }: { data: FooterData }) {
   const instagramHref = data.instagramUrl ?? '#';
   const linkedinHref = data.linkedinUrl ?? '#';
   const emailHref = data.clubEmail ? `mailto:${data.clubEmail}` : '#';
+  const applyHref = data.applyUrl ?? '/join';
+  const slackHref = data.slackInviteUrl ?? null;
   const year = data.foundedYear ?? new Date().getFullYear();
+  const foundedTerm = data.foundedTerm ?? null;
 
   return (
     <footer className="bg-[#002147] text-white py-16">
@@ -69,8 +72,21 @@ function FooterRender({ data }: { data: FooterData }) {
           <div className="flex flex-col gap-4">
             <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Connect</h3>
             <ul className="flex flex-col gap-2">
+              <li>
+                <a
+                  href={applyHref}
+                  target={applyHref.startsWith('http') ? '_blank' : undefined}
+                  rel={applyHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="text-[#C5A059] hover:text-white transition-colors font-semibold"
+                >
+                  Apply
+                </a>
+              </li>
               <li><a href={instagramHref} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Instagram</a></li>
               <li><a href={linkedinHref} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">LinkedIn</a></li>
+              {slackHref ? (
+                <li><a href={slackHref} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Slack</a></li>
+              ) : null}
               <li><a href={emailHref} className="text-gray-300 hover:text-white transition-colors">Email Us</a></li>
             </ul>
           </div>
@@ -82,6 +98,7 @@ function FooterRender({ data }: { data: FooterData }) {
              ) : null}
              <p className="text-gray-400 text-xs mt-4">
                &copy; {year} {brandAlt}. All rights reserved.
+               {foundedTerm ? <span className="block mt-1 text-gray-500">Founded {foundedTerm}.</span> : null}
              </p>
              <p className="text-xs mt-2">
                <Link
