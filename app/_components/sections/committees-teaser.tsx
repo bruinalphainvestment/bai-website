@@ -1,6 +1,11 @@
 import Link from 'next/link';
 
-import type { CommitteesTeaserSection } from '@/sanity/types/generated';
+import { sanityFetch } from '@/sanity/lib/live';
+import { allCommitteesIndexQuery } from '@/sanity/lib/queries';
+import type {
+  AllCommitteesIndexQueryResult,
+  CommitteesTeaserSection,
+} from '@/sanity/types/generated';
 
 import {
   committeesTeaserFallback,
@@ -10,17 +15,14 @@ import {
 
 import { FadeUp, StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
 
-type Props = Partial<CommitteesTeaserSection> & {
-  items?: TeaserCommitteeItem[];
-};
+type CommitteeDoc = AllCommitteesIndexQueryResult[number];
 
-export default function CommitteesTeaser(props: Props = {}) {
+type Props = Partial<CommitteesTeaserSection>;
+
+export default async function CommitteesTeaser(props: Props = {}) {
   const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
   const data = useSanity && props.heading ? props : committeesTeaserFallback;
-  const items =
-    useSanity && props.items && props.items.length > 0
-      ? props.items
-      : committeesTeaserItemsFallback;
+  const items = await loadCommittees();
 
   const heading = data.heading ?? committeesTeaserFallback.heading ?? '';
   const subheading = data.subheading;
@@ -68,4 +70,31 @@ export default function CommitteesTeaser(props: Props = {}) {
       </div>
     </section>
   );
+}
+
+async function loadCommittees(): Promise<TeaserCommitteeItem[]> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') {
+    return committeesTeaserItemsFallback;
+  }
+  try {
+    const { data } = await sanityFetch({ query: allCommitteesIndexQuery });
+    if (!data || data.length === 0) {
+      return committeesTeaserItemsFallback;
+    }
+    return data.flatMap(toTeaserItem);
+  } catch (err) {
+    console.error('[CommitteesTeaser] sanityFetch failed; using fallback:', err);
+    return committeesTeaserItemsFallback;
+  }
+}
+
+function toTeaserItem(c: CommitteeDoc): TeaserCommitteeItem[] {
+  if (!c.slug || !c.name) return [];
+  return [
+    {
+      name: c.name,
+      tagline: c.tagline ?? '',
+      slug: c.slug,
+    },
+  ];
 }
