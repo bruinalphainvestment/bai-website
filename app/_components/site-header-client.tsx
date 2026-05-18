@@ -1,9 +1,9 @@
 'use client';
 
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { HeaderNavLink } from './fallbacks/header';
 
@@ -18,23 +18,11 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
 
-  // IntersectionObserver sentinel: zero per-frame JS during scroll. The
-  // observer runs off the main thread and only fires when the 1px sentinel
-  // crosses the viewport boundary at scroll Y ≈ 50px. Replaces the previous
-  // Motion useScroll + useMotionValueEvent listener that ran on every scroll
-  // tick (~60-120 Hz with Lenis), causing scroll lag on Chromium.
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsScrolled(!entry?.isIntersecting),
-      { threshold: 0 },
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, []);
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setIsScrolled(latest > 50);
+  });
 
   const isOverDarkHero = DARK_HERO_ROUTES.has(pathname) && !isScrolled;
 
@@ -56,11 +44,6 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
 
   return (
     <>
-      <div
-        ref={sentinelRef}
-        aria-hidden="true"
-        className="absolute top-[50px] left-0 h-px w-px pointer-events-none"
-      />
       <motion.header
         className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
           isScrolled ? 'bg-white shadow-sm' : 'bg-transparent'
