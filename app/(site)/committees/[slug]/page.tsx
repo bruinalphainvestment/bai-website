@@ -13,6 +13,7 @@ import {
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { absoluteUrl, buildPageMetadata } from '@/app/_components/seo';
+import { client as sanityReadClient } from '@/sanity/lib/client';
 import { urlForImage } from '@/sanity/lib/imageUrl';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
@@ -36,7 +37,13 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
     return Object.keys(committeeDetailFallback).map((slug) => ({ slug }));
   }
   try {
-    const { data } = await sanityFetch({ query: committeeSlugsQuery });
+    // Use the plain read client (no draftMode lookup) — sanityFetch reaches into
+    // next/headers at build time which is not allowed inside generateStaticParams
+    // and crashes the build. The published-perspective client returns the same
+    // slug list and is safe to call here.
+    const data = await sanityReadClient.fetch<Array<{ slug: string | null }>>(
+      committeeSlugsQuery,
+    );
     const slugs = (data ?? [])
       .map((entry) => entry.slug)
       .filter((s): s is string => Boolean(s));
