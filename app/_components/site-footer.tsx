@@ -39,6 +39,21 @@ function FooterRender({ data }: { data: FooterData }) {
   const slackHref = data.slackInviteUrl ?? null;
   const year = data.foundedYear ?? new Date().getFullYear();
   const foundedTerm = data.foundedTerm ?? null;
+  // Derive footer nav from the SAME siteSettings.navLinks source the header
+  // uses, so the two stay in lockstep. Editing one nav in Studio updates both.
+  const navLinks = (data.navLinks ?? []).flatMap((link) =>
+    link?.label && link?.href
+      ? [{ key: link._key ?? `${link.label}-${link.href}`, label: link.label, href: link.href }]
+      : [],
+  );
+  const footerNavLinks =
+    navLinks.length > 0
+      ? navLinks
+      : footerFallback.navLinks?.flatMap((link) =>
+          link?.label && link?.href
+            ? [{ key: link._key ?? `${link.label}-${link.href}`, label: link.label, href: link.href }]
+            : [],
+        ) ?? [];
 
   return (
     <footer className="bg-[#002147] text-white py-16">
@@ -61,11 +76,16 @@ function FooterRender({ data }: { data: FooterData }) {
           <div className="flex flex-col gap-4">
             <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Navigation</h3>
             <ul className="flex flex-col gap-2">
-              <li><Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-              <li><Link href="/committees" className="text-gray-300 hover:text-white transition-colors">Committees</Link></li>
-              <li><Link href="/training" className="text-gray-300 hover:text-white transition-colors">Training</Link></li>
-              <li><Link href="/team" className="text-gray-300 hover:text-white transition-colors">Team</Link></li>
-              <li><Link href="/join" className="text-gray-300 hover:text-white transition-colors">Join</Link></li>
+              {footerNavLinks.map((link) => (
+                <li key={link.key}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
