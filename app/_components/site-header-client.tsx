@@ -63,7 +63,7 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
               }
               alt={brandAlt}
               width={400}
-              height={272}
+              height={273}
               className="h-12 w-auto md:h-14 transition-opacity duration-300"
             />
           </Link>
@@ -114,7 +114,7 @@ export function SiteHeaderClient({ brandAlt, navLinks }: Props) {
                   src="/brand/logo/png/navy/BAI_mark_navy@2x.png"
                   alt={brandAlt}
                   width={400}
-                  height={272}
+                  height={273}
                   className="h-12 w-auto"
                 />
               </Link>
