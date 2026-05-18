@@ -1,5 +1,8 @@
 import Link from 'next/link';
 
+import { footerFallback } from '@/app/_components/fallbacks/footer';
+import { sanityFetch } from '@/sanity/lib/live';
+import { siteSettingsQuery } from '@/sanity/lib/queries';
 import type { CtaSection } from '@/sanity/types/generated';
 
 import { recruitmentCtaFallback } from '../fallbacks/sections/recruitment-cta';
@@ -10,18 +13,25 @@ type Props = Partial<CtaSection> & {
   primaryHref?: string;
 };
 
-export default function RecruitmentCTA(props: Props = {}) {
+export default async function RecruitmentCTA(props: Props = {}) {
   const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
   const data = useSanity && props.heading ? props : recruitmentCtaFallback;
+  const settings = await loadSettings();
 
   const heading = data.heading ?? recruitmentCtaFallback.heading ?? '';
   const body = data.body ?? recruitmentCtaFallback.body ?? '';
   const primaryLabel = data.ctaLabel ?? recruitmentCtaFallback.ctaLabel ?? 'Apply Now';
-  const primaryHref = props.primaryHref ?? '#';
+  const primaryHref =
+    props.primaryHref ?? settings?.applyUrl ?? footerFallback.applyUrl ?? '/join';
   const secondaryLabel =
     data.secondaryCtaLabel ?? recruitmentCtaFallback.secondaryCtaLabel ?? 'Email Us';
+  const fallbackMailto = settings?.clubEmail
+    ? `mailto:${settings.clubEmail}`
+    : footerFallback.clubEmail
+      ? `mailto:${footerFallback.clubEmail}`
+      : '/join';
   const secondaryHref =
-    data.secondaryCtaHref ?? recruitmentCtaFallback.secondaryCtaHref ?? '#';
+    data.secondaryCtaHref ?? recruitmentCtaFallback.secondaryCtaHref ?? fallbackMailto;
 
   return (
     <section data-section="cta" className="bg-cream text-navy py-32 px-4 md:px-8">
@@ -52,4 +62,15 @@ export default function RecruitmentCTA(props: Props = {}) {
       </StaggerGroup>
     </section>
   );
+}
+
+async function loadSettings() {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return footerFallback;
+  try {
+    const { data } = await sanityFetch({ query: siteSettingsQuery });
+    return data ?? footerFallback;
+  } catch (err) {
+    console.error('[RecruitmentCTA] siteSettings fetch failed; using fallback:', err);
+    return footerFallback;
+  }
 }

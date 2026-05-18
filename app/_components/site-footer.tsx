@@ -58,11 +58,11 @@ function FooterRender({ data }: { data: FooterData }) {
           <div className="flex flex-col gap-4">
             <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Navigation</h3>
             <ul className="flex flex-col gap-2">
-              <li><Link href="/#home" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-              <li><Link href="/#committees" className="text-gray-300 hover:text-white transition-colors">Committees</Link></li>
-              <li><Link href="/#training" className="text-gray-300 hover:text-white transition-colors">Training</Link></li>
-              <li><Link href="/#team" className="text-gray-300 hover:text-white transition-colors">Team</Link></li>
-              <li><Link href="/#join" className="text-gray-300 hover:text-white transition-colors">Join</Link></li>
+              <li><Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
+              <li><Link href="/committees" className="text-gray-300 hover:text-white transition-colors">Committees</Link></li>
+              <li><Link href="/training" className="text-gray-300 hover:text-white transition-colors">Training</Link></li>
+              <li><Link href="/team" className="text-gray-300 hover:text-white transition-colors">Team</Link></li>
+              <li><Link href="/join" className="text-gray-300 hover:text-white transition-colors">Join</Link></li>
             </ul>
           </div>
 

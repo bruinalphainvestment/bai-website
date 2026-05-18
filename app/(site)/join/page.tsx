@@ -124,18 +124,20 @@ export default async function JoinPage() {
               <p className="font-display text-2xl md:text-3xl mb-4">
                 {applicationForm.body ?? ''}
               </p>
-              <a
-                href={applicationForm.formUrl ?? '#'}
-                className="font-sans border border-navy px-6 py-3 hover:bg-navy hover:text-cream transition-colors duration-300"
-              >
-                Link to Application
-              </a>
-              <iframe
-                src="about:blank"
-                data-tally-placeholder="true"
-                className="absolute inset-0 w-full h-full opacity-0 pointer-events-none"
-                title="Application Form"
-              />
+              {applicationForm.formUrl ? (
+                <a
+                  href={applicationForm.formUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans border border-navy px-6 py-3 hover:bg-navy hover:text-cream transition-colors duration-300"
+                >
+                  Link to Application
+                </a>
+              ) : (
+                <p className="font-sans text-navy/60 text-sm italic">
+                  Application form opens soon.
+                </p>
+              )}
             </div>
           </FadeUp>
         </section>

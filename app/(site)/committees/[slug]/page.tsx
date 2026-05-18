@@ -1,5 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { PortableText } from 'next-sanity';
 import { stegaClean } from 'next-sanity';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ import {
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { absoluteUrl, buildPageMetadata } from '@/app/_components/seo';
+import { urlForImage } from '@/sanity/lib/imageUrl';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   committeeBySlugQuery,
@@ -83,13 +85,22 @@ export default async function CommitteeDetailPage({
   if (!committee) notFound();
 
   const cleaned = stegaClean(committee);
-  const directorName = committee.director
-    ? [committee.director.firstName, committee.director.lastName]
+  const director = committee.director;
+  const directorName = director
+    ? [director.firstName, director.lastName]
         .filter(Boolean)
         .join(' ')
         .trim()
     : null;
   const directorLabel = directorName || committee.directorPlaceholder || 'TBD';
+  const directorRole = director?.role ?? null;
+  const directorMonogram =
+    director?.monogramOverride ??
+    deriveDirectorMonogram(director?.firstName, director?.lastName);
+  const directorHeadshotUrl =
+    director?.photoReleaseObtained === true && director?.headshot
+      ? urlForImage(director.headshot).width(400).height(400).fit('crop').auto('format').url()
+      : null;
 
   const curriculumBlocks = committee.curriculum && committee.curriculum.length > 0
     ? committee.curriculum
@@ -143,18 +154,44 @@ export default async function CommitteeDetailPage({
           </StaggerItem>
 
           {committee.tagline ? (
-            <StaggerItem>
-              <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mb-8 leading-relaxed font-light">
-                {committee.tagline}
-              </p>
-            </StaggerItem>
-          ) : null}
-
           <StaggerItem>
             <div className="inline-flex items-center bg-[#0A192F] text-[#FAF9F6] px-5 py-2.5 rounded-full text-sm font-medium tracking-wide">
               Director: {directorLabel}
             </div>
           </StaggerItem>
+
+          {director && directorName ? (
+            <StaggerItem>
+              <div className="mt-8 flex items-center gap-5 bg-white p-5 rounded-2xl shadow-sm border border-gray-100 max-w-md">
+                <div className="relative w-20 h-20 shrink-0 overflow-hidden rounded-full bg-[#0A192F]">
+                  {directorHeadshotUrl ? (
+                    <Image
+                      src={directorHeadshotUrl}
+                      alt={`${directorName} headshot`}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F] to-[#020c1b] opacity-80" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-serif text-xl bg-gradient-to-br from-[#C5A059] to-[#8B6F38] bg-clip-text text-transparent">
+                          {directorMonogram}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-serif text-lg text-[#0A192F]">{directorName}</span>
+                  {directorRole ? (
+                    <span className="font-sans text-sm text-gray-600">{directorRole}</span>
+                  ) : null}
+                </div>
+              </div>
+            </StaggerItem>
+          ) : null}
         </StaggerGroup>
       </section>
 
@@ -251,6 +288,30 @@ export default async function CommitteeDetailPage({
       </div>
     </div>
   );
+}
+
+function deriveDirectorMonogram(
+  firstName: string | null | undefined,
+  lastName: string | null | undefined,
+): string {
+  const first = (firstName ?? '').trim();
+  const last = (lastName ?? '').trim();
+  if (first && last) return `${first[0]}${last[0]}`.toUpperCase();
+  if (first) return first.slice(0, 2).toUpperCase();
+  if (last) return last.slice(0, 2).toUpperCase();
+  return '?';
+}
+
+function deriveDirectorMonogram(
+  firstName: string | null | undefined,
+  lastName: string | null | undefined,
+): string {
+  const first = (firstName ?? '').trim();
+  const last = (lastName ?? '').trim();
+  if (first && last) return `${first[0]}${last[0]}`.toUpperCase();
+  if (first) return first.slice(0, 2).toUpperCase();
+  if (last) return last.slice(0, 2).toUpperCase();
+  return '?';
 }
 
 async function loadCommittee(slug: string): Promise<CommitteeData | null> {

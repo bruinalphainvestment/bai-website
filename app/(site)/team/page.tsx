@@ -53,10 +53,6 @@ export default async function TeamPage() {
   const subheading = page.hero?.subheading ?? teamPageFallback.hero?.subheading ?? '';
   const intro = page.intro ?? teamPageFallback.intro;
   const foundingHeading = page.foundingClassHeading ?? teamPageFallback.foundingClassHeading ?? 'Founding Class';
-  const membersHeading = page.membersHeading ?? teamPageFallback.membersHeading ?? 'Members';
-  const membersPlaceholder = page.membersPlaceholder ?? teamPageFallback.membersPlaceholder ?? '';
-  const alumniHeading = page.alumniHeading ?? teamPageFallback.alumniHeading ?? 'Alumni';
-  const alumniPlaceholder = page.alumniPlaceholder ?? teamPageFallback.alumniPlaceholder ?? '';
 
   return (
     <div className="min-h-screen bg-cream text-navy pt-32 pb-24">
@@ -93,23 +89,6 @@ export default async function TeamPage() {
         </StaggerGroup>
       </section>
 
-      <FadeUp>
-        <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
-          <h2 className="font-display text-3xl md:text-4xl mb-8">{membersHeading}</h2>
-          <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
-            <p className="font-sans text-lg text-navy/70">{membersPlaceholder}</p>
-          </div>
-        </section>
-      </FadeUp>
-
-      <FadeUp>
-        <section className="px-4 md:px-8 max-w-7xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl mb-8">{alumniHeading}</h2>
-          <div className="bg-cream border border-navy/10 p-8 md:p-12 text-center rounded-sm">
-            <p className="font-sans text-lg text-navy/70">{alumniPlaceholder}</p>
-          </div>
-        </section>
-      </FadeUp>
     </div>
   );
 }
