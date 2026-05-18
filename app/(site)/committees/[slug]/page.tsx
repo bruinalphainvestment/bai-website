@@ -154,6 +154,13 @@ export default async function CommitteeDetailPage({
           </StaggerItem>
 
           {committee.tagline ? (
+            <StaggerItem>
+              <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mb-8 leading-relaxed font-light">
+                {committee.tagline}
+              </p>
+            </StaggerItem>
+          ) : null}
+
           <StaggerItem>
             <div className="inline-flex items-center bg-[#0A192F] text-[#FAF9F6] px-5 py-2.5 rounded-full text-sm font-medium tracking-wide">
               Director: {directorLabel}
@@ -288,18 +295,6 @@ export default async function CommitteeDetailPage({
       </div>
     </div>
   );
-}
-
-function deriveDirectorMonogram(
-  firstName: string | null | undefined,
-  lastName: string | null | undefined,
-): string {
-  const first = (firstName ?? '').trim();
-  const last = (lastName ?? '').trim();
-  if (first && last) return `${first[0]}${last[0]}`.toUpperCase();
-  if (first) return first.slice(0, 2).toUpperCase();
-  if (last) return last.slice(0, 2).toUpperCase();
-  return '?';
 }
 
 function deriveDirectorMonogram(
