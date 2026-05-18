@@ -38,25 +38,6 @@ export const homePageQuery = defineQuery(`
   }
 `);
 
-export const allCommitteesQuery = defineQuery(`
-  *[_type == "committee"] | order(order asc) {
-    _id,
-    name,
-    "slug": slug.current,
-    tagline,
-    description,
-    order,
-    accentColor,
-    "director": director-> {
-      _id,
-      firstName,
-      lastName,
-      role,
-      committee
-    }
-  }
-`);
-
 export const sitemapCommitteesQuery = defineQuery(`
   *[_type == "committee" && defined(slug.current)] | order(order asc) {
     "slug": slug.current,
