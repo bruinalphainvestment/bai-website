@@ -187,7 +187,6 @@ const COMMITTEE_PLACEHOLDER_DESCRIPTION =
   'Curriculum in development — check back fall 2026.';
 // Per docs/CUSTOM-DOMAIN.md — bruinalphainvestment.com expires 2027-05-14.
 const DOMAIN_RENEWAL_DATE = '2027-05-14';
-const APPLY_URL = 'https://tally.so/r/placeholder';
 
 function portableText(text: string, keyPrefix: string) {
   return [
@@ -212,7 +211,7 @@ const siteSettingsDoc = {
   _id: IDS.siteSettings,
   _type: 'siteSettings',
   slogan: LOCKED_SLOGAN,
-  applyUrl: APPLY_URL,
+  applyCtaLabel: 'Apply Now',
   clubEmail: CLUB_EMAIL,
   brandName: BRAND_NAME,
   titleSuffix: TITLE_SUFFIX,
@@ -603,8 +602,7 @@ const joinPageDoc = {
   ],
   applicationForm: {
     heading: 'Application Form',
-    body: 'Application opens Fall 2026. The form below is a Tally embed placeholder; the real form replaces it before launch.',
-    formUrl: APPLY_URL,
+    body: 'Applications are currently off-cycle. Please check back closer to Fall 2026 for the application form.',
   },
   // Per plan D11: inline FAQs on /join (separate from any shared FAQ doc
   // collection). 6 Q&A pairs lifted verbatim from the hardcoded /join page.

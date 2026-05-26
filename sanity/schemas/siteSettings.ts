@@ -66,13 +66,12 @@ export const siteSettings = defineType({
     }),
 
     defineField({
-      name: 'applyUrl',
-      title: 'Application URL (Tally)',
-      type: 'url',
+      name: 'applyCtaLabel',
+      title: 'Apply CTA Label',
+      type: 'string',
       group: 'contact',
-      initialValue: 'https://tally.so/r/placeholder',
-      validation: (rule) => rule.required().uri({ scheme: ['http', 'https'] }),
-      description: 'Replace with real Tally form URL once created.',
+      initialValue: 'Apply Now',
+      description: 'Label for site-wide application links. All apply CTAs route to /join.',
     }),
     defineField({
       name: 'clubEmail',

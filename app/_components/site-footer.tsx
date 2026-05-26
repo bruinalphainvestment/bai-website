@@ -35,7 +35,7 @@ function FooterRender({ data }: { data: FooterData }) {
   const instagramHref = data.instagramUrl ?? '#';
   const linkedinHref = data.linkedinUrl ?? '#';
   const emailHref = data.clubEmail ? `mailto:${data.clubEmail}` : '#';
-  const applyHref = data.applyUrl ?? '/join';
+  const applyLabel = data.applyCtaLabel ?? footerFallback.applyCtaLabel ?? 'Apply';
   const slackHref = data.slackInviteUrl ?? null;
   const year = data.foundedYear ?? new Date().getFullYear();
   const foundedTerm = data.foundedTerm ?? null;
@@ -93,14 +93,12 @@ function FooterRender({ data }: { data: FooterData }) {
             <h3 className="text-[#C5A059] font-serif text-lg font-semibold">Connect</h3>
             <ul className="flex flex-col gap-2">
               <li>
-                <a
-                  href={applyHref}
-                  target={applyHref.startsWith('http') ? '_blank' : undefined}
-                  rel={applyHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+                <Link
+                  href="/join"
                   className="text-[#C5A059] hover:text-white transition-colors font-semibold"
                 >
-                  Apply
-                </a>
+                  {applyLabel}
+                </Link>
               </li>
               <li><a href={instagramHref} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">Instagram</a></li>
               <li><a href={linkedinHref} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">LinkedIn</a></li>

@@ -14,7 +14,7 @@ export const footerFallback: NonNullable<SiteSettingsQueryResult> = {
     'Bruin Alpha Investment is a registered student organization at UCLA. Content on this site is educational only and does not constitute investment advice. BAI is not a registered investment adviser, broker-dealer, or financial advisor. This organization acts independently of UCLA and does not represent the University.',
   uclaName: 'Bruin Alpha Investment at UCLA',
   mission: null,
-  applyUrl: 'https://tally.so/r/placeholder',
+  applyCtaLabel: 'Apply Now',
   clubEmail: 'bruinalphainvestment26@gmail.com',
   instagramUrl: 'https://instagram.com',
   linkedinUrl: 'https://linkedin.com',

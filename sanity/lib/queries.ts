@@ -8,7 +8,7 @@ export const siteSettingsQuery = defineQuery(`
     "disclaimer": disclaimerText,
     "uclaName": uclaCompliantName,
     "mission": missionStatement,
-    applyUrl,
+    applyCtaLabel,
     clubEmail,
     instagramUrl,
     linkedinUrl,

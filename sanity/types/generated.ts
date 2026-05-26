@@ -608,7 +608,7 @@ export type SiteSettings = {
   slogan?: string;
   foundedYear?: number;
   foundedTerm?: string;
-  applyUrl?: string;
+  applyCtaLabel?: string;
   clubEmail?: string;
   instagramUrl?: string;
   linkedinUrl?: string;
@@ -808,7 +808,7 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: siteSettingsQuery
-// Query: *[_type == "siteSettings"][0] {    brandName,    titleSuffix,    slogan,    "disclaimer": disclaimerText,    "uclaName": uclaCompliantName,    "mission": missionStatement,    applyUrl,    clubEmail,    instagramUrl,    linkedinUrl,    slackInviteUrl,    navLinks,    foundedYear,    foundedTerm,    defaultMetaDescription,    defaultOgImage,    organizationDescription,    sameAs,    errorCopy,    "domainRenewal": domainRenewalDate  }
+// Query: *[_type == "siteSettings"][0] {    brandName,    titleSuffix,    slogan,    "disclaimer": disclaimerText,    "uclaName": uclaCompliantName,    "mission": missionStatement,    applyCtaLabel,    clubEmail,    instagramUrl,    linkedinUrl,    slackInviteUrl,    navLinks,    foundedYear,    foundedTerm,    defaultMetaDescription,    defaultOgImage,    organizationDescription,    sameAs,    errorCopy,    "domainRenewal": domainRenewalDate  }
 export type SiteSettingsQueryResult = {
   brandName: string | null;
   titleSuffix: string | null;
@@ -833,7 +833,7 @@ export type SiteSettingsQueryResult = {
     _type: 'block';
     _key: string;
   }> | null;
-  applyUrl: string | null;
+  applyCtaLabel: string | null;
   clubEmail: string | null;
   instagramUrl: string | null;
   linkedinUrl: string | null;
@@ -967,50 +967,6 @@ export type HomePageQueryResult = {
       }
   > | null;
 } | null;
-
-// Source: sanity/lib/queries.ts
-// Variable: allCommitteesQuery
-// Query: *[_type == "committee"] | order(order asc) {    _id,    name,    "slug": slug.current,    tagline,    description,    order,    accentColor,    "director": director-> {      _id,      firstName,      lastName,      role,      committee    }  }
-export type AllCommitteesQueryResult = Array<{
-  _id: string;
-  name: string | null;
-  slug: string | null;
-  tagline: string | null;
-  description: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: 'span';
-      _key: string;
-    }>;
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
-    listItem?: 'bullet' | 'number';
-    markDefs?: Array<{
-      href?: string;
-      _type: 'link';
-      _key: string;
-    }>;
-    level?: number;
-    _type: 'block';
-    _key: string;
-  }> | null;
-  order: number | null;
-  accentColor: 'gold' | 'navy' | null;
-  director: {
-    _id: string;
-    firstName: string | null;
-    lastName: string | null;
-    role: string | null;
-    committee:
-      | 'accounting-consulting'
-      | 'investment-banking'
-      | 'operations'
-      | 'president'
-      | 'trading'
-      | 'wealth-management'
-      | null;
-  } | null;
-}>;
 
 // Source: sanity/lib/queries.ts
 // Variable: sitemapCommitteesQuery
@@ -1410,9 +1366,8 @@ export type SitemapPagesQueryResult = Array<
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\n  *[_type == "siteSettings"][0] {\n    brandName,\n    titleSuffix,\n    slogan,\n    "disclaimer": disclaimerText,\n    "uclaName": uclaCompliantName,\n    "mission": missionStatement,\n    applyUrl,\n    clubEmail,\n    instagramUrl,\n    linkedinUrl,\n    slackInviteUrl,\n    navLinks,\n    foundedYear,\n    foundedTerm,\n    defaultMetaDescription,\n    defaultOgImage,\n    organizationDescription,\n    sameAs,\n    errorCopy,\n    "domainRenewal": domainRenewalDate\n  }\n': SiteSettingsQueryResult;
+    '\n  *[_type == "siteSettings"][0] {\n    brandName,\n    titleSuffix,\n    slogan,\n    "disclaimer": disclaimerText,\n    "uclaName": uclaCompliantName,\n    "mission": missionStatement,\n    applyCtaLabel,\n    clubEmail,\n    instagramUrl,\n    linkedinUrl,\n    slackInviteUrl,\n    navLinks,\n    foundedYear,\n    foundedTerm,\n    defaultMetaDescription,\n    defaultOgImage,\n    organizationDescription,\n    sameAs,\n    errorCopy,\n    "domainRenewal": domainRenewalDate\n  }\n': SiteSettingsQueryResult;
     '\n  *[_type == "homePage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    sections[] {\n      _key,\n      _type,\n      ...\n    }\n  }\n': HomePageQueryResult;
-    '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    order,\n    accentColor,\n    "director": director-> {\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee\n    }\n  }\n': AllCommitteesQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] | order(order asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SitemapCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
     '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    mission,\n    history,\n    signatureTrip,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
