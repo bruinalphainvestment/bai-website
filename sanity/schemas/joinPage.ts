@@ -104,7 +104,19 @@ export const joinPage = defineType({
           title: 'Form URL',
           type: 'string',
           description:
-            'External application URL (e.g. Tally form). String not url type so placeholders like "#" are allowed during off-cycle.',
+            'External application URL. Leave blank while applications are closed; when set, use a full http(s) URL.',
+          validation: (rule) =>
+            rule.custom((value) => {
+              if (!value) return true;
+              try {
+                const parsed = new URL(value);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+                  ? true
+                  : 'Use a full http(s) URL.';
+              } catch {
+                return 'Use a full http(s) URL or leave blank while applications are closed.';
+              }
+            }),
         }),
       ],
     }),

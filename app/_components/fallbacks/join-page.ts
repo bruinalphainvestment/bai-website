@@ -48,8 +48,7 @@ export const joinPageFallback: NonNullable<JoinPageQueryResult> = {
   ],
   applicationForm: {
     heading: 'Application Form',
-    body: 'Application opens Fall 2026',
-    formUrl: '#',
+    body: 'Applications are currently off-cycle. Please check back closer to Fall 2026 for the application form.',
   },
   faqs: [
     {

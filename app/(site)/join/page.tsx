@@ -16,6 +16,8 @@ type JoinData = NonNullable<JoinPageQueryResult>;
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
 
 const APPLICATION_STEPS = ['Apply', 'Coffee Chat', 'Interview', 'Decision'] as const;
+const APPLICATION_OFF_CYCLE_COPY =
+  'Applications are not open yet. Please check back closer to Fall 2026 for the application form.';
 
 export async function generateMetadata(): Promise<Metadata> {
   const [joinRaw, settingsRaw] = await Promise.all([
@@ -44,6 +46,8 @@ export default async function JoinPage() {
   const timeline = data.timeline ?? joinPageFallback.timeline ?? [];
   const applicationForm = data.applicationForm ?? joinPageFallback.applicationForm;
   const faqs = data.faqs ?? joinPageFallback.faqs ?? [];
+  const applicationFormUrl = normalizeApplicationFormUrl(applicationForm?.formUrl);
+  const applicationFormBody = applicationForm?.body?.trim() || APPLICATION_OFF_CYCLE_COPY;
 
   const clubEmail = settings.clubEmail ?? footerFallback.clubEmail ?? '';
   const instagramHref = settings.instagramUrl ?? footerFallback.instagramUrl ?? '#';
@@ -122,22 +126,18 @@ export default async function JoinPage() {
           <FadeUp>
             <div className="aspect-[4/3] md:aspect-[21/9] w-full bg-cream border border-navy/10 rounded-sm relative overflow-hidden flex items-center justify-center flex-col">
               <p className="font-display text-2xl md:text-3xl mb-4">
-                {applicationForm.body ?? ''}
+                {applicationFormBody}
               </p>
-              {applicationForm.formUrl ? (
+              {applicationFormUrl ? (
                 <a
-                  href={applicationForm.formUrl}
+                  href={applicationFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-sans border border-navy px-6 py-3 hover:bg-navy hover:text-cream transition-colors duration-300"
                 >
                   Link to Application
                 </a>
-              ) : (
-                <p className="font-sans text-navy/60 text-sm italic">
-                  Application form opens soon.
-                </p>
-              )}
+              ) : null}
             </div>
           </FadeUp>
         </section>
@@ -207,6 +207,17 @@ export default async function JoinPage() {
       </section>
     </div>
   );
+}
+
+function normalizeApplicationFormUrl(formUrl: string | null | undefined): string | null {
+  const url = formUrl?.trim();
+  if (!url || url === '#' || url === 'https://tally.so/r/placeholder') return null;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : null;
+  } catch {
+    return null;
+  }
 }
 
 async function loadJoinData(): Promise<JoinData> {
