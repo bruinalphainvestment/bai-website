@@ -30,7 +30,7 @@ export default function Mission(props: Partial<MissionSection> = {}) {
           </StaggerItem>
           <StaggerItem className="md:col-span-8 lg:col-span-9">
             <p className="font-sans text-lg md:text-2xl leading-relaxed md:leading-[1.6]">
-              <span className="float-left text-6xl md:text-8xl font-display leading-none mr-4 mt-2 text-[#8B6F38]">
+              <span className="float-left text-6xl md:text-8xl font-display leading-none mr-2 md:mr-3 mt-1 text-[#8B6F38]">
                 {dropCap}
               </span>
               {rest}
