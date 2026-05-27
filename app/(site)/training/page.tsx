@@ -3,7 +3,11 @@ import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { trainingPageFallback } from '@/app/_components/fallbacks/training-page';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
+import {
+  FadeUp,
+  StaggerGroup,
+  StaggerItem,
+} from '@/app/_components/motion/scroll-reveal';
 import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import { siteSettingsQuery, trainingPageQuery } from '@/sanity/lib/queries';
@@ -14,6 +18,14 @@ import type {
 
 type TrainingData = NonNullable<TrainingPageQueryResult>;
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
+
+const hierarchyWidths = ['w-full', 'w-[85%]', 'w-[70%]', 'w-[55%]'];
+const hierarchyBackgrounds = [
+  'bg-navy',
+  'bg-navy/90',
+  'bg-navy/80',
+  'bg-navy/70',
+];
 
 export async function generateMetadata(): Promise<Metadata> {
   const [trainingRaw, settingsRaw] = await Promise.all([
@@ -34,26 +46,42 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function TrainingPage() {
   const data = await loadTrainingData();
-  const heading = data.hero?.heading ?? trainingPageFallback.hero?.heading ?? 'The Rotational Program';
-  const subheading = data.hero?.subheading ?? trainingPageFallback.hero?.subheading ?? '';
+  const heading =
+    data.hero?.heading ??
+    trainingPageFallback.hero?.heading ??
+    'The Rotational Program';
+  const subheading =
+    data.hero?.subheading ?? trainingPageFallback.hero?.subheading ?? '';
   const intro = data.intro ?? trainingPageFallback.intro;
   const curriculum = data.curriculum ?? trainingPageFallback.curriculum ?? [];
+  const curriculumHeading =
+    data.curriculumHeading ?? trainingPageFallback.curriculumHeading ?? '';
+  const classHierarchy =
+    data.classHierarchy ?? trainingPageFallback.classHierarchy;
+  const hierarchyTiers = classHierarchy?.tiers ?? [];
+  const sampleWeek = data.sampleWeek ?? trainingPageFallback.sampleWeek;
+  const sampleWeekItems = sampleWeek?.items ?? [];
+  const assessment = data.assessment ?? trainingPageFallback.assessment;
+  const quarterlyProject =
+    data.quarterlyProject ?? trainingPageFallback.quarterlyProject;
 
   return (
     <div className="bg-cream text-navy min-h-screen pt-32 pb-24">
-      <section className="px-6 md:px-12 lg:px-24 mb-24 max-w-7xl mx-auto">
+      <section className="mx-auto mb-24 max-w-7xl px-6 md:px-12 lg:px-24">
         <StaggerGroup trigger="mount">
           <StaggerItem>
-            <h1 className="font-serif text-h1 font-light tracking-tight mb-6">{heading}</h1>
+            <h1 className="text-h1 mb-6 font-serif font-light tracking-tight">
+              {heading}
+            </h1>
           </StaggerItem>
           <StaggerItem>
-            <p className="text-xl md:text-2xl font-light leading-relaxed max-w-3xl">
+            <p className="max-w-3xl text-xl leading-relaxed font-light md:text-2xl">
               {subheading}
             </p>
           </StaggerItem>
           {intro ? (
             <StaggerItem>
-              <p className="mt-6 text-lg leading-relaxed opacity-80 max-w-3xl">
+              <p className="mt-6 max-w-3xl text-lg leading-relaxed opacity-80">
                 {intro}
               </p>
             </StaggerItem>
@@ -62,27 +90,27 @@ export default async function TrainingPage() {
       </section>
 
       {curriculum.length > 0 ? (
-        <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-7xl mx-auto">
+        <section className="mx-auto mb-32 max-w-7xl px-6 md:px-12 lg:px-24">
           <FadeUp>
-            <h2 className="font-serif text-h2 font-light mb-12 border-b border-border-subtle pb-4">
-              How It Works
+            <h2 className="text-h2 border-border-subtle mb-12 border-b pb-4 font-serif font-light">
+              {curriculumHeading}
             </h2>
           </FadeUp>
-          <StaggerGroup className="grid grid-cols-1 md:grid-cols-5 gap-6">
+          <StaggerGroup className="grid grid-cols-1 gap-6 md:grid-cols-5">
             {curriculum.map((entry, i) => (
               <StaggerItem
                 key={entry._key}
-                className="relative bg-offwhite p-6 border border-border-subtle flex flex-col h-full group hover:border-gold-start transition-colors"
+                className="bg-offwhite border-border-subtle group hover:border-gold-start relative flex h-full flex-col border p-6 transition-colors"
               >
-                <span className="text-sm font-bold tracking-widest text-gold-start mb-4 block uppercase">
+                <span className="text-gold-start mb-4 block text-sm font-bold tracking-widest uppercase">
                   {entry.week ?? ''}
                 </span>
-                <h3 className="font-serif text-xl mb-3">{entry.topic ?? ''}</h3>
-                <p className="opacity-80 text-sm leading-relaxed mt-auto">
+                <h3 className="mb-3 font-serif text-xl">{entry.topic ?? ''}</h3>
+                <p className="mt-auto text-sm leading-relaxed opacity-80">
                   {entry.body ?? ''}
                 </p>
                 {i !== curriculum.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-4 border-t border-dashed border-border-subtle z-10" />
+                  <div className="border-border-subtle absolute top-1/2 -right-4 z-10 hidden w-4 border-t border-dashed md:block" />
                 )}
               </StaggerItem>
             ))}
@@ -90,109 +118,111 @@ export default async function TrainingPage() {
         </section>
       ) : null}
 
-      <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div>
-            <FadeUp>
-              <h2 className="font-serif text-h2 font-light mb-8 border-b border-border-subtle pb-4">
-                Class Hierarchy
-              </h2>
-            </FadeUp>
-            <StaggerGroup className="flex flex-col items-end space-y-4">
-              <StaggerItem className="p-6 bg-navy text-cream flex items-center justify-between w-full">
-                <div>
-                  <h3 className="font-serif text-2xl mb-1">Executive Board</h3>
-                  <p className="opacity-70 text-sm">Leadership</p>
-                </div>
-                <span className="text-gold-start text-xl">✦</span>
-              </StaggerItem>
-              <StaggerItem className="p-6 bg-navy/90 text-cream flex items-center justify-between w-[85%]">
-                <div>
-                  <h3 className="font-serif text-2xl mb-1">Director</h3>
-                  <p className="opacity-70 text-sm">Committee Lead</p>
-                </div>
-                <span className="text-gold-start text-xl">&uarr;</span>
-              </StaggerItem>
-              <StaggerItem className="p-6 bg-navy/80 text-cream flex items-center justify-between w-[70%]">
-                <div>
-                  <h3 className="font-serif text-2xl mb-1">Associate</h3>
-                  <p className="opacity-70 text-sm">Year 2</p>
-                </div>
-                <span className="text-gold-start text-xl">&uarr;</span>
-              </StaggerItem>
-              <StaggerItem className="p-6 bg-navy/70 text-cream flex items-center justify-between w-[55%]">
-                <div>
-                  <h3 className="font-serif text-2xl mb-1">Analyst</h3>
-                  <p className="opacity-70 text-sm">Year 1</p>
-                </div>
-                <span className="text-gold-start text-xl">&uarr;</span>
-              </StaggerItem>
-            </StaggerGroup>
-          </div>
-
-          <div className="space-y-12">
+      <section className="mx-auto mb-32 max-w-7xl px-6 md:px-12 lg:px-24">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+          {classHierarchy && hierarchyTiers.length > 0 ? (
             <div>
               <FadeUp>
-                <h2 className="font-serif text-h2 font-light mb-8 border-b border-border-subtle pb-4">
-                  Sample Week
+                <h2 className="text-h2 border-border-subtle mb-8 border-b pb-4 font-serif font-light">
+                  {classHierarchy.heading ?? ''}
                 </h2>
               </FadeUp>
+              <StaggerGroup className="flex flex-col items-end space-y-4">
+                {hierarchyTiers.map((tier, index) => (
+                  <StaggerItem
+                    key={tier._key}
+                    className={`p-6 ${hierarchyBackgrounds[index] ?? 'bg-navy'} text-cream flex items-center justify-between ${hierarchyWidths[index] ?? 'w-full'}`}
+                  >
+                    <div>
+                      <h3 className="mb-1 font-serif text-2xl">
+                        {tier.title ?? ''}
+                      </h3>
+                      <p className="text-sm opacity-70">
+                        {tier.subtitle ?? ''}
+                      </p>
+                    </div>
+                    <span className="text-gold-start text-xl">
+                      {index === 0 ? '✦' : '↑'}
+                    </span>
+                  </StaggerItem>
+                ))}
+              </StaggerGroup>
+            </div>
+          ) : null}
+
+          <div className="space-y-12">
+            {sampleWeek && sampleWeekItems.length > 0 ? (
+              <div>
+                <FadeUp>
+                  <h2 className="text-h2 border-border-subtle mb-8 border-b pb-4 font-serif font-light">
+                    {sampleWeek.heading ?? ''}
+                  </h2>
+                </FadeUp>
+                <FadeUp>
+                  <div className="bg-offwhite border-border-subtle border p-8">
+                    <StaggerGroup as="ul" className="space-y-6">
+                      {sampleWeekItems.map((item) => (
+                        <StaggerItem
+                          key={item._key}
+                          as="li"
+                          className="flex items-start"
+                        >
+                          <span className="text-gold-start mr-4 w-12 shrink-0 font-bold">
+                            {item.duration ?? ''}
+                          </span>
+                          <div>
+                            <h4 className="mb-1 font-bold">
+                              {item.title ?? ''}
+                            </h4>
+                            <p className="text-sm opacity-80">
+                              {item.body ?? ''}
+                            </p>
+                          </div>
+                        </StaggerItem>
+                      ))}
+                    </StaggerGroup>
+                  </div>
+                </FadeUp>
+              </div>
+            ) : null}
+
+            {assessment ? (
               <FadeUp>
-                <div className="bg-offwhite p-8 border border-border-subtle">
-                  <StaggerGroup as="ul" className="space-y-6">
-                    <StaggerItem as="li" className="flex items-start">
-                      <span className="text-gold-start font-bold mr-4 w-12 shrink-0">1 hr</span>
-                      <div>
-                        <h4 className="font-bold mb-1">Committee Meeting</h4>
-                        <p className="opacity-80 text-sm">
-                          Synchronous instruction, project alignment, and progress reviews.
-                        </p>
-                      </div>
-                    </StaggerItem>
-                    <StaggerItem as="li" className="flex items-start">
-                      <span className="text-gold-start font-bold mr-4 w-12 shrink-0">2 hr</span>
-                      <div>
-                        <h4 className="font-bold mb-1">Asynchronous Work</h4>
-                        <p className="opacity-80 text-sm">
-                          Independent research, modeling, and deliverable preparation.
-                        </p>
-                      </div>
-                    </StaggerItem>
-                  </StaggerGroup>
+                <div>
+                  <h2 className="text-h2 border-border-subtle mb-4 border-b pb-4 font-serif font-light">
+                    {assessment.heading ?? ''}
+                  </h2>
+                  <p className="leading-relaxed opacity-80">
+                    {assessment.body ?? ''}
+                  </p>
                 </div>
               </FadeUp>
-            </div>
-
-            <FadeUp>
-              <div>
-                <h2 className="font-serif text-h2 font-light mb-4 border-b border-border-subtle pb-4">
-                  Assessment
-                </h2>
-                <p className="opacity-80 leading-relaxed">
-                  Members complete a 30-page consolidated study guide prior to recruiting interviews, ensuring technical readiness across all major financial disciplines.
-                </p>
-              </div>
-            </FadeUp>
+            ) : null}
           </div>
         </div>
       </section>
 
-      <FadeUp>
-        <section className="px-6 md:px-12 lg:px-24 max-w-7xl mx-auto">
-          <div className="bg-navy text-cream p-12 md:p-16 border-t-4 border-gold-start">
-            <h2 className="font-serif text-h2 font-light mb-4">Quarterly All-Club Project</h2>
-            <p className="text-lg opacity-80 max-w-3xl leading-relaxed">
-              Beyond committee work, the entire organization unites once per quarter for a comprehensive, cross-disciplinary project. This ensures continued collaboration between groups and reinforces the interconnected nature of the financial ecosystem.
-            </p>
-          </div>
-        </section>
-      </FadeUp>
+      {quarterlyProject ? (
+        <FadeUp>
+          <section className="mx-auto max-w-7xl px-6 md:px-12 lg:px-24">
+            <div className="bg-navy text-cream border-gold-start border-t-4 p-12 md:p-16">
+              <h2 className="text-h2 mb-4 font-serif font-light">
+                {quarterlyProject.heading ?? ''}
+              </h2>
+              <p className="max-w-3xl text-lg leading-relaxed opacity-80">
+                {quarterlyProject.body ?? ''}
+              </p>
+            </div>
+          </section>
+        </FadeUp>
+      ) : null}
     </div>
   );
 }
 
 async function loadTrainingData(): Promise<TrainingData> {
-  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return trainingPageFallback;
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true')
+    return trainingPageFallback;
   try {
     const { data } = await sanityFetch({ query: trainingPageQuery });
     // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).

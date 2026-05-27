@@ -16,6 +16,7 @@ export const trainingPageFallback: NonNullable<TrainingPageQueryResult> = {
       'A rigorous 10-week pipeline designed to build comprehensive financial acumen. Analysts rotate through every discipline before committing to a specialized committee.',
   },
   intro: null,
+  curriculumHeading: 'How It Works',
   curriculum: [
     {
       _key: 'curriculum-wk-1-2',
@@ -53,6 +54,62 @@ export const trainingPageFallback: NonNullable<TrainingPageQueryResult> = {
       body: 'Final placement matching based on analyst preference and demonstrated aptitude.',
     },
   ],
+  classHierarchy: {
+    heading: 'Class Hierarchy',
+    tiers: [
+      {
+        _key: 'class-executive-board',
+        _type: 'classHierarchyTier',
+        title: 'Executive Board',
+        subtitle: 'Leadership',
+      },
+      {
+        _key: 'class-director',
+        _type: 'classHierarchyTier',
+        title: 'Director',
+        subtitle: 'Committee Lead',
+      },
+      {
+        _key: 'class-associate',
+        _type: 'classHierarchyTier',
+        title: 'Associate',
+        subtitle: 'Year 2',
+      },
+      {
+        _key: 'class-analyst',
+        _type: 'classHierarchyTier',
+        title: 'Analyst',
+        subtitle: 'Year 1',
+      },
+    ],
+  },
+  sampleWeek: {
+    heading: 'Sample Week',
+    items: [
+      {
+        _key: 'sample-committee-meeting',
+        _type: 'sampleWeekItem',
+        duration: '1 hr',
+        title: 'Committee Meeting',
+        body: 'Synchronous instruction, project alignment, and progress reviews.',
+      },
+      {
+        _key: 'sample-asynchronous-work',
+        _type: 'sampleWeekItem',
+        duration: '2 hr',
+        title: 'Asynchronous Work',
+        body: 'Independent research, modeling, and deliverable preparation.',
+      },
+    ],
+  },
+  assessment: {
+    heading: 'Assessment',
+    body: 'Members complete a 30-page consolidated study guide prior to recruiting interviews, ensuring technical readiness across all major financial disciplines.',
+  },
+  quarterlyProject: {
+    heading: 'Quarterly All-Club Project',
+    body: 'Beyond committee work, the entire organization unites once per quarter for a comprehensive, cross-disciplinary project. This ensures continued collaboration between groups and reinforces the interconnected nature of the financial ecosystem.',
+  },
   programs: null,
   signatureCertifications: null,
 };
