@@ -62,3 +62,7 @@ test-results/
 # sanity dataset backups (local only)
 /.sanity-backups
 .lighthouseci/
+
+# local agent/editor indexes and generated guidance
+.codegraph/
+.cursor/
