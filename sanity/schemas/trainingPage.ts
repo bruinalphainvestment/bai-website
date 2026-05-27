@@ -69,6 +69,97 @@ export const trainingPage = defineType({
       ],
     }),
     defineField({
+      name: 'curriculumHeading',
+      title: 'Curriculum Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'How It Works',
+    }),
+    defineField({
+      name: 'classHierarchy',
+      title: 'Class Hierarchy',
+      type: 'object',
+      group: 'content',
+      fields: [
+        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+        defineField({
+          name: 'tiers',
+          title: 'Tiers',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              type: 'object',
+              name: 'classHierarchyTier',
+              fields: [
+                defineField({ name: 'title', title: 'Title', type: 'string' }),
+                defineField({
+                  name: 'subtitle',
+                  title: 'Subtitle',
+                  type: 'string',
+                }),
+              ],
+              preview: { select: { title: 'title', subtitle: 'subtitle' } },
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'sampleWeek',
+      title: 'Sample Week',
+      type: 'object',
+      group: 'content',
+      fields: [
+        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+        defineField({
+          name: 'items',
+          title: 'Items',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              type: 'object',
+              name: 'sampleWeekItem',
+              fields: [
+                defineField({
+                  name: 'duration',
+                  title: 'Duration',
+                  type: 'string',
+                }),
+                defineField({ name: 'title', title: 'Title', type: 'string' }),
+                defineField({
+                  name: 'body',
+                  title: 'Body',
+                  type: 'text',
+                  rows: 2,
+                }),
+              ],
+              preview: { select: { title: 'title', subtitle: 'duration' } },
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'assessment',
+      title: 'Assessment',
+      type: 'object',
+      group: 'content',
+      fields: [
+        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+        defineField({ name: 'body', title: 'Body', type: 'text', rows: 3 }),
+      ],
+    }),
+    defineField({
+      name: 'quarterlyProject',
+      title: 'Quarterly All-Club Project',
+      type: 'object',
+      group: 'content',
+      fields: [
+        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
+        defineField({ name: 'body', title: 'Body', type: 'text', rows: 3 }),
+      ],
+    }),
+    defineField({
       name: 'programs',
       title: 'Programs',
       type: 'array',

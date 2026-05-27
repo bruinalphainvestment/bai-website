@@ -50,6 +50,30 @@ export const committee = defineType({
         'Full curriculum outline (portable text). Rendered on the committee subpage.',
     }),
     defineField({
+      name: 'curriculumEnabled',
+      title: 'Show Curriculum Block',
+      type: 'boolean',
+      group: 'content',
+      initialValue: false,
+      description:
+        'When off, the committee subpage hides the entire curriculum section, including heading and body.',
+    }),
+    defineField({
+      name: 'curriculumHeading',
+      title: 'Curriculum Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'Curriculum',
+    }),
+    defineField({
+      name: 'curriculumTerm',
+      title: 'Curriculum Term Label',
+      type: 'string',
+      group: 'content',
+      description:
+        'Optional label shown beside the curriculum heading, e.g. "Fall 2026".',
+    }),
+    defineField({
       name: 'learn',
       title: "What You'll Learn (bullets, max 4)",
       type: 'array',
@@ -59,12 +83,33 @@ export const committee = defineType({
       description: 'Bullet points displayed on the committee subpage.',
     }),
     defineField({
+      name: 'learnHeading',
+      title: "What You'll Learn Heading",
+      type: 'string',
+      group: 'content',
+      initialValue: "What You'll Learn",
+    }),
+    defineField({
       name: 'differentiator',
       title: 'Differentiator Pitch',
       type: 'text',
       group: 'content',
       rows: 3,
       description: 'Short pitch explaining what sets this committee apart.',
+    }),
+    defineField({
+      name: 'differentiatorHeading',
+      title: 'Differentiator Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'The BAI Difference',
+    }),
+    defineField({
+      name: 'signatureProjectsHeading',
+      title: 'Signature Projects Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'Signature Projects',
     }),
     defineField({
       name: 'director',

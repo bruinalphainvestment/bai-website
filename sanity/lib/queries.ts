@@ -69,7 +69,9 @@ export const aboutPageQuery = defineQuery(`
     hero,
     mission,
     history,
+    founderQuote,
     signatureTrip,
+    valuesHeading,
     values,
     sections
   }
@@ -83,6 +85,11 @@ export const trainingPageQuery = defineQuery(`
     hero,
     intro,
     curriculum,
+    curriculumHeading,
+    classHierarchy,
+    sampleWeek,
+    assessment,
+    quarterlyProject,
     programs,
     signatureCertifications
   }
@@ -206,8 +213,14 @@ export const committeeBySlugQuery = defineQuery(`
     tagline,
     description,
     curriculum,
+    curriculumEnabled,
+    curriculumHeading,
+    curriculumTerm,
     learn,
+    learnHeading,
     differentiator,
+    differentiatorHeading,
+    signatureProjectsHeading,
     directorQuote,
     redirectsFrom,
     accentColor,

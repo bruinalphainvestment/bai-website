@@ -42,8 +42,7 @@ import { createClient, type SanityClient } from 'next-sanity';
 
 // `bun run` auto-loads `.env.local` from project root — no dotenv needed.
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim();
-const dataset =
-  process.env.NEXT_PUBLIC_SANITY_DATASET?.trim() || 'production';
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET?.trim() || 'production';
 const apiVersion =
   process.env.NEXT_PUBLIC_SANITY_API_VERSION?.trim() || '2025-01-01';
 const writeToken = process.env.SANITY_API_WRITE_TOKEN?.trim();
@@ -54,7 +53,6 @@ const rawSeedMode = (process.env.SEED_MODE ?? 'preserve').trim();
 const PLACEHOLDER_PROJECT_ID = 'pPLACEHOLDR';
 
 function exitWithError(message: string): never {
-   
   console.error(`\n  ❌  ${message}\n`);
   process.exit(1);
 }
@@ -330,13 +328,7 @@ const homePageSections = [
   {
     _key: 'marquee-6',
     _type: 'marqueeSection',
-    items: [
-      'BAI',
-      'REAL IMPACT',
-      'LEGACY',
-      'BRUIN ALPHA',
-      'FOUNDED 2026',
-    ],
+    items: ['BAI', 'REAL IMPACT', 'LEGACY', 'BRUIN ALPHA', 'FOUNDED 2026'],
   },
   {
     _key: 'cta-7',
@@ -385,6 +377,13 @@ const aboutPageDoc = {
       "We realized that true financial education doesn't happen in silos. It happens when students are exposed to the full spectrum of the industry — from investment banking and wealth management to trading and accounting — before they are forced to specialize.\n\n" +
       'By establishing our multi-committee structure, we ensure that every member receives blanket coverage of the financial world during their rotational period, followed by rigorous, hands-on development within their chosen focus area. Our goal is not just to teach finance, but to execute real, meaningful projects that deliver tangible value to our members and the broader community.',
   },
+  founderQuote: {
+    _type: 'quoteSection',
+    quote:
+      'We are starting it, we are building it, so we can decide what direction it wants to go.',
+    attributionName: 'Mack Haymond',
+    attributionRole: 'Spring 2026',
+  },
   // Per plan D7: signature trip teaser scaffold — visible=false until Mack
   // finalises the trip itinerary. Existing hardcoded /about renders an
   // "In Development" panel; that maps to status="In Development".
@@ -394,6 +393,7 @@ const aboutPageDoc = {
     body: '',
     visible: false,
   },
+  valuesHeading: 'What Sets Us Apart',
   // Per Metis §1.15: 7 core values. These are the same values rendered by
   // the home page (`values.tsx`) — duplicated here so /about can render an
   // independent values section if/when an editor wants.
@@ -449,22 +449,19 @@ const aboutPageDoc = {
       _key: 'about-blanket-coverage',
       _type: 'section',
       heading: 'Blanket Coverage',
-      body:
-        "We don't limit our focus to just one area of finance. Our structure is designed to expose members to the entire landscape, ensuring a well-rounded understanding of the markets before deep specialization.",
+      body: "We don't limit our focus to just one area of finance. Our structure is designed to expose members to the entire landscape, ensuring a well-rounded understanding of the markets before deep specialization.",
     },
     {
       _key: 'about-real-projects',
       _type: 'section',
       heading: 'Real Projects',
-      body:
-        'Theory only goes so far. Our committees operate through hands-on, deliverable-driven initiatives rather than passive lectures, ensuring every member builds a tangible track record.',
+      body: 'Theory only goes so far. Our committees operate through hands-on, deliverable-driven initiatives rather than passive lectures, ensuring every member builds a tangible track record.',
     },
     {
       _key: 'about-rotational-program',
       _type: 'section',
       heading: 'Rotational Program',
-      body:
-        'Our unique onboarding pipeline allows new analysts to experience every committee over a 10-week period, guaranteeing that their final placement aligns perfectly with their skills and interests.',
+      body: 'Our unique onboarding pipeline allows new analysts to experience every committee over a 10-week period, guaranteeing that their final placement aligns perfectly with their skills and interests.',
     },
   ],
 };
@@ -485,6 +482,7 @@ const trainingPageDoc = {
   },
   intro:
     'How It Works — rotate through every discipline before committing to a specialized committee.',
+  curriculumHeading: 'How It Works',
   curriculum: [
     {
       _key: 'tr-wk-1-2',
@@ -522,6 +520,62 @@ const trainingPageDoc = {
       body: 'Final placement matching based on analyst preference and demonstrated aptitude.',
     },
   ],
+  classHierarchy: {
+    heading: 'Class Hierarchy',
+    tiers: [
+      {
+        _key: 'tr-class-executive-board',
+        _type: 'classHierarchyTier',
+        title: 'Executive Board',
+        subtitle: 'Leadership',
+      },
+      {
+        _key: 'tr-class-director',
+        _type: 'classHierarchyTier',
+        title: 'Director',
+        subtitle: 'Committee Lead',
+      },
+      {
+        _key: 'tr-class-associate',
+        _type: 'classHierarchyTier',
+        title: 'Associate',
+        subtitle: 'Year 2',
+      },
+      {
+        _key: 'tr-class-analyst',
+        _type: 'classHierarchyTier',
+        title: 'Analyst',
+        subtitle: 'Year 1',
+      },
+    ],
+  },
+  sampleWeek: {
+    heading: 'Sample Week',
+    items: [
+      {
+        _key: 'tr-sample-committee-meeting',
+        _type: 'sampleWeekItem',
+        duration: '1 hr',
+        title: 'Committee Meeting',
+        body: 'Synchronous instruction, project alignment, and progress reviews.',
+      },
+      {
+        _key: 'tr-sample-asynchronous-work',
+        _type: 'sampleWeekItem',
+        duration: '2 hr',
+        title: 'Asynchronous Work',
+        body: 'Independent research, modeling, and deliverable preparation.',
+      },
+    ],
+  },
+  assessment: {
+    heading: 'Assessment',
+    body: 'Members complete a 30-page consolidated study guide prior to recruiting interviews, ensuring technical readiness across all major financial disciplines.',
+  },
+  quarterlyProject: {
+    heading: 'Quarterly All-Club Project',
+    body: 'Beyond committee work, the entire organization unites once per quarter for a comprehensive, cross-disciplinary project. This ensures continued collaboration between groups and reinforces the interconnected nature of the financial ecosystem.',
+  },
   programs: [
     {
       _key: 'tr-prog-quarterly',
@@ -632,7 +686,8 @@ const joinPageDoc = {
       _key: 'join-faq-4',
       _type: 'faq',
       question: "What's the time commitment?",
-      answer: '~3-5 hours per week during quarters, plus optional project work.',
+      answer:
+        '~3-5 hours per week during quarters, plus optional project work.',
     },
     {
       _key: 'join-faq-5',
@@ -881,10 +936,10 @@ const committees = [
     director: { _type: 'reference', _ref: IDS.members.matt },
     tagline:
       'Soft skills, sales fundamentals, and the discipline behind a book of business.',
-    description: portableText(
-      COMMITTEE_PLACEHOLDER_DESCRIPTION,
-      'desc-wealth',
-    ),
+    description: portableText(COMMITTEE_PLACEHOLDER_DESCRIPTION, 'desc-wealth'),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 1,
     accentColor: 'gold',
     learn: [
@@ -893,8 +948,11 @@ const committees = [
       'SIE/Series exam awareness and preparation',
       'Wealth advisor career path fundamentals',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'The only finance club at UCLA emphasizing the wealth advisory career path with hands-on practice.',
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
     redirectsFrom: [] as string[],
   },
   {
@@ -913,6 +971,9 @@ const committees = [
       COMMITTEE_PLACEHOLDER_DESCRIPTION,
       'desc-trading',
     ),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 2,
     accentColor: 'navy',
     learn: [
@@ -921,8 +982,11 @@ const committees = [
       'Systematic strategy basics and risk management',
       'Technical interview prep for trading roles and hedge fund coffee chats',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'A unique focus on hands-on quant and market structure across alternative asset classes.',
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
     redirectsFrom: [] as string[],
   },
   {
@@ -938,6 +1002,9 @@ const committees = [
       COMMITTEE_PLACEHOLDER_DESCRIPTION,
       'desc-accounting',
     ),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 3,
     accentColor: 'gold',
     learn: [
@@ -946,8 +1013,11 @@ const committees = [
       'Audit fundamentals and operational review',
       'Case frameworks and structured advisory thinking',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'Why Both? We explain the accounting-consulting overlap and why a unified committee best prepares you for both career paths.',
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
     redirectsFrom: [] as string[],
   },
   {
@@ -958,6 +1028,9 @@ const committees = [
     director: { _type: 'reference', _ref: IDS.members.maxHelmer },
     tagline: 'Modeling, networking, and the mental models behind every deal.',
     description: portableText(COMMITTEE_PLACEHOLDER_DESCRIPTION, 'desc-ib'),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 4,
     accentColor: 'navy',
     learn: [
@@ -966,8 +1039,11 @@ const committees = [
       'Strategic networking, cold emailing, and coffee chat mastery',
       'Technical interview prep for top-tier banking groups',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'A rotational program first approach, transitioning to specialized IB prep with tight cohort camaraderie and access to a smaller community.',
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
     // Shown when director ref is unset / placeholder. IB director is "TBD"
     // in current hardcoded source.
     directorPlaceholder: 'TBD — announcement coming soon',
@@ -1151,7 +1227,6 @@ async function deleteStaleDocs(staleIds: readonly string[]): Promise<number> {
 }
 
 async function main() {
-   
   console.log(
     `\n  🌱  Seeding Sanity\n` +
       `       project:  ${projectId}\n` +
@@ -1162,7 +1237,6 @@ async function main() {
 
   const removed = await deleteStaleDocs(IDS.stale);
   if (removed > 0) {
-     
     console.log(`  🧹  Removed ${removed} stale doc(s) from prior schema.\n`);
   }
 
@@ -1173,22 +1247,18 @@ async function main() {
   // committees). Singletons and content docs can land in any order after
   // those foreign-key tiers.
   for (const member of foundingMembers) {
-     
     results.push(await writeDoc(member));
   }
 
   for (const cmt of committees) {
-     
     results.push(await writeDoc(cmt));
   }
 
   for (const proj of projects) {
-     
     results.push(await writeDoc(proj));
   }
 
   for (const evt of events) {
-     
     results.push(await writeDoc(evt));
   }
 
@@ -1203,34 +1273,28 @@ async function main() {
   results.push(await writeDoc(teamPageDoc));
   results.push(await writeDoc(committeesIndexPageDoc));
 
-   
   console.log('  Results:');
   for (const r of results) {
     const icon =
-      r.status === 'created'
-        ? '✨'
-        : r.status === 'replaced'
-        ? '♻️ '
-        : '✓ ';
-     
+      r.status === 'created' ? '✨' : r.status === 'replaced' ? '♻️ ' : '✓ ';
+
     console.log(`    ${icon} ${r.id} (${r.status})`);
   }
 
   const createdCount = results.filter((r) => r.status === 'created').length;
   const replacedCount = results.filter((r) => r.status === 'replaced').length;
   const existsCount = results.filter((r) => r.status === 'exists').length;
-   
+
   console.log(
     `\n  ✅  Done. ${createdCount} created, ${replacedCount} replaced, ${existsCount} already existed.\n`,
   );
-   
+
   console.log(
     `  Next: open https://www.sanity.io/manage → your project, or run \`bun run dev\`\n  and visit http://localhost:3000/studio to verify and continue editing.\n`,
   );
 }
 
 main().catch((err: unknown) => {
-   
   console.error('\n  ❌  Seed failed:\n', err);
   process.exit(1);
 });

@@ -46,6 +46,13 @@ export const aboutPage = defineType({
       ],
     }),
     defineField({
+      name: 'founderQuote',
+      title: 'Founder Quote',
+      type: 'quoteSection',
+      group: 'content',
+      description: 'Pull quote shown between the history body and values list.',
+    }),
+    defineField({
       name: 'signatureTrip',
       title: 'Signature Trip',
       type: 'object',
@@ -63,6 +70,13 @@ export const aboutPage = defineType({
           initialValue: false,
         }),
       ],
+    }),
+    defineField({
+      name: 'valuesHeading',
+      title: 'Values Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'What Sets Us Apart',
     }),
     defineField({
       name: 'values',
