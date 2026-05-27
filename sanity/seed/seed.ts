@@ -547,13 +547,13 @@ const trainingPageDoc = {
         _key: 'tr-class-associate',
         _type: 'classHierarchyTier',
         title: 'Associate',
-        subtitle: 'Year 2',
+        subtitle: 'Quarter 2',
       },
       {
         _key: 'tr-class-analyst',
         _type: 'classHierarchyTier',
         title: 'Analyst',
-        subtitle: 'Year 1',
+        subtitle: 'Quarter 1',
       },
     ],
   },
@@ -578,7 +578,7 @@ const trainingPageDoc = {
   },
   assessment: {
     heading: 'Assessment',
-    body: 'Members complete a 30-page consolidated study guide prior to recruiting interviews, ensuring technical readiness across all major financial disciplines.',
+    body: 'After coffee chats, you will receive a 30-page consolidated technical study guide to help prepare for any technical questions you may be asked during final round interviews',
   },
   quarterlyProject: {
     heading: 'Quarterly All-Club Project',
