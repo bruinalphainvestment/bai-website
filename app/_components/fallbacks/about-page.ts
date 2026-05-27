@@ -30,12 +30,19 @@ export const aboutPageFallback: NonNullable<AboutPageQueryResult> = {
       'By establishing our multi-committee structure, we ensure that every member receives blanket coverage of the financial world during their rotational period, followed by rigorous, hands-on development within their chosen focus area. Our goal is not just to teach finance, but to execute real, meaningful projects that deliver tangible value to our members and the broader community.',
     ].join('\n\n'),
   },
+  founderQuote: {
+    _type: 'quoteSection' as const,
+    quote: 'We are starting it, we are building it, so we can decide what direction it wants to go.',
+    attributionName: 'Mack Haymond',
+    attributionRole: 'Spring 2026',
+  },
   signatureTrip: {
     headline: 'Signature Trip',
     status: 'In Development',
     body: undefined,
     visible: true,
   },
+  valuesHeading: 'What Sets Us Apart',
   values: [
     {
       _key: 'value-blanket-coverage',
@@ -58,14 +65,3 @@ export const aboutPageFallback: NonNullable<AboutPageQueryResult> = {
   ],
   sections: null,
 };
-
-/**
- * Quote pull-out rendered in the About page JSX between the history body and
- * the "What Sets Us Apart" values list. The current About schema has no field
- * for an editorial quote, so this is structural copy kept stable across the
- * USE_SANITY flag (matches Phase 0 schema scope — not extending here).
- */
-export const aboutQuoteFallback = {
-  body: 'We are starting it, we are building it, so we can decide what direction it wants to go.',
-  attribution: 'Mack Haymond, Spring 2026',
-} as const;

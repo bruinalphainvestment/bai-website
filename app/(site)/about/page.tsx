@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { stegaClean } from 'next-sanity';
 
-import { aboutPageFallback, aboutQuoteFallback } from '@/app/_components/fallbacks/about-page';
+import { aboutPageFallback } from '@/app/_components/fallbacks/about-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
 import { buildPageMetadata } from '@/app/_components/seo';
@@ -42,6 +42,14 @@ export default async function AboutPage() {
     .map((p) => p.trim())
     .filter(Boolean);
   const values = data.values ?? aboutPageFallback.values ?? [];
+  const valuesHeading = data.valuesHeading ?? aboutPageFallback.valuesHeading ?? '';
+  const founderQuote = data.founderQuote ?? aboutPageFallback.founderQuote;
+  const founderQuoteAttribution = [
+    founderQuote?.attributionName,
+    founderQuote?.attributionRole,
+  ]
+    .filter(Boolean)
+    .join(', ');
   const signatureTrip = data.signatureTrip ?? aboutPageFallback.signatureTrip;
   const showSignatureTrip = signatureTrip?.visible !== false;
 
@@ -72,24 +80,28 @@ export default async function AboutPage() {
         </section>
       ) : null}
 
-      <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-5xl mx-auto">
-        <FadeUp>
-          <blockquote className="border-l-4 border-gold-start pl-8 py-4">
-            <p className="font-serif text-h2 font-light leading-snug mb-6">
-              &ldquo;{aboutQuoteFallback.body}&rdquo;
-            </p>
-            <footer className="text-sm tracking-widest uppercase opacity-70">
-              &mdash; {aboutQuoteFallback.attribution}
-            </footer>
-          </blockquote>
-        </FadeUp>
-      </section>
+      {founderQuote?.quote ? (
+        <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-5xl mx-auto">
+          <FadeUp>
+            <blockquote className="border-l-4 border-gold-start pl-8 py-4">
+              <p className="font-serif text-h2 font-light leading-snug mb-6">
+                &ldquo;{founderQuote.quote}&rdquo;
+              </p>
+              {founderQuoteAttribution ? (
+                <footer className="text-sm tracking-widest uppercase opacity-70">
+                  &mdash; {founderQuoteAttribution}
+                </footer>
+              ) : null}
+            </blockquote>
+          </FadeUp>
+        </section>
+      ) : null}
 
       {values.length > 0 ? (
         <section className="px-6 md:px-12 lg:px-24 mb-32 max-w-7xl mx-auto">
           <FadeUp>
             <h2 className="font-serif text-h2 font-light mb-12 border-b border-border-subtle pb-4">
-              What Sets Us Apart
+              {valuesHeading}
             </h2>
           </FadeUp>
           <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-12">
