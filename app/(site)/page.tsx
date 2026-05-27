@@ -3,14 +3,6 @@ import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
 import { SectionRenderer } from '@/app/_components/sections/section-renderer';
-import CommitteesTeaser from '@/app/_components/sections/committees-teaser';
-import FoundingTeam from '@/app/_components/sections/founding-team';
-import Hero from '@/app/_components/sections/hero';
-import Marquee from '@/app/_components/sections/marquee';
-import Mission from '@/app/_components/sections/mission';
-import RecruitmentCTA from '@/app/_components/sections/recruitment-cta';
-import Stats from '@/app/_components/sections/stats';
-import Values from '@/app/_components/sections/values';
 import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import { homePageQuery, siteSettingsQuery } from '@/sanity/lib/queries';
@@ -44,7 +36,7 @@ export default async function Home() {
   const sections = data?.sections ?? [];
 
   if (sections.length === 0) {
-    return <FallbackHome />;
+    return null;
   }
 
   return (
@@ -79,19 +71,4 @@ async function loadSiteSettings(): Promise<SiteSettingsData> {
     console.error('[Home] siteSettings fetch failed; using fallback:', err);
     return footerFallback;
   }
-}
-
-function FallbackHome() {
-  return (
-    <>
-      <Hero />
-      <Mission />
-      <Stats />
-      <Values />
-      <CommitteesTeaser />
-      <FoundingTeam />
-      <Marquee />
-      <RecruitmentCTA />
-    </>
-  );
 }

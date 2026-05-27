@@ -49,18 +49,21 @@ export default async function CommitteesIndexPage() {
     loadCommitteesList(),
   ]);
 
-  const heading = page.hero?.heading ?? committeesIndexPageFallback.hero?.heading ?? 'Committees';
+  const heading = page.hero?.heading ?? committeesIndexPageFallback.hero?.heading ?? '';
   const subheading = page.hero?.subheading ?? committeesIndexPageFallback.hero?.subheading ?? '';
   const intro = page.intro ?? committeesIndexPageFallback.intro;
   const connectedHeading =
     page.connectedByDesign?.heading ??
     committeesIndexPageFallback.connectedByDesign?.heading ??
-    'Connected by Design';
+    '';
   const connectedParagraphs =
     page.connectedByDesign?.paragraphs ??
     committeesIndexPageFallback.connectedByDesign?.paragraphs ??
     [];
   const connectedBody = page.connectedByDesign?.body ?? committeesIndexPageFallback.connectedByDesign?.body;
+  const cardLearnHeading =
+    page.cardLearnHeading ?? committeesIndexPageFallback.cardLearnHeading ?? '';
+  const cardCtaLabel = page.cardCtaLabel ?? committeesIndexPageFallback.cardCtaLabel ?? '';
 
   const headingParts = heading.split(' ');
   const headingFirstHalf = headingParts.slice(0, 2).join(' ');
@@ -99,7 +102,11 @@ export default async function CommitteesIndexPage() {
         <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {committees.map((committee) => (
             <StaggerItem key={committee._id}>
-              <CommitteeCardItem committee={committee} />
+              <CommitteeCardItem
+                cardCtaLabel={cardCtaLabel}
+                learnHeading={cardLearnHeading}
+                committee={committee}
+              />
             </StaggerItem>
           ))}
         </StaggerGroup>
@@ -129,7 +136,15 @@ export default async function CommitteesIndexPage() {
   );
 }
 
-function CommitteeCardItem({ committee }: { committee: CommitteeCard }) {
+function CommitteeCardItem({
+  cardCtaLabel,
+  learnHeading,
+  committee,
+}: {
+  cardCtaLabel: string;
+  learnHeading: string;
+  committee: CommitteeCard;
+}) {
   const directorName =
     committee.director
       ? [committee.director.firstName, committee.director.lastName].filter(Boolean).join(' ').trim()
@@ -161,7 +176,9 @@ function CommitteeCardItem({ committee }: { committee: CommitteeCard }) {
         ) : null}
         {learnBullets.length > 0 ? (
           <div className="bg-cream/50 rounded-lg p-5 mb-8">
-            <h3 className="font-semibold text-navy mb-3">What you&apos;ll do:</h3>
+            {learnHeading ? (
+              <h3 className="font-semibold text-navy mb-3">{learnHeading}</h3>
+            ) : null}
             <ul className="space-y-2">
               {learnBullets.map((bullet) => (
                 <li key={bullet} className="flex items-start text-sm text-navy/80">
@@ -180,7 +197,8 @@ function CommitteeCardItem({ committee }: { committee: CommitteeCard }) {
             href={`/committees/${slug}`}
             className="inline-flex items-center font-bold text-navy hover:text-gold transition-colors"
           >
-            Explore {name} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            {cardCtaLabel ? `${cardCtaLabel} ${name}` : name}{' '}
+            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         ) : null}
       </div>

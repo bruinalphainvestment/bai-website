@@ -49,7 +49,7 @@ export default async function TrainingPage() {
   const heading =
     data.hero?.heading ??
     trainingPageFallback.hero?.heading ??
-    'The Rotational Program';
+    '';
   const subheading =
     data.hero?.subheading ?? trainingPageFallback.hero?.subheading ?? '';
   const intro = data.intro ?? trainingPageFallback.intro;

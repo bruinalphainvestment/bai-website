@@ -33,6 +33,45 @@ export const joinPage = defineType({
       rows: 4,
     }),
     defineField({
+      name: 'applicationProcessHeading',
+      title: 'Application Process Heading',
+      type: 'string',
+      group: 'timeline',
+    }),
+    defineField({
+      name: 'applicationSteps',
+      title: 'Application Process Steps',
+      type: 'array',
+      group: 'timeline',
+      validation: (rule) => rule.max(8),
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'applicationStep',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: { title: 'label' },
+            prepare({ title }) {
+              return { title: title ?? 'Application Step' };
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'timelineHeading',
+      title: 'Timeline Heading',
+      type: 'string',
+      group: 'timeline',
+    }),
+    defineField({
       name: 'timeline',
       title: 'Recruitment Timeline',
       type: 'array',
@@ -118,7 +157,20 @@ export const joinPage = defineType({
               }
             }),
         }),
+        defineField({
+          name: 'linkLabel',
+          title: 'Link Label',
+          type: 'string',
+          description:
+            'Visible label for the outbound application link when Form URL is set.',
+        }),
       ],
+    }),
+    defineField({
+      name: 'faqHeading',
+      title: 'FAQ Heading',
+      type: 'string',
+      group: 'faqs',
     }),
     defineField({
       name: 'faqs',
@@ -170,6 +222,44 @@ export const joinPage = defineType({
       group: 'faqs',
       of: [defineArrayMember({ type: 'string' })],
       validation: (rule) => rule.max(10),
+    }),
+    defineField({
+      name: 'contactHeading',
+      title: 'Contact Heading',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
+      name: 'contactLinks',
+      title: 'Contact Link Display Copy',
+      type: 'object',
+      group: 'content',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'emailLabel', title: 'Email Label', type: 'string' }),
+        defineField({
+          name: 'emailFallbackLabel',
+          title: 'Email Fallback Label',
+          type: 'string',
+          description: 'Shown when no club email is configured.',
+        }),
+        defineField({
+          name: 'instagramLabel',
+          title: 'Instagram Label',
+          type: 'string',
+        }),
+        defineField({
+          name: 'instagramDisplayText',
+          title: 'Instagram Display Text',
+          type: 'string',
+        }),
+        defineField({ name: 'linkedinLabel', title: 'LinkedIn Label', type: 'string' }),
+        defineField({
+          name: 'linkedinDisplayText',
+          title: 'LinkedIn Display Text',
+          type: 'string',
+        }),
+      ],
     }),
     defineField({
       name: 'seo',

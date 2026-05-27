@@ -47,9 +47,14 @@ export default async function EventsPage() {
     loadEventsList(),
   ]);
 
-  const heading = page.hero?.heading ?? eventsPageFallback.hero?.heading ?? 'Where to Find Us';
+  const heading = page.hero?.heading ?? eventsPageFallback.hero?.heading ?? '';
   const subheading = page.hero?.subheading ?? eventsPageFallback.hero?.subheading ?? '';
   const intro = page.intro ?? eventsPageFallback.intro;
+  const upcomingHeading = page.upcomingHeading ?? eventsPageFallback.upcomingHeading ?? '';
+  const competitionsHeading =
+    page.competitionsHeading ?? eventsPageFallback.competitionsHeading ?? '';
+  const externalCtaLabel =
+    page.externalCtaLabel ?? eventsPageFallback.externalCtaLabel ?? '';
   const upcomingEmpty = page.upcomingEmptyState ?? eventsPageFallback.upcomingEmptyState ?? '';
   const pastEmpty = page.pastEmptyState ?? eventsPageFallback.pastEmptyState ?? '';
 
@@ -79,7 +84,7 @@ export default async function EventsPage() {
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
         <FadeUp>
           <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-            Upcoming &amp; Ongoing
+            {upcomingHeading}
           </h2>
         </FadeUp>
         {upcoming.length === 0 ? (
@@ -88,7 +93,11 @@ export default async function EventsPage() {
           <StaggerGroup className="space-y-8">
             {upcoming.map((event, i) => (
               <StaggerItem key={event._id}>
-                <UpcomingCard event={event} variant={i === 0 ? 'filled' : 'outlined'} />
+                <UpcomingCard
+                  event={event}
+                  externalCtaLabel={externalCtaLabel}
+                  variant={i === 0 ? 'filled' : 'outlined'}
+                />
               </StaggerItem>
             ))}
           </StaggerGroup>
@@ -98,7 +107,7 @@ export default async function EventsPage() {
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
         <FadeUp>
           <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
-            Competitions
+            {competitionsHeading}
           </h2>
         </FadeUp>
         {competitions.length === 0 ? (
@@ -107,7 +116,11 @@ export default async function EventsPage() {
           <StaggerGroup className="space-y-8">
             {competitions.map((event, i) => (
               <StaggerItem key={event._id}>
-                <CompetitionRow event={event} isLast={i === competitions.length - 1} />
+                <CompetitionRow
+                  event={event}
+                  externalCtaLabel={externalCtaLabel}
+                  isLast={i === competitions.length - 1}
+                />
               </StaggerItem>
             ))}
           </StaggerGroup>
@@ -117,7 +130,15 @@ export default async function EventsPage() {
   );
 }
 
-function UpcomingCard({ event, variant }: { event: EventEntry; variant: 'filled' | 'outlined' }) {
+function UpcomingCard({
+  event,
+  externalCtaLabel,
+  variant,
+}: {
+  event: EventEntry;
+  externalCtaLabel: string;
+  variant: 'filled' | 'outlined';
+}) {
   const wrapperClass =
     variant === 'filled'
       ? 'flex flex-col md:flex-row md:items-start gap-4 md:gap-12 bg-deep/5 p-8 rounded-sm'
@@ -141,14 +162,14 @@ function UpcomingCard({ event, variant }: { event: EventEntry; variant: 'filled'
         {event.description ? (
           <p className="font-sans text-navy/80 leading-relaxed">{event.description}</p>
         ) : null}
-        {event.externalUrl ? (
+        {event.externalUrl && externalCtaLabel ? (
           <a
             href={event.externalUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="font-sans text-sm text-navy underline underline-offset-4 decoration-navy/30 hover:decoration-navy mt-4 inline-block"
           >
-            Learn more &rarr;
+            {externalCtaLabel}
           </a>
         ) : null}
       </div>
@@ -156,7 +177,15 @@ function UpcomingCard({ event, variant }: { event: EventEntry; variant: 'filled'
   );
 }
 
-function CompetitionRow({ event, isLast }: { event: EventEntry; isLast: boolean }) {
+function CompetitionRow({
+  event,
+  externalCtaLabel,
+  isLast,
+}: {
+  event: EventEntry;
+  externalCtaLabel: string;
+  isLast: boolean;
+}) {
   const dateLabel = formatDateLabel(event);
   const ownerLabel = event.committee?.name ?? null;
   return (
@@ -178,14 +207,14 @@ function CompetitionRow({ event, isLast }: { event: EventEntry; isLast: boolean 
         {event.description ? (
           <p className="font-sans text-navy/80 text-sm">{event.description}</p>
         ) : null}
-        {event.externalUrl ? (
+        {event.externalUrl && externalCtaLabel ? (
           <a
             href={event.externalUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="font-sans text-sm text-navy underline underline-offset-4 decoration-navy/30 hover:decoration-navy mt-3 inline-block"
           >
-            Learn more &rarr;
+            {externalCtaLabel}
           </a>
         ) : null}
       </div>

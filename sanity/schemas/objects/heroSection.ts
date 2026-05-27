@@ -53,6 +53,13 @@ export const heroSection = defineType({
       description:
         'When true, the hero renders the deep-navy kinetic treatment. When false, the cream editorial treatment is used (recommended for content pages).',
     }),
+    defineField({
+      name: 'scrollLabel',
+      title: 'Scroll Label',
+      type: 'string',
+      description:
+        'Optional label shown below the homepage hero scroll indicator.',
+    }),
   ],
   preview: {
     select: { title: 'headline', subtitle: 'eyebrow' },

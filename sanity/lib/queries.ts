@@ -102,9 +102,15 @@ export const joinPageQuery = defineQuery(`
     _updatedAt,
     hero,
     intro,
+    applicationProcessHeading,
+    applicationSteps,
+    timelineHeading,
     timeline,
     applicationForm,
+    faqHeading,
     faqs,
+    contactHeading,
+    contactLinks,
     eligibilityHeading,
     eligibilityBullets
   }
@@ -117,6 +123,9 @@ export const eventsPageQuery = defineQuery(`
     _updatedAt,
     hero,
     intro,
+    upcomingHeading,
+    competitionsHeading,
+    externalCtaLabel,
     upcomingEmptyState,
     pastEmptyState
   }
@@ -145,6 +154,7 @@ export const projectsPageQuery = defineQuery(`
     hero,
     intro,
     emptyState,
+    statusLegendHeading,
     statusLegend
   }
 `);
@@ -183,7 +193,9 @@ export const committeesIndexPageQuery = defineQuery(`
     _updatedAt,
     hero,
     intro,
-    connectedByDesign
+    connectedByDesign,
+    cardLearnHeading,
+    cardCtaLabel
   }
 `);
 

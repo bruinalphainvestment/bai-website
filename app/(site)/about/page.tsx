@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutPage() {
   const data = await loadAboutData();
-  const heading = data.hero?.heading ?? aboutPageFallback.hero?.heading ?? 'Our Story';
+  const heading = data.hero?.heading ?? aboutPageFallback.hero?.heading ?? '';
   const subheading = data.hero?.subheading ?? aboutPageFallback.hero?.subheading ?? '';
   const historyBody = data.history?.body ?? aboutPageFallback.history?.body ?? '';
   const historyParagraphs = historyBody
@@ -122,7 +122,7 @@ export default async function AboutPage() {
           <FadeUp>
             <div className="bg-offwhite border border-border-subtle p-12 md:p-24 text-center rounded-sm">
               <h2 className="font-serif text-h2 font-light mb-4">
-                {signatureTrip.headline ?? 'Signature Trip'}
+                {signatureTrip.headline ?? ''}
               </h2>
               {signatureTrip.status ? (
                 <p className="text-lg opacity-70 uppercase tracking-widest">

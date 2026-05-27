@@ -21,10 +21,10 @@ export default async function RecruitmentCTA(props: Props = {}) {
   const heading = data.heading ?? recruitmentCtaFallback.heading ?? '';
   const body = data.body ?? recruitmentCtaFallback.body ?? '';
   const primaryLabel =
-    data.ctaLabel ?? settings?.applyCtaLabel ?? recruitmentCtaFallback.ctaLabel ?? 'Apply Now';
+    data.ctaLabel ?? settings?.applyCtaLabel ?? recruitmentCtaFallback.ctaLabel ?? '';
   const primaryHref = props.primaryHref ?? '/join';
   const secondaryLabel =
-    data.secondaryCtaLabel ?? recruitmentCtaFallback.secondaryCtaLabel ?? 'Email Us';
+    data.secondaryCtaLabel ?? recruitmentCtaFallback.secondaryCtaLabel ?? '';
   const fallbackMailto = settings?.clubEmail
     ? `mailto:${settings.clubEmail}`
     : footerFallback.clubEmail

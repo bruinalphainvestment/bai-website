@@ -49,10 +49,10 @@ export default async function TeamPage() {
     loadFoundingMembers(),
   ]);
 
-  const heading = page.hero?.heading ?? teamPageFallback.hero?.heading ?? 'The Team';
+  const heading = page.hero?.heading ?? teamPageFallback.hero?.heading ?? '';
   const subheading = page.hero?.subheading ?? teamPageFallback.hero?.subheading ?? '';
   const intro = page.intro ?? teamPageFallback.intro;
-  const foundingHeading = page.foundingClassHeading ?? teamPageFallback.foundingClassHeading ?? 'Founding Class';
+  const foundingHeading = page.foundingClassHeading ?? teamPageFallback.foundingClassHeading ?? '';
 
   return (
     <div className="min-h-screen bg-cream text-navy pt-32 pb-24">

@@ -57,6 +57,22 @@ export const committeesIndexPage = defineType({
       ],
     }),
     defineField({
+      name: 'cardLearnHeading',
+      title: 'Committee Card Learn Heading',
+      type: 'string',
+      group: 'content',
+      description:
+        'Small heading above the learn bullets inside each committee card.',
+    }),
+    defineField({
+      name: 'cardCtaLabel',
+      title: 'Committee Card CTA Label',
+      type: 'string',
+      group: 'content',
+      description:
+        'CTA label shown before each committee name on committee cards.',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',

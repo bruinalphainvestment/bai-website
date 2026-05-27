@@ -252,6 +252,7 @@ const homePageSections = [
     headline: 'Bruin Alpha Investment',
     subheadline: LOCKED_SLOGAN,
     accentDark: true,
+    scrollLabel: 'Scroll',
   },
   {
     _key: 'mission-1',
@@ -319,6 +320,7 @@ const homePageSections = [
     heading: 'Committees',
     subheading:
       'Four core committees — one rotational program. Specialize after you survey the full landscape.',
+    ctaLabel: 'Explore',
   },
   {
     _key: 'founding-team-5',
@@ -622,6 +624,26 @@ const joinPageDoc = {
   },
   intro:
     'Apply to BAI: review the timeline, complete the application, and meet the founding class through coffee chats.',
+  applicationProcessHeading: 'Application Process',
+  applicationSteps: [
+    { _key: 'join-app-apply', _type: 'applicationStep', label: 'Apply' },
+    {
+      _key: 'join-app-coffee-chat',
+      _type: 'applicationStep',
+      label: 'Coffee Chat',
+    },
+    {
+      _key: 'join-app-interview',
+      _type: 'applicationStep',
+      label: 'Interview',
+    },
+    {
+      _key: 'join-app-decision',
+      _type: 'applicationStep',
+      label: 'Decision',
+    },
+  ],
+  timelineHeading: 'Recruitment Timeline',
   // Per Metis §1.12: 4-step recruitment timeline. Lifted from the hardcoded
   // /join page's "Recruitment Timeline" list.
   timeline: [
@@ -657,7 +679,9 @@ const joinPageDoc = {
   applicationForm: {
     heading: 'Application Form',
     body: 'Applications are currently off-cycle. Please check back closer to Fall 2026 for the application form.',
+    linkLabel: 'Link to Application',
   },
+  faqHeading: 'FAQ',
   // Per plan D11: inline FAQs on /join (separate from any shared FAQ doc
   // collection). 6 Q&A pairs lifted verbatim from the hardcoded /join page.
   faqs: [
@@ -710,6 +734,15 @@ const joinPageDoc = {
     'Willing to commit ~3-5 hours/week during quarter',
     'Genuine interest in at least one of the four committee tracks',
   ],
+  contactHeading: 'Get in Touch',
+  contactLinks: {
+    emailLabel: 'Email',
+    emailFallbackLabel: 'Contact us',
+    instagramLabel: 'Instagram',
+    instagramDisplayText: '@bruinalphainvestment',
+    linkedinLabel: 'LinkedIn',
+    linkedinDisplayText: 'Bruin Alpha Investment',
+  },
 };
 
 const eventsPageDoc = {
@@ -728,6 +761,9 @@ const eventsPageDoc = {
   },
   intro:
     'Connect with us across campus and track our participation in premier collegiate competitions.',
+  upcomingHeading: 'Upcoming & Ongoing',
+  competitionsHeading: 'Competitions',
+  externalCtaLabel: 'Learn more →',
   upcomingEmptyState:
     'No upcoming events yet — recruitment dates announced soon.',
   pastEmptyState: 'Our first events run Fall 2026.',
@@ -750,6 +786,7 @@ const projectsPageDoc = {
   intro:
     'Explore the hands-on initiatives, research, and engagements led by our specialized committees.',
   emptyState: 'Projects launching Fall 2026.',
+  statusLegendHeading: 'Status Legend',
   // Per plan D9: 3-entry status legend (planning, active, completed).
   // Wording lifted from the hardcoded /projects "Status Legend" footer.
   statusLegend: [
@@ -757,18 +794,21 @@ const projectsPageDoc = {
       _key: 'status-planning',
       _type: 'statusLegendEntry',
       status: 'planning',
+      label: 'Planning',
       description: 'Project being scoped and resourced.',
     },
     {
       _key: 'status-active',
       _type: 'statusLegendEntry',
       status: 'active',
+      label: 'Active',
       description: 'Currently being executed by members.',
     },
     {
       _key: 'status-completed',
       _type: 'statusLegendEntry',
       status: 'completed',
+      label: 'Completed',
       description: 'Successfully delivered.',
     },
   ],
@@ -822,6 +862,8 @@ const committeesIndexPageDoc = {
       'This cross-pollination comes to life in our unified all-club projects, where members from different committees collaborate to tackle complex, multi-faceted financial challenges. We build well-rounded professionals who understand the entire financial ecosystem.',
     ],
   },
+  cardLearnHeading: "What you'll do:",
+  cardCtaLabel: 'Explore',
 };
 
 // ---------------------------------------------------------------------------
@@ -1195,7 +1237,105 @@ const events = [
 // Write helpers — mode-aware (Metis §2.13).
 // ---------------------------------------------------------------------------
 
-type WriteStatus = 'created' | 'replaced' | 'exists';
+type WriteStatus = 'created' | 'replaced' | 'patched' | 'exists';
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !Array.isArray(value) &&
+    !(value instanceof Date)
+  );
+}
+
+function collectMissingValues(
+  seedValue: unknown,
+  existingValue: unknown,
+  path: string,
+  setIfMissing: Record<string, unknown>,
+  setValues: Record<string, unknown>,
+) {
+  if (seedValue === undefined || seedValue === null) return;
+
+  if (existingValue === undefined || existingValue === null) {
+    setIfMissing[path] = seedValue;
+    return;
+  }
+
+  if (existingValue === '') {
+    setValues[path] = seedValue;
+    return;
+  }
+
+  if (Array.isArray(seedValue)) {
+    if (!Array.isArray(existingValue)) return;
+    if (existingValue.length === 0 && seedValue.length > 0) {
+      setValues[path] = seedValue;
+      return;
+    }
+    for (const seedItem of seedValue) {
+      if (!isPlainObject(seedItem) || typeof seedItem._key !== 'string') {
+        continue;
+      }
+      const existingItem = existingValue.find(
+        (item): item is Record<string, unknown> =>
+          isPlainObject(item) && item._key === seedItem._key,
+      );
+      if (!existingItem) continue;
+      for (const [key, nestedSeedValue] of Object.entries(seedItem)) {
+        if (key === '_key' || key === '_type') continue;
+        collectMissingValues(
+          nestedSeedValue,
+          existingItem[key],
+          `${path}[_key=="${seedItem._key}"].${key}`,
+          setIfMissing,
+          setValues,
+        );
+      }
+    }
+    return;
+  }
+
+  if (isPlainObject(seedValue) && isPlainObject(existingValue)) {
+    const existingEntries = Object.entries(existingValue).filter(
+      ([key, value]) =>
+        !key.startsWith('_') && value !== undefined && value !== null && value !== '',
+    );
+    if (existingEntries.length === 0) {
+      setValues[path] = seedValue;
+      return;
+    }
+    for (const [key, nestedSeedValue] of Object.entries(seedValue)) {
+      if (key === '_id' || key === '_type') continue;
+      collectMissingValues(
+        nestedSeedValue,
+        existingValue[key],
+        `${path}.${key}`,
+        setIfMissing,
+        setValues,
+      );
+    }
+  }
+}
+
+function buildSetIfMissing(
+  seedDoc: Record<string, unknown>,
+  existingDoc: Record<string, unknown>,
+) {
+  const setIfMissing: Record<string, unknown> = {};
+  const setValues: Record<string, unknown> = {};
+  for (const [key, seedValue] of Object.entries(seedDoc)) {
+    if (key === '_id' || key === '_type') continue;
+    collectMissingValues(
+      seedValue,
+      existingDoc[key],
+      key,
+      setIfMissing,
+      setValues,
+    );
+  }
+  return { setIfMissing, setValues };
+}
 
 async function writeDoc(
   doc: Record<string, unknown> & { _id: string; _type: string },
@@ -1206,9 +1346,27 @@ async function writeDoc(
     );
     return { id: doc._id, status: 'replaced' };
   }
-  // preserve: only create when missing — protects editor edits post-cutover.
+  // preserve: create missing docs and fill missing fields, but do not replace
+  // existing published editor values.
   const existing = await client.getDocument(doc._id);
-  if (existing) return { id: doc._id, status: 'exists' };
+  if (existing) {
+    const { setIfMissing, setValues } = buildSetIfMissing(doc, existing);
+    if (
+      Object.keys(setIfMissing).length === 0 &&
+      Object.keys(setValues).length === 0
+    ) {
+      return { id: doc._id, status: 'exists' };
+    }
+    let patch = client.patch(doc._id);
+    if (Object.keys(setIfMissing).length > 0) {
+      patch = patch.setIfMissing(setIfMissing);
+    }
+    if (Object.keys(setValues).length > 0) {
+      patch = patch.set(setValues);
+    }
+    await patch.commit();
+    return { id: doc._id, status: 'patched' };
+  }
   await client.createIfNotExists(
     doc as Parameters<typeof client.createIfNotExists>[0],
   );
@@ -1276,17 +1434,24 @@ async function main() {
   console.log('  Results:');
   for (const r of results) {
     const icon =
-      r.status === 'created' ? '✨' : r.status === 'replaced' ? '♻️ ' : '✓ ';
+      r.status === 'created'
+        ? '✨'
+        : r.status === 'replaced'
+          ? '♻️ '
+          : r.status === 'patched'
+            ? '🩹'
+            : '✓ ';
 
     console.log(`    ${icon} ${r.id} (${r.status})`);
   }
 
   const createdCount = results.filter((r) => r.status === 'created').length;
   const replacedCount = results.filter((r) => r.status === 'replaced').length;
+  const patchedCount = results.filter((r) => r.status === 'patched').length;
   const existsCount = results.filter((r) => r.status === 'exists').length;
 
   console.log(
-    `\n  ✅  Done. ${createdCount} created, ${replacedCount} replaced, ${existsCount} already existed.\n`,
+    `\n  ✅  Done. ${createdCount} created, ${replacedCount} replaced, ${patchedCount} patched, ${existsCount} already existed.\n`,
   );
 
   console.log(

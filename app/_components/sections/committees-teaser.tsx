@@ -26,6 +26,7 @@ export default async function CommitteesTeaser(props: Props = {}) {
 
   const heading = data.heading ?? committeesTeaserFallback.heading ?? '';
   const subheading = data.subheading;
+  const ctaLabel = data.ctaLabel ?? committeesTeaserFallback.ctaLabel ?? '';
 
   return (
     <section
@@ -58,9 +59,11 @@ export default async function CommitteesTeaser(props: Props = {}) {
                     <p className="font-sans text-cream/80 text-lg">{c.tagline}</p>
                   </div>
                   <div className="flex justify-end mt-8">
-                    <span className="font-mono uppercase tracking-widest text-sm text-[#C5A059] flex items-center gap-2 group-hover:gap-4 transition-all">
-                      Explore <span>&rarr;</span>
-                    </span>
+                    {ctaLabel ? (
+                      <span className="font-mono uppercase tracking-widest text-sm text-[#C5A059] flex items-center gap-2 group-hover:gap-4 transition-all">
+                        {ctaLabel} <span>&rarr;</span>
+                      </span>
+                    ) : null}
                   </div>
                 </div>
               </Link>

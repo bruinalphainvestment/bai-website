@@ -31,6 +31,25 @@ export const eventsPage = defineType({
       rows: 4,
     }),
     defineField({
+      name: 'upcomingHeading',
+      title: 'Upcoming Section Heading',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
+      name: 'competitionsHeading',
+      title: 'Competitions Section Heading',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
+      name: 'externalCtaLabel',
+      title: 'External Event CTA Label',
+      type: 'string',
+      group: 'content',
+      description: 'Visible link label for events with an External URL.',
+    }),
+    defineField({
       name: 'upcomingEmptyState',
       title: 'Upcoming Empty-State Copy',
       type: 'string',

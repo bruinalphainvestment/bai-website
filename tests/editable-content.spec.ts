@@ -1,8 +1,53 @@
 import { expect, test } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
+const sourceRoots = [
+  'app/(site)',
+  'app/_components/sections',
+  'app/_components/fallbacks',
+] as const;
+
+const visibleCmsPhrases = [
+  'The Rotational Program',
+  'Executive Board',
+  'Committee Meeting',
+  'Asynchronous Work',
+  'Members complete a 30-page consolidated study guide',
+  'Quarterly All-Club Project',
+  'Our Story',
+  'What Sets Us Apart',
+  'Application Process',
+  'Coffee Chat',
+  'Link to Application',
+  'Get in Touch',
+  '@bruinalphainvestment',
+  'Upcoming & Ongoing',
+  'Enormous Activities Fair',
+  'CME Trading Challenge',
+  'Status Legend',
+  'Event-Contract Modeling Research',
+  'UCLA Club Audit Initiative',
+  'Active Community',
+  'The Founding Class',
+  'Connected by Design',
+  'What you',
+  'We are starting it, we are building it',
+] as const;
+
+async function listSourceFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const nested = await Promise.all(
+    entries.map(async (entry) => {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) return listSourceFiles(fullPath);
+      if (entry.isFile() && /\.(ts|tsx)$/.test(entry.name)) return [fullPath];
+      return [];
+    }),
+  );
+  return nested.flat();
+}
 
 test('training screenshot copy is not hardcoded in the route component', async () => {
   const source = await readFile(
@@ -38,6 +83,66 @@ test('about founder quote is not hardcoded in the route component', async () => 
     source,
     'Move the values heading into Sanity-backed about page data',
   ).not.toContain('What Sets Us Apart');
+});
+
+test('visible editorial content is not hardcoded in app render or fallback modules', async () => {
+  const files = (
+    await Promise.all(sourceRoots.map((dir) => listSourceFiles(path.join(root, dir))))
+  ).flat();
+
+  const offenders: string[] = [];
+  for (const file of files) {
+    const source = await readFile(file, 'utf8');
+    for (const phrase of visibleCmsPhrases) {
+      if (source.includes(phrase)) {
+        offenders.push(`${path.relative(root, file)} contains "${phrase}"`);
+      }
+    }
+  }
+
+  expect(
+    offenders,
+    'Visible website content belongs in Sanity schema/queries/seed data, not render components or fallbacks.',
+  ).toEqual([]);
+});
+
+test('newly migrated visible labels are queried and seeded for Sanity', async () => {
+  const [queries, seed] = await Promise.all([
+    readFile(path.join(root, 'sanity/lib/queries.ts'), 'utf8'),
+    readFile(path.join(root, 'sanity/seed/seed.ts'), 'utf8'),
+  ]);
+
+  for (const field of [
+    'applicationProcessHeading',
+    'applicationSteps',
+    'timelineHeading',
+    'faqHeading',
+    'contactHeading',
+    'contactLinks',
+    'upcomingHeading',
+    'competitionsHeading',
+    'externalCtaLabel',
+    'statusLegendHeading',
+    'cardLearnHeading',
+    'cardCtaLabel',
+  ]) {
+    expect(queries, `${field} must be selected by a Sanity query`).toContain(
+      field,
+    );
+    expect(seed, `${field} must be present in migration seed data`).toContain(
+      field,
+    );
+  }
+
+  for (const phrase of [
+    'Application Process',
+    'Coffee Chat',
+    'Upcoming & Ongoing',
+    'Status Legend',
+    '@bruinalphainvestment',
+  ]) {
+    expect(seed, `"${phrase}" must be seeded into Sanity`).toContain(phrase);
+  }
 });
 
 test('committee fallback pages can hide curriculum completely', async ({
