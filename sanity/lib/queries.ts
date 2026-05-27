@@ -110,9 +110,7 @@ export const joinPageQuery = defineQuery(`
     faqHeading,
     faqs,
     contactHeading,
-    contactLinks,
-    eligibilityHeading,
-    eligibilityBullets
+    contactLinks
   }
 `);
 
@@ -160,7 +158,7 @@ export const projectsPageQuery = defineQuery(`
 `);
 
 export const allProjectsQuery = defineQuery(`
-  *[_type == "project"] | order(_createdAt asc) {
+  *[_type == "project" && showOnProjectsPage != false] | order(_createdAt asc) {
     _id,
     name,
     "slug": slug.current,

@@ -210,20 +210,6 @@ export const joinPage = defineType({
       ],
     }),
     defineField({
-      name: 'eligibilityHeading',
-      title: 'Eligibility Heading',
-      type: 'string',
-      group: 'faqs',
-    }),
-    defineField({
-      name: 'eligibilityBullets',
-      title: 'Eligibility Bullets',
-      type: 'array',
-      group: 'faqs',
-      of: [defineArrayMember({ type: 'string' })],
-      validation: (rule) => rule.max(10),
-    }),
-    defineField({
       name: 'contactHeading',
       title: 'Contact Heading',
       type: 'string',

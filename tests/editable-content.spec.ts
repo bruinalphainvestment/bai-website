@@ -3,11 +3,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
-const sourceRoots = [
-  'app/(site)',
-  'app/_components/sections',
-  'app/_components/fallbacks',
-] as const;
+const sourceRoots = ['app'] as const;
 
 const visibleCmsPhrases = [
   'The Rotational Program',
@@ -34,6 +30,14 @@ const visibleCmsPhrases = [
   'Connected by Design',
   'What you',
   'We are starting it, we are building it',
+  'Curriculum in development',
+  'SIE Study Pod',
+  'Internal Trading Competition',
+  'External Competitions',
+  'Industry Case Competitions',
+  'Live Deal Tear-Down',
+  'TBD — UCLA Campus',
+  'The market is an incredible teacher',
 ] as const;
 
 async function listSourceFiles(dir: string): Promise<string[]> {
@@ -143,6 +147,40 @@ test('newly migrated visible labels are queried and seeded for Sanity', async ()
   ]) {
     expect(seed, `"${phrase}" must be seeded into Sanity`).toContain(phrase);
   }
+});
+
+test('committee detail visible content is seeded and main project grid stays exact', async () => {
+  const [queries, seed] = await Promise.all([
+    readFile(path.join(root, 'sanity/lib/queries.ts'), 'utf8'),
+    readFile(path.join(root, 'sanity/seed/seed.ts'), 'utf8'),
+  ]);
+
+  expect(queries).toContain('signatureProjects[]->');
+  expect(queries).toContain('showOnProjectsPage != false');
+
+  for (const phrase of [
+    'directorQuote',
+    'signatureProjects',
+    'SIE Study Pod',
+    'Internal Trading Competition',
+    'External Competitions',
+    'Industry Case Competitions',
+    'Live Deal Tear-Down',
+    'showOnProjectsPage: false',
+  ]) {
+    expect(seed, `${phrase} must be represented in Sanity seed data`).toContain(
+      phrase,
+    );
+  }
+});
+
+test('preserve seed does not overwrite intentionally empty editor values', async () => {
+  const seed = await readFile(path.join(root, 'sanity/seed/seed.ts'), 'utf8');
+
+  expect(seed).toContain('setIfMissing');
+  expect(seed).not.toContain('patch.set(setValues)');
+  expect(seed).toContain('cleanupLegacySeedArtifacts');
+  expect(seed).toContain('LEGACY_EVENT_DATES');
 });
 
 test('committee fallback pages can hide curriculum completely', async ({

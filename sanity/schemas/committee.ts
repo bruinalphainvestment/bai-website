@@ -146,6 +146,7 @@ export const committee = defineType({
         defineArrayMember({
           type: 'reference',
           to: [{ type: 'project' }],
+          weak: true,
           options: { disableNew: true },
         }),
       ],

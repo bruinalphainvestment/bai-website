@@ -28,9 +28,10 @@
  *     from the current `app/(site)/<page>/page.tsx` source so the dataset
  *     mirrors the live site Day 1.
  *   - 8 foundingMember docs (real Spring 2026 roster, all class of 2029).
- *   - 4 committee docs with learn[], differentiator, directorPlaceholder.
- *   - 5 project docs from `app/(site)/projects/page.tsx`.
- *   - 6 event docs from `app/(site)/events/page.tsx`.
+ *   - 4 committee docs with learn[], differentiator, director quotes,
+ *     signature project refs, and directorPlaceholder.
+ *   - 10 project docs from project and committee-detail pages.
+ *   - 6 event docs from the legacy Events fallback.
  *
  * What it does NOT do:
  *   - Will not seed headshots (`photoReleaseObtained: false`).
@@ -134,6 +135,11 @@ const IDS = {
     springStockPitch: 'project-spring-stock-pitch',
     wealthAdvisoryMock: 'project-wealth-advisory-mock',
     uclaTradingComp: 'project-ucla-trading-competition',
+    sieStudyPod: 'project-sie-study-pod',
+    internalTradingCompetition: 'project-internal-trading-competition',
+    externalCompetitions: 'project-external-competitions',
+    industryCaseCompetitions: 'project-industry-case-competitions',
+    liveDealTeardown: 'project-live-deal-teardown',
   },
   // Event docs (6) — dash-only IDs.
   events: {
@@ -727,13 +733,6 @@ const joinPageDoc = {
         'You join the rotational program in Fall, cycle through all 4 committees over 8 weeks, then commit to one for the rest of the year.',
     },
   ],
-  eligibilityHeading: 'Eligibility',
-  eligibilityBullets: [
-    'Current or incoming UCLA undergraduate',
-    'No prior finance experience required',
-    'Willing to commit ~3-5 hours/week during quarter',
-    'Genuine interest in at least one of the four committee tracks',
-  ],
   contactHeading: 'Get in Touch',
   contactLinks: {
     emailLabel: 'Email',
@@ -963,8 +962,9 @@ const foundingMembers = [
 ] as const;
 
 // ---------------------------------------------------------------------------
-// 4 committee docs — populated with learn[], differentiator,
-// directorPlaceholder, redirectsFrom[] (D6 + plan §1.13 expectations).
+// 4 committee docs — populated with learn[], differentiator, director quotes,
+// signature project refs, directorPlaceholder, redirectsFrom[] (D6 + plan
+// §1.13 expectations).
 // Source: `app/(site)/committees/[slug]/page.tsx` hardcoded `committees`
 // object literal.
 // ---------------------------------------------------------------------------
@@ -978,7 +978,6 @@ const committees = [
     director: { _type: 'reference', _ref: IDS.members.matt },
     tagline:
       'Soft skills, sales fundamentals, and the discipline behind a book of business.',
-    description: portableText(COMMITTEE_PLACEHOLDER_DESCRIPTION, 'desc-wealth'),
     curriculumEnabled: false,
     curriculumHeading: 'Curriculum',
     curriculumTerm: 'Fall 2026',
@@ -995,6 +994,22 @@ const committees = [
       'The only finance club at UCLA emphasizing the wealth advisory career path with hands-on practice.',
     differentiatorHeading: 'The BAI Difference',
     signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"Wealth management is the long game — built on conviction, rejection-handling, and the relationships you cultivate quarter after quarter." — Mack Haymond',
+    signatureProjects: [
+      {
+        _key: 'wealth-advisory-mock',
+        _type: 'reference',
+        _ref: IDS.projects.wealthAdvisoryMock,
+        _weak: true,
+      },
+      {
+        _key: 'sie-study-pod',
+        _type: 'reference',
+        _ref: IDS.projects.sieStudyPod,
+        _weak: true,
+      },
+    ],
     redirectsFrom: [] as string[],
   },
   {
@@ -1009,10 +1024,6 @@ const committees = [
     director: { _type: 'reference', _ref: IDS.members.mack },
     tagline:
       'Markets, mechanics, and the systematic edge — from chart reading to hedge fund recruiting.',
-    description: portableText(
-      COMMITTEE_PLACEHOLDER_DESCRIPTION,
-      'desc-trading',
-    ),
     curriculumEnabled: false,
     curriculumHeading: 'Curriculum',
     curriculumTerm: 'Fall 2026',
@@ -1029,6 +1040,28 @@ const committees = [
       'A unique focus on hands-on quant and market structure across alternative asset classes.',
     differentiatorHeading: 'The BAI Difference',
     signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"The market is an incredible teacher. We focus on removing emotion and finding repeatable edge through systematic analysis." — Max',
+    signatureProjects: [
+      {
+        _key: 'event-contract-modeling',
+        _type: 'reference',
+        _ref: IDS.projects.eventContractModeling,
+        _weak: true,
+      },
+      {
+        _key: 'internal-trading-competition',
+        _type: 'reference',
+        _ref: IDS.projects.internalTradingCompetition,
+        _weak: true,
+      },
+      {
+        _key: 'external-competitions',
+        _type: 'reference',
+        _ref: IDS.projects.externalCompetitions,
+        _weak: true,
+      },
+    ],
     redirectsFrom: [] as string[],
   },
   {
@@ -1040,10 +1073,6 @@ const committees = [
     director: { _type: 'reference', _ref: IDS.members.ben },
     tagline:
       'Where the numbers and the strategy meet — modeling, audit, and advisory thinking under one roof.',
-    description: portableText(
-      COMMITTEE_PLACEHOLDER_DESCRIPTION,
-      'desc-accounting',
-    ),
     curriculumEnabled: false,
     curriculumHeading: 'Curriculum',
     curriculumTerm: 'Fall 2026',
@@ -1060,6 +1089,22 @@ const committees = [
       'Why Both? We explain the accounting-consulting overlap and why a unified committee best prepares you for both career paths.',
     differentiatorHeading: 'The BAI Difference',
     signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"Understanding both the underlying accounting and the overarching strategy makes you significantly more dangerous in any advisory room." — Helmer',
+    signatureProjects: [
+      {
+        _key: 'ucla-club-audit',
+        _type: 'reference',
+        _ref: IDS.projects.uclaClubAudit,
+        _weak: true,
+      },
+      {
+        _key: 'industry-case-competitions',
+        _type: 'reference',
+        _ref: IDS.projects.industryCaseCompetitions,
+        _weak: true,
+      },
+    ],
     redirectsFrom: [] as string[],
   },
   {
@@ -1069,7 +1114,6 @@ const committees = [
     slug: { _type: 'slug', current: 'investment-banking' },
     director: { _type: 'reference', _ref: IDS.members.maxHelmer },
     tagline: 'Modeling, networking, and the mental models behind every deal.',
-    description: portableText(COMMITTEE_PLACEHOLDER_DESCRIPTION, 'desc-ib'),
     curriculumEnabled: false,
     curriculumHeading: 'Curriculum',
     curriculumTerm: 'Fall 2026',
@@ -1086,6 +1130,22 @@ const committees = [
       'A rotational program first approach, transitioning to specialized IB prep with tight cohort camaraderie and access to a smaller community.',
     differentiatorHeading: 'The BAI Difference',
     signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"Success in banking isn\'t just about building the model perfectly—it\'s about understanding the "why" behind the transaction and clearly communicating that narrative." — Director',
+    signatureProjects: [
+      {
+        _key: 'live-deal-teardown',
+        _type: 'reference',
+        _ref: IDS.projects.liveDealTeardown,
+        _weak: true,
+      },
+      {
+        _key: 'spring-stock-pitch',
+        _type: 'reference',
+        _ref: IDS.projects.springStockPitch,
+        _weak: true,
+      },
+    ],
     // Shown when director ref is unset / placeholder. IB director is "TBD"
     // in current hardcoded source.
     directorPlaceholder: 'TBD — announcement coming soon',
@@ -1094,9 +1154,9 @@ const committees = [
 ] as const;
 
 // ---------------------------------------------------------------------------
-// 5 project docs — lifted from `app/(site)/projects/page.tsx`.
-// All currently status="planning". committee ref maps the hardcoded
-// "committee" string (e.g. "Trading (Aspirational)") to the closest doc.
+// Project docs lifted from the legacy Projects page and committee-detail
+// pages. `showOnProjectsPage: false` preserves committee-only cards without
+// expanding the public /projects grid.
 // ---------------------------------------------------------------------------
 
 const projects = [
@@ -1109,6 +1169,7 @@ const projects = [
       'A quantitative initiative focused on pricing and analyzing probability-based event contracts. Analysts will build predictive models to evaluate mispricings in event-driven markets.',
     committee: { _type: 'reference', _ref: IDS.committees.trading },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['research', 'quantitative', 'modeling'],
   },
   {
@@ -1120,6 +1181,7 @@ const projects = [
       'Pro-bono financial reviews for other campus organizations. Members will assess cash flow, budget allocations, and operational efficiency, culminating in a formalized advisory report.',
     committee: { _type: 'reference', _ref: IDS.committees.accounting },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['advisory', 'pro-bono', 'audit'],
   },
   {
@@ -1131,6 +1193,7 @@ const projects = [
       'Our capstone event where analysts across all committees form teams to deliver comprehensive investment pitches, emphasizing rigorous valuation, market sizing, and strategic rationale.',
     committee: { _type: 'reference', _ref: IDS.committees.ib },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['capstone', 'all-club', 'pitch'],
   },
   {
@@ -1142,6 +1205,7 @@ const projects = [
       'Simulated client engagements requiring analysts to construct diversified portfolios based on specific risk profiles, tax considerations, and long-term financial objectives.',
     committee: { _type: 'reference', _ref: IDS.committees.wealth },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['simulation', 'portfolio'],
   },
   {
@@ -1153,15 +1217,75 @@ const projects = [
       'A campus-wide initiative currently in the planning phase. The goal is to democratize market access and test trading strategies in a competitive, simulated environment.',
     committee: { _type: 'reference', _ref: IDS.committees.trading },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['competition', 'aspirational'],
+  },
+  {
+    _id: IDS.projects.sieStudyPod,
+    _type: 'project',
+    name: 'SIE Study Pod',
+    slug: { _type: 'slug', current: 'sie-study-pod' },
+    summary:
+      'Collaborative curriculum preparing members for the core Securities Industry Essentials exam.',
+    committee: { _type: 'reference', _ref: IDS.committees.wealth },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['certification', 'wealth-management'],
+  },
+  {
+    _id: IDS.projects.internalTradingCompetition,
+    _type: 'project',
+    name: 'Internal Trading Competition',
+    slug: { _type: 'slug', current: 'internal-trading-competition' },
+    summary: 'A CME-style simulation testing execution under pressure.',
+    committee: { _type: 'reference', _ref: IDS.committees.trading },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['competition', 'trading'],
+  },
+  {
+    _id: IDS.projects.externalCompetitions,
+    _type: 'project',
+    name: 'External Competitions',
+    slug: { _type: 'slug', current: 'external-competitions' },
+    summary:
+      'Preparation for and participation in the CME Trading Challenge (Fall) and IMC Prosperity (Spring).',
+    committee: { _type: 'reference', _ref: IDS.committees.trading },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['competition', 'trading'],
+  },
+  {
+    _id: IDS.projects.industryCaseCompetitions,
+    _type: 'project',
+    name: 'Industry Case Competitions',
+    slug: { _type: 'slug', current: 'industry-case-competitions' },
+    summary:
+      'Tackle real-world business strategy problems in timed, team-based formats.',
+    committee: { _type: 'reference', _ref: IDS.committees.accounting },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['competition', 'case'],
+  },
+  {
+    _id: IDS.projects.liveDealTeardown,
+    _type: 'project',
+    name: 'Live Deal Tear-Down',
+    slug: { _type: 'slug', current: 'live-deal-tear-down' },
+    summary:
+      'Analyze a recent M&A deal, present the strategic rationale, and propose alternative theses.',
+    committee: { _type: 'reference', _ref: IDS.committees.ib },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['investment-banking', 'deal-analysis'],
   },
 ] as const;
 
 // ---------------------------------------------------------------------------
-// 6 event docs — lifted from `app/(site)/events/page.tsx`. The hardcoded
-// page renders 2 upcoming + 4 competitions. Dates are TBD-style stand-ins
-// (placeholder ISO dates within the relevant quarter); editors update once
-// confirmed. externalUrl is the new camelCase field (per T0.8 deprecation).
+// 6 event docs — lifted from the legacy Events fallback. Dates remain null so
+// the current public labels stay as "TBD" / "Coming Soon" until editors set a
+// real date in Studio. externalUrl is the new camelCase field (per T0.8
+// deprecation).
 // ---------------------------------------------------------------------------
 
 const events = [
@@ -1169,8 +1293,8 @@ const events = [
     _id: IDS.events.eaf,
     _type: 'event',
     name: 'Enormous Activities Fair (EAF)',
-    date: '2026-09-30T12:00:00.000Z',
-    location: 'TBD — UCLA Campus',
+    date: null,
+    location: 'TBD',
     description:
       'Bruin Alpha Investment will be tabling at the annual UCLA Enormous Activities Fair. Come meet our founding class, learn about the rotational program, and ask questions about our four verticals before applications close.',
     type: 'fair',
@@ -1180,7 +1304,7 @@ const events = [
     _id: IDS.events.speakers,
     _type: 'event',
     name: 'Speakers & Workshops',
-    date: '2026-10-15T18:00:00.000Z',
+    date: null,
     location: 'UCLA Campus',
     description:
       'Coming soon — speaker series in development. We are actively coordinating with industry professionals across trading, investment banking, and consulting.',
@@ -1191,7 +1315,7 @@ const events = [
     _id: IDS.events.cme,
     _type: 'event',
     name: 'CME Trading Challenge',
-    date: '2026-11-01T00:00:00.000Z',
+    date: null,
     description:
       "Participation in the premier electronic trading competition utilizing CME Group's real-time professional trading platform.",
     type: 'comp',
@@ -1202,7 +1326,7 @@ const events = [
     _id: IDS.events.imc,
     _type: 'event',
     name: 'IMC Prosperity',
-    date: '2027-04-01T00:00:00.000Z',
+    date: null,
     description:
       'Global trading challenge combining algorithmic trading, market making, and quantitative finance.',
     type: 'comp',
@@ -1213,7 +1337,7 @@ const events = [
     _id: IDS.events.caseComps,
     _type: 'event',
     name: 'Case Competitions',
-    date: '2026-11-15T00:00:00.000Z',
+    date: null,
     description:
       'Targeted participation in regional and national accounting and investment banking case competitions.',
     type: 'comp',
@@ -1224,11 +1348,11 @@ const events = [
     _id: IDS.events.springPitchEvent,
     _type: 'event',
     name: 'Spring Stock Pitch',
-    date: '2027-04-15T00:00:00.000Z',
+    date: null,
     description:
       'Internal cross-committee competition synthesizing market research, financial modeling, and strategic presentation.',
     type: 'comp',
-    status: 'tbd',
+    status: 'scheduled',
     committee: { _type: 'reference', _ref: IDS.committees.ib },
   },
 ] as const;
@@ -1239,6 +1363,22 @@ const events = [
 
 type WriteStatus = 'created' | 'replaced' | 'patched' | 'exists';
 
+const LEGACY_EVENT_DATES: Record<string, string> = {
+  [IDS.events.eaf]: '2026-09-30T12:00:00.000Z',
+  [IDS.events.speakers]: '2026-10-15T18:00:00.000Z',
+  [IDS.events.cme]: '2026-11-01T00:00:00.000Z',
+  [IDS.events.imc]: '2027-04-01T00:00:00.000Z',
+  [IDS.events.caseComps]: '2026-11-15T00:00:00.000Z',
+  [IDS.events.springPitchEvent]: '2027-04-15T00:00:00.000Z',
+};
+
+const LEGACY_ELIGIBILITY_BULLETS = [
+  'Current or incoming UCLA undergraduate',
+  'No prior finance experience required',
+  'Willing to commit ~3-5 hours/week during quarter',
+  'Genuine interest in at least one of the four committee tracks',
+];
+
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return (
     typeof value === 'object' &&
@@ -1248,12 +1388,32 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   );
 }
 
+function arraysMatch(a: unknown, b: readonly string[]) {
+  return (
+    Array.isArray(a) &&
+    a.length === b.length &&
+    a.every((value, index) => value === b[index])
+  );
+}
+
+function isPlaceholderPortableText(value: unknown) {
+  if (!Array.isArray(value) || value.length !== 1) return false;
+  const block = value[0];
+  if (!isPlainObject(block)) return false;
+  const children = block.children;
+  if (!Array.isArray(children) || children.length !== 1) return false;
+  const span = children[0];
+  return (
+    isPlainObject(span) &&
+    span.text === COMMITTEE_PLACEHOLDER_DESCRIPTION
+  );
+}
+
 function collectMissingValues(
   seedValue: unknown,
   existingValue: unknown,
   path: string,
   setIfMissing: Record<string, unknown>,
-  setValues: Record<string, unknown>,
 ) {
   if (seedValue === undefined || seedValue === null) return;
 
@@ -1262,17 +1422,11 @@ function collectMissingValues(
     return;
   }
 
-  if (existingValue === '') {
-    setValues[path] = seedValue;
-    return;
-  }
+  if (existingValue === '') return;
 
   if (Array.isArray(seedValue)) {
     if (!Array.isArray(existingValue)) return;
-    if (existingValue.length === 0 && seedValue.length > 0) {
-      setValues[path] = seedValue;
-      return;
-    }
+    if (existingValue.length === 0) return;
     for (const seedItem of seedValue) {
       if (!isPlainObject(seedItem) || typeof seedItem._key !== 'string') {
         continue;
@@ -1289,7 +1443,6 @@ function collectMissingValues(
           existingItem[key],
           `${path}[_key=="${seedItem._key}"].${key}`,
           setIfMissing,
-          setValues,
         );
       }
     }
@@ -1301,10 +1454,7 @@ function collectMissingValues(
       ([key, value]) =>
         !key.startsWith('_') && value !== undefined && value !== null && value !== '',
     );
-    if (existingEntries.length === 0) {
-      setValues[path] = seedValue;
-      return;
-    }
+    if (existingEntries.length === 0) return;
     for (const [key, nestedSeedValue] of Object.entries(seedValue)) {
       if (key === '_id' || key === '_type') continue;
       collectMissingValues(
@@ -1312,7 +1462,6 @@ function collectMissingValues(
         existingValue[key],
         `${path}.${key}`,
         setIfMissing,
-        setValues,
       );
     }
   }
@@ -1323,7 +1472,6 @@ function buildSetIfMissing(
   existingDoc: Record<string, unknown>,
 ) {
   const setIfMissing: Record<string, unknown> = {};
-  const setValues: Record<string, unknown> = {};
   for (const [key, seedValue] of Object.entries(seedDoc)) {
     if (key === '_id' || key === '_type') continue;
     collectMissingValues(
@@ -1331,10 +1479,9 @@ function buildSetIfMissing(
       existingDoc[key],
       key,
       setIfMissing,
-      setValues,
     );
   }
-  return { setIfMissing, setValues };
+  return { setIfMissing };
 }
 
 async function writeDoc(
@@ -1350,19 +1497,13 @@ async function writeDoc(
   // existing published editor values.
   const existing = await client.getDocument(doc._id);
   if (existing) {
-    const { setIfMissing, setValues } = buildSetIfMissing(doc, existing);
-    if (
-      Object.keys(setIfMissing).length === 0 &&
-      Object.keys(setValues).length === 0
-    ) {
+    const { setIfMissing } = buildSetIfMissing(doc, existing);
+    if (Object.keys(setIfMissing).length === 0) {
       return { id: doc._id, status: 'exists' };
     }
     let patch = client.patch(doc._id);
     if (Object.keys(setIfMissing).length > 0) {
       patch = patch.setIfMissing(setIfMissing);
-    }
-    if (Object.keys(setValues).length > 0) {
-      patch = patch.set(setValues);
     }
     await patch.commit();
     return { id: doc._id, status: 'patched' };
@@ -1371,6 +1512,95 @@ async function writeDoc(
     doc as Parameters<typeof client.createIfNotExists>[0],
   );
   return { id: doc._id, status: 'created' };
+}
+
+async function cleanupLegacySeedArtifacts(): Promise<void> {
+  if (seedMode !== 'preserve') return;
+
+  const eventIds = Object.keys(LEGACY_EVENT_DATES);
+  const legacyEvents = await client.fetch<
+    Array<{ _id: string; date?: string; location?: string; status?: string }>
+  >(`*[_id in $eventIds]{ _id, date, location, status }`, { eventIds });
+  for (const event of legacyEvents) {
+    let patch = client.patch(event._id);
+    let touched = false;
+    if (event.date === LEGACY_EVENT_DATES[event._id]) {
+      patch = patch.unset(['date']);
+      touched = true;
+    }
+    if (
+      event._id === IDS.events.eaf &&
+      event.location === 'TBD — UCLA Campus'
+    ) {
+      patch = patch.set({ location: 'TBD' });
+      touched = true;
+    }
+    if (
+      event._id === IDS.events.springPitchEvent &&
+      event.status === 'tbd'
+    ) {
+      patch = patch.set({ status: 'scheduled' });
+      touched = true;
+    }
+    if (touched) await patch.commit();
+  }
+
+  const committeeIds = Object.values(IDS.committees);
+  const committeeDescriptions = await client.fetch<
+    Array<{
+      _id: string;
+      description?: unknown;
+      signatureProjects?: Array<{ _key?: string; _ref?: string }>;
+    }>
+  >(`*[_id in $committeeIds]{ _id, description, signatureProjects }`, {
+    committeeIds,
+  });
+  const expectedSignatureProjects: Map<
+    string,
+    readonly { _key: string; _type: 'reference'; _ref: string; _weak: boolean }[]
+  > = new Map(
+    committees.map((committee) => [
+      committee._id,
+      committee.signatureProjects ?? [],
+    ]),
+  );
+  for (const committee of committeeDescriptions) {
+    if (isPlaceholderPortableText(committee.description)) {
+      await client.patch(committee._id).unset(['description']).commit();
+    }
+    const expected = expectedSignatureProjects.get(committee._id);
+    const current = committee.signatureProjects;
+    if (
+      expected &&
+      current &&
+      current.length === expected.length &&
+      current.some((entry) => !entry._key) &&
+      current.every((entry, index) => entry._ref === expected[index]?._ref)
+    ) {
+      await client
+        .patch(committee._id)
+        .set({ signatureProjects: expected })
+        .commit();
+    }
+  }
+
+  const joinPage = await client.fetch<{
+    _id: string;
+    eligibilityHeading?: string;
+    eligibilityBullets?: unknown;
+  } | null>(
+    `*[_id == $joinPageId][0]{ _id, eligibilityHeading, eligibilityBullets }`,
+    { joinPageId: IDS.joinPage },
+  );
+  if (
+    joinPage?.eligibilityHeading === 'Eligibility' &&
+    arraysMatch(joinPage.eligibilityBullets, LEGACY_ELIGIBILITY_BULLETS)
+  ) {
+    await client
+      .patch(joinPage._id)
+      .unset(['eligibilityHeading', 'eligibilityBullets'])
+      .commit();
+  }
 }
 
 async function deleteStaleDocs(staleIds: readonly string[]): Promise<number> {
@@ -1430,6 +1660,8 @@ async function main() {
   results.push(await writeDoc(projectsPageDoc));
   results.push(await writeDoc(teamPageDoc));
   results.push(await writeDoc(committeesIndexPageDoc));
+
+  await cleanupLegacySeedArtifacts();
 
   console.log('  Results:');
   for (const r of results) {
