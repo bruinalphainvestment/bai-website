@@ -1,8 +1,8 @@
 /**
  * Canonical list of site routes exercised by the per-page Playwright suite.
  *
- * Kept in sync by hand for now (the Next.js `app/sitemap.ts` only emits the
- * homepage). Each entry is a stable, server-rendered route under `(site)`.
+ * Kept in sync by hand with the public routes emitted by `app/sitemap.ts`.
+ * Each entry is a stable, server-rendered route under `(site)`.
  * Studio routes live under `/studio` and are deliberately excluded — they're
  * a third-party SPA shell and not part of the public marketing surface.
  *
@@ -16,7 +16,7 @@ export const SITE_ROUTES = [
   '/committees',
   '/committees/wealth-management',
   '/committees/trading',
-  '/committees/accounting-consulting',
+  '/committees/consulting',
   '/committees/investment-banking',
   '/training',
   '/projects',

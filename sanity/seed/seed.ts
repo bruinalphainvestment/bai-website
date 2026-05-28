@@ -186,7 +186,9 @@ const BRAND_NAME = 'Bruin Alpha Investment';
 const CLUB_EMAIL = 'bruinalphainvestment26@gmail.com';
 const TITLE_SUFFIX = ' — Bruin Alpha Investment at UCLA';
 const DEFAULT_META_DESCRIPTION =
-  'Bruin Alpha Investment is a student-led organization dedicated to bridging academic finance with real-world market application.';
+  "UCLA's multi-committee finance club for investment banking, trading, wealth management, and accounting consulting training through real projects.";
+const ORGANIZATION_DESCRIPTION =
+  "Bruin Alpha Investment is UCLA's student-led finance club for investment banking, trading, wealth management, and accounting consulting. Members rotate through committees, complete technical training, and contribute to real-world projects.";
 const COMMITTEE_PLACEHOLDER_DESCRIPTION =
   'Curriculum in development — check back fall 2026.';
 // Per docs/CUSTOM-DOMAIN.md — bruinalphainvestment.com expires 2027-05-14.
@@ -229,7 +231,7 @@ const siteSettingsDoc = {
     { _key: 'nav-team', label: 'Team', href: '/team' },
     { _key: 'nav-join', label: 'Join', href: '/join' },
   ],
-  organizationDescription: DEFAULT_META_DESCRIPTION,
+  organizationDescription: ORGANIZATION_DESCRIPTION,
   sameAs: [] as string[],
   errorCopy: {
     notFoundHeading: 'Page not found',
@@ -353,6 +355,12 @@ const homePageDoc = {
   _id: IDS.homePage,
   _type: 'homePage',
   title: 'Home Page',
+  seo: {
+    _type: 'seo',
+    title: "Bruin Alpha Investment — UCLA's Multi-Committee Finance Club",
+    description:
+      "Bruin Alpha Investment is UCLA's student-led finance club for investment banking, trading, wealth management, and consulting training through real projects.",
+  },
   sections: homePageSections,
 };
 
@@ -365,9 +373,10 @@ const aboutPageDoc = {
   _type: 'aboutPage',
   title: 'About Page',
   seo: {
-    title: 'About — Bruin Alpha Investment at UCLA',
+    _type: 'seo',
+    title: 'About BAI — Our Mission & Story | UCLA Finance Club',
     description:
-      'Bruin Alpha Investment was founded in Spring 2026 to provide blanket coverage across finance disciplines through specialized committees and real project work.',
+      'Learn how Bruin Alpha Investment at UCLA prepares students for finance careers through committee rotations, hands-on projects, and an accessible training model.',
   },
   hero: {
     heading: 'Our Story',
@@ -479,9 +488,10 @@ const trainingPageDoc = {
   _type: 'trainingPage',
   title: 'Training Page',
   seo: {
-    title: 'Training & Rotational Program — Bruin Alpha Investment at UCLA',
+    _type: 'seo',
+    title: 'Rotational Training Program — Analyst to Director Track',
     description:
-      'Our 10-week rotational program exposes analysts to Wealth Management, Trading, Accounting & Consulting, and Investment Banking before specialization.',
+      "BAI's UCLA rotational finance training covers committee curriculum, prep work, and interview readiness across investment banking, trading, and advisory.",
   },
   hero: {
     heading: 'The Rotational Program',
@@ -619,9 +629,10 @@ const joinPageDoc = {
   _type: 'joinPage',
   title: 'Join Page',
   seo: {
-    title: 'Join — Bruin Alpha Investment at UCLA',
+    _type: 'seo',
+    title: 'Join Bruin Alpha Investment — Apply to BAI at UCLA',
     description:
-      'Apply to Bruin Alpha Investment. Learn about our recruitment timeline, application process, and FAQ.',
+      'Apply to Bruin Alpha Investment at UCLA. Review recruitment steps, coffee chats, interviews, decisions, and why no finance experience is required.',
   },
   hero: {
     heading: 'Join the Cohort',
@@ -749,9 +760,10 @@ const eventsPageDoc = {
   _type: 'eventsPage',
   title: 'Events Page',
   seo: {
-    title: 'Events — Bruin Alpha Investment at UCLA',
+    _type: 'seo',
+    title: 'Events & Competitions — Stock Pitches, Trading Challenges',
     description:
-      'Find Bruin Alpha Investment at campus events, competitions, and speaker series.',
+      'Find BAI at UCLA competitions, trading challenges, campus fairs, speaker sessions, and stock pitch events. See upcoming ways to meet the club.',
   },
   hero: {
     heading: 'Where to Find Us',
@@ -773,9 +785,10 @@ const projectsPageDoc = {
   _type: 'projectsPage',
   title: 'Projects Page',
   seo: {
+    _type: 'seo',
     title: 'Projects & Research — Bruin Alpha Investment at UCLA',
     description:
-      'Explore the hands-on initiatives, research, and engagements led by our specialized committees.',
+      'Explore BAI projects across event-contract modeling, UCLA club audits, wealth advisory work, trading competitions, and stock pitch research.',
   },
   hero: {
     heading: 'What We Build',
@@ -818,9 +831,10 @@ const teamPageDoc = {
   _type: 'teamPage',
   title: 'Team Page',
   seo: {
-    title: 'Team — Bruin Alpha Investment at UCLA',
+    _type: 'seo',
+    title: 'Members — BAI Founding Class & Committee Leadership',
     description:
-      'Meet the founding class, members, and alumni of Bruin Alpha Investment.',
+      "Meet Bruin Alpha Investment's UCLA founders, directors, and members leading committees across banking, trading, wealth management, and consulting.",
   },
   hero: {
     heading: 'The Team',
@@ -842,9 +856,10 @@ const committeesIndexPageDoc = {
   _type: 'committeesIndexPage',
   title: 'Committees Index Page',
   seo: {
-    title: 'Committees — Bruin Alpha Investment at UCLA',
+    _type: 'seo',
+    title: 'Committees — Investment Banking, Trading, Wealth, Consulting',
     description:
-      'Explore our four core committees: Wealth Management, Trading, Accounting & Consulting, and Investment Banking.',
+      "Explore BAI's UCLA committees in investment banking, trading, wealth management, and accounting consulting, each with curriculum and signature projects.",
   },
   hero: {
     heading: 'Four Committees. One Club.',
@@ -1013,6 +1028,12 @@ const committees = [
         _weak: true,
       },
     ],
+    seo: {
+      _type: 'seo',
+      title: 'Wealth Management Committee — Sales & Advisory Skills',
+      description:
+        "Explore BAI's Wealth Management committee at UCLA: advisory sales, client relationships, SIE and Series awareness, and book-building discipline.",
+    },
     redirectsFrom: [] as string[],
   },
   {
@@ -1068,13 +1089,19 @@ const committees = [
         _weak: true,
       },
     ],
+    seo: {
+      _type: 'seo',
+      title: 'Trading Committee — Markets, Quant & Hedge Fund Prep',
+      description:
+        "Explore BAI's Trading committee at UCLA: price action, volatility, systematic strategies, market structure, and trading competition prep.",
+    },
     redirectsFrom: [] as string[],
   },
   {
     _id: IDS.committees.accounting,
     _type: 'committee',
     name: 'Accounting & Consulting',
-    slug: { _type: 'slug', current: 'accounting-consulting' },
+    slug: { _type: 'slug', current: 'consulting' },
     // Co-led by Ben + Michael. Ben listed first per Mack's roster note.
     directors: [
       { _key: 'ben-robinson', _type: 'reference', _ref: IDS.members.ben },
@@ -1119,7 +1146,13 @@ const committees = [
         _weak: true,
       },
     ],
-    redirectsFrom: [] as string[],
+    seo: {
+      _type: 'seo',
+      title: 'Accounting & Consulting — Models, Audit & Case Strategy',
+      description:
+        "Explore BAI's Accounting & Consulting committee at UCLA: 3-statement models, DCF and LBO basics, audit fundamentals, and advisory case strategy.",
+    },
+    redirectsFrom: ['accounting-consulting'] as string[],
   },
   {
     _id: IDS.committees.ib,
@@ -1168,6 +1201,12 @@ const committees = [
         _weak: true,
       },
     ],
+    seo: {
+      _type: 'seo',
+      title: 'Investment Banking Committee — M&A, DCF & LBO Modeling',
+      description:
+        "Explore BAI's Investment Banking committee at UCLA: 3-statement modeling, M&A, LBO basics, networking strategy, and technical interview prep.",
+    },
     // Fallback copy if the Directors array is intentionally left empty.
     directorPlaceholder: 'TBD — announcement coming soon',
     redirectsFrom: [] as string[],
