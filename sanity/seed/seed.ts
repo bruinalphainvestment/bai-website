@@ -1424,10 +1424,7 @@ function isPlaceholderPortableText(value: unknown) {
   const children = block.children;
   if (!Array.isArray(children) || children.length !== 1) return false;
   const span = children[0];
-  return (
-    isPlainObject(span) &&
-    span.text === COMMITTEE_PLACEHOLDER_DESCRIPTION
-  );
+  return isPlainObject(span) && span.text === COMMITTEE_PLACEHOLDER_DESCRIPTION;
 }
 
 function collectMissingValues(
@@ -1473,7 +1470,10 @@ function collectMissingValues(
   if (isPlainObject(seedValue) && isPlainObject(existingValue)) {
     const existingEntries = Object.entries(existingValue).filter(
       ([key, value]) =>
-        !key.startsWith('_') && value !== undefined && value !== null && value !== '',
+        !key.startsWith('_') &&
+        value !== undefined &&
+        value !== null &&
+        value !== '',
     );
     if (existingEntries.length === 0) return;
     for (const [key, nestedSeedValue] of Object.entries(seedValue)) {
@@ -1495,12 +1495,18 @@ function buildSetIfMissing(
   const setIfMissing: Record<string, unknown> = {};
   for (const [key, seedValue] of Object.entries(seedDoc)) {
     if (key === '_id' || key === '_type') continue;
-    collectMissingValues(
-      seedValue,
-      existingDoc[key],
-      key,
-      setIfMissing,
-    );
+    // Preserve-mode should not make seeded directors authoritative over an
+    // existing legacy director-only committee. Public queries fall back to the
+    // legacy field until editors migrate that document intentionally.
+    if (
+      seedDoc._type === 'committee' &&
+      key === 'directors' &&
+      existingDoc.directors === undefined &&
+      existingDoc.director !== undefined
+    ) {
+      continue;
+    }
+    collectMissingValues(seedValue, existingDoc[key], key, setIfMissing);
   }
   return { setIfMissing };
 }
@@ -1556,10 +1562,7 @@ async function cleanupLegacySeedArtifacts(): Promise<void> {
       patch = patch.set({ location: 'TBD' });
       touched = true;
     }
-    if (
-      event._id === IDS.events.springPitchEvent &&
-      event.status === 'tbd'
-    ) {
+    if (event._id === IDS.events.springPitchEvent && event.status === 'tbd') {
       patch = patch.set({ status: 'scheduled' });
       touched = true;
     }
@@ -1578,7 +1581,12 @@ async function cleanupLegacySeedArtifacts(): Promise<void> {
   });
   const expectedSignatureProjects: Map<
     string,
-    readonly { _key: string; _type: 'reference'; _ref: string; _weak: boolean }[]
+    readonly {
+      _key: string;
+      _type: 'reference';
+      _ref: string;
+      _weak: boolean;
+    }[]
   > = new Map(
     committees.map((committee) => [
       committee._id,

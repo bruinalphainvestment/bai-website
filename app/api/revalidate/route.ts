@@ -48,8 +48,9 @@ const LIST_PATHS: Record<string, string[]> = {
      committee collection, so / must revalidate too. */
   committee: ['/committees', '/', '/events', '/projects'],
   /* foundingMember surfaces in /team, the home FoundingTeam section,
-     and as director on /committees/{slug} (cascaded below per-id). */
-  foundingMember: ['/team', '/'],
+     the /committees cards, and as director on /committees/{slug}
+     (cascaded below per-id). */
+  foundingMember: ['/team', '/', '/committees'],
   /* project cards surface on /projects and inside the committee detail
      page's Signature Projects section (cascaded below per-id). */
   project: ['/projects'],
