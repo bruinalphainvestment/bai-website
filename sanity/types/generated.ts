@@ -234,6 +234,14 @@ export type HeroSection = {
   eyebrow?: string;
   headline?: string;
   subheadline?: string;
+  groupPhoto?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: 'image';
+  };
   primaryCtaLabel?: string;
   primaryCtaHref?: string;
   secondaryCtaLabel?: string;
@@ -977,6 +985,14 @@ export type HomePageQueryResult = {
         eyebrow?: string;
         headline?: string;
         subheadline?: string;
+        groupPhoto?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: 'image';
+        };
         primaryCtaLabel?: string;
         primaryCtaHref?: string;
         secondaryCtaLabel?: string;

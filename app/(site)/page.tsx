@@ -12,6 +12,13 @@ import type {
 } from '@/sanity/types/generated';
 
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
+type HomeSection = NonNullable<
+  NonNullable<HomePageQueryResult>['sections']
+>[number];
+type GroupPhoto = Extract<
+  HomeSection,
+  { _type: 'missionSection' }
+>['groupPhoto'];
 
 export async function generateMetadata(): Promise<Metadata> {
   const [homeRaw, settingsRaw] = await Promise.all([
@@ -33,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   const data = await loadHomeData();
-  const sections = data?.sections ?? [];
+  const sections = normalizeHomeSections(data?.sections ?? []);
 
   if (sections.length === 0) {
     return null;
@@ -49,6 +56,26 @@ export default async function Home() {
       ))}
     </>
   );
+}
+
+function normalizeHomeSections(sections: HomeSection[]): HomeSection[] {
+  const legacyGroupPhoto = sections.find(
+    (section): section is Extract<HomeSection, { _type: 'heroSection' }> =>
+      section._type === 'heroSection',
+  )?.groupPhoto;
+
+  if (!legacyGroupPhoto?.asset) return sections;
+
+  return sections.map((section) => {
+    if (section._type !== 'missionSection' || section.groupPhoto?.asset) {
+      return section;
+    }
+
+    return {
+      ...section,
+      groupPhoto: legacyGroupPhoto as GroupPhoto,
+    };
+  });
 }
 
 async function loadHomeData(): Promise<HomePageQueryResult | null> {
