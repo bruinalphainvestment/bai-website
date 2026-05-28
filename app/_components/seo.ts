@@ -10,7 +10,13 @@ type OgImages = OgImage[];
 type SiteSettings = NonNullable<SiteSettingsQueryResult>;
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, '') || 'http://localhost:3000';
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, '') ||
+  'http://localhost:3000';
+
+function cleanMetaText(value: string | null | undefined): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
+}
 
 export function absoluteUrl(path: string): string {
   if (!path.startsWith('/')) return `${SITE_URL}/${path}`;
@@ -49,14 +55,17 @@ export function buildPageMetadata({
   const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
   const compliantName = settings.uclaName ?? 'Bruin Alpha Investment at UCLA';
 
-  const rawTitle = seo?.title ?? fallbackTitle;
-  const title = rawTitle.includes(compliantName)
-    ? rawTitle
-    : `${rawTitle}${suffix}`;
+  const explicitTitle = cleanMetaText(seo?.title);
+  const fallbackTitleText = cleanMetaText(fallbackTitle) ?? brand;
+  const title = explicitTitle
+    ? explicitTitle
+    : fallbackTitleText.includes(compliantName)
+      ? fallbackTitleText
+      : `${fallbackTitleText}${suffix}`;
   const description =
-    seo?.description ??
-    settings.defaultMetaDescription ??
-    fallbackDescription ??
+    cleanMetaText(seo?.description) ??
+    cleanMetaText(settings.defaultMetaDescription) ??
+    cleanMetaText(fallbackDescription) ??
     `${brand} — UCLA's student-led investment club.`;
 
   const canonical = absoluteUrl(path);

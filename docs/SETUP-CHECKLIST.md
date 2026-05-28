@@ -26,12 +26,14 @@ This is where website content lives. Sanity's free tier requires the dataset to 
 
 1. [ ] **Sign up:** Go to [sanity.io](https://www.sanity.io/) and sign up with your personal email (OAuth via Google).
 2. [ ] **Create project from the CLI** (preferred — links Studio + provisions in one shot):
+
    ```bash
    bunx sanity@latest init --env --create-project "Bruin Alpha Investment" --dataset production --visibility public
    ```
 
    - Choose **Existing project** if Sanity asks where to place output (don't overwrite the existing `sanity/` folder).
    - When asked about embedding Studio: skip — we already have it embedded at `/studio`.
+
 3. [ ] **Capture the Project ID:** Sanity will print an 8-character alphanumeric ID (e.g., `v6m6t4z6`). Also visible at `https://www.sanity.io/manage`. **Copy it.**
 4. [ ] **Update `docs/HANDOFF.md`** Accounts Inventory row → Sanity Org → Project ID.
 5. [ ] **Invite co-admin** (optional but recommended): Sanity dashboard → your project → Members → Invite. Add one other officer with **Administrator** role.
@@ -82,20 +84,22 @@ The repo ships an `.env.local` with placeholder values so `bun run build` succee
 
 ## 3. Seed the dataset (2 mins)
 
-The repo includes an idempotent seeder that populates the 14 baseline documents (Site Settings, Home Page, 8 founding members, 4 committees).
+The repo includes an idempotent seeder that populates the 37 baseline documents: Site Settings, 8 page singletons, 8 founding members, 4 committees, 10 projects, and 6 events.
 
 1. [ ] Run:
    ```bash
    bun run seed
    ```
 2. [ ] **Verify** by starting the dev server and opening Studio:
+
    ```bash
    bun run dev
    ```
 
    - Visit [http://localhost:3000/studio](http://localhost:3000/studio).
    - Sign in with your personal email (same one used at sanity.io).
-   - Confirm: **Site Settings** populated, **Home Page** exists (empty sections — populate via Studio later), **4 Committees**, **8 Founding Members** (Matt, Ben, Michael, Mack, Kai, Samuel, Max Helmer, Rhett).
+   - Confirm: **Site Settings** populated, **Home Page** exists with seeded sections, **4 Committees**, **8 Founding Members** (Matt, Ben, Michael, Mack, Kai, Samuel, Max Helmer, Rhett), **10 Projects**, and **6 Events**.
+
 3. [ ] Visit [http://localhost:3000](http://localhost:3000) — site should render without runtime errors.
 4. [ ] Re-running `bun run seed` is safe (idempotent, matches by `_id`).
 
@@ -169,9 +173,7 @@ The Studio's Presentation tool previews edits against the live site.
 
 ## 6. Sanity → Vercel webhook for instant content updates (5 mins)
 
-The site uses ISR with a 1-hour revalidate window, but editors will want changes live immediately. Wire a Sanity webhook to ping a Vercel revalidation endpoint.
-
-> ⚠️ **Known gap:** `app/api/revalidate` is referenced in `.env.example` but not yet implemented. If `app/api/revalidate/route.ts` doesn't exist when you do this step, **skip 6 for now** — the 1h ISR window will catch updates. File a follow-up task to implement the webhook route.
+The site uses ISR with a 1-hour revalidate window, but editors will want changes live immediately. Wire a Sanity webhook to ping the implemented Vercel revalidation endpoint at `app/api/revalidate/route.ts`.
 
 1. [ ] In Sanity dashboard → your project → **API** → **Webhooks** → **Create webhook**.
 2. [ ] **Name:** `Vercel revalidate (production)`
@@ -215,8 +217,8 @@ The post-domain-go-live config (env var, Sanity CORS, Studio canonical) was appl
 
 ## Verification checklist (final)
 
-- [ ] [https://www.bruinalphainvestment.com](https://www.bruinalphainvestment.com) returns 200 on `/`, `/about`, `/committees`, `/committees/wealth-management`, `/team`, `/projects`, `/events`, `/join`, `/training`.
-- [ ] `/studio` loads, you can sign in, all 14 seeded documents are visible (Site Settings, Home Page, 4 Committees, 8 Founding Members).
+- [ ] [https://www.bruinalphainvestment.com](https://www.bruinalphainvestment.com) returns 200 on `/`, `/about`, `/committees`, `/committees/wealth-management`, `/committees/trading`, `/committees/consulting`, `/committees/investment-banking`, `/team`, `/projects`, `/events`, `/join`, `/training`.
+- [ ] `/studio` loads, you can sign in, all 37 seeded documents are visible (Site Settings, 8 page singletons, 4 Committees, 8 Founding Members, 10 Projects, 6 Events).
 - [ ] Editing Site Settings → Slogan in Studio → public site reflects within ~5s (if step 6 done) or ~1h (without webhook).
 - [ ] Open Graph card renders correctly when the URL is shared (test on LinkedIn or via [opengraph.xyz](https://www.opengraph.xyz/)).
 - [ ] `bun run build` passes locally without warnings about placeholder project ID.
@@ -226,11 +228,10 @@ The post-domain-go-live config (env var, Sanity CORS, Studio canonical) was appl
 
 ## Known gaps / follow-ups (not deploy-blockers)
 
-1. **`/api/revalidate` route** not yet implemented — webhook in step 6 will 404 until then. ISR 1h window covers updates.
-2. **Faculty advisor → free GitHub Team** — for required reviewers on private repo. Apply via [github.com/edu](https://github.com/edu/teachers) once a faculty sponsor is identified.
-3. **Vercel for OSS application** — only if the club ever needs multi-officer deploy access and is willing to open-source the repo.
-4. **UCLA SOLE registration** — needed before any official UCLA branding / campus directory listings.
-5. **Domain purchase** — defer until launch is imminent; the `*.vercel.app` URL works fine for soft-launch and social media setup.
+1. **Faculty advisor → free GitHub Team** — for required reviewers on private repo. Apply via [github.com/edu](https://github.com/edu/teachers) once a faculty sponsor is identified.
+2. **Vercel for OSS application** — only if the club ever needs multi-officer deploy access and is willing to open-source the repo.
+3. **UCLA SOLE registration** — needed before any official UCLA branding / campus directory listings.
+4. **Domain purchase** — defer until launch is imminent; the `*.vercel.app` URL works fine for soft-launch and social media setup.
 
 ---
 

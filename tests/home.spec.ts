@@ -17,6 +17,7 @@ const SECTION_SLUGS = [
 // uses "registered investment adviser" in a negation ("BAI is not a ...").
 const FORBIDDEN_PATTERN =
   /manage real client money|live trading|\bAUM\b|registered investment adviser|polymarket/i;
+const MAX_SEARCH_TITLE_LENGTH = 65;
 
 async function getMainText(page: Page): Promise<string> {
   return page.evaluate(() => {
@@ -29,16 +30,22 @@ async function getMainText(page: Page): Promise<string> {
 }
 
 test.describe('Home page — happy path', () => {
-  test('renders all 8 sections + UCLA-compliant title', async ({ page }) => {
+  test('renders all 8 sections + search-safe title', async ({ page }) => {
     await page.goto('/');
 
-    await expect(page).toHaveTitle(/.*at UCLA.*/i);
+    const title = await page.title();
+    expect(title.trim().length, 'empty home title').toBeGreaterThan(0);
+    expect(
+      title.length,
+      `home title may truncate in search results: "${title}"`,
+    ).toBeLessThanOrEqual(MAX_SEARCH_TITLE_LENGTH);
 
     for (const slug of SECTION_SLUGS) {
       const section = page.locator(`[data-section="${slug}"]`);
-      await expect(section, `Missing section [data-section="${slug}"]`).toHaveCount(
-        1,
-      );
+      await expect(
+        section,
+        `Missing section [data-section="${slug}"]`,
+      ).toHaveCount(1);
     }
 
     const alphaDefinition = page.locator('[data-section="alpha-definition"]');
@@ -71,10 +78,7 @@ test.describe('Home page — happy path', () => {
     });
     expect(alphaPrecedesMissionHeading).toBe(true);
 
-    const footerText = await page
-      .locator('footer')
-      .first()
-      .innerText();
+    const footerText = await page.locator('footer').first().innerText();
     expect(footerText).toContain('registered student organization at UCLA');
   });
 });
@@ -110,7 +114,9 @@ test.describe('Home page — reduced motion', () => {
 test.describe('Home page — mobile (375px)', () => {
   test.use({ viewport: { width: 375, height: 812 }, isMobile: true });
 
-  test('hamburger opens with keyboard, closes with Escape', async ({ page }) => {
+  test('hamburger opens with keyboard, closes with Escape', async ({
+    page,
+  }) => {
     await page.goto('/');
 
     const openButton = page.getByRole('button', { name: /open mobile menu/i });
