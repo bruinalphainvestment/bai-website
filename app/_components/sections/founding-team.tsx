@@ -1,5 +1,11 @@
 import Image from 'next/image';
+import { ExternalLink } from 'lucide-react';
 
+import {
+  formatCommitteeLabel,
+  formatGraduationYear,
+  normalizeExternalUrl,
+} from '@/app/_components/person-fields';
 import { urlForImage } from '@/sanity/lib/imageUrl';
 import { sanityFetch } from '@/sanity/lib/live';
 import { allFoundingMembersQuery } from '@/sanity/lib/queries';
@@ -81,6 +87,29 @@ export default async function FoundingTeam(props: Props = {}) {
               <p className="font-sans text-navy/70 text-sm md:text-base">
                 {member.role}
               </p>
+              {member.committeeLabel || member.gradYearLabel ? (
+                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-sans text-[0.68rem] font-medium uppercase tracking-[0.14em] text-navy/55">
+                  {member.committeeLabel ? <span>{member.committeeLabel}</span> : null}
+                  {member.gradYearLabel ? <span>{member.gradYearLabel}</span> : null}
+                </div>
+              ) : null}
+              {member.bio ? (
+                <p className="mt-3 font-sans text-sm leading-relaxed text-navy/65">
+                  {member.bio}
+                </p>
+              ) : null}
+              {member.linkedinHref ? (
+                <a
+                  href={member.linkedinHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${member.name}'s LinkedIn profile`}
+                  className="mt-3 inline-flex w-fit items-center gap-2 border-b border-gold-start/70 pb-1 font-sans text-sm font-medium text-navy transition-colors hover:text-gold-end"
+                >
+                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                  <span>LinkedIn</span>
+                </a>
+              ) : null}
             </StaggerItem>
           ))}
         </StaggerGroup>
@@ -126,6 +155,10 @@ function toDisplayMember(member: FoundingMemberDoc): DisplayMember {
       : null;
   return {
     key: member._id,
+    bio: member.bio,
+    committeeLabel: formatCommitteeLabel(member.committee) ?? undefined,
+    gradYearLabel: formatGraduationYear(member.gradYear) ?? undefined,
+    linkedinHref: normalizeExternalUrl(member.linkedinUrl),
     name: fullName || 'TBD',
     role: member.role ?? '',
     monogram,

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { ExternalLink } from 'lucide-react';
 import { stegaClean } from 'next-sanity';
 
 import { footerFallback } from '@/app/_components/fallbacks/footer';
@@ -8,6 +9,11 @@ import {
   teamPageFallback,
 } from '@/app/_components/fallbacks/team-page';
 import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
+import {
+  formatCommitteeLabel,
+  formatGraduationYear,
+  normalizeExternalUrl,
+} from '@/app/_components/person-fields';
 import { buildPageMetadata } from '@/app/_components/seo';
 import { urlForImage } from '@/sanity/lib/imageUrl';
 import { sanityFetch } from '@/sanity/lib/live';
@@ -96,6 +102,9 @@ export default async function TeamPage() {
 function FoundingMemberCard({ member }: { member: FoundingMember }) {
   const fullName = [member.firstName, member.lastName].filter(Boolean).join(' ').trim();
   const monogram = member.monogramOverride ?? deriveMonogram(member.firstName, member.lastName);
+  const committeeLabel = formatCommitteeLabel(member.committee);
+  const gradYearLabel = formatGraduationYear(member.gradYear);
+  const linkedinHref = normalizeExternalUrl(member.linkedinUrl);
   const headshotUrl =
     member.photoReleaseObtained === true && member.headshot
       ? urlForImage(member.headshot).width(800).height(800).fit('crop').auto('format').url()
@@ -129,8 +138,26 @@ function FoundingMemberCard({ member }: { member: FoundingMember }) {
           {member.role}
         </p>
       ) : null}
+      {committeeLabel || gradYearLabel ? (
+        <div className="mb-3 flex flex-wrap gap-x-3 gap-y-1 font-sans text-xs font-medium uppercase tracking-[0.16em] text-navy/55">
+          {committeeLabel ? <span>{committeeLabel}</span> : null}
+          {gradYearLabel ? <span>{gradYearLabel}</span> : null}
+        </div>
+      ) : null}
       {member.bio ? (
         <p className="font-sans text-navy/70 text-sm leading-relaxed">{member.bio}</p>
+      ) : null}
+      {linkedinHref ? (
+        <a
+          href={linkedinHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={fullName ? `Open ${fullName}'s LinkedIn profile` : 'Open LinkedIn profile'}
+          className="mt-4 inline-flex w-fit items-center gap-2 border-b border-gold-start/70 pb-1 font-sans text-sm font-medium text-navy transition-colors hover:text-gold-end"
+        >
+          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          <span>LinkedIn</span>
+        </a>
       ) : null}
     </div>
   );

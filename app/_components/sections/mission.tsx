@@ -6,7 +6,6 @@ import { urlForImage } from '@/sanity/lib/imageUrl';
 import {
   missionBodyText,
   missionFallback,
-  missionFirstLetter,
 } from '../fallbacks/sections/mission';
 
 import { StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
@@ -19,7 +18,7 @@ export default function Mission(props: Partial<MissionSection> = {}) {
 
   const heading = data.heading?.trim() || missionFallback.heading || '';
   const bodyText = extractText(data.body).trim() || missionBodyText;
-  const { dropCap, rest } = splitDropCap(bodyText);
+  const { initial, rest } = splitInitial(bodyText);
   const groupPhoto = data.groupPhoto;
   const groupPhotoUrl = getGroupPhotoUrl(groupPhoto);
   const hasHeading = Boolean(heading);
@@ -67,11 +66,15 @@ export default function Mission(props: Partial<MissionSection> = {}) {
               ) : null}
               {hasBody ? (
                 <StaggerItem className={bodyClassName}>
-                  <p className="font-sans text-lg leading-relaxed md:text-2xl md:leading-[1.6]">
-                    <span className="font-display float-left mt-1 mr-1 text-6xl leading-none text-[#8B6F38] md:mr-1.5 md:text-8xl">
-                      {dropCap}
-                    </span>
-                    {rest}
+                  <p className="mission-copy font-sans text-lg leading-relaxed md:text-2xl md:leading-[1.6]">
+                    {initial ? (
+                      <>
+                        <span className="mission-copy-initial">{initial}</span>
+                        {rest}
+                      </>
+                    ) : (
+                      bodyText
+                    )}
                   </p>
                 </StaggerItem>
               ) : null}
@@ -122,7 +125,7 @@ function extractText(body: MissionSection['body']): string {
     .join('');
 }
 
-function splitDropCap(body: string): { dropCap: string; rest: string } {
-  if (!body) return { dropCap: missionFirstLetter, rest: missionBodyText };
-  return { dropCap: body.charAt(0), rest: body.slice(1) };
+function splitInitial(body: string): { initial: string; rest: string } {
+  if (!body) return { initial: '', rest: '' };
+  return { initial: body.charAt(0), rest: body.slice(1) };
 }

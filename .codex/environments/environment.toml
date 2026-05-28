@@ -1,0 +1,42 @@
+version = 1
+name = "BAI Website"
+
+[setup]
+script = '''
+bash .codex/scripts/setup-worktree.sh
+'''
+
+[cleanup]
+script = '''
+bash .codex/scripts/cleanup-worktree.sh
+'''
+
+[[actions]]
+name = "Setup"
+icon = "tool"
+command = "bash .codex/scripts/setup-worktree.sh"
+
+[[actions]]
+name = "CodeGraph init"
+icon = "tool"
+command = "codegraph init -i"
+
+[[actions]]
+name = "Dev server"
+icon = "run"
+command = "bun run dev"
+
+[[actions]]
+name = "Verify"
+icon = "test"
+command = "bun run typecheck && bun run lint"
+
+[[actions]]
+name = "Build"
+icon = "run"
+command = "bun run build"
+
+[[actions]]
+name = "E2E desktop"
+icon = "test"
+command = "bunx playwright test --project=chromium-desktop"

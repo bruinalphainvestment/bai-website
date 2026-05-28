@@ -149,6 +149,78 @@ test('newly migrated visible labels are queried and seeded for Sanity', async ()
   }
 });
 
+test('founding member config fields have public app bindings', async () => {
+  const [schema, queries, teamPage, foundingTeam, committeeDetail] =
+    await Promise.all([
+      readFile(path.join(root, 'sanity/schemas/foundingMember.ts'), 'utf8'),
+      readFile(path.join(root, 'sanity/lib/queries.ts'), 'utf8'),
+      readFile(path.join(root, 'app/(site)/team/page.tsx'), 'utf8'),
+      readFile(path.join(root, 'app/_components/sections/founding-team.tsx'), 'utf8'),
+      readFile(path.join(root, 'app/(site)/committees/[slug]/page.tsx'), 'utf8'),
+    ]);
+
+  const memberFields = [
+    'firstName',
+    'lastName',
+    'role',
+    'committee',
+    'gradYear',
+    'bio',
+    'photoReleaseObtained',
+    'headshot',
+    'monogramOverride',
+    'linkedinUrl',
+  ] as const;
+
+  for (const field of memberFields) {
+    expect(schema, `${field} must exist in the foundingMember schema`).toContain(
+      `name: '${field}'`,
+    );
+    expect(
+      queries,
+      `${field} must be selected by a public foundingMember query`,
+    ).toContain(field);
+  }
+
+  for (const usage of [
+    'member.firstName',
+    'member.lastName',
+    'member.role',
+    'member.committee',
+    'member.gradYear',
+    'member.bio',
+    'member.photoReleaseObtained',
+    'member.headshot',
+    'member.monogramOverride',
+    'member.linkedinUrl',
+  ]) {
+    expect(teamPage, `${usage} must be rendered or drive rendering on /team`).toContain(
+      usage,
+    );
+  }
+
+  expect(
+    foundingTeam,
+    'Home founding team cards must expose configured member links.',
+  ).toContain('member.linkedinUrl');
+  expect(
+    foundingTeam,
+    'Home founding team cards must render configured member bios.',
+  ).toContain('member.bio');
+  expect(
+    committeeDetail,
+    'Committee director cards must expose configured member links.',
+  ).toContain('director.linkedinUrl');
+  expect(
+    committeeDetail,
+    'Committee director cards must render configured member committee labels.',
+  ).toContain('director.committee');
+  expect(
+    committeeDetail,
+    'Committee director cards must render configured member bios.',
+  ).toContain('director.bio');
+});
+
 test('committee detail visible content is seeded and main project grid stays exact', async () => {
   const [queries, seed] = await Promise.all([
     readFile(path.join(root, 'sanity/lib/queries.ts'), 'utf8'),
