@@ -101,6 +101,12 @@ body {
   color: var(--color-text-on-light);
 }
 
+.alpha-definition-term {
+  font-family: var(--font-alpha-serif), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
 .mission-copy-initial {
   display: inline-block;
   margin: 0 0.08em 0 0;

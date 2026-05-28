@@ -41,6 +41,36 @@ test.describe('Home page — happy path', () => {
       );
     }
 
+    const alphaDefinition = page.locator('[data-section="alpha-definition"]');
+    await expect(alphaDefinition).toHaveCount(1);
+    await expect(alphaDefinition).toContainText(/alpha/i);
+    await expect(alphaDefinition).toContainText(/return above a benchmark/i);
+
+    const alphaTerm = alphaDefinition.locator('.alpha-definition-term');
+    await expect(alphaTerm).toHaveCount(1);
+    const alphaTermStyles = await alphaTerm.evaluate((element) => {
+      const styles = window.getComputedStyle(element);
+      return {
+        fontFamily: styles.fontFamily,
+        fontWeight: Number(styles.fontWeight),
+      };
+    });
+    expect(alphaTermStyles.fontFamily).toMatch(/Cormorant/i);
+    expect(alphaTermStyles.fontWeight).toBeGreaterThanOrEqual(600);
+
+    const alphaPrecedesMissionHeading = await page.evaluate(() => {
+      const alpha = document.querySelector('[data-section="alpha-definition"]');
+      const missionHeading = document.querySelector(
+        '[data-section="mission"] h2',
+      );
+      if (!alpha || !missionHeading) return false;
+      return Boolean(
+        alpha.compareDocumentPosition(missionHeading) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      );
+    });
+    expect(alphaPrecedesMissionHeading).toBe(true);
+
     const footerText = await page
       .locator('footer')
       .first()

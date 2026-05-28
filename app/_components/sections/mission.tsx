@@ -12,6 +12,9 @@ import { StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
 
 type GroupPhoto = NonNullable<MissionSection['groupPhoto']>;
 
+const alphaDefinition =
+  'A measure of edge: return above a benchmark, earned through disciplined research, original judgment, and execution.';
+
 export default function Mission(props: Partial<MissionSection> = {}) {
   const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
   const data = useSanity && hasMissionContent(props) ? props : missionFallback;
@@ -54,6 +57,29 @@ export default function Mission(props: Partial<MissionSection> = {}) {
       className="bg-cream text-navy px-4 py-24 md:px-8 md:py-32"
     >
       <div className="mx-auto max-w-7xl">
+        <div
+          data-section="alpha-definition"
+          className="mb-20 border-y border-navy/10 py-10 md:mb-24 md:py-14"
+        >
+          <StaggerGroup>
+            <StaggerItem className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-12">
+              <div className="md:col-span-3">
+                <p className="font-mono text-sm text-gold-end">noun</p>
+                <p className="mt-3 font-display text-2xl italic text-navy/60">
+                  al-fa
+                </p>
+              </div>
+              <div className="md:col-span-9">
+                <p className="alpha-definition-term text-6xl leading-none text-navy md:text-8xl lg:text-9xl">
+                  <dfn className="not-italic">alpha</dfn>
+                </p>
+                <p className="mt-6 max-w-4xl font-display text-2xl leading-tight text-navy md:text-4xl">
+                  {alphaDefinition}
+                </p>
+              </div>
+            </StaggerItem>
+          </StaggerGroup>
+        </div>
         <StaggerGroup className={layoutClassName}>
           {hasTextContent ? (
             <div className={textGridClassName}>
