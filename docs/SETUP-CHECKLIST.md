@@ -29,6 +29,7 @@ This is where website content lives. Sanity's free tier requires the dataset to 
    ```bash
    bunx sanity@latest init --env --create-project "Bruin Alpha Investment" --dataset production --visibility public
    ```
+
    - Choose **Existing project** if Sanity asks where to place output (don't overwrite the existing `sanity/` folder).
    - When asked about embedding Studio: skip — we already have it embedded at `/studio`.
 3. [ ] **Capture the Project ID:** Sanity will print an 8-character alphanumeric ID (e.g., `v6m6t4z6`). Also visible at `https://www.sanity.io/manage`. **Copy it.**
@@ -91,6 +92,7 @@ The repo includes an idempotent seeder that populates the 14 baseline documents 
    ```bash
    bun run dev
    ```
+
    - Visit [http://localhost:3000/studio](http://localhost:3000/studio).
    - Sign in with your personal email (same one used at sanity.io).
    - Confirm: **Site Settings** populated, **Home Page** exists (empty sections — populate via Studio later), **4 Committees**, **8 Founding Members** (Matt, Ben, Michael, Mack, Kai, Samuel, Max Helmer, Rhett).
@@ -129,15 +131,15 @@ The repo includes an idempotent seeder that populates the 14 baseline documents 
 3. [ ] **Project name:** `bai-website`. **Framework preset:** Next.js (auto-detected). **Root directory:** `.`.
 4. [ ] **Environment Variables** — paste in (copy from `.env.local`, EXCEPT `NEXT_PUBLIC_SITE_URL` which gets the prod URL):
 
-   | Key | Value | Environments |
-   | :-- | :-- | :-- |
-   | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Your 8-char ID | Production, Preview, Development |
-   | `NEXT_PUBLIC_SANITY_DATASET` | `production` | Production, Preview, Development |
-   | `NEXT_PUBLIC_SANITY_API_VERSION` | `2025-01-01` | Production, Preview, Development |
-   | `NEXT_PUBLIC_SITE_URL` | `https://www.bruinalphainvestment.com` (live domain). For a brand-new deploy with no custom domain yet, set it to the assigned `*.vercel.app` alias and swap once the real domain is wired up. | Production |
-   | `SANITY_API_WRITE_TOKEN` | The seed-script token | Production, Preview |
-   | `SANITY_STUDIO_PREVIEW_SECRET` | The hex secret | Production, Preview |
-   | `SANITY_REVALIDATE_SECRET` | A separate random hex secret for signed Sanity webhooks | Production, Preview |
+   | Key                              | Value                                                                                                                                                                                          | Environments                     |
+   | :------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------- |
+   | `NEXT_PUBLIC_SANITY_PROJECT_ID`  | Your 8-char ID                                                                                                                                                                                 | Production, Preview, Development |
+   | `NEXT_PUBLIC_SANITY_DATASET`     | `production`                                                                                                                                                                                   | Production, Preview, Development |
+   | `NEXT_PUBLIC_SANITY_API_VERSION` | `2025-01-01`                                                                                                                                                                                   | Production, Preview, Development |
+   | `NEXT_PUBLIC_SITE_URL`           | `https://www.bruinalphainvestment.com` (live domain). For a brand-new deploy with no custom domain yet, set it to the assigned `*.vercel.app` alias and swap once the real domain is wired up. | Production                       |
+   | `SANITY_API_WRITE_TOKEN`         | The seed-script token                                                                                                                                                                          | Production, Preview              |
+   | `SANITY_STUDIO_PREVIEW_SECRET`   | The hex secret                                                                                                                                                                                 | Production, Preview              |
+   | `SANITY_REVALIDATE_SECRET`       | A separate random hex secret for signed Sanity webhooks                                                                                                                                        | Production, Preview              |
 
 5. [ ] Click **Deploy**. Wait ~3 minutes for the first build.
 6. [ ] **Smoke test:** Open the assigned `*.vercel.app` URL:

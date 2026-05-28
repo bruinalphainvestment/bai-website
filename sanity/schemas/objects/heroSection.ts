@@ -23,6 +23,22 @@ export const heroSection = defineType({
       rows: 3,
     }),
     defineField({
+      name: 'groupPhoto',
+      title: 'Legacy Group Photo',
+      type: 'image',
+      description:
+        'Hidden compatibility field for images uploaded before the group photo moved to the Mission section.',
+      hidden: true,
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+        }),
+      ],
+    }),
+    defineField({
       name: 'primaryCtaLabel',
       title: 'Primary CTA Label',
       type: 'string',
