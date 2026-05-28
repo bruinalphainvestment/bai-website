@@ -153,7 +153,7 @@ const IDS = {
   // Stale IDs from the pre-roster-finalisation seed run. We delete these
   // before re-seeding so the dataset doesn't carry both old + new docs.
   // Order matters: committees must be deleted BEFORE members because the
-  // `committee.director` reference creates a foreign-key-style constraint
+  // `committee.directors` references create foreign-key-style constraints
   // in Sanity. Safe to remove this entire block once Mack confirms the
   // dataset is clean.
   stale: [
@@ -975,6 +975,9 @@ const committees = [
     _type: 'committee',
     name: 'Wealth Management',
     slug: { _type: 'slug', current: 'wealth-management' },
+    directors: [
+      { _key: 'matt-walker', _type: 'reference', _ref: IDS.members.matt },
+    ],
     director: { _type: 'reference', _ref: IDS.members.matt },
     tagline:
       'Soft skills, sales fundamentals, and the discipline behind a book of business.',
@@ -1017,10 +1020,13 @@ const committees = [
     _type: 'committee',
     name: 'Trading',
     slug: { _type: 'slug', current: 'trading' },
-    // Trading is co-led by Mack, Kai, and Samuel. Sanity's committee schema
-    // only supports a single director reference, so Mack (founder) is the
-    // canonical Studio pick. Use the `role` field on each member doc to
-    // surface all three as Co-Directors on the public page.
+    // Trading is co-led by Mack, Kai, and Samuel. The legacy `director` field
+    // remains Mack as the single-reference fallback for older documents.
+    directors: [
+      { _key: 'mack-haymond', _type: 'reference', _ref: IDS.members.mack },
+      { _key: 'kai-hata', _type: 'reference', _ref: IDS.members.kai },
+      { _key: 'samuel-jiang', _type: 'reference', _ref: IDS.members.sam },
+    ],
     director: { _type: 'reference', _ref: IDS.members.mack },
     tagline:
       'Markets, mechanics, and the systematic edge — from chart reading to hedge fund recruiting.',
@@ -1070,6 +1076,14 @@ const committees = [
     name: 'Accounting & Consulting',
     slug: { _type: 'slug', current: 'accounting-consulting' },
     // Co-led by Ben + Michael. Ben listed first per Mack's roster note.
+    directors: [
+      { _key: 'ben-robinson', _type: 'reference', _ref: IDS.members.ben },
+      {
+        _key: 'michael-prosser',
+        _type: 'reference',
+        _ref: IDS.members.michael,
+      },
+    ],
     director: { _type: 'reference', _ref: IDS.members.ben },
     tagline:
       'Where the numbers and the strategy meet — modeling, audit, and advisory thinking under one roof.',
@@ -1112,6 +1126,14 @@ const committees = [
     _type: 'committee',
     name: 'Investment Banking',
     slug: { _type: 'slug', current: 'investment-banking' },
+    directors: [
+      {
+        _key: 'max-helmer',
+        _type: 'reference',
+        _ref: IDS.members.maxHelmer,
+      },
+      { _key: 'rhett-adkins', _type: 'reference', _ref: IDS.members.rhett },
+    ],
     director: { _type: 'reference', _ref: IDS.members.maxHelmer },
     tagline: 'Modeling, networking, and the mental models behind every deal.',
     curriculumEnabled: false,
@@ -1146,8 +1168,7 @@ const committees = [
         _weak: true,
       },
     ],
-    // Shown when director ref is unset / placeholder. IB director is "TBD"
-    // in current hardcoded source.
+    // Fallback copy if the Directors array is intentionally left empty.
     directorPlaceholder: 'TBD — announcement coming soon',
     redirectsFrom: [] as string[],
   },
@@ -1403,10 +1424,7 @@ function isPlaceholderPortableText(value: unknown) {
   const children = block.children;
   if (!Array.isArray(children) || children.length !== 1) return false;
   const span = children[0];
-  return (
-    isPlainObject(span) &&
-    span.text === COMMITTEE_PLACEHOLDER_DESCRIPTION
-  );
+  return isPlainObject(span) && span.text === COMMITTEE_PLACEHOLDER_DESCRIPTION;
 }
 
 function collectMissingValues(
@@ -1452,7 +1470,10 @@ function collectMissingValues(
   if (isPlainObject(seedValue) && isPlainObject(existingValue)) {
     const existingEntries = Object.entries(existingValue).filter(
       ([key, value]) =>
-        !key.startsWith('_') && value !== undefined && value !== null && value !== '',
+        !key.startsWith('_') &&
+        value !== undefined &&
+        value !== null &&
+        value !== '',
     );
     if (existingEntries.length === 0) return;
     for (const [key, nestedSeedValue] of Object.entries(seedValue)) {
@@ -1474,12 +1495,18 @@ function buildSetIfMissing(
   const setIfMissing: Record<string, unknown> = {};
   for (const [key, seedValue] of Object.entries(seedDoc)) {
     if (key === '_id' || key === '_type') continue;
-    collectMissingValues(
-      seedValue,
-      existingDoc[key],
-      key,
-      setIfMissing,
-    );
+    // Preserve-mode should not make seeded directors authoritative over an
+    // existing legacy director-only committee. Public queries fall back to the
+    // legacy field until editors migrate that document intentionally.
+    if (
+      seedDoc._type === 'committee' &&
+      key === 'directors' &&
+      existingDoc.directors === undefined &&
+      existingDoc.director !== undefined
+    ) {
+      continue;
+    }
+    collectMissingValues(seedValue, existingDoc[key], key, setIfMissing);
   }
   return { setIfMissing };
 }
@@ -1535,10 +1562,7 @@ async function cleanupLegacySeedArtifacts(): Promise<void> {
       patch = patch.set({ location: 'TBD' });
       touched = true;
     }
-    if (
-      event._id === IDS.events.springPitchEvent &&
-      event.status === 'tbd'
-    ) {
+    if (event._id === IDS.events.springPitchEvent && event.status === 'tbd') {
       patch = patch.set({ status: 'scheduled' });
       touched = true;
     }
@@ -1557,7 +1581,12 @@ async function cleanupLegacySeedArtifacts(): Promise<void> {
   });
   const expectedSignatureProjects: Map<
     string,
-    readonly { _key: string; _type: 'reference'; _ref: string; _weak: boolean }[]
+    readonly {
+      _key: string;
+      _type: 'reference';
+      _ref: string;
+      _weak: boolean;
+    }[]
   > = new Map(
     committees.map((committee) => [
       committee._id,
@@ -1630,7 +1659,7 @@ async function main() {
 
   const results: Array<{ id: string; status: WriteStatus }> = [];
 
-  // Order matters: members must exist BEFORE committees (committee.director
+  // Order matters: members must exist BEFORE committees (committee.directors
   // refs members). Committees must exist BEFORE projects/events (those ref
   // committees). Singletons and content docs can land in any order after
   // those foreign-key tiers.

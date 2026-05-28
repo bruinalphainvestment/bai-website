@@ -207,6 +207,11 @@ export const allCommitteesIndexQuery = defineQuery(`
     accentColor,
     order,
     directorPlaceholder,
+    "directors": directors[]->{
+      firstName,
+      lastName,
+      role
+    },
     "director": director->{
       firstName,
       lastName,
@@ -238,6 +243,19 @@ export const committeeBySlugQuery = defineQuery(`
     directorPlaceholder,
     seo,
     _updatedAt,
+    "directors": directors[]->{
+      _id,
+      firstName,
+      lastName,
+      role,
+      committee,
+      gradYear,
+      bio,
+      linkedinUrl,
+      headshot,
+      photoReleaseObtained,
+      monogramOverride
+    },
     "director": director->{
       _id,
       firstName,

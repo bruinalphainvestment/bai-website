@@ -210,15 +210,15 @@ test('founding member config fields have public app bindings', async () => {
   expect(
     committeeDetail,
     'Committee director cards must expose configured member links.',
-  ).toContain('director?.linkedinUrl');
+  ).toContain('director.linkedinUrl');
   expect(
     committeeDetail,
     'Committee director cards must render configured member committee labels.',
-  ).toContain('director?.committee');
+  ).toContain('director.committee');
   expect(
     committeeDetail,
     'Committee director cards must render configured member bios.',
-  ).toContain('director?.bio');
+  ).toContain('director.bio');
 });
 
 test('committee detail visible content is seeded and main project grid stays exact', async () => {
