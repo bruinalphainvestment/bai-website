@@ -244,6 +244,9 @@ export const committeeBySlugQuery = defineQuery(`
       lastName,
       role,
       committee,
+      gradYear,
+      bio,
+      linkedinUrl,
       headshot,
       photoReleaseObtained,
       monogramOverride

@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { PortableText } from 'next-sanity';
@@ -13,6 +13,10 @@ import {
   StaggerGroup,
   StaggerItem,
 } from '@/app/_components/motion/scroll-reveal';
+import {
+  formatGraduationYear,
+  normalizeExternalUrl,
+} from '@/app/_components/person-fields';
 import { absoluteUrl, buildPageMetadata } from '@/app/_components/seo';
 import { client as sanityReadClient } from '@/sanity/lib/client';
 import { urlForImage } from '@/sanity/lib/imageUrl';
@@ -108,6 +112,8 @@ export default async function CommitteeDetailPage({
     : null;
   const directorLabel = directorName || committee.directorPlaceholder || 'TBD';
   const directorRole = director?.role ?? null;
+  const directorGradYear = formatGraduationYear(director?.gradYear);
+  const directorLinkedinHref = normalizeExternalUrl(director?.linkedinUrl);
   const directorMonogram =
     director?.monogramOverride ??
     deriveDirectorMonogram(director?.firstName, director?.lastName);
@@ -206,7 +212,7 @@ export default async function CommitteeDetailPage({
 
           {director && directorName ? (
             <StaggerItem>
-              <div className="mt-8 flex max-w-md items-center gap-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+              <div className="mt-8 flex max-w-lg items-center gap-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-[#0A192F]">
                   {directorHeadshotUrl ? (
                     <Image
@@ -235,6 +241,23 @@ export default async function CommitteeDetailPage({
                     <span className="font-sans text-sm text-gray-600">
                       {directorRole}
                     </span>
+                  ) : null}
+                  {directorGradYear ? (
+                    <span className="mt-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-gray-500">
+                      {directorGradYear}
+                    </span>
+                  ) : null}
+                  {directorLinkedinHref ? (
+                    <a
+                      href={directorLinkedinHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Open ${directorName}'s LinkedIn profile`}
+                      className="mt-3 inline-flex w-fit items-center gap-2 border-b border-[#C5A059]/70 pb-1 font-sans text-sm font-medium text-[#0A192F] transition-colors hover:text-[#8B6F38]"
+                    >
+                      <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                      <span>LinkedIn</span>
+                    </a>
                   ) : null}
                 </div>
               </div>
