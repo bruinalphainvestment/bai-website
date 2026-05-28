@@ -11,6 +11,7 @@ export default function Hero(props: Partial<HeroSection> = {}) {
   const headline = data.headline ?? heroFallback.headline ?? '';
   const subheadline = data.subheadline ?? heroFallback.subheadline ?? '';
   const eyebrow = data.eyebrow ?? heroFallback.eyebrow;
+  const scrollLabel = data.scrollLabel ?? heroFallback.scrollLabel ?? '';
 
   const headlineParts = parseGoldAccent(headline);
 
@@ -45,10 +46,14 @@ export default function Hero(props: Partial<HeroSection> = {}) {
           </p>
         </StaggerItem>
       </StaggerGroup>
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-cream/50 animate-bounce">
-        <span className="text-sm uppercase tracking-widest mb-2 font-mono">Scroll</span>
-        <div className="w-[1px] h-12 bg-cream/30"></div>
-      </div>
+      {scrollLabel ? (
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-cream/50 animate-bounce">
+          <span className="text-sm uppercase tracking-widest mb-2 font-mono">
+            {scrollLabel}
+          </span>
+          <div className="w-[1px] h-12 bg-cream/30"></div>
+        </div>
+      ) : null}
     </section>
   );
 }

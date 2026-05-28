@@ -20,11 +20,11 @@ export default async function RecruitmentCTA(props: Props = {}) {
 
   const heading = data.heading ?? recruitmentCtaFallback.heading ?? '';
   const body = data.body ?? recruitmentCtaFallback.body ?? '';
-  const primaryLabel = data.ctaLabel ?? recruitmentCtaFallback.ctaLabel ?? 'Apply Now';
-  const primaryHref =
-    props.primaryHref ?? settings?.applyUrl ?? footerFallback.applyUrl ?? '/join';
+  const primaryLabel =
+    data.ctaLabel ?? settings?.applyCtaLabel ?? recruitmentCtaFallback.ctaLabel ?? '';
+  const primaryHref = props.primaryHref ?? '/join';
   const secondaryLabel =
-    data.secondaryCtaLabel ?? recruitmentCtaFallback.secondaryCtaLabel ?? 'Email Us';
+    data.secondaryCtaLabel ?? recruitmentCtaFallback.secondaryCtaLabel ?? '';
   const fallbackMailto = settings?.clubEmail
     ? `mailto:${settings.clubEmail}`
     : footerFallback.clubEmail
@@ -48,7 +48,6 @@ export default async function RecruitmentCTA(props: Props = {}) {
           <Link
             href={primaryHref}
             className="bg-navy text-cream px-8 py-4 font-sans uppercase tracking-widest text-sm hover:bg-[#C5A059] transition-colors w-full sm:w-auto text-center"
-            rel="noopener noreferrer"
           >
             {primaryLabel}
           </Link>

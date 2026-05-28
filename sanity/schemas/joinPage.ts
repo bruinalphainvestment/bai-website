@@ -33,6 +33,45 @@ export const joinPage = defineType({
       rows: 4,
     }),
     defineField({
+      name: 'applicationProcessHeading',
+      title: 'Application Process Heading',
+      type: 'string',
+      group: 'timeline',
+    }),
+    defineField({
+      name: 'applicationSteps',
+      title: 'Application Process Steps',
+      type: 'array',
+      group: 'timeline',
+      validation: (rule) => rule.max(8),
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'applicationStep',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: { title: 'label' },
+            prepare({ title }) {
+              return { title: title ?? 'Application Step' };
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'timelineHeading',
+      title: 'Timeline Heading',
+      type: 'string',
+      group: 'timeline',
+    }),
+    defineField({
       name: 'timeline',
       title: 'Recruitment Timeline',
       type: 'array',
@@ -104,9 +143,34 @@ export const joinPage = defineType({
           title: 'Form URL',
           type: 'string',
           description:
-            'External application URL (e.g. Tally form). String not url type so placeholders like "#" are allowed during off-cycle.',
+            'External application URL. Leave blank while applications are closed; when set, use a full http(s) URL.',
+          validation: (rule) =>
+            rule.custom((value) => {
+              if (!value) return true;
+              try {
+                const parsed = new URL(value);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+                  ? true
+                  : 'Use a full http(s) URL.';
+              } catch {
+                return 'Use a full http(s) URL or leave blank while applications are closed.';
+              }
+            }),
+        }),
+        defineField({
+          name: 'linkLabel',
+          title: 'Link Label',
+          type: 'string',
+          description:
+            'Visible label for the outbound application link when Form URL is set.',
         }),
       ],
+    }),
+    defineField({
+      name: 'faqHeading',
+      title: 'FAQ Heading',
+      type: 'string',
+      group: 'faqs',
     }),
     defineField({
       name: 'faqs',
@@ -146,18 +210,42 @@ export const joinPage = defineType({
       ],
     }),
     defineField({
-      name: 'eligibilityHeading',
-      title: 'Eligibility Heading',
+      name: 'contactHeading',
+      title: 'Contact Heading',
       type: 'string',
-      group: 'faqs',
+      group: 'content',
     }),
     defineField({
-      name: 'eligibilityBullets',
-      title: 'Eligibility Bullets',
-      type: 'array',
-      group: 'faqs',
-      of: [defineArrayMember({ type: 'string' })],
-      validation: (rule) => rule.max(10),
+      name: 'contactLinks',
+      title: 'Contact Link Display Copy',
+      type: 'object',
+      group: 'content',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'emailLabel', title: 'Email Label', type: 'string' }),
+        defineField({
+          name: 'emailFallbackLabel',
+          title: 'Email Fallback Label',
+          type: 'string',
+          description: 'Shown when no club email is configured.',
+        }),
+        defineField({
+          name: 'instagramLabel',
+          title: 'Instagram Label',
+          type: 'string',
+        }),
+        defineField({
+          name: 'instagramDisplayText',
+          title: 'Instagram Display Text',
+          type: 'string',
+        }),
+        defineField({ name: 'linkedinLabel', title: 'LinkedIn Label', type: 'string' }),
+        defineField({
+          name: 'linkedinDisplayText',
+          title: 'LinkedIn Display Text',
+          type: 'string',
+        }),
+      ],
     }),
     defineField({
       name: 'seo',

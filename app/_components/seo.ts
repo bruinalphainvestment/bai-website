@@ -47,8 +47,12 @@ export function buildPageMetadata({
 }: BuildPageMetadataArgs): Metadata {
   const brand = settings.brandName ?? 'Bruin Alpha Investment';
   const suffix = settings.titleSuffix ?? ' — Bruin Alpha Investment at UCLA';
+  const compliantName = settings.uclaName ?? 'Bruin Alpha Investment at UCLA';
 
-  const title = seo?.title ?? `${fallbackTitle}${suffix}`;
+  const rawTitle = seo?.title ?? fallbackTitle;
+  const title = rawTitle.includes(compliantName)
+    ? rawTitle
+    : `${rawTitle}${suffix}`;
   const description =
     seo?.description ??
     settings.defaultMetaDescription ??

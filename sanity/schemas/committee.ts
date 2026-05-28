@@ -50,6 +50,30 @@ export const committee = defineType({
         'Full curriculum outline (portable text). Rendered on the committee subpage.',
     }),
     defineField({
+      name: 'curriculumEnabled',
+      title: 'Show Curriculum Block',
+      type: 'boolean',
+      group: 'content',
+      initialValue: false,
+      description:
+        'When off, the committee subpage hides the entire curriculum section, including heading and body.',
+    }),
+    defineField({
+      name: 'curriculumHeading',
+      title: 'Curriculum Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'Curriculum',
+    }),
+    defineField({
+      name: 'curriculumTerm',
+      title: 'Curriculum Term Label',
+      type: 'string',
+      group: 'content',
+      description:
+        'Optional label shown beside the curriculum heading, e.g. "Fall 2026".',
+    }),
+    defineField({
       name: 'learn',
       title: "What You'll Learn (bullets, max 4)",
       type: 'array',
@@ -57,6 +81,13 @@ export const committee = defineType({
       of: [{ type: 'string' }],
       validation: (rule) => rule.max(4),
       description: 'Bullet points displayed on the committee subpage.',
+    }),
+    defineField({
+      name: 'learnHeading',
+      title: "What You'll Learn Heading",
+      type: 'string',
+      group: 'content',
+      initialValue: "What You'll Learn",
     }),
     defineField({
       name: 'differentiator',
@@ -67,14 +98,50 @@ export const committee = defineType({
       description: 'Short pitch explaining what sets this committee apart.',
     }),
     defineField({
+      name: 'differentiatorHeading',
+      title: 'Differentiator Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'The BAI Difference',
+    }),
+    defineField({
+      name: 'signatureProjectsHeading',
+      title: 'Signature Projects Heading',
+      type: 'string',
+      group: 'content',
+      initialValue: 'Signature Projects',
+    }),
+    defineField({
+      name: 'directors',
+      title: 'Directors',
+      type: 'array',
+      group: 'leadership',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{ type: 'foundingMember' }],
+          options: { disableNew: true },
+        }),
+      ],
+      validation: (rule) => rule.unique(),
+      description:
+        'Optional. Add one or more Founding Members already in the database (use Team Page → Founding Members to add new people).',
+    }),
+    defineField({
       name: 'director',
-      title: 'Director',
+      title: 'Legacy Director (fallback)',
       type: 'reference',
       group: 'leadership',
       to: [{ type: 'foundingMember' }],
       options: { disableNew: true },
+      readOnly: true,
+      hidden: ({ document }) => {
+        const hasDirectors =
+          Array.isArray(document?.directors) && document.directors.length > 0;
+        return hasDirectors || !document?.director;
+      },
       description:
-        'Optional. Pick a Founding Member already in the database (use Team Page → Founding Members to add new people).',
+        'Read-only legacy field. Add this person to Directors above; the public site uses this only when Directors is empty.',
     }),
     defineField({
       name: 'directorPlaceholder',
@@ -101,6 +168,7 @@ export const committee = defineType({
         defineArrayMember({
           type: 'reference',
           to: [{ type: 'project' }],
+          weak: true,
           options: { disableNew: true },
         }),
       ],

@@ -57,7 +57,12 @@ test-results/
 
 # Sisyphus plan/evidence/notepad work-state — local only
 .sisyphus/
+.omo/
 
 # sanity dataset backups (local only)
 /.sanity-backups
 .lighthouseci/
+
+# local agent/editor indexes and generated guidance
+.codegraph/
+.cursor/

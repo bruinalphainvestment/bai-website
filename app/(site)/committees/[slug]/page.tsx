@@ -6,12 +6,13 @@ import { stegaClean } from 'next-sanity';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import {
-  committeeDetailFallback,
-  committeeDetailFallbackCurriculum,
-} from '@/app/_components/fallbacks/committee-detail';
+import { committeeDetailFallback } from '@/app/_components/fallbacks/committee-detail';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
+import {
+  FadeUp,
+  StaggerGroup,
+  StaggerItem,
+} from '@/app/_components/motion/scroll-reveal';
 import { absoluteUrl, buildPageMetadata } from '@/app/_components/seo';
 import { client as sanityReadClient } from '@/sanity/lib/client';
 import { urlForImage } from '@/sanity/lib/imageUrl';
@@ -28,6 +29,7 @@ import type {
 
 type CommitteeData = NonNullable<CommitteeBySlugQueryResult>;
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
+type CommitteeDirector = NonNullable<CommitteeData['directors']>[number];
 
 export const revalidate = 3600;
 export const dynamicParams = false;
@@ -41,9 +43,10 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
     // next/headers at build time which is not allowed inside generateStaticParams
     // and crashes the build. The published-perspective client returns the same
     // slug list and is safe to call here.
-    const data = await sanityReadClient.fetch<Array<{ slug: string | null }>>(
-      committeeSlugsQuery,
-    );
+    const data =
+      await sanityReadClient.fetch<Array<{ slug: string | null }>>(
+        committeeSlugsQuery,
+      );
     const slugs = (data ?? [])
       .map((entry) => entry.slug)
       .filter((s): s is string => Boolean(s));
@@ -52,7 +55,10 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
     }
     return slugs.map((slug) => ({ slug }));
   } catch (err) {
-    console.error('[committees/[slug]] slugs fetch failed; using fallback:', err);
+    console.error(
+      '[committees/[slug]] slugs fetch failed; using fallback:',
+      err,
+    );
     return Object.keys(committeeDetailFallback).map((slug) => ({ slug }));
   }
 }
@@ -64,7 +70,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const committee = await loadCommittee(slug);
-  if (!committee) return { title: 'Committee Not Found', robots: { index: false, follow: false } };
+  if (!committee)
+    return {
+      title: 'Committee Not Found',
+      robots: { index: false, follow: false },
+    };
 
   const cleaned = stegaClean(committee);
   const settings = stegaClean(await loadSiteSettings());
@@ -91,28 +101,57 @@ export default async function CommitteeDetailPage({
   const committee = await loadCommittee(slug);
   if (!committee) notFound();
 
+  const fallbackCommittee = committeeDetailFallback[slug] ?? null;
   const cleaned = stegaClean(committee);
-  const director = committee.director;
-  const directorName = director
-    ? [director.firstName, director.lastName]
-        .filter(Boolean)
-        .join(' ')
-        .trim()
-    : null;
-  const directorLabel = directorName || committee.directorPlaceholder || 'TBD';
-  const directorRole = director?.role ?? null;
-  const directorMonogram =
-    director?.monogramOverride ??
-    deriveDirectorMonogram(director?.firstName, director?.lastName);
-  const directorHeadshotUrl =
-    director?.photoReleaseObtained === true && director?.headshot
-      ? urlForImage(director.headshot).width(400).height(400).fit('crop').auto('format').url()
-      : null;
+  const directorProfiles = getCommitteeDirectors(committee)
+    .map((director) => {
+      const name = formatDirectorName(director);
+      const headshotUrl =
+        director.photoReleaseObtained === true && director.headshot
+          ? urlForImage(director.headshot)
+              .width(400)
+              .height(400)
+              .fit('crop')
+              .auto('format')
+              .url()
+          : null;
 
-  const curriculumBlocks = committee.curriculum && committee.curriculum.length > 0
-    ? committee.curriculum
-    : committeeDetailFallbackCurriculum;
+      return {
+        director,
+        name,
+        headshotUrl,
+        monogram:
+          director.monogramOverride ??
+          deriveDirectorMonogram(director.firstName, director.lastName),
+      };
+    })
+    .filter((profile) => profile.name.length > 0);
+  const directorNames = directorProfiles.map((profile) => profile.name);
+  const directorLabel =
+    formatDirectorList(directorNames) || committee.directorPlaceholder || 'TBD';
+  const directorHeading = directorNames.length > 1 ? 'Directors' : 'Director';
+  const directorCardsClassName =
+    directorProfiles.length > 1
+      ? 'mt-8 grid max-w-3xl gap-5 sm:grid-cols-2'
+      : 'mt-8 flex max-w-md flex-col gap-5';
 
+  const curriculumBlocks = committee.curriculum ?? [];
+  const showCurriculum =
+    committee.curriculumEnabled === true && curriculumBlocks.length > 0;
+  const curriculumHeading =
+    committee.curriculumHeading ?? fallbackCommittee?.curriculumHeading ?? '';
+  const curriculumTerm =
+    committee.curriculumTerm ?? fallbackCommittee?.curriculumTerm ?? null;
+  const differentiatorHeading =
+    committee.differentiatorHeading ??
+    fallbackCommittee?.differentiatorHeading ??
+    '';
+  const learnHeading =
+    committee.learnHeading ?? fallbackCommittee?.learnHeading ?? '';
+  const signatureProjectsHeading =
+    committee.signatureProjectsHeading ??
+    fallbackCommittee?.signatureProjectsHeading ??
+    '';
   const learnBullets = committee.learn ?? [];
   const projects = committee.projects ?? [];
 
@@ -120,7 +159,12 @@ export default async function CommitteeDetailPage({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: absoluteUrl('/'),
+      },
       {
         '@type': 'ListItem',
         position: 2,
@@ -137,88 +181,99 @@ export default async function CommitteeDetailPage({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-gray-900 font-sans pb-24">
+    <div className="min-h-screen bg-[#FAF9F6] pb-24 font-sans text-gray-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <section className="pt-32 pb-16 px-6 md:px-12 max-w-5xl mx-auto">
+      <section className="mx-auto max-w-5xl px-6 pt-32 pb-16 md:px-12">
         <StaggerGroup trigger="mount">
           <StaggerItem>
             <Link
               href="/committees"
-              className="inline-flex items-center text-[#0A192F] hover:text-blue-700 transition-colors mb-8 font-medium"
+              className="mb-8 inline-flex items-center font-medium text-[#0A192F] transition-colors hover:text-blue-700"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Committees
             </Link>
           </StaggerItem>
 
           <StaggerItem>
-            <h1 className="text-5xl md:text-6xl font-serif text-[#0A192F] mb-6 leading-tight">
+            <h1 className="mb-6 font-serif text-5xl leading-tight text-[#0A192F] md:text-6xl">
               {committee.name ?? ''}
             </h1>
           </StaggerItem>
 
           {committee.tagline ? (
             <StaggerItem>
-              <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mb-8 leading-relaxed font-light">
+              <p className="mb-8 max-w-3xl text-xl leading-relaxed font-light text-gray-700 md:text-2xl">
                 {committee.tagline}
               </p>
             </StaggerItem>
           ) : null}
 
           <StaggerItem>
-            <div className="inline-flex items-center bg-[#0A192F] text-[#FAF9F6] px-5 py-2.5 rounded-full text-sm font-medium tracking-wide">
-              Director: {directorLabel}
+            <div className="inline-flex items-center rounded-full bg-[#0A192F] px-5 py-2.5 text-sm font-medium tracking-wide text-[#FAF9F6]">
+              {directorHeading}: {directorLabel}
             </div>
           </StaggerItem>
 
-          {director && directorName ? (
+          {directorProfiles.length > 0 ? (
             <StaggerItem>
-              <div className="mt-8 flex items-center gap-5 bg-white p-5 rounded-2xl shadow-sm border border-gray-100 max-w-md">
-                <div className="relative w-20 h-20 shrink-0 overflow-hidden rounded-full bg-[#0A192F]">
-                  {directorHeadshotUrl ? (
-                    <Image
-                      src={directorHeadshotUrl}
-                      alt={`${directorName} headshot`}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F] to-[#020c1b] opacity-80" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-serif text-xl bg-gradient-to-br from-[#C5A059] to-[#8B6F38] bg-clip-text text-transparent">
-                          {directorMonogram}
+              <div className={directorCardsClassName}>
+                {directorProfiles.map((profile) => (
+                  <div
+                    key={profile.director._id}
+                    className="flex items-center gap-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
+                  >
+                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-[#0A192F]">
+                      {profile.headshotUrl ? (
+                        <Image
+                          src={profile.headshotUrl}
+                          alt={`${profile.name} headshot`}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <>
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F] to-[#020c1b] opacity-80" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="bg-gradient-to-br from-[#C5A059] to-[#8B6F38] bg-clip-text font-serif text-xl text-transparent">
+                              {profile.monogram}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-serif text-lg text-[#0A192F]">
+                        {profile.name}
+                      </span>
+                      {profile.director.role ? (
+                        <span className="font-sans text-sm text-gray-600">
+                          {profile.director.role}
                         </span>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-serif text-lg text-[#0A192F]">{directorName}</span>
-                  {directorRole ? (
-                    <span className="font-sans text-sm text-gray-600">{directorRole}</span>
-                  ) : null}
-                </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
               </div>
             </StaggerItem>
           ) : null}
         </StaggerGroup>
       </section>
 
-      <div className="px-6 md:px-12 max-w-5xl mx-auto space-y-20">
+      <div className="mx-auto max-w-5xl space-y-20 px-6 md:px-12">
         {committee.differentiator || committee.directorQuote ? (
-          <StaggerGroup className="grid md:grid-cols-2 gap-12 items-center">
+          <StaggerGroup className="grid items-center gap-12 md:grid-cols-2">
             {committee.differentiator ? (
               <StaggerItem>
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                  <h2 className="text-2xl font-serif text-[#0A192F] mb-4">
-                    The BAI Difference
+                <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
+                  <h2 className="mb-4 font-serif text-2xl text-[#0A192F]">
+                    {differentiatorHeading}
                   </h2>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="leading-relaxed text-gray-700">
                     {committee.differentiator}
                   </p>
                 </div>
@@ -227,7 +282,7 @@ export default async function CommitteeDetailPage({
 
             {committee.directorQuote ? (
               <StaggerItem>
-                <blockquote className="text-xl md:text-2xl font-serif italic text-[#0A192F] leading-relaxed border-l-4 border-[#0A192F] pl-6 py-2">
+                <blockquote className="border-l-4 border-[#0A192F] py-2 pl-6 font-serif text-xl leading-relaxed text-[#0A192F] italic md:text-2xl">
                   {committee.directorQuote}
                 </blockquote>
               </StaggerItem>
@@ -246,15 +301,15 @@ export default async function CommitteeDetailPage({
         {learnBullets.length > 0 ? (
           <section>
             <FadeUp>
-              <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
-                What You&apos;ll Learn
+              <h2 className="mb-8 border-b border-gray-200 pb-4 font-serif text-3xl text-[#0A192F]">
+                {learnHeading}
               </h2>
             </FadeUp>
-            <StaggerGroup className="grid md:grid-cols-2 gap-4">
+            <StaggerGroup className="grid gap-4 md:grid-cols-2">
               {learnBullets.map((item) => (
                 <StaggerItem key={item} className="flex items-start">
-                  <span className="text-[#0A192F] mr-3 mt-1">•</span>
-                  <span className="text-gray-700 leading-relaxed">{item}</span>
+                  <span className="mt-1 mr-3 text-[#0A192F]">•</span>
+                  <span className="leading-relaxed text-gray-700">{item}</span>
                 </StaggerItem>
               ))}
             </StaggerGroup>
@@ -264,21 +319,23 @@ export default async function CommitteeDetailPage({
         {projects.length > 0 ? (
           <section>
             <FadeUp>
-              <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
-                Signature Projects
+              <h2 className="mb-8 border-b border-gray-200 pb-4 font-serif text-3xl text-[#0A192F]">
+                {signatureProjectsHeading}
               </h2>
             </FadeUp>
-            <StaggerGroup className="grid md:grid-cols-2 gap-6">
+            <StaggerGroup className="grid gap-6 md:grid-cols-2">
               {projects.map((project) => (
                 <StaggerItem
                   key={project._id}
-                  className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                  className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-shadow hover:shadow-md"
                 >
-                  <h3 className="text-xl font-bold text-[#0A192F] mb-3">
+                  <h3 className="mb-3 text-xl font-bold text-[#0A192F]">
                     {project.name ?? ''}
                   </h3>
                   {project.summary ? (
-                    <p className="text-gray-600 leading-relaxed">{project.summary}</p>
+                    <p className="leading-relaxed text-gray-600">
+                      {project.summary}
+                    </p>
                   ) : null}
                 </StaggerItem>
               ))}
@@ -286,14 +343,18 @@ export default async function CommitteeDetailPage({
           </section>
         ) : null}
 
-        {curriculumBlocks.length > 0 ? (
+        {showCurriculum ? (
           <FadeUp>
             <section>
-              <h2 className="text-3xl font-serif text-[#0A192F] mb-8 border-b border-gray-200 pb-4">
-                Curriculum{' '}
-                <span className="text-gray-400 text-2xl font-sans ml-2">(Fall 2026)</span>
+              <h2 className="mb-8 border-b border-gray-200 pb-4 font-serif text-3xl text-[#0A192F]">
+                {curriculumHeading}{' '}
+                {curriculumTerm ? (
+                  <span className="ml-2 font-sans text-2xl text-gray-400">
+                    ({curriculumTerm})
+                  </span>
+                ) : null}
               </h2>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden px-6 py-4 prose prose-lg max-w-none">
+              <div className="prose prose-lg max-w-none overflow-hidden rounded-2xl border border-gray-100 bg-white px-6 py-4 shadow-sm">
                 <PortableText value={curriculumBlocks} />
               </div>
             </section>
@@ -314,6 +375,26 @@ function deriveDirectorMonogram(
   if (first) return first.slice(0, 2).toUpperCase();
   if (last) return last.slice(0, 2).toUpperCase();
   return '?';
+}
+
+function getCommitteeDirectors(committee: CommitteeData): CommitteeDirector[] {
+  if (committee.directors && committee.directors.length > 0) {
+    return committee.directors;
+  }
+  return committee.director ? [committee.director] : [];
+}
+
+function formatDirectorName(director: CommitteeDirector): string {
+  return [director.firstName, director.lastName]
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
+function formatDirectorList(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? '';
+  if (names.length === 2) return `${names[0]} & ${names[1]}`;
+  return `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
 }
 
 async function loadCommittee(slug: string): Promise<CommitteeData | null> {
@@ -339,7 +420,10 @@ async function loadSiteSettings(): Promise<SiteSettingsData> {
     const { data } = await sanityFetch({ query: siteSettingsQuery });
     return data ?? footerFallback;
   } catch (err) {
-    console.error('[committees/[slug]] siteSettings fetch failed; using fallback:', err);
+    console.error(
+      '[committees/[slug]] siteSettings fetch failed; using fallback:',
+      err,
+    );
     return footerFallback;
   }
 }

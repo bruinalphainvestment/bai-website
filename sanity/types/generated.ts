@@ -184,6 +184,7 @@ export type CommitteesTeaserSection = {
   _type: 'committeesTeaserSection';
   heading?: string;
   subheading?: string;
+  ctaLabel?: string;
 };
 
 export type ValuesSection = {
@@ -230,6 +231,7 @@ export type HeroSection = {
   secondaryCtaLabel?: string;
   secondaryCtaHref?: string;
   accentDark?: boolean;
+  scrollLabel?: string;
 };
 
 export type PageHero = {
@@ -286,6 +288,7 @@ export type Project = {
   summary?: string;
   committee?: CommitteeReference;
   status?: 'planning' | 'active' | 'completed';
+  showOnProjectsPage?: boolean;
   tags?: Array<string>;
 };
 
@@ -347,8 +350,19 @@ export type Committee = {
     _type: 'block';
     _key: string;
   }>;
+  curriculumEnabled?: boolean;
+  curriculumHeading?: string;
+  curriculumTerm?: string;
   learn?: Array<string>;
+  learnHeading?: string;
   differentiator?: string;
+  differentiatorHeading?: string;
+  signatureProjectsHeading?: string;
+  directors?: Array<
+    {
+      _key: string;
+    } & FoundingMemberReference
+  >;
   director?: FoundingMemberReference;
   directorPlaceholder?: string;
   directorQuote?: string;
@@ -407,6 +421,8 @@ export type CommitteesIndexPage = {
     body?: string;
     paragraphs?: Array<string>;
   };
+  cardLearnHeading?: string;
+  cardCtaLabel?: string;
   seo?: Seo;
 };
 
@@ -437,9 +453,11 @@ export type ProjectsPage = {
   hero?: PageHero;
   intro?: string;
   emptyState?: string;
+  statusLegendHeading?: string;
   statusLegend?: Array<{
     status?: 'planning' | 'active' | 'completed';
     description?: string;
+    label?: string;
     _type: 'statusLegendEntry';
     _key: string;
   }>;
@@ -455,6 +473,9 @@ export type EventsPage = {
   title?: string;
   hero?: PageHero;
   intro?: string;
+  upcomingHeading?: string;
+  competitionsHeading?: string;
+  externalCtaLabel?: string;
   upcomingEmptyState?: string;
   pastEmptyState?: string;
   seo?: Seo;
@@ -469,6 +490,13 @@ export type JoinPage = {
   title?: string;
   hero?: PageHero;
   intro?: string;
+  applicationProcessHeading?: string;
+  applicationSteps?: Array<{
+    label?: string;
+    _type: 'applicationStep';
+    _key: string;
+  }>;
+  timelineHeading?: string;
   timeline?: Array<{
     stepNumber?: number;
     title?: string;
@@ -480,15 +508,24 @@ export type JoinPage = {
     heading?: string;
     body?: string;
     formUrl?: string;
+    linkLabel?: string;
   };
+  faqHeading?: string;
   faqs?: Array<{
     question?: string;
     answer?: string;
     _type: 'faq';
     _key: string;
   }>;
-  eligibilityHeading?: string;
-  eligibilityBullets?: Array<string>;
+  contactHeading?: string;
+  contactLinks?: {
+    emailLabel?: string;
+    emailFallbackLabel?: string;
+    instagramLabel?: string;
+    instagramDisplayText?: string;
+    linkedinLabel?: string;
+    linkedinDisplayText?: string;
+  };
   seo?: Seo;
 };
 
@@ -508,6 +545,34 @@ export type TrainingPage = {
     _type: 'curriculumEntry';
     _key: string;
   }>;
+  curriculumHeading?: string;
+  classHierarchy?: {
+    heading?: string;
+    tiers?: Array<{
+      title?: string;
+      subtitle?: string;
+      _type: 'classHierarchyTier';
+      _key: string;
+    }>;
+  };
+  sampleWeek?: {
+    heading?: string;
+    items?: Array<{
+      duration?: string;
+      title?: string;
+      body?: string;
+      _type: 'sampleWeekItem';
+      _key: string;
+    }>;
+  };
+  assessment?: {
+    heading?: string;
+    body?: string;
+  };
+  quarterlyProject?: {
+    heading?: string;
+    body?: string;
+  };
   programs?: Array<{
     name?: string;
     description?: string;
@@ -541,12 +606,14 @@ export type AboutPage = {
     heading?: string;
     body?: string;
   };
+  founderQuote?: QuoteSection;
   signatureTrip?: {
     headline?: string;
     status?: string;
     body?: string;
     visible?: boolean;
   };
+  valuesHeading?: string;
   values?: Array<{
     title?: string;
     body?: string;
@@ -608,7 +675,7 @@ export type SiteSettings = {
   slogan?: string;
   foundedYear?: number;
   foundedTerm?: string;
-  applyUrl?: string;
+  applyCtaLabel?: string;
   clubEmail?: string;
   instagramUrl?: string;
   linkedinUrl?: string;
@@ -808,7 +875,7 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: siteSettingsQuery
-// Query: *[_type == "siteSettings"][0] {    brandName,    titleSuffix,    slogan,    "disclaimer": disclaimerText,    "uclaName": uclaCompliantName,    "mission": missionStatement,    applyUrl,    clubEmail,    instagramUrl,    linkedinUrl,    slackInviteUrl,    navLinks,    foundedYear,    foundedTerm,    defaultMetaDescription,    defaultOgImage,    organizationDescription,    sameAs,    errorCopy,    "domainRenewal": domainRenewalDate  }
+// Query: *[_type == "siteSettings"][0] {    brandName,    titleSuffix,    slogan,    "disclaimer": disclaimerText,    "uclaName": uclaCompliantName,    "mission": missionStatement,    applyCtaLabel,    clubEmail,    instagramUrl,    linkedinUrl,    slackInviteUrl,    navLinks,    foundedYear,    foundedTerm,    defaultMetaDescription,    defaultOgImage,    organizationDescription,    sameAs,    errorCopy,    "domainRenewal": domainRenewalDate  }
 export type SiteSettingsQueryResult = {
   brandName: string | null;
   titleSuffix: string | null;
@@ -833,7 +900,7 @@ export type SiteSettingsQueryResult = {
     _type: 'block';
     _key: string;
   }> | null;
-  applyUrl: string | null;
+  applyCtaLabel: string | null;
   clubEmail: string | null;
   instagramUrl: string | null;
   linkedinUrl: string | null;
@@ -879,6 +946,7 @@ export type HomePageQueryResult = {
         _type: 'committeesTeaserSection';
         heading?: string;
         subheading?: string;
+        ctaLabel?: string;
       }
     | {
         _key: string;
@@ -906,6 +974,7 @@ export type HomePageQueryResult = {
         secondaryCtaLabel?: string;
         secondaryCtaHref?: string;
         accentDark?: boolean;
+        scrollLabel?: string;
       }
     | {
         _key: string;
@@ -969,50 +1038,6 @@ export type HomePageQueryResult = {
 } | null;
 
 // Source: sanity/lib/queries.ts
-// Variable: allCommitteesQuery
-// Query: *[_type == "committee"] | order(order asc) {    _id,    name,    "slug": slug.current,    tagline,    description,    order,    accentColor,    "director": director-> {      _id,      firstName,      lastName,      role,      committee    }  }
-export type AllCommitteesQueryResult = Array<{
-  _id: string;
-  name: string | null;
-  slug: string | null;
-  tagline: string | null;
-  description: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: 'span';
-      _key: string;
-    }>;
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal';
-    listItem?: 'bullet' | 'number';
-    markDefs?: Array<{
-      href?: string;
-      _type: 'link';
-      _key: string;
-    }>;
-    level?: number;
-    _type: 'block';
-    _key: string;
-  }> | null;
-  order: number | null;
-  accentColor: 'gold' | 'navy' | null;
-  director: {
-    _id: string;
-    firstName: string | null;
-    lastName: string | null;
-    role: string | null;
-    committee:
-      | 'accounting-consulting'
-      | 'investment-banking'
-      | 'operations'
-      | 'president'
-      | 'trading'
-      | 'wealth-management'
-      | null;
-  } | null;
-}>;
-
-// Source: sanity/lib/queries.ts
 // Variable: sitemapCommitteesQuery
 // Query: *[_type == "committee" && defined(slug.current)] | order(order asc) {    "slug": slug.current,    _updatedAt  }
 export type SitemapCommitteesQueryResult = Array<{
@@ -1052,7 +1077,7 @@ export type AllFoundingMembersQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: aboutPageQuery
-// Query: *[_type == "aboutPage"][0] {    title,    seo,    _updatedAt,    hero,    mission,    history,    signatureTrip,    values,    sections  }
+// Query: *[_type == "aboutPage"][0] {    title,    seo,    _updatedAt,    hero,    mission,    history,    founderQuote,    signatureTrip,    valuesHeading,    values,    sections  }
 export type AboutPageQueryResult = {
   title: string | null;
   seo: Seo | null;
@@ -1066,12 +1091,14 @@ export type AboutPageQueryResult = {
     heading?: string;
     body?: string;
   } | null;
+  founderQuote: QuoteSection | null;
   signatureTrip: {
     headline?: string;
     status?: string;
     body?: string;
     visible?: boolean;
   } | null;
+  valuesHeading: string | null;
   values: Array<{
     title?: string;
     body?: string;
@@ -1088,7 +1115,7 @@ export type AboutPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: trainingPageQuery
-// Query: *[_type == "trainingPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    curriculum,    programs,    signatureCertifications  }
+// Query: *[_type == "trainingPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    curriculum,    curriculumHeading,    classHierarchy,    sampleWeek,    assessment,    quarterlyProject,    programs,    signatureCertifications  }
 export type TrainingPageQueryResult = {
   title: string | null;
   seo: Seo | null;
@@ -1102,6 +1129,34 @@ export type TrainingPageQueryResult = {
     _type: 'curriculumEntry';
     _key: string;
   }> | null;
+  curriculumHeading: string | null;
+  classHierarchy: {
+    heading?: string;
+    tiers?: Array<{
+      title?: string;
+      subtitle?: string;
+      _type: 'classHierarchyTier';
+      _key: string;
+    }>;
+  } | null;
+  sampleWeek: {
+    heading?: string;
+    items?: Array<{
+      duration?: string;
+      title?: string;
+      body?: string;
+      _type: 'sampleWeekItem';
+      _key: string;
+    }>;
+  } | null;
+  assessment: {
+    heading?: string;
+    body?: string;
+  } | null;
+  quarterlyProject: {
+    heading?: string;
+    body?: string;
+  } | null;
   programs: Array<{
     name?: string;
     description?: string;
@@ -1120,13 +1175,20 @@ export type TrainingPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: joinPageQuery
-// Query: *[_type == "joinPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    timeline,    applicationForm,    faqs,    eligibilityHeading,    eligibilityBullets  }
+// Query: *[_type == "joinPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    applicationProcessHeading,    applicationSteps,    timelineHeading,    timeline,    applicationForm,    faqHeading,    faqs,    contactHeading,    contactLinks  }
 export type JoinPageQueryResult = {
   title: string | null;
   seo: Seo | null;
   _updatedAt: string;
   hero: PageHero | null;
   intro: string | null;
+  applicationProcessHeading: string | null;
+  applicationSteps: Array<{
+    label?: string;
+    _type: 'applicationStep';
+    _key: string;
+  }> | null;
+  timelineHeading: string | null;
   timeline: Array<{
     stepNumber?: number;
     title?: string;
@@ -1138,26 +1200,38 @@ export type JoinPageQueryResult = {
     heading?: string;
     body?: string;
     formUrl?: string;
+    linkLabel?: string;
   } | null;
+  faqHeading: string | null;
   faqs: Array<{
     question?: string;
     answer?: string;
     _type: 'faq';
     _key: string;
   }> | null;
-  eligibilityHeading: string | null;
-  eligibilityBullets: Array<string> | null;
+  contactHeading: string | null;
+  contactLinks: {
+    emailLabel?: string;
+    emailFallbackLabel?: string;
+    instagramLabel?: string;
+    instagramDisplayText?: string;
+    linkedinLabel?: string;
+    linkedinDisplayText?: string;
+  } | null;
 } | null;
 
 // Source: sanity/lib/queries.ts
 // Variable: eventsPageQuery
-// Query: *[_type == "eventsPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    upcomingEmptyState,    pastEmptyState  }
+// Query: *[_type == "eventsPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    upcomingHeading,    competitionsHeading,    externalCtaLabel,    upcomingEmptyState,    pastEmptyState  }
 export type EventsPageQueryResult = {
   title: string | null;
   seo: Seo | null;
   _updatedAt: string;
   hero: PageHero | null;
   intro: string | null;
+  upcomingHeading: string | null;
+  competitionsHeading: string | null;
+  externalCtaLabel: string | null;
   upcomingEmptyState: string | null;
   pastEmptyState: string | null;
 } | null;
@@ -1184,7 +1258,7 @@ export type AllEventsQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: projectsPageQuery
-// Query: *[_type == "projectsPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    emptyState,    statusLegend  }
+// Query: *[_type == "projectsPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    emptyState,    statusLegendHeading,    statusLegend  }
 export type ProjectsPageQueryResult = {
   title: string | null;
   seo: Seo | null;
@@ -1192,9 +1266,11 @@ export type ProjectsPageQueryResult = {
   hero: PageHero | null;
   intro: string | null;
   emptyState: string | null;
+  statusLegendHeading: string | null;
   statusLegend: Array<{
     status?: 'active' | 'completed' | 'planning';
     description?: string;
+    label?: string;
     _type: 'statusLegendEntry';
     _key: string;
   }> | null;
@@ -1202,7 +1278,7 @@ export type ProjectsPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: allProjectsQuery
-// Query: *[_type == "project"] | order(_createdAt asc) {    _id,    name,    "slug": slug.current,    summary,    status,    tags,    "committee": committee->{ _id, name, "slug": slug.current }  }
+// Query: *[_type == "project" && showOnProjectsPage != false] | order(_createdAt asc) {    _id,    name,    "slug": slug.current,    summary,    status,    tags,    "committee": committee->{ _id, name, "slug": slug.current }  }
 export type AllProjectsQueryResult = Array<{
   _id: string;
   name: string | null;
@@ -1235,7 +1311,7 @@ export type TeamPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: committeesIndexPageQuery
-// Query: *[_type == "committeesIndexPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    connectedByDesign  }
+// Query: *[_type == "committeesIndexPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    connectedByDesign,    cardLearnHeading,    cardCtaLabel  }
 export type CommitteesIndexPageQueryResult = {
   title: string | null;
   seo: Seo | null;
@@ -1247,11 +1323,13 @@ export type CommitteesIndexPageQueryResult = {
     body?: string;
     paragraphs?: Array<string>;
   } | null;
+  cardLearnHeading: string | null;
+  cardCtaLabel: string | null;
 } | null;
 
 // Source: sanity/lib/queries.ts
 // Variable: allCommitteesIndexQuery
-// Query: *[_type == "committee"] | order(order asc) {    _id,    name,    "slug": slug.current,    tagline,    learn,    accentColor,    order,    directorPlaceholder,    "director": director->{      firstName,      lastName,      role    }  }
+// Query: *[_type == "committee"] | order(order asc) {    _id,    name,    "slug": slug.current,    tagline,    learn,    accentColor,    order,    directorPlaceholder,    "directors": directors[]->{      firstName,      lastName,      role    },    "director": director->{      firstName,      lastName,      role    }  }
 export type AllCommitteesIndexQueryResult = Array<{
   _id: string;
   name: string | null;
@@ -1261,6 +1339,11 @@ export type AllCommitteesIndexQueryResult = Array<{
   accentColor: 'gold' | 'navy' | null;
   order: number | null;
   directorPlaceholder: string | null;
+  directors: Array<{
+    firstName: string | null;
+    lastName: string | null;
+    role: string | null;
+  }> | null;
   director: {
     firstName: string | null;
     lastName: string | null;
@@ -1270,7 +1353,7 @@ export type AllCommitteesIndexQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: committeeBySlugQuery
-// Query: *[_type == "committee" && slug.current == $slug][0] {    _id,    name,    "slug": slug.current,    tagline,    description,    curriculum,    learn,    differentiator,    directorQuote,    redirectsFrom,    accentColor,    order,    directorPlaceholder,    seo,    _updatedAt,    "director": director->{      _id,      firstName,      lastName,      role,      committee,      headshot,      photoReleaseObtained,      monogramOverride    },    "projects": signatureProjects[]->{      _id,      name,      "slug": slug.current,      summary,      status    }  }
+// Query: *[_type == "committee" && slug.current == $slug][0] {    _id,    name,    "slug": slug.current,    tagline,    description,    curriculum,    curriculumEnabled,    curriculumHeading,    curriculumTerm,    learn,    learnHeading,    differentiator,    differentiatorHeading,    signatureProjectsHeading,    directorQuote,    redirectsFrom,    accentColor,    order,    directorPlaceholder,    seo,    _updatedAt,    "directors": directors[]->{      _id,      firstName,      lastName,      role,      committee,      headshot,      photoReleaseObtained,      monogramOverride    },    "director": director->{      _id,      firstName,      lastName,      role,      committee,      headshot,      photoReleaseObtained,      monogramOverride    },    "projects": signatureProjects[]->{      _id,      name,      "slug": slug.current,      summary,      status    }  }
 export type CommitteeBySlugQueryResult = {
   _id: string;
   name: string | null;
@@ -1312,8 +1395,14 @@ export type CommitteeBySlugQueryResult = {
     _type: 'block';
     _key: string;
   }> | null;
+  curriculumEnabled: boolean | null;
+  curriculumHeading: string | null;
+  curriculumTerm: string | null;
   learn: Array<string> | null;
+  learnHeading: string | null;
   differentiator: string | null;
+  differentiatorHeading: string | null;
+  signatureProjectsHeading: string | null;
   directorQuote: string | null;
   redirectsFrom: Array<string> | null;
   accentColor: 'gold' | 'navy' | null;
@@ -1321,6 +1410,29 @@ export type CommitteeBySlugQueryResult = {
   directorPlaceholder: string | null;
   seo: Seo | null;
   _updatedAt: string;
+  directors: Array<{
+    _id: string;
+    firstName: string | null;
+    lastName: string | null;
+    role: string | null;
+    committee:
+      | 'accounting-consulting'
+      | 'investment-banking'
+      | 'operations'
+      | 'president'
+      | 'trading'
+      | 'wealth-management'
+      | null;
+    headshot: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    } | null;
+    photoReleaseObtained: boolean | null;
+    monogramOverride: string | null;
+  }> | null;
   director: {
     _id: string;
     firstName: string | null;
@@ -1410,22 +1522,21 @@ export type SitemapPagesQueryResult = Array<
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\n  *[_type == "siteSettings"][0] {\n    brandName,\n    titleSuffix,\n    slogan,\n    "disclaimer": disclaimerText,\n    "uclaName": uclaCompliantName,\n    "mission": missionStatement,\n    applyUrl,\n    clubEmail,\n    instagramUrl,\n    linkedinUrl,\n    slackInviteUrl,\n    navLinks,\n    foundedYear,\n    foundedTerm,\n    defaultMetaDescription,\n    defaultOgImage,\n    organizationDescription,\n    sameAs,\n    errorCopy,\n    "domainRenewal": domainRenewalDate\n  }\n': SiteSettingsQueryResult;
+    '\n  *[_type == "siteSettings"][0] {\n    brandName,\n    titleSuffix,\n    slogan,\n    "disclaimer": disclaimerText,\n    "uclaName": uclaCompliantName,\n    "mission": missionStatement,\n    applyCtaLabel,\n    clubEmail,\n    instagramUrl,\n    linkedinUrl,\n    slackInviteUrl,\n    navLinks,\n    foundedYear,\n    foundedTerm,\n    defaultMetaDescription,\n    defaultOgImage,\n    organizationDescription,\n    sameAs,\n    errorCopy,\n    "domainRenewal": domainRenewalDate\n  }\n': SiteSettingsQueryResult;
     '\n  *[_type == "homePage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    sections[] {\n      _key,\n      _type,\n      ...\n    }\n  }\n': HomePageQueryResult;
-    '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    order,\n    accentColor,\n    "director": director-> {\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee\n    }\n  }\n': AllCommitteesQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] | order(order asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SitemapCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
-    '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    mission,\n    history,\n    signatureTrip,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
-    '\n  *[_type == "trainingPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    curriculum,\n    programs,\n    signatureCertifications\n  }\n': TrainingPageQueryResult;
-    '\n  *[_type == "joinPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    timeline,\n    applicationForm,\n    faqs,\n    eligibilityHeading,\n    eligibilityBullets\n  }\n': JoinPageQueryResult;
-    '\n  *[_type == "eventsPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    upcomingEmptyState,\n    pastEmptyState\n  }\n': EventsPageQueryResult;
+    '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    mission,\n    history,\n    founderQuote,\n    signatureTrip,\n    valuesHeading,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
+    '\n  *[_type == "trainingPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    curriculum,\n    curriculumHeading,\n    classHierarchy,\n    sampleWeek,\n    assessment,\n    quarterlyProject,\n    programs,\n    signatureCertifications\n  }\n': TrainingPageQueryResult;
+    '\n  *[_type == "joinPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    applicationProcessHeading,\n    applicationSteps,\n    timelineHeading,\n    timeline,\n    applicationForm,\n    faqHeading,\n    faqs,\n    contactHeading,\n    contactLinks\n  }\n': JoinPageQueryResult;
+    '\n  *[_type == "eventsPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    upcomingHeading,\n    competitionsHeading,\n    externalCtaLabel,\n    upcomingEmptyState,\n    pastEmptyState\n  }\n': EventsPageQueryResult;
     '\n  *[_type == "event"] | order(date asc) {\n    _id,\n    name,\n    date,\n    endDate,\n    location,\n    description,\n    type,\n    status,\n    externalUrl,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllEventsQueryResult;
-    '\n  *[_type == "projectsPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    emptyState,\n    statusLegend\n  }\n': ProjectsPageQueryResult;
-    '\n  *[_type == "project"] | order(_createdAt asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    summary,\n    status,\n    tags,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllProjectsQueryResult;
+    '\n  *[_type == "projectsPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    emptyState,\n    statusLegendHeading,\n    statusLegend\n  }\n': ProjectsPageQueryResult;
+    '\n  *[_type == "project" && showOnProjectsPage != false] | order(_createdAt asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    summary,\n    status,\n    tags,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllProjectsQueryResult;
     '\n  *[_type == "teamPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    foundingClassHeading,\n    membersHeading,\n    membersPlaceholder,\n    alumniHeading,\n    alumniPlaceholder\n  }\n': TeamPageQueryResult;
-    '\n  *[_type == "committeesIndexPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    connectedByDesign\n  }\n': CommitteesIndexPageQueryResult;
-    '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    learn,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "director": director->{\n      firstName,\n      lastName,\n      role\n    }\n  }\n': AllCommitteesIndexQueryResult;
-    '\n  *[_type == "committee" && slug.current == $slug][0] {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    curriculum,\n    learn,\n    differentiator,\n    directorQuote,\n    redirectsFrom,\n    accentColor,\n    order,\n    directorPlaceholder,\n    seo,\n    _updatedAt,\n    "director": director->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "projects": signatureProjects[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      summary,\n      status\n    }\n  }\n': CommitteeBySlugQueryResult;
+    '\n  *[_type == "committeesIndexPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    connectedByDesign,\n    cardLearnHeading,\n    cardCtaLabel\n  }\n': CommitteesIndexPageQueryResult;
+    '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    learn,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "directors": directors[]->{\n      firstName,\n      lastName,\n      role\n    },\n    "director": director->{\n      firstName,\n      lastName,\n      role\n    }\n  }\n': AllCommitteesIndexQueryResult;
+    '\n  *[_type == "committee" && slug.current == $slug][0] {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    curriculum,\n    curriculumEnabled,\n    curriculumHeading,\n    curriculumTerm,\n    learn,\n    learnHeading,\n    differentiator,\n    differentiatorHeading,\n    signatureProjectsHeading,\n    directorQuote,\n    redirectsFrom,\n    accentColor,\n    order,\n    directorPlaceholder,\n    seo,\n    _updatedAt,\n    "directors": directors[]->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "director": director->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "projects": signatureProjects[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      summary,\n      status\n    }\n  }\n': CommitteeBySlugQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': CommitteeSlugsQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] {\n    "slug": slug.current,\n    redirectsFrom\n  }\n': CommitteeRedirectMapQueryResult;
     '\n  *[_type in [\n    "homePage",\n    "aboutPage",\n    "teamPage",\n    "projectsPage",\n    "eventsPage",\n    "trainingPage",\n    "joinPage",\n    "committeesIndexPage"\n  ]] {\n    _type,\n    _updatedAt\n  }\n': SitemapPagesQueryResult;

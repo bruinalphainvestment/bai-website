@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches-ignore:
-      - "dependabot/**"
+      - 'dependabot/**'
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -33,3 +33,6 @@ jobs:
 
       - name: Lint
         run: bun run lint
+
+      - name: Sanity-managed content audit
+        run: bunx playwright test tests/editable-content.spec.ts --project=chromium-desktop --grep "hardcoded|queried and seeded|committee detail visible content|preserve seed"

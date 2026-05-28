@@ -7,27 +7,27 @@ do manually before / shortly after launch.
 
 ## Architecture overview
 
-| Layer | What it does | File(s) |
-| --- | --- | --- |
-| Per-page `<title>`, `<meta description>`, canonical, OG, Twitter | Built from the Sanity `seo` object on each document, with `siteSettings` defaults as fallback | `app/_components/seo.ts` (`buildPageMetadata`) |
-| Root `<title>` + site-wide defaults | From `siteSettings.brandName / titleSuffix / defaultMetaDescription / defaultOgImage` | `app/layout.tsx` |
-| Organization + WebSite JSON-LD | Emitted on every page. Org is typed as `Organization + EducationalOrganization` with `parentOrganization` pointing to UCLA | `app/layout.tsx` |
-| BreadcrumbList JSON-LD | Emitted on `/committees/[slug]` | `app/(site)/committees/[slug]/page.tsx` |
-| sitemap.xml | Dynamic, queries Sanity for each singleton page's `_updatedAt` + every committee. Routed via `app/sitemap.ts` | `app/sitemap.ts` + `sanity/lib/queries.ts` (`sitemapPagesQuery`, `sitemapCommitteesQuery`) |
-| robots.txt | Allows `/`, blocks `/studio`, `/api/preview`, `/api/revalidate`, links to sitemap | `app/robots.ts` |
-| Studio + API noindex | Hard `X-Robots-Tag: noindex, nofollow` header for `/studio/*` and `/api/*` | `middleware.ts` |
-| OG image (default) | Dynamic 1200×630 generated from Sanity brand/slogan | `app/opengraph-image.tsx` |
-| GSC verification meta | Injected only when `NEXT_PUBLIC_GSC_VERIFICATION` is set | `app/layout.tsx` |
-| GA4 | Injected only when `NEXT_PUBLIC_GA_ID` is set (uses `next/script` with `afterInteractive`) | `app/layout.tsx` |
+| Layer                                                            | What it does                                                                                                               | File(s)                                                                                    |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Per-page `<title>`, `<meta description>`, canonical, OG, Twitter | Built from the Sanity `seo` object on each document, with `siteSettings` defaults as fallback                              | `app/_components/seo.ts` (`buildPageMetadata`)                                             |
+| Root `<title>` + site-wide defaults                              | From `siteSettings.brandName / titleSuffix / defaultMetaDescription / defaultOgImage`                                      | `app/layout.tsx`                                                                           |
+| Organization + WebSite JSON-LD                                   | Emitted on every page. Org is typed as `Organization + EducationalOrganization` with `parentOrganization` pointing to UCLA | `app/layout.tsx`                                                                           |
+| BreadcrumbList JSON-LD                                           | Emitted on `/committees/[slug]`                                                                                            | `app/(site)/committees/[slug]/page.tsx`                                                    |
+| sitemap.xml                                                      | Dynamic, queries Sanity for each singleton page's `_updatedAt` + every committee. Routed via `app/sitemap.ts`              | `app/sitemap.ts` + `sanity/lib/queries.ts` (`sitemapPagesQuery`, `sitemapCommitteesQuery`) |
+| robots.txt                                                       | Allows `/`, blocks `/studio`, `/api/preview`, `/api/revalidate`, links to sitemap                                          | `app/robots.ts`                                                                            |
+| Studio + API noindex                                             | Hard `X-Robots-Tag: noindex, nofollow` header for `/studio/*` and `/api/*`                                                 | `middleware.ts`                                                                            |
+| OG image (default)                                               | Dynamic 1200×630 generated from Sanity brand/slogan                                                                        | `app/opengraph-image.tsx`                                                                  |
+| GSC verification meta                                            | Injected only when `NEXT_PUBLIC_GSC_VERIFICATION` is set                                                                   | `app/layout.tsx`                                                                           |
+| GA4                                                              | Injected only when `NEXT_PUBLIC_GA_ID` is set (uses `next/script` with `afterInteractive`)                                 | `app/layout.tsx`                                                                           |
 
 ### SEO fields per content type
 
-| Sanity doc type | `seo` field | Used by |
-| --- | --- | --- |
-| `siteSettings` | n/a (provides defaults: `defaultMetaDescription`, `defaultOgImage`, `organizationDescription`, `sameAs`) | All pages + JSON-LD |
-| `homePage`, `aboutPage`, `committeesIndexPage`, `eventsPage`, `joinPage`, `projectsPage`, `teamPage`, `trainingPage` | ✅ `seo.title`, `seo.description`, `seo.ogImage` | The corresponding route |
-| `committee` | ✅ `seo.title`, `seo.description`, `seo.ogImage` | `/committees/[slug]` |
-| `event`, `project`, `foundingMember` | ❌ (no individual detail pages yet) | n/a |
+| Sanity doc type                                                                                                      | `seo` field                                                                                              | Used by                 |
+| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `siteSettings`                                                                                                       | n/a (provides defaults: `defaultMetaDescription`, `defaultOgImage`, `organizationDescription`, `sameAs`) | All pages + JSON-LD     |
+| `homePage`, `aboutPage`, `committeesIndexPage`, `eventsPage`, `joinPage`, `projectsPage`, `teamPage`, `trainingPage` | ✅ `seo.title`, `seo.description`, `seo.ogImage`                                                         | The corresponding route |
+| `committee`                                                                                                          | ✅ `seo.title`, `seo.description`, `seo.ogImage`                                                         | `/committees/[slug]`    |
+| `event`, `project`, `foundingMember`                                                                                 | ❌ (no individual detail pages yet)                                                                      | n/a                     |
 
 ### Fallback chain (for any page)
 
@@ -76,8 +76,9 @@ not the SEO copy you've written in the CMS.
 - [ ] Open Sanity Studio → Site Settings → Contact & Social — populate
       `instagramUrl`, `linkedinUrl`, and any other social profiles. These
       flow into the Organization JSON-LD `sameAs[]` (Knowledge Graph signal).
-- [ ] Replace the `applyUrl` placeholder (`https://tally.so/r/placeholder`)
-      with the real Tally form URL.
+- [ ] When applications open, add the real http(s) form URL under Sanity Studio
+      → Join Page → Application Form → Form URL. Leave it blank while closed;
+      apply CTAs route to `/join`.
 
 ### Google Search Console (DNS-verified, do these next)
 
@@ -174,7 +175,7 @@ If you add a new singleton page or routable document:
    timestamp).
 4. Run `bun run typegen` to regenerate types.
 5. In the page component, call `buildPageMetadata({ path, seo, settings,
-   fallbackTitle })` from `@/app/_components/seo`.
+fallbackTitle })` from `@/app/_components/seo`.
 6. If it's a new singleton page, add it to `PAGE_TYPE_TO_PATH` in
    `app/sitemap.ts` and to `sitemapPagesQuery` in
    `sanity/lib/queries.ts`.

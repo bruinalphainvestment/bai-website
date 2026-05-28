@@ -28,9 +28,10 @@
  *     from the current `app/(site)/<page>/page.tsx` source so the dataset
  *     mirrors the live site Day 1.
  *   - 8 foundingMember docs (real Spring 2026 roster, all class of 2029).
- *   - 4 committee docs with learn[], differentiator, directorPlaceholder.
- *   - 5 project docs from `app/(site)/projects/page.tsx`.
- *   - 6 event docs from `app/(site)/events/page.tsx`.
+ *   - 4 committee docs with learn[], differentiator, director quotes,
+ *     signature project refs, and directorPlaceholder.
+ *   - 10 project docs from project and committee-detail pages.
+ *   - 6 event docs from the legacy Events fallback.
  *
  * What it does NOT do:
  *   - Will not seed headshots (`photoReleaseObtained: false`).
@@ -42,8 +43,7 @@ import { createClient, type SanityClient } from 'next-sanity';
 
 // `bun run` auto-loads `.env.local` from project root — no dotenv needed.
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim();
-const dataset =
-  process.env.NEXT_PUBLIC_SANITY_DATASET?.trim() || 'production';
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET?.trim() || 'production';
 const apiVersion =
   process.env.NEXT_PUBLIC_SANITY_API_VERSION?.trim() || '2025-01-01';
 const writeToken = process.env.SANITY_API_WRITE_TOKEN?.trim();
@@ -54,7 +54,6 @@ const rawSeedMode = (process.env.SEED_MODE ?? 'preserve').trim();
 const PLACEHOLDER_PROJECT_ID = 'pPLACEHOLDR';
 
 function exitWithError(message: string): never {
-   
   console.error(`\n  ❌  ${message}\n`);
   process.exit(1);
 }
@@ -136,6 +135,11 @@ const IDS = {
     springStockPitch: 'project-spring-stock-pitch',
     wealthAdvisoryMock: 'project-wealth-advisory-mock',
     uclaTradingComp: 'project-ucla-trading-competition',
+    sieStudyPod: 'project-sie-study-pod',
+    internalTradingCompetition: 'project-internal-trading-competition',
+    externalCompetitions: 'project-external-competitions',
+    industryCaseCompetitions: 'project-industry-case-competitions',
+    liveDealTeardown: 'project-live-deal-teardown',
   },
   // Event docs (6) — dash-only IDs.
   events: {
@@ -149,7 +153,7 @@ const IDS = {
   // Stale IDs from the pre-roster-finalisation seed run. We delete these
   // before re-seeding so the dataset doesn't carry both old + new docs.
   // Order matters: committees must be deleted BEFORE members because the
-  // `committee.director` reference creates a foreign-key-style constraint
+  // `committee.directors` references create foreign-key-style constraints
   // in Sanity. Safe to remove this entire block once Mack confirms the
   // dataset is clean.
   stale: [
@@ -187,7 +191,6 @@ const COMMITTEE_PLACEHOLDER_DESCRIPTION =
   'Curriculum in development — check back fall 2026.';
 // Per docs/CUSTOM-DOMAIN.md — bruinalphainvestment.com expires 2027-05-14.
 const DOMAIN_RENEWAL_DATE = '2027-05-14';
-const APPLY_URL = 'https://tally.so/r/placeholder';
 
 function portableText(text: string, keyPrefix: string) {
   return [
@@ -212,7 +215,7 @@ const siteSettingsDoc = {
   _id: IDS.siteSettings,
   _type: 'siteSettings',
   slogan: LOCKED_SLOGAN,
-  applyUrl: APPLY_URL,
+  applyCtaLabel: 'Apply Now',
   clubEmail: CLUB_EMAIL,
   brandName: BRAND_NAME,
   titleSuffix: TITLE_SUFFIX,
@@ -255,6 +258,7 @@ const homePageSections = [
     headline: 'Bruin Alpha Investment',
     subheadline: LOCKED_SLOGAN,
     accentDark: true,
+    scrollLabel: 'Scroll',
   },
   {
     _key: 'mission-1',
@@ -322,6 +326,7 @@ const homePageSections = [
     heading: 'Committees',
     subheading:
       'Four core committees — one rotational program. Specialize after you survey the full landscape.',
+    ctaLabel: 'Explore',
   },
   {
     _key: 'founding-team-5',
@@ -331,13 +336,7 @@ const homePageSections = [
   {
     _key: 'marquee-6',
     _type: 'marqueeSection',
-    items: [
-      'BAI',
-      'REAL IMPACT',
-      'LEGACY',
-      'BRUIN ALPHA',
-      'FOUNDED 2026',
-    ],
+    items: ['BAI', 'REAL IMPACT', 'LEGACY', 'BRUIN ALPHA', 'FOUNDED 2026'],
   },
   {
     _key: 'cta-7',
@@ -386,6 +385,13 @@ const aboutPageDoc = {
       "We realized that true financial education doesn't happen in silos. It happens when students are exposed to the full spectrum of the industry — from investment banking and wealth management to trading and accounting — before they are forced to specialize.\n\n" +
       'By establishing our multi-committee structure, we ensure that every member receives blanket coverage of the financial world during their rotational period, followed by rigorous, hands-on development within their chosen focus area. Our goal is not just to teach finance, but to execute real, meaningful projects that deliver tangible value to our members and the broader community.',
   },
+  founderQuote: {
+    _type: 'quoteSection',
+    quote:
+      'We are starting it, we are building it, so we can decide what direction it wants to go.',
+    attributionName: 'Mack Haymond',
+    attributionRole: 'Spring 2026',
+  },
   // Per plan D7: signature trip teaser scaffold — visible=false until Mack
   // finalises the trip itinerary. Existing hardcoded /about renders an
   // "In Development" panel; that maps to status="In Development".
@@ -395,6 +401,7 @@ const aboutPageDoc = {
     body: '',
     visible: false,
   },
+  valuesHeading: 'What Sets Us Apart',
   // Per Metis §1.15: 7 core values. These are the same values rendered by
   // the home page (`values.tsx`) — duplicated here so /about can render an
   // independent values section if/when an editor wants.
@@ -450,22 +457,19 @@ const aboutPageDoc = {
       _key: 'about-blanket-coverage',
       _type: 'section',
       heading: 'Blanket Coverage',
-      body:
-        "We don't limit our focus to just one area of finance. Our structure is designed to expose members to the entire landscape, ensuring a well-rounded understanding of the markets before deep specialization.",
+      body: "We don't limit our focus to just one area of finance. Our structure is designed to expose members to the entire landscape, ensuring a well-rounded understanding of the markets before deep specialization.",
     },
     {
       _key: 'about-real-projects',
       _type: 'section',
       heading: 'Real Projects',
-      body:
-        'Theory only goes so far. Our committees operate through hands-on, deliverable-driven initiatives rather than passive lectures, ensuring every member builds a tangible track record.',
+      body: 'Theory only goes so far. Our committees operate through hands-on, deliverable-driven initiatives rather than passive lectures, ensuring every member builds a tangible track record.',
     },
     {
       _key: 'about-rotational-program',
       _type: 'section',
       heading: 'Rotational Program',
-      body:
-        'Our unique onboarding pipeline allows new analysts to experience every committee over a 10-week period, guaranteeing that their final placement aligns perfectly with their skills and interests.',
+      body: 'Our unique onboarding pipeline allows new analysts to experience every committee over a 10-week period, guaranteeing that their final placement aligns perfectly with their skills and interests.',
     },
   ],
 };
@@ -486,6 +490,7 @@ const trainingPageDoc = {
   },
   intro:
     'How It Works — rotate through every discipline before committing to a specialized committee.',
+  curriculumHeading: 'How It Works',
   curriculum: [
     {
       _key: 'tr-wk-1-2',
@@ -523,6 +528,62 @@ const trainingPageDoc = {
       body: 'Final placement matching based on analyst preference and demonstrated aptitude.',
     },
   ],
+  classHierarchy: {
+    heading: 'Class Hierarchy',
+    tiers: [
+      {
+        _key: 'tr-class-executive-board',
+        _type: 'classHierarchyTier',
+        title: 'Executive Board',
+        subtitle: 'Leadership',
+      },
+      {
+        _key: 'tr-class-director',
+        _type: 'classHierarchyTier',
+        title: 'Director',
+        subtitle: 'Committee Lead',
+      },
+      {
+        _key: 'tr-class-associate',
+        _type: 'classHierarchyTier',
+        title: 'Associate',
+        subtitle: 'Quarter 2',
+      },
+      {
+        _key: 'tr-class-analyst',
+        _type: 'classHierarchyTier',
+        title: 'Analyst',
+        subtitle: 'Quarter 1',
+      },
+    ],
+  },
+  sampleWeek: {
+    heading: 'Sample Week',
+    items: [
+      {
+        _key: 'tr-sample-committee-meeting',
+        _type: 'sampleWeekItem',
+        duration: '1 hr',
+        title: 'Committee Meeting',
+        body: 'Synchronous instruction, project alignment, and progress reviews.',
+      },
+      {
+        _key: 'tr-sample-asynchronous-work',
+        _type: 'sampleWeekItem',
+        duration: '2 hr',
+        title: 'Asynchronous Work',
+        body: 'Independent research, modeling, and deliverable preparation.',
+      },
+    ],
+  },
+  assessment: {
+    heading: 'Assessment',
+    body: 'After coffee chats, you will receive a 30-page consolidated technical study guide to help prepare for any technical questions you may be asked during final round interviews',
+  },
+  quarterlyProject: {
+    heading: 'Quarterly All-Club Project',
+    body: 'Beyond committee work, the entire organization unites once per quarter for a comprehensive, cross-disciplinary project. This ensures continued collaboration between groups and reinforces the interconnected nature of the financial ecosystem.',
+  },
   programs: [
     {
       _key: 'tr-prog-quarterly',
@@ -569,6 +630,26 @@ const joinPageDoc = {
   },
   intro:
     'Apply to BAI: review the timeline, complete the application, and meet the founding class through coffee chats.',
+  applicationProcessHeading: 'Application Process',
+  applicationSteps: [
+    { _key: 'join-app-apply', _type: 'applicationStep', label: 'Apply' },
+    {
+      _key: 'join-app-coffee-chat',
+      _type: 'applicationStep',
+      label: 'Coffee Chat',
+    },
+    {
+      _key: 'join-app-interview',
+      _type: 'applicationStep',
+      label: 'Interview',
+    },
+    {
+      _key: 'join-app-decision',
+      _type: 'applicationStep',
+      label: 'Decision',
+    },
+  ],
+  timelineHeading: 'Recruitment Timeline',
   // Per Metis §1.12: 4-step recruitment timeline. Lifted from the hardcoded
   // /join page's "Recruitment Timeline" list.
   timeline: [
@@ -603,9 +684,10 @@ const joinPageDoc = {
   ],
   applicationForm: {
     heading: 'Application Form',
-    body: 'Application opens Fall 2026. The form below is a Tally embed placeholder; the real form replaces it before launch.',
-    formUrl: APPLY_URL,
+    body: 'Applications are currently off-cycle. Please check back closer to Fall 2026 for the application form.',
+    linkLabel: 'Link to Application',
   },
+  faqHeading: 'FAQ',
   // Per plan D11: inline FAQs on /join (separate from any shared FAQ doc
   // collection). 6 Q&A pairs lifted verbatim from the hardcoded /join page.
   faqs: [
@@ -634,7 +716,8 @@ const joinPageDoc = {
       _key: 'join-faq-4',
       _type: 'faq',
       question: "What's the time commitment?",
-      answer: '~3-5 hours per week during quarters, plus optional project work.',
+      answer:
+        '~3-5 hours per week during quarters, plus optional project work.',
     },
     {
       _key: 'join-faq-5',
@@ -650,13 +733,15 @@ const joinPageDoc = {
         'You join the rotational program in Fall, cycle through all 4 committees over 8 weeks, then commit to one for the rest of the year.',
     },
   ],
-  eligibilityHeading: 'Eligibility',
-  eligibilityBullets: [
-    'Current or incoming UCLA undergraduate',
-    'No prior finance experience required',
-    'Willing to commit ~3-5 hours/week during quarter',
-    'Genuine interest in at least one of the four committee tracks',
-  ],
+  contactHeading: 'Get in Touch',
+  contactLinks: {
+    emailLabel: 'Email',
+    emailFallbackLabel: 'Contact us',
+    instagramLabel: 'Instagram',
+    instagramDisplayText: '@bruinalphainvestment',
+    linkedinLabel: 'LinkedIn',
+    linkedinDisplayText: 'Bruin Alpha Investment',
+  },
 };
 
 const eventsPageDoc = {
@@ -675,6 +760,9 @@ const eventsPageDoc = {
   },
   intro:
     'Connect with us across campus and track our participation in premier collegiate competitions.',
+  upcomingHeading: 'Upcoming & Ongoing',
+  competitionsHeading: 'Competitions',
+  externalCtaLabel: 'Learn more →',
   upcomingEmptyState:
     'No upcoming events yet — recruitment dates announced soon.',
   pastEmptyState: 'Our first events run Fall 2026.',
@@ -697,6 +785,7 @@ const projectsPageDoc = {
   intro:
     'Explore the hands-on initiatives, research, and engagements led by our specialized committees.',
   emptyState: 'Projects launching Fall 2026.',
+  statusLegendHeading: 'Status Legend',
   // Per plan D9: 3-entry status legend (planning, active, completed).
   // Wording lifted from the hardcoded /projects "Status Legend" footer.
   statusLegend: [
@@ -704,18 +793,21 @@ const projectsPageDoc = {
       _key: 'status-planning',
       _type: 'statusLegendEntry',
       status: 'planning',
+      label: 'Planning',
       description: 'Project being scoped and resourced.',
     },
     {
       _key: 'status-active',
       _type: 'statusLegendEntry',
       status: 'active',
+      label: 'Active',
       description: 'Currently being executed by members.',
     },
     {
       _key: 'status-completed',
       _type: 'statusLegendEntry',
       status: 'completed',
+      label: 'Completed',
       description: 'Successfully delivered.',
     },
   ],
@@ -769,6 +861,8 @@ const committeesIndexPageDoc = {
       'This cross-pollination comes to life in our unified all-club projects, where members from different committees collaborate to tackle complex, multi-faceted financial challenges. We build well-rounded professionals who understand the entire financial ecosystem.',
     ],
   },
+  cardLearnHeading: "What you'll do:",
+  cardCtaLabel: 'Explore',
 };
 
 // ---------------------------------------------------------------------------
@@ -868,8 +962,9 @@ const foundingMembers = [
 ] as const;
 
 // ---------------------------------------------------------------------------
-// 4 committee docs — populated with learn[], differentiator,
-// directorPlaceholder, redirectsFrom[] (D6 + plan §1.13 expectations).
+// 4 committee docs — populated with learn[], differentiator, director quotes,
+// signature project refs, directorPlaceholder, redirectsFrom[] (D6 + plan
+// §1.13 expectations).
 // Source: `app/(site)/committees/[slug]/page.tsx` hardcoded `committees`
 // object literal.
 // ---------------------------------------------------------------------------
@@ -880,13 +975,15 @@ const committees = [
     _type: 'committee',
     name: 'Wealth Management',
     slug: { _type: 'slug', current: 'wealth-management' },
+    directors: [
+      { _key: 'matt-walker', _type: 'reference', _ref: IDS.members.matt },
+    ],
     director: { _type: 'reference', _ref: IDS.members.matt },
     tagline:
       'Soft skills, sales fundamentals, and the discipline behind a book of business.',
-    description: portableText(
-      COMMITTEE_PLACEHOLDER_DESCRIPTION,
-      'desc-wealth',
-    ),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 1,
     accentColor: 'gold',
     learn: [
@@ -895,8 +992,27 @@ const committees = [
       'SIE/Series exam awareness and preparation',
       'Wealth advisor career path fundamentals',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'The only finance club at UCLA emphasizing the wealth advisory career path with hands-on practice.',
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"Wealth management is the long game — built on conviction, rejection-handling, and the relationships you cultivate quarter after quarter." — Mack Haymond',
+    signatureProjects: [
+      {
+        _key: 'wealth-advisory-mock',
+        _type: 'reference',
+        _ref: IDS.projects.wealthAdvisoryMock,
+        _weak: true,
+      },
+      {
+        _key: 'sie-study-pod',
+        _type: 'reference',
+        _ref: IDS.projects.sieStudyPod,
+        _weak: true,
+      },
+    ],
     redirectsFrom: [] as string[],
   },
   {
@@ -904,17 +1020,19 @@ const committees = [
     _type: 'committee',
     name: 'Trading',
     slug: { _type: 'slug', current: 'trading' },
-    // Trading is co-led by Mack, Kai, and Samuel. Sanity's committee schema
-    // only supports a single director reference, so Mack (founder) is the
-    // canonical Studio pick. Use the `role` field on each member doc to
-    // surface all three as Co-Directors on the public page.
+    // Trading is co-led by Mack, Kai, and Samuel. The legacy `director` field
+    // remains Mack as the single-reference fallback for older documents.
+    directors: [
+      { _key: 'mack-haymond', _type: 'reference', _ref: IDS.members.mack },
+      { _key: 'kai-hata', _type: 'reference', _ref: IDS.members.kai },
+      { _key: 'samuel-jiang', _type: 'reference', _ref: IDS.members.sam },
+    ],
     director: { _type: 'reference', _ref: IDS.members.mack },
     tagline:
       'Markets, mechanics, and the systematic edge — from chart reading to hedge fund recruiting.',
-    description: portableText(
-      COMMITTEE_PLACEHOLDER_DESCRIPTION,
-      'desc-trading',
-    ),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 2,
     accentColor: 'navy',
     learn: [
@@ -923,8 +1041,33 @@ const committees = [
       'Systematic strategy basics and risk management',
       'Technical interview prep for trading roles and hedge fund coffee chats',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'A unique focus on hands-on quant and market structure across alternative asset classes.',
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"The market is an incredible teacher. We focus on removing emotion and finding repeatable edge through systematic analysis." — Max',
+    signatureProjects: [
+      {
+        _key: 'event-contract-modeling',
+        _type: 'reference',
+        _ref: IDS.projects.eventContractModeling,
+        _weak: true,
+      },
+      {
+        _key: 'internal-trading-competition',
+        _type: 'reference',
+        _ref: IDS.projects.internalTradingCompetition,
+        _weak: true,
+      },
+      {
+        _key: 'external-competitions',
+        _type: 'reference',
+        _ref: IDS.projects.externalCompetitions,
+        _weak: true,
+      },
+    ],
     redirectsFrom: [] as string[],
   },
   {
@@ -933,13 +1076,20 @@ const committees = [
     name: 'Accounting & Consulting',
     slug: { _type: 'slug', current: 'accounting-consulting' },
     // Co-led by Ben + Michael. Ben listed first per Mack's roster note.
+    directors: [
+      { _key: 'ben-robinson', _type: 'reference', _ref: IDS.members.ben },
+      {
+        _key: 'michael-prosser',
+        _type: 'reference',
+        _ref: IDS.members.michael,
+      },
+    ],
     director: { _type: 'reference', _ref: IDS.members.ben },
     tagline:
       'Where the numbers and the strategy meet — modeling, audit, and advisory thinking under one roof.',
-    description: portableText(
-      COMMITTEE_PLACEHOLDER_DESCRIPTION,
-      'desc-accounting',
-    ),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 3,
     accentColor: 'gold',
     learn: [
@@ -948,8 +1098,27 @@ const committees = [
       'Audit fundamentals and operational review',
       'Case frameworks and structured advisory thinking',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'Why Both? We explain the accounting-consulting overlap and why a unified committee best prepares you for both career paths.',
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"Understanding both the underlying accounting and the overarching strategy makes you significantly more dangerous in any advisory room." — Helmer',
+    signatureProjects: [
+      {
+        _key: 'ucla-club-audit',
+        _type: 'reference',
+        _ref: IDS.projects.uclaClubAudit,
+        _weak: true,
+      },
+      {
+        _key: 'industry-case-competitions',
+        _type: 'reference',
+        _ref: IDS.projects.industryCaseCompetitions,
+        _weak: true,
+      },
+    ],
     redirectsFrom: [] as string[],
   },
   {
@@ -957,9 +1126,19 @@ const committees = [
     _type: 'committee',
     name: 'Investment Banking',
     slug: { _type: 'slug', current: 'investment-banking' },
+    directors: [
+      {
+        _key: 'max-helmer',
+        _type: 'reference',
+        _ref: IDS.members.maxHelmer,
+      },
+      { _key: 'rhett-adkins', _type: 'reference', _ref: IDS.members.rhett },
+    ],
     director: { _type: 'reference', _ref: IDS.members.maxHelmer },
     tagline: 'Modeling, networking, and the mental models behind every deal.',
-    description: portableText(COMMITTEE_PLACEHOLDER_DESCRIPTION, 'desc-ib'),
+    curriculumEnabled: false,
+    curriculumHeading: 'Curriculum',
+    curriculumTerm: 'Fall 2026',
     order: 4,
     accentColor: 'navy',
     learn: [
@@ -968,19 +1147,37 @@ const committees = [
       'Strategic networking, cold emailing, and coffee chat mastery',
       'Technical interview prep for top-tier banking groups',
     ],
+    learnHeading: "What You'll Learn",
     differentiator:
       'A rotational program first approach, transitioning to specialized IB prep with tight cohort camaraderie and access to a smaller community.',
-    // Shown when director ref is unset / placeholder. IB director is "TBD"
-    // in current hardcoded source.
+    differentiatorHeading: 'The BAI Difference',
+    signatureProjectsHeading: 'Signature Projects',
+    directorQuote:
+      '"Success in banking isn\'t just about building the model perfectly—it\'s about understanding the "why" behind the transaction and clearly communicating that narrative." — Director',
+    signatureProjects: [
+      {
+        _key: 'live-deal-teardown',
+        _type: 'reference',
+        _ref: IDS.projects.liveDealTeardown,
+        _weak: true,
+      },
+      {
+        _key: 'spring-stock-pitch',
+        _type: 'reference',
+        _ref: IDS.projects.springStockPitch,
+        _weak: true,
+      },
+    ],
+    // Fallback copy if the Directors array is intentionally left empty.
     directorPlaceholder: 'TBD — announcement coming soon',
     redirectsFrom: [] as string[],
   },
 ] as const;
 
 // ---------------------------------------------------------------------------
-// 5 project docs — lifted from `app/(site)/projects/page.tsx`.
-// All currently status="planning". committee ref maps the hardcoded
-// "committee" string (e.g. "Trading (Aspirational)") to the closest doc.
+// Project docs lifted from the legacy Projects page and committee-detail
+// pages. `showOnProjectsPage: false` preserves committee-only cards without
+// expanding the public /projects grid.
 // ---------------------------------------------------------------------------
 
 const projects = [
@@ -993,6 +1190,7 @@ const projects = [
       'A quantitative initiative focused on pricing and analyzing probability-based event contracts. Analysts will build predictive models to evaluate mispricings in event-driven markets.',
     committee: { _type: 'reference', _ref: IDS.committees.trading },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['research', 'quantitative', 'modeling'],
   },
   {
@@ -1004,6 +1202,7 @@ const projects = [
       'Pro-bono financial reviews for other campus organizations. Members will assess cash flow, budget allocations, and operational efficiency, culminating in a formalized advisory report.',
     committee: { _type: 'reference', _ref: IDS.committees.accounting },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['advisory', 'pro-bono', 'audit'],
   },
   {
@@ -1015,6 +1214,7 @@ const projects = [
       'Our capstone event where analysts across all committees form teams to deliver comprehensive investment pitches, emphasizing rigorous valuation, market sizing, and strategic rationale.',
     committee: { _type: 'reference', _ref: IDS.committees.ib },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['capstone', 'all-club', 'pitch'],
   },
   {
@@ -1026,6 +1226,7 @@ const projects = [
       'Simulated client engagements requiring analysts to construct diversified portfolios based on specific risk profiles, tax considerations, and long-term financial objectives.',
     committee: { _type: 'reference', _ref: IDS.committees.wealth },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['simulation', 'portfolio'],
   },
   {
@@ -1037,15 +1238,75 @@ const projects = [
       'A campus-wide initiative currently in the planning phase. The goal is to democratize market access and test trading strategies in a competitive, simulated environment.',
     committee: { _type: 'reference', _ref: IDS.committees.trading },
     status: 'planning',
+    showOnProjectsPage: true,
     tags: ['competition', 'aspirational'],
+  },
+  {
+    _id: IDS.projects.sieStudyPod,
+    _type: 'project',
+    name: 'SIE Study Pod',
+    slug: { _type: 'slug', current: 'sie-study-pod' },
+    summary:
+      'Collaborative curriculum preparing members for the core Securities Industry Essentials exam.',
+    committee: { _type: 'reference', _ref: IDS.committees.wealth },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['certification', 'wealth-management'],
+  },
+  {
+    _id: IDS.projects.internalTradingCompetition,
+    _type: 'project',
+    name: 'Internal Trading Competition',
+    slug: { _type: 'slug', current: 'internal-trading-competition' },
+    summary: 'A CME-style simulation testing execution under pressure.',
+    committee: { _type: 'reference', _ref: IDS.committees.trading },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['competition', 'trading'],
+  },
+  {
+    _id: IDS.projects.externalCompetitions,
+    _type: 'project',
+    name: 'External Competitions',
+    slug: { _type: 'slug', current: 'external-competitions' },
+    summary:
+      'Preparation for and participation in the CME Trading Challenge (Fall) and IMC Prosperity (Spring).',
+    committee: { _type: 'reference', _ref: IDS.committees.trading },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['competition', 'trading'],
+  },
+  {
+    _id: IDS.projects.industryCaseCompetitions,
+    _type: 'project',
+    name: 'Industry Case Competitions',
+    slug: { _type: 'slug', current: 'industry-case-competitions' },
+    summary:
+      'Tackle real-world business strategy problems in timed, team-based formats.',
+    committee: { _type: 'reference', _ref: IDS.committees.accounting },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['competition', 'case'],
+  },
+  {
+    _id: IDS.projects.liveDealTeardown,
+    _type: 'project',
+    name: 'Live Deal Tear-Down',
+    slug: { _type: 'slug', current: 'live-deal-tear-down' },
+    summary:
+      'Analyze a recent M&A deal, present the strategic rationale, and propose alternative theses.',
+    committee: { _type: 'reference', _ref: IDS.committees.ib },
+    status: 'planning',
+    showOnProjectsPage: false,
+    tags: ['investment-banking', 'deal-analysis'],
   },
 ] as const;
 
 // ---------------------------------------------------------------------------
-// 6 event docs — lifted from `app/(site)/events/page.tsx`. The hardcoded
-// page renders 2 upcoming + 4 competitions. Dates are TBD-style stand-ins
-// (placeholder ISO dates within the relevant quarter); editors update once
-// confirmed. externalUrl is the new camelCase field (per T0.8 deprecation).
+// 6 event docs — lifted from the legacy Events fallback. Dates remain null so
+// the current public labels stay as "TBD" / "Coming Soon" until editors set a
+// real date in Studio. externalUrl is the new camelCase field (per T0.8
+// deprecation).
 // ---------------------------------------------------------------------------
 
 const events = [
@@ -1053,8 +1314,8 @@ const events = [
     _id: IDS.events.eaf,
     _type: 'event',
     name: 'Enormous Activities Fair (EAF)',
-    date: '2026-09-30T12:00:00.000Z',
-    location: 'TBD — UCLA Campus',
+    date: null,
+    location: 'TBD',
     description:
       'Bruin Alpha Investment will be tabling at the annual UCLA Enormous Activities Fair. Come meet our founding class, learn about the rotational program, and ask questions about our four verticals before applications close.',
     type: 'fair',
@@ -1064,7 +1325,7 @@ const events = [
     _id: IDS.events.speakers,
     _type: 'event',
     name: 'Speakers & Workshops',
-    date: '2026-10-15T18:00:00.000Z',
+    date: null,
     location: 'UCLA Campus',
     description:
       'Coming soon — speaker series in development. We are actively coordinating with industry professionals across trading, investment banking, and consulting.',
@@ -1075,7 +1336,7 @@ const events = [
     _id: IDS.events.cme,
     _type: 'event',
     name: 'CME Trading Challenge',
-    date: '2026-11-01T00:00:00.000Z',
+    date: null,
     description:
       "Participation in the premier electronic trading competition utilizing CME Group's real-time professional trading platform.",
     type: 'comp',
@@ -1086,7 +1347,7 @@ const events = [
     _id: IDS.events.imc,
     _type: 'event',
     name: 'IMC Prosperity',
-    date: '2027-04-01T00:00:00.000Z',
+    date: null,
     description:
       'Global trading challenge combining algorithmic trading, market making, and quantitative finance.',
     type: 'comp',
@@ -1097,7 +1358,7 @@ const events = [
     _id: IDS.events.caseComps,
     _type: 'event',
     name: 'Case Competitions',
-    date: '2026-11-15T00:00:00.000Z',
+    date: null,
     description:
       'Targeted participation in regional and national accounting and investment banking case competitions.',
     type: 'comp',
@@ -1108,11 +1369,11 @@ const events = [
     _id: IDS.events.springPitchEvent,
     _type: 'event',
     name: 'Spring Stock Pitch',
-    date: '2027-04-15T00:00:00.000Z',
+    date: null,
     description:
       'Internal cross-committee competition synthesizing market research, financial modeling, and strategic presentation.',
     type: 'comp',
-    status: 'tbd',
+    status: 'scheduled',
     committee: { _type: 'reference', _ref: IDS.committees.ib },
   },
 ] as const;
@@ -1121,7 +1382,134 @@ const events = [
 // Write helpers — mode-aware (Metis §2.13).
 // ---------------------------------------------------------------------------
 
-type WriteStatus = 'created' | 'replaced' | 'exists';
+type WriteStatus = 'created' | 'replaced' | 'patched' | 'exists';
+
+const LEGACY_EVENT_DATES: Record<string, string> = {
+  [IDS.events.eaf]: '2026-09-30T12:00:00.000Z',
+  [IDS.events.speakers]: '2026-10-15T18:00:00.000Z',
+  [IDS.events.cme]: '2026-11-01T00:00:00.000Z',
+  [IDS.events.imc]: '2027-04-01T00:00:00.000Z',
+  [IDS.events.caseComps]: '2026-11-15T00:00:00.000Z',
+  [IDS.events.springPitchEvent]: '2027-04-15T00:00:00.000Z',
+};
+
+const LEGACY_ELIGIBILITY_BULLETS = [
+  'Current or incoming UCLA undergraduate',
+  'No prior finance experience required',
+  'Willing to commit ~3-5 hours/week during quarter',
+  'Genuine interest in at least one of the four committee tracks',
+];
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !Array.isArray(value) &&
+    !(value instanceof Date)
+  );
+}
+
+function arraysMatch(a: unknown, b: readonly string[]) {
+  return (
+    Array.isArray(a) &&
+    a.length === b.length &&
+    a.every((value, index) => value === b[index])
+  );
+}
+
+function isPlaceholderPortableText(value: unknown) {
+  if (!Array.isArray(value) || value.length !== 1) return false;
+  const block = value[0];
+  if (!isPlainObject(block)) return false;
+  const children = block.children;
+  if (!Array.isArray(children) || children.length !== 1) return false;
+  const span = children[0];
+  return isPlainObject(span) && span.text === COMMITTEE_PLACEHOLDER_DESCRIPTION;
+}
+
+function collectMissingValues(
+  seedValue: unknown,
+  existingValue: unknown,
+  path: string,
+  setIfMissing: Record<string, unknown>,
+) {
+  if (seedValue === undefined || seedValue === null) return;
+
+  if (existingValue === undefined || existingValue === null) {
+    setIfMissing[path] = seedValue;
+    return;
+  }
+
+  if (existingValue === '') return;
+
+  if (Array.isArray(seedValue)) {
+    if (!Array.isArray(existingValue)) return;
+    if (existingValue.length === 0) return;
+    for (const seedItem of seedValue) {
+      if (!isPlainObject(seedItem) || typeof seedItem._key !== 'string') {
+        continue;
+      }
+      const existingItem = existingValue.find(
+        (item): item is Record<string, unknown> =>
+          isPlainObject(item) && item._key === seedItem._key,
+      );
+      if (!existingItem) continue;
+      for (const [key, nestedSeedValue] of Object.entries(seedItem)) {
+        if (key === '_key' || key === '_type') continue;
+        collectMissingValues(
+          nestedSeedValue,
+          existingItem[key],
+          `${path}[_key=="${seedItem._key}"].${key}`,
+          setIfMissing,
+        );
+      }
+    }
+    return;
+  }
+
+  if (isPlainObject(seedValue) && isPlainObject(existingValue)) {
+    const existingEntries = Object.entries(existingValue).filter(
+      ([key, value]) =>
+        !key.startsWith('_') &&
+        value !== undefined &&
+        value !== null &&
+        value !== '',
+    );
+    if (existingEntries.length === 0) return;
+    for (const [key, nestedSeedValue] of Object.entries(seedValue)) {
+      if (key === '_id' || key === '_type') continue;
+      collectMissingValues(
+        nestedSeedValue,
+        existingValue[key],
+        `${path}.${key}`,
+        setIfMissing,
+      );
+    }
+  }
+}
+
+function buildSetIfMissing(
+  seedDoc: Record<string, unknown>,
+  existingDoc: Record<string, unknown>,
+) {
+  const setIfMissing: Record<string, unknown> = {};
+  for (const [key, seedValue] of Object.entries(seedDoc)) {
+    if (key === '_id' || key === '_type') continue;
+    // Preserve-mode should not make seeded directors authoritative over an
+    // existing legacy director-only committee. Public queries fall back to the
+    // legacy field until editors migrate that document intentionally.
+    if (
+      seedDoc._type === 'committee' &&
+      key === 'directors' &&
+      existingDoc.directors === undefined &&
+      existingDoc.director !== undefined
+    ) {
+      continue;
+    }
+    collectMissingValues(seedValue, existingDoc[key], key, setIfMissing);
+  }
+  return { setIfMissing };
+}
 
 async function writeDoc(
   doc: Record<string, unknown> & { _id: string; _type: string },
@@ -1132,13 +1520,116 @@ async function writeDoc(
     );
     return { id: doc._id, status: 'replaced' };
   }
-  // preserve: only create when missing — protects editor edits post-cutover.
+  // preserve: create missing docs and fill missing fields, but do not replace
+  // existing published editor values.
   const existing = await client.getDocument(doc._id);
-  if (existing) return { id: doc._id, status: 'exists' };
+  if (existing) {
+    const { setIfMissing } = buildSetIfMissing(doc, existing);
+    if (Object.keys(setIfMissing).length === 0) {
+      return { id: doc._id, status: 'exists' };
+    }
+    let patch = client.patch(doc._id);
+    if (Object.keys(setIfMissing).length > 0) {
+      patch = patch.setIfMissing(setIfMissing);
+    }
+    await patch.commit();
+    return { id: doc._id, status: 'patched' };
+  }
   await client.createIfNotExists(
     doc as Parameters<typeof client.createIfNotExists>[0],
   );
   return { id: doc._id, status: 'created' };
+}
+
+async function cleanupLegacySeedArtifacts(): Promise<void> {
+  if (seedMode !== 'preserve') return;
+
+  const eventIds = Object.keys(LEGACY_EVENT_DATES);
+  const legacyEvents = await client.fetch<
+    Array<{ _id: string; date?: string; location?: string; status?: string }>
+  >(`*[_id in $eventIds]{ _id, date, location, status }`, { eventIds });
+  for (const event of legacyEvents) {
+    let patch = client.patch(event._id);
+    let touched = false;
+    if (event.date === LEGACY_EVENT_DATES[event._id]) {
+      patch = patch.unset(['date']);
+      touched = true;
+    }
+    if (
+      event._id === IDS.events.eaf &&
+      event.location === 'TBD — UCLA Campus'
+    ) {
+      patch = patch.set({ location: 'TBD' });
+      touched = true;
+    }
+    if (event._id === IDS.events.springPitchEvent && event.status === 'tbd') {
+      patch = patch.set({ status: 'scheduled' });
+      touched = true;
+    }
+    if (touched) await patch.commit();
+  }
+
+  const committeeIds = Object.values(IDS.committees);
+  const committeeDescriptions = await client.fetch<
+    Array<{
+      _id: string;
+      description?: unknown;
+      signatureProjects?: Array<{ _key?: string; _ref?: string }>;
+    }>
+  >(`*[_id in $committeeIds]{ _id, description, signatureProjects }`, {
+    committeeIds,
+  });
+  const expectedSignatureProjects: Map<
+    string,
+    readonly {
+      _key: string;
+      _type: 'reference';
+      _ref: string;
+      _weak: boolean;
+    }[]
+  > = new Map(
+    committees.map((committee) => [
+      committee._id,
+      committee.signatureProjects ?? [],
+    ]),
+  );
+  for (const committee of committeeDescriptions) {
+    if (isPlaceholderPortableText(committee.description)) {
+      await client.patch(committee._id).unset(['description']).commit();
+    }
+    const expected = expectedSignatureProjects.get(committee._id);
+    const current = committee.signatureProjects;
+    if (
+      expected &&
+      current &&
+      current.length === expected.length &&
+      current.some((entry) => !entry._key) &&
+      current.every((entry, index) => entry._ref === expected[index]?._ref)
+    ) {
+      await client
+        .patch(committee._id)
+        .set({ signatureProjects: expected })
+        .commit();
+    }
+  }
+
+  const joinPage = await client.fetch<{
+    _id: string;
+    eligibilityHeading?: string;
+    eligibilityBullets?: unknown;
+  } | null>(
+    `*[_id == $joinPageId][0]{ _id, eligibilityHeading, eligibilityBullets }`,
+    { joinPageId: IDS.joinPage },
+  );
+  if (
+    joinPage?.eligibilityHeading === 'Eligibility' &&
+    arraysMatch(joinPage.eligibilityBullets, LEGACY_ELIGIBILITY_BULLETS)
+  ) {
+    await client
+      .patch(joinPage._id)
+      .unset(['eligibilityHeading', 'eligibilityBullets'])
+      .commit();
+  }
 }
 
 async function deleteStaleDocs(staleIds: readonly string[]): Promise<number> {
@@ -1153,7 +1644,6 @@ async function deleteStaleDocs(staleIds: readonly string[]): Promise<number> {
 }
 
 async function main() {
-   
   console.log(
     `\n  🌱  Seeding Sanity\n` +
       `       project:  ${projectId}\n` +
@@ -1164,33 +1654,28 @@ async function main() {
 
   const removed = await deleteStaleDocs(IDS.stale);
   if (removed > 0) {
-     
     console.log(`  🧹  Removed ${removed} stale doc(s) from prior schema.\n`);
   }
 
   const results: Array<{ id: string; status: WriteStatus }> = [];
 
-  // Order matters: members must exist BEFORE committees (committee.director
+  // Order matters: members must exist BEFORE committees (committee.directors
   // refs members). Committees must exist BEFORE projects/events (those ref
   // committees). Singletons and content docs can land in any order after
   // those foreign-key tiers.
   for (const member of foundingMembers) {
-     
     results.push(await writeDoc(member));
   }
 
   for (const cmt of committees) {
-     
     results.push(await writeDoc(cmt));
   }
 
   for (const proj of projects) {
-     
     results.push(await writeDoc(proj));
   }
 
   for (const evt of events) {
-     
     results.push(await writeDoc(evt));
   }
 
@@ -1205,34 +1690,37 @@ async function main() {
   results.push(await writeDoc(teamPageDoc));
   results.push(await writeDoc(committeesIndexPageDoc));
 
-   
+  await cleanupLegacySeedArtifacts();
+
   console.log('  Results:');
   for (const r of results) {
     const icon =
       r.status === 'created'
         ? '✨'
         : r.status === 'replaced'
-        ? '♻️ '
-        : '✓ ';
-     
+          ? '♻️ '
+          : r.status === 'patched'
+            ? '🩹'
+            : '✓ ';
+
     console.log(`    ${icon} ${r.id} (${r.status})`);
   }
 
   const createdCount = results.filter((r) => r.status === 'created').length;
   const replacedCount = results.filter((r) => r.status === 'replaced').length;
+  const patchedCount = results.filter((r) => r.status === 'patched').length;
   const existsCount = results.filter((r) => r.status === 'exists').length;
-   
+
   console.log(
-    `\n  ✅  Done. ${createdCount} created, ${replacedCount} replaced, ${existsCount} already existed.\n`,
+    `\n  ✅  Done. ${createdCount} created, ${replacedCount} replaced, ${patchedCount} patched, ${existsCount} already existed.\n`,
   );
-   
+
   console.log(
     `  Next: open https://www.sanity.io/manage → your project, or run \`bun run dev\`\n  and visit http://localhost:3000/studio to verify and continue editing.\n`,
   );
 }
 
 main().catch((err: unknown) => {
-   
   console.error('\n  ❌  Seed failed:\n', err);
   process.exit(1);
 });

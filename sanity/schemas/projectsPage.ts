@@ -39,6 +39,12 @@ export const projectsPage = defineType({
         'Shown when there are no projects. Projects themselves are queried from the `project` document schema.',
     }),
     defineField({
+      name: 'statusLegendHeading',
+      title: 'Status Legend Heading',
+      type: 'string',
+      group: 'content',
+    }),
+    defineField({
       name: 'statusLegend',
       title: 'Status Legend',
       type: 'array',
@@ -72,9 +78,15 @@ export const projectsPage = defineType({
               rows: 3,
               validation: (rule) => rule.required(),
             }),
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
           ],
           preview: {
-            select: { title: 'status', subtitle: 'description' },
+            select: { title: 'label', subtitle: 'description' },
           },
         }),
       ],

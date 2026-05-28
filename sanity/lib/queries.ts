@@ -8,7 +8,7 @@ export const siteSettingsQuery = defineQuery(`
     "disclaimer": disclaimerText,
     "uclaName": uclaCompliantName,
     "mission": missionStatement,
-    applyUrl,
+    applyCtaLabel,
     clubEmail,
     instagramUrl,
     linkedinUrl,
@@ -69,7 +69,9 @@ export const aboutPageQuery = defineQuery(`
     hero,
     mission,
     history,
+    founderQuote,
     signatureTrip,
+    valuesHeading,
     values,
     sections
   }
@@ -83,6 +85,11 @@ export const trainingPageQuery = defineQuery(`
     hero,
     intro,
     curriculum,
+    curriculumHeading,
+    classHierarchy,
+    sampleWeek,
+    assessment,
+    quarterlyProject,
     programs,
     signatureCertifications
   }
@@ -95,11 +102,15 @@ export const joinPageQuery = defineQuery(`
     _updatedAt,
     hero,
     intro,
+    applicationProcessHeading,
+    applicationSteps,
+    timelineHeading,
     timeline,
     applicationForm,
+    faqHeading,
     faqs,
-    eligibilityHeading,
-    eligibilityBullets
+    contactHeading,
+    contactLinks
   }
 `);
 
@@ -110,6 +121,9 @@ export const eventsPageQuery = defineQuery(`
     _updatedAt,
     hero,
     intro,
+    upcomingHeading,
+    competitionsHeading,
+    externalCtaLabel,
     upcomingEmptyState,
     pastEmptyState
   }
@@ -138,12 +152,13 @@ export const projectsPageQuery = defineQuery(`
     hero,
     intro,
     emptyState,
+    statusLegendHeading,
     statusLegend
   }
 `);
 
 export const allProjectsQuery = defineQuery(`
-  *[_type == "project"] | order(_createdAt asc) {
+  *[_type == "project" && showOnProjectsPage != false] | order(_createdAt asc) {
     _id,
     name,
     "slug": slug.current,
@@ -176,7 +191,9 @@ export const committeesIndexPageQuery = defineQuery(`
     _updatedAt,
     hero,
     intro,
-    connectedByDesign
+    connectedByDesign,
+    cardLearnHeading,
+    cardCtaLabel
   }
 `);
 
@@ -190,6 +207,11 @@ export const allCommitteesIndexQuery = defineQuery(`
     accentColor,
     order,
     directorPlaceholder,
+    "directors": directors[]->{
+      firstName,
+      lastName,
+      role
+    },
     "director": director->{
       firstName,
       lastName,
@@ -206,8 +228,14 @@ export const committeeBySlugQuery = defineQuery(`
     tagline,
     description,
     curriculum,
+    curriculumEnabled,
+    curriculumHeading,
+    curriculumTerm,
     learn,
+    learnHeading,
     differentiator,
+    differentiatorHeading,
+    signatureProjectsHeading,
     directorQuote,
     redirectsFrom,
     accentColor,
@@ -215,6 +243,16 @@ export const committeeBySlugQuery = defineQuery(`
     directorPlaceholder,
     seo,
     _updatedAt,
+    "directors": directors[]->{
+      _id,
+      firstName,
+      lastName,
+      role,
+      committee,
+      headshot,
+      photoReleaseObtained,
+      monogramOverride
+    },
     "director": director->{
       _id,
       firstName,

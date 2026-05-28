@@ -16,6 +16,13 @@ export const committeesTeaserSection = defineType({
       type: 'text',
       rows: 2,
     }),
+    defineField({
+      name: 'ctaLabel',
+      title: 'Card CTA Label',
+      type: 'string',
+      description:
+        'CTA text shown on each committee card before the arrow icon.',
+    }),
   ],
   preview: {
     select: { title: 'heading' },

@@ -50,6 +50,14 @@ export const project = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'showOnProjectsPage',
+      title: 'Show on Projects Page',
+      type: 'boolean',
+      initialValue: true,
+      description:
+        'Turn off for committee-detail-only project cards that should not appear in the main Projects grid.',
+    }),
+    defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',

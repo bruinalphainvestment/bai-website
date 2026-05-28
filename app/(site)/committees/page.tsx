@@ -8,7 +8,11 @@ import {
   committeesIndexPageFallback,
 } from '@/app/_components/fallbacks/committees-index-page';
 import { footerFallback } from '@/app/_components/fallbacks/footer';
-import { FadeUp, StaggerGroup, StaggerItem } from '@/app/_components/motion/scroll-reveal';
+import {
+  FadeUp,
+  StaggerGroup,
+  StaggerItem,
+} from '@/app/_components/motion/scroll-reveal';
 import { buildPageMetadata } from '@/app/_components/seo';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
@@ -25,6 +29,7 @@ import type {
 type CommitteesIndexData = NonNullable<CommitteesIndexPageQueryResult>;
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
 type CommitteeCard = AllCommitteesIndexQueryResult[number];
+type CommitteeCardDirector = NonNullable<CommitteeCard['directors']>[number];
 
 export async function generateMetadata(): Promise<Metadata> {
   const [pageRaw, settingsRaw] = await Promise.all([
@@ -39,7 +44,8 @@ export async function generateMetadata(): Promise<Metadata> {
     seo: page.seo,
     settings,
     fallbackTitle: 'Committees',
-    fallbackDescription: committeesIndexPageFallback.seo?.description ?? undefined,
+    fallbackDescription:
+      committeesIndexPageFallback.seo?.description ?? undefined,
   });
 }
 
@@ -49,30 +55,38 @@ export default async function CommitteesIndexPage() {
     loadCommitteesList(),
   ]);
 
-  const heading = page.hero?.heading ?? committeesIndexPageFallback.hero?.heading ?? 'Committees';
-  const subheading = page.hero?.subheading ?? committeesIndexPageFallback.hero?.subheading ?? '';
+  const heading =
+    page.hero?.heading ?? committeesIndexPageFallback.hero?.heading ?? '';
+  const subheading =
+    page.hero?.subheading ?? committeesIndexPageFallback.hero?.subheading ?? '';
   const intro = page.intro ?? committeesIndexPageFallback.intro;
   const connectedHeading =
     page.connectedByDesign?.heading ??
     committeesIndexPageFallback.connectedByDesign?.heading ??
-    'Connected by Design';
+    '';
   const connectedParagraphs =
     page.connectedByDesign?.paragraphs ??
     committeesIndexPageFallback.connectedByDesign?.paragraphs ??
     [];
-  const connectedBody = page.connectedByDesign?.body ?? committeesIndexPageFallback.connectedByDesign?.body;
+  const connectedBody =
+    page.connectedByDesign?.body ??
+    committeesIndexPageFallback.connectedByDesign?.body;
+  const cardLearnHeading =
+    page.cardLearnHeading ?? committeesIndexPageFallback.cardLearnHeading ?? '';
+  const cardCtaLabel =
+    page.cardCtaLabel ?? committeesIndexPageFallback.cardCtaLabel ?? '';
 
   const headingParts = heading.split(' ');
   const headingFirstHalf = headingParts.slice(0, 2).join(' ');
   const headingSecondHalf = headingParts.slice(2).join(' ');
 
   return (
-    <div className="bg-cream min-h-screen text-navy pt-24 pb-16">
+    <div className="bg-cream text-navy min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4 md:px-8">
-        <section className="mb-20 text-center max-w-3xl mx-auto">
+        <section className="mx-auto mb-20 max-w-3xl text-center">
           <StaggerGroup trigger="mount">
             <StaggerItem>
-              <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 tracking-tight text-navy">
+              <h1 className="font-heading text-navy mb-6 text-4xl font-bold tracking-tight md:text-6xl">
                 {headingFirstHalf}
                 {headingSecondHalf ? (
                   <>
@@ -82,13 +96,13 @@ export default async function CommitteesIndexPage() {
               </h1>
             </StaggerItem>
             <StaggerItem>
-              <p className="text-lg md:text-xl text-navy/80 font-sans leading-relaxed">
+              <p className="text-navy/80 font-sans text-lg leading-relaxed md:text-xl">
                 {subheading}
               </p>
             </StaggerItem>
             {intro ? (
               <StaggerItem>
-                <p className="mt-6 text-base md:text-lg text-navy/70 font-sans leading-relaxed">
+                <p className="text-navy/70 mt-6 font-sans text-base leading-relaxed md:text-lg">
                   {intro}
                 </p>
               </StaggerItem>
@@ -96,32 +110,38 @@ export default async function CommitteesIndexPage() {
           </StaggerGroup>
         </section>
 
-        <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+        <StaggerGroup className="mb-24 grid grid-cols-1 gap-8 md:grid-cols-2">
           {committees.map((committee) => (
             <StaggerItem key={committee._id}>
-              <CommitteeCardItem committee={committee} />
+              <CommitteeCardItem
+                cardCtaLabel={cardCtaLabel}
+                learnHeading={cardLearnHeading}
+                committee={committee}
+              />
             </StaggerItem>
           ))}
         </StaggerGroup>
 
         <FadeUp>
-          <section className="bg-navy text-white rounded-2xl p-8 md:p-16 text-center max-w-4xl mx-auto border border-gold/20">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6 text-cream">
+          <section className="bg-navy border-gold/20 mx-auto max-w-4xl rounded-2xl border p-8 text-center text-white md:p-16">
+            <h2 className="font-heading text-cream mb-6 text-3xl font-bold md:text-4xl">
               {connectedHeading}
             </h2>
-            <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
-            {connectedParagraphs.length > 0
-              ? connectedParagraphs.map((p, i) => (
-                  <p
-                    key={`connected-paragraph-${i}`}
-                    className={`text-lg text-cream/90 font-sans leading-relaxed ${i < connectedParagraphs.length - 1 ? 'mb-6' : ''}`}
-                  >
-                    {p}
-                  </p>
-                ))
-              : connectedBody
-              ? <p className="text-lg text-cream/90 font-sans leading-relaxed">{connectedBody}</p>
-              : null}
+            <div className="bg-gold mx-auto mb-8 h-1 w-24"></div>
+            {connectedParagraphs.length > 0 ? (
+              connectedParagraphs.map((p, i) => (
+                <p
+                  key={`connected-paragraph-${i}`}
+                  className={`text-cream/90 font-sans text-lg leading-relaxed ${i < connectedParagraphs.length - 1 ? 'mb-6' : ''}`}
+                >
+                  {p}
+                </p>
+              ))
+            ) : connectedBody ? (
+              <p className="text-cream/90 font-sans text-lg leading-relaxed">
+                {connectedBody}
+              </p>
+            ) : null}
           </section>
         </FadeUp>
       </div>
@@ -129,42 +149,64 @@ export default async function CommitteesIndexPage() {
   );
 }
 
-function CommitteeCardItem({ committee }: { committee: CommitteeCard }) {
-  const directorName =
-    committee.director
-      ? [committee.director.firstName, committee.director.lastName].filter(Boolean).join(' ').trim()
-      : null;
-  const directorLabel = directorName || committee.directorPlaceholder || 'TBD';
+function CommitteeCardItem({
+  cardCtaLabel,
+  learnHeading,
+  committee,
+}: {
+  cardCtaLabel: string;
+  learnHeading: string;
+  committee: CommitteeCard;
+}) {
+  const directorNames = getCommitteeDirectors(committee)
+    .map(formatDirectorName)
+    .filter(Boolean);
+  const directorLabel =
+    formatDirectorList(directorNames) || committee.directorPlaceholder || 'TBD';
+  const directorHeading = directorNames.length > 1 ? 'Directors' : 'Director';
   const learnBullets = committee.learn ?? [];
   const name = committee.name ?? '';
   const slug = committee.slug ?? '';
   const initial = name.charAt(0) || '?';
   const isNavyAccent = committee.accentColor === 'navy';
   const cardBorder = isNavyAccent ? 'border-navy/30' : 'border-gold/20';
-  const initialBg = isNavyAccent ? 'bg-navy/10 text-navy' : 'bg-gold/10 text-gold';
+  const initialBg = isNavyAccent
+    ? 'bg-navy/10 text-navy'
+    : 'bg-gold/10 text-gold';
   const directorAccent = isNavyAccent ? 'text-navy' : 'text-gold';
 
   return (
-    <div className={`bg-white border ${cardBorder} p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full`}>
+    <div
+      className={`border bg-white ${cardBorder} group flex h-full flex-col rounded-xl p-8 shadow-sm transition-shadow hover:shadow-md`}
+    >
       <div className="mb-6">
-        <div className="flex justify-between items-start mb-4">
-          <h2 className="text-2xl font-bold font-heading text-navy">{name}</h2>
-          <div className={`w-10 h-10 ${initialBg} flex items-center justify-center rounded-full font-bold font-heading text-lg`}>
+        <div className="mb-4 flex items-start justify-between">
+          <h2 className="font-heading text-navy text-2xl font-bold">{name}</h2>
+          <div
+            className={`h-10 w-10 ${initialBg} font-heading flex items-center justify-center rounded-full text-lg font-bold`}
+          >
             {initial}
           </div>
         </div>
-        <p className={`text-sm ${directorAccent} font-semibold uppercase tracking-wider mb-4`}>
-          Director: {directorLabel}
+        <p
+          className={`text-sm ${directorAccent} mb-4 font-semibold tracking-wider uppercase`}
+        >
+          {directorHeading}: {directorLabel}
         </p>
         {committee.tagline ? (
-          <p className="text-navy/80 font-sans mb-6">{committee.tagline}</p>
+          <p className="text-navy/80 mb-6 font-sans">{committee.tagline}</p>
         ) : null}
         {learnBullets.length > 0 ? (
-          <div className="bg-cream/50 rounded-lg p-5 mb-8">
-            <h3 className="font-semibold text-navy mb-3">What you&apos;ll do:</h3>
+          <div className="bg-cream/50 mb-8 rounded-lg p-5">
+            {learnHeading ? (
+              <h3 className="text-navy mb-3 font-semibold">{learnHeading}</h3>
+            ) : null}
             <ul className="space-y-2">
               {learnBullets.map((bullet) => (
-                <li key={bullet} className="flex items-start text-sm text-navy/80">
+                <li
+                  key={bullet}
+                  className="text-navy/80 flex items-start text-sm"
+                >
                   <span className="text-gold mr-2 font-bold">•</span>
                   <span>{bullet}</span>
                 </li>
@@ -174,13 +216,14 @@ function CommitteeCardItem({ committee }: { committee: CommitteeCard }) {
         ) : null}
       </div>
 
-      <div className="mt-auto pt-4 border-t border-navy/10">
+      <div className="border-navy/10 mt-auto border-t pt-4">
         {slug ? (
           <Link
             href={`/committees/${slug}`}
-            className="inline-flex items-center font-bold text-navy hover:text-gold transition-colors"
+            className="text-navy hover:text-gold inline-flex items-center font-bold transition-colors"
           >
-            Explore {name} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            {cardCtaLabel ? `${cardCtaLabel} ${name}` : name}{' '}
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         ) : null}
       </div>
@@ -188,8 +231,31 @@ function CommitteeCardItem({ committee }: { committee: CommitteeCard }) {
   );
 }
 
+function getCommitteeDirectors(
+  committee: CommitteeCard,
+): CommitteeCardDirector[] {
+  if (committee.directors && committee.directors.length > 0) {
+    return committee.directors;
+  }
+  return committee.director ? [committee.director] : [];
+}
+
+function formatDirectorName(director: CommitteeCardDirector): string {
+  return [director.firstName, director.lastName]
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
+function formatDirectorList(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? '';
+  if (names.length === 2) return `${names[0]} & ${names[1]}`;
+  return `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
+}
+
 async function loadCommitteesIndexData(): Promise<CommitteesIndexData> {
-  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return committeesIndexPageFallback;
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true')
+    return committeesIndexPageFallback;
   try {
     const { data } = await sanityFetch({ query: committeesIndexPageQuery });
     // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
@@ -201,7 +267,8 @@ async function loadCommitteesIndexData(): Promise<CommitteesIndexData> {
 }
 
 async function loadCommitteesList(): Promise<AllCommitteesIndexQueryResult> {
-  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return committeesIndexListFallback;
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true')
+    return committeesIndexListFallback;
   try {
     const { data } = await sanityFetch({ query: allCommitteesIndexQuery });
     // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
@@ -218,7 +285,10 @@ async function loadSiteSettings(): Promise<SiteSettingsData> {
     const { data } = await sanityFetch({ query: siteSettingsQuery });
     return data ?? footerFallback;
   } catch (err) {
-    console.error('[committees] siteSettings fetch failed; using fallback:', err);
+    console.error(
+      '[committees] siteSettings fetch failed; using fallback:',
+      err,
+    );
     return footerFallback;
   }
 }
