@@ -1,0 +1,31 @@
+{
+  "$schema": "https://registry.kdco.dev/schemas/worktree.json",
+
+  // Worktree plugin configuration
+  // Documentation: https://github.com/kdcokenny/ocx
+
+  "sync": {
+    // Match .worktreeinclude / Conductor: keep local env values available in
+    // OpenCode-created worktrees before the shared setup hook runs.
+    "copyFiles": [".env.local", ".env.development.local"],
+
+    // Let the setup script run a clean bun install per worktree instead of
+    // sharing node_modules across branches.
+    "symlinkDirs": [],
+
+    "exclude": []
+  },
+
+  "hooks": {
+    // Reuse the Codex/Conductor setup behavior: ensure .env.local exists,
+    // install with Bun, ensure Playwright Chromium, and initialize CodeGraph.
+    "postCreate": [
+      "WORKTREE_SCRIPT_LABEL=\"opencode setup\" bash .codex/scripts/setup-worktree.sh"
+    ],
+
+    // Reuse the shared cleanup script for generated build/test artifacts.
+    "preDelete": [
+      "WORKTREE_SCRIPT_LABEL=\"opencode cleanup\" bash .codex/scripts/cleanup-worktree.sh"
+    ]
+  }
+}
