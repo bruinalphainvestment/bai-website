@@ -7,6 +7,7 @@ export const foundingTeamFallback: FoundingTeamSection = {
 };
 
 export type FoundingTeamMemberItem = {
+  bio?: string | null;
   committeeLabel?: string;
   gradYearLabel?: string;
   linkedinHref?: string | null;

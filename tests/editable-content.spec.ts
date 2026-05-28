@@ -204,9 +204,17 @@ test('founding member config fields have public app bindings', async () => {
     'Home founding team cards must expose configured member links.',
   ).toContain('member.linkedinUrl');
   expect(
+    foundingTeam,
+    'Home founding team cards must render configured member bios.',
+  ).toContain('member.bio');
+  expect(
     committeeDetail,
     'Committee director cards must expose configured member links.',
   ).toContain('director?.linkedinUrl');
+  expect(
+    committeeDetail,
+    'Committee director cards must render configured member bios.',
+  ).toContain('director?.bio');
 });
 
 test('committee detail visible content is seeded and main project grid stays exact', async () => {

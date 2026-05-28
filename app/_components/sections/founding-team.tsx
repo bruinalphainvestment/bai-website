@@ -93,6 +93,11 @@ export default async function FoundingTeam(props: Props = {}) {
                   {member.gradYearLabel ? <span>{member.gradYearLabel}</span> : null}
                 </div>
               ) : null}
+              {member.bio ? (
+                <p className="mt-3 font-sans text-sm leading-relaxed text-navy/65">
+                  {member.bio}
+                </p>
+              ) : null}
               {member.linkedinHref ? (
                 <a
                   href={member.linkedinHref}
@@ -150,6 +155,7 @@ function toDisplayMember(member: FoundingMemberDoc): DisplayMember {
       : null;
   return {
     key: member._id,
+    bio: member.bio,
     committeeLabel: formatCommitteeLabel(member.committee) ?? undefined,
     gradYearLabel: formatGraduationYear(member.gradYear) ?? undefined,
     linkedinHref: normalizeExternalUrl(member.linkedinUrl),

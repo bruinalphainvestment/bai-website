@@ -112,6 +112,7 @@ export default async function CommitteeDetailPage({
     : null;
   const directorLabel = directorName || committee.directorPlaceholder || 'TBD';
   const directorRole = director?.role ?? null;
+  const directorBio = director?.bio ?? null;
   const directorGradYear = formatGraduationYear(director?.gradYear);
   const directorLinkedinHref = normalizeExternalUrl(director?.linkedinUrl);
   const directorMonogram =
@@ -246,6 +247,11 @@ export default async function CommitteeDetailPage({
                     <span className="mt-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-gray-500">
                       {directorGradYear}
                     </span>
+                  ) : null}
+                  {directorBio ? (
+                    <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-gray-600">
+                      {directorBio}
+                    </p>
                   ) : null}
                   {directorLinkedinHref ? (
                     <a
