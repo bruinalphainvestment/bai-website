@@ -13,6 +13,7 @@ export default function Mission(props: Partial<MissionSection> = {}) {
 
   const heading = data.heading ?? missionFallback.heading ?? '';
   const bodyText = extractText(data.body) || missionBodyText;
+  const { initial, rest } = splitInitial(bodyText);
 
   return (
     <section
@@ -28,7 +29,14 @@ export default function Mission(props: Partial<MissionSection> = {}) {
           </StaggerItem>
           <StaggerItem className="md:col-span-8 lg:col-span-9">
             <p className="mission-copy font-sans text-lg md:text-2xl leading-relaxed md:leading-[1.6]">
-              {bodyText}
+              {initial ? (
+                <>
+                  <span className="mission-copy-initial">{initial}</span>
+                  {rest}
+                </>
+              ) : (
+                bodyText
+              )}
             </p>
           </StaggerItem>
         </StaggerGroup>
@@ -42,4 +50,9 @@ function extractText(body: MissionSection['body']): string {
   return body
     .flatMap((block) => block.children?.map((child) => child.text ?? '') ?? [])
     .join('');
+}
+
+function splitInitial(body: string): { initial: string; rest: string } {
+  if (!body) return { initial: '', rest: '' };
+  return { initial: body.charAt(0), rest: body.slice(1) };
 }
