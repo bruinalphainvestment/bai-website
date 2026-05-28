@@ -219,6 +219,14 @@ export type MissionSection = {
     _type: 'block';
     _key: string;
   }>;
+  groupPhoto?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: 'image';
+  };
 };
 
 export type HeroSection = {
@@ -1011,6 +1019,14 @@ export type HomePageQueryResult = {
           _type: 'block';
           _key: string;
         }>;
+        groupPhoto?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: 'image';
+        };
       }
     | {
         _key: string;

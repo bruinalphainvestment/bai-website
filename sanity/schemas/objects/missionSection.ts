@@ -16,6 +16,23 @@ export const missionSection = defineType({
       type: 'array',
       of: [{ type: 'block' }],
     }),
+    defineField({
+      name: 'groupPhoto',
+      title: 'Group Photo',
+      type: 'image',
+      description:
+        'Optional vertical group photo rendered to the right of the mission statement on large screens and stacked below it on small screens.',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+          description: 'Short accessible description of the group photo.',
+          validation: (rule) => rule.required().warning(),
+        }),
+      ],
+    }),
   ],
   preview: {
     select: { title: 'heading' },
