@@ -15,13 +15,16 @@ type GroupPhoto = NonNullable<MissionSection['groupPhoto']>;
 
 export default function Mission(props: Partial<MissionSection> = {}) {
   const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
-  const data = useSanity && props.heading ? props : missionFallback;
+  const data = useSanity && hasMissionContent(props) ? props : missionFallback;
 
   const heading = data.heading ?? missionFallback.heading ?? '';
   const bodyText = extractText(data.body) || missionBodyText;
   const { dropCap, rest } = splitDropCap(bodyText);
   const groupPhoto = data.groupPhoto;
   const groupPhotoUrl = getGroupPhotoUrl(groupPhoto);
+  const layoutClassName = groupPhotoUrl
+    ? 'grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(320px,480px)] lg:items-center lg:gap-16'
+    : 'grid grid-cols-1 gap-12';
   const groupPhotoAlt =
     groupPhoto?.alt?.trim() || 'Bruin Alpha Investment group photo';
 
@@ -31,7 +34,7 @@ export default function Mission(props: Partial<MissionSection> = {}) {
       className="bg-cream text-navy px-4 py-24 md:px-8 md:py-32"
     >
       <div className="mx-auto max-w-7xl">
-        <StaggerGroup className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(320px,480px)] lg:items-center lg:gap-16">
+        <StaggerGroup className={layoutClassName}>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
             <StaggerItem className="md:col-span-4 lg:col-span-3">
               <h2 className="font-display sticky top-32 text-2xl md:text-3xl">
@@ -63,6 +66,14 @@ export default function Mission(props: Partial<MissionSection> = {}) {
         </StaggerGroup>
       </div>
     </section>
+  );
+}
+
+function hasMissionContent(data: Partial<MissionSection>) {
+  return (
+    Boolean(data.heading?.trim()) ||
+    Boolean(extractText(data.body).trim()) ||
+    Boolean(data.groupPhoto?.asset)
   );
 }
 
