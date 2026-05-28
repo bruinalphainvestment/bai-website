@@ -15,8 +15,8 @@
  *
  * Reference cascades (audit 2026-05-17):
  *   - foundingMember mutation → every /committees/{slug} where this person
- *     is the director field needs to revalidate. Same for /team and /
- *     (handled by LIST_PATHS).
+ *     is in directors[] or the legacy director field needs to revalidate.
+ *     Same for /team and / (handled by LIST_PATHS).
  *   - project mutation → the /committees/{slug} that lists this project in
  *     its signatureProjects array needs to revalidate. Same for /projects
  *     (handled by LIST_PATHS).
@@ -142,9 +142,13 @@ async function cascadeRevalidate(body: WebhookPayload): Promise<string[]> {
 
   try {
     if (body._type === 'foundingMember') {
-      // Director reference → committee detail page.
+      // Director references → committee detail page.
       const committees = await readClient.fetch<Array<{ slug: string | null }>>(
-        `*[_type == "committee" && director._ref == $id && defined(slug.current)] {
+        `*[
+          _type == "committee" &&
+          ($id in directors[]._ref || director._ref == $id) &&
+          defined(slug.current)
+        ] {
           "slug": slug.current
         }`,
         { id: body._id },

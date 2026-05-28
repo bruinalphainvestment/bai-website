@@ -358,6 +358,11 @@ export type Committee = {
   differentiator?: string;
   differentiatorHeading?: string;
   signatureProjectsHeading?: string;
+  directors?: Array<
+    {
+      _key: string;
+    } & FoundingMemberReference
+  >;
   director?: FoundingMemberReference;
   directorPlaceholder?: string;
   directorQuote?: string;
@@ -1324,7 +1329,7 @@ export type CommitteesIndexPageQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: allCommitteesIndexQuery
-// Query: *[_type == "committee"] | order(order asc) {    _id,    name,    "slug": slug.current,    tagline,    learn,    accentColor,    order,    directorPlaceholder,    "director": director->{      firstName,      lastName,      role    }  }
+// Query: *[_type == "committee"] | order(order asc) {    _id,    name,    "slug": slug.current,    tagline,    learn,    accentColor,    order,    directorPlaceholder,    "directors": directors[]->{      firstName,      lastName,      role    },    "director": director->{      firstName,      lastName,      role    }  }
 export type AllCommitteesIndexQueryResult = Array<{
   _id: string;
   name: string | null;
@@ -1334,6 +1339,11 @@ export type AllCommitteesIndexQueryResult = Array<{
   accentColor: 'gold' | 'navy' | null;
   order: number | null;
   directorPlaceholder: string | null;
+  directors: Array<{
+    firstName: string | null;
+    lastName: string | null;
+    role: string | null;
+  }> | null;
   director: {
     firstName: string | null;
     lastName: string | null;
@@ -1343,7 +1353,7 @@ export type AllCommitteesIndexQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: committeeBySlugQuery
-// Query: *[_type == "committee" && slug.current == $slug][0] {    _id,    name,    "slug": slug.current,    tagline,    description,    curriculum,    curriculumEnabled,    curriculumHeading,    curriculumTerm,    learn,    learnHeading,    differentiator,    differentiatorHeading,    signatureProjectsHeading,    directorQuote,    redirectsFrom,    accentColor,    order,    directorPlaceholder,    seo,    _updatedAt,    "director": director->{      _id,      firstName,      lastName,      role,      committee,      headshot,      photoReleaseObtained,      monogramOverride    },    "projects": signatureProjects[]->{      _id,      name,      "slug": slug.current,      summary,      status    }  }
+// Query: *[_type == "committee" && slug.current == $slug][0] {    _id,    name,    "slug": slug.current,    tagline,    description,    curriculum,    curriculumEnabled,    curriculumHeading,    curriculumTerm,    learn,    learnHeading,    differentiator,    differentiatorHeading,    signatureProjectsHeading,    directorQuote,    redirectsFrom,    accentColor,    order,    directorPlaceholder,    seo,    _updatedAt,    "directors": directors[]->{      _id,      firstName,      lastName,      role,      committee,      headshot,      photoReleaseObtained,      monogramOverride    },    "director": director->{      _id,      firstName,      lastName,      role,      committee,      headshot,      photoReleaseObtained,      monogramOverride    },    "projects": signatureProjects[]->{      _id,      name,      "slug": slug.current,      summary,      status    }  }
 export type CommitteeBySlugQueryResult = {
   _id: string;
   name: string | null;
@@ -1400,6 +1410,29 @@ export type CommitteeBySlugQueryResult = {
   directorPlaceholder: string | null;
   seo: Seo | null;
   _updatedAt: string;
+  directors: Array<{
+    _id: string;
+    firstName: string | null;
+    lastName: string | null;
+    role: string | null;
+    committee:
+      | 'accounting-consulting'
+      | 'investment-banking'
+      | 'operations'
+      | 'president'
+      | 'trading'
+      | 'wealth-management'
+      | null;
+    headshot: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    } | null;
+    photoReleaseObtained: boolean | null;
+    monogramOverride: string | null;
+  }> | null;
   director: {
     _id: string;
     firstName: string | null;
@@ -1502,8 +1535,8 @@ declare module '@sanity/client' {
     '\n  *[_type == "project" && showOnProjectsPage != false] | order(_createdAt asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    summary,\n    status,\n    tags,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllProjectsQueryResult;
     '\n  *[_type == "teamPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    foundingClassHeading,\n    membersHeading,\n    membersPlaceholder,\n    alumniHeading,\n    alumniPlaceholder\n  }\n': TeamPageQueryResult;
     '\n  *[_type == "committeesIndexPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    connectedByDesign,\n    cardLearnHeading,\n    cardCtaLabel\n  }\n': CommitteesIndexPageQueryResult;
-    '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    learn,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "director": director->{\n      firstName,\n      lastName,\n      role\n    }\n  }\n': AllCommitteesIndexQueryResult;
-    '\n  *[_type == "committee" && slug.current == $slug][0] {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    curriculum,\n    curriculumEnabled,\n    curriculumHeading,\n    curriculumTerm,\n    learn,\n    learnHeading,\n    differentiator,\n    differentiatorHeading,\n    signatureProjectsHeading,\n    directorQuote,\n    redirectsFrom,\n    accentColor,\n    order,\n    directorPlaceholder,\n    seo,\n    _updatedAt,\n    "director": director->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "projects": signatureProjects[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      summary,\n      status\n    }\n  }\n': CommitteeBySlugQueryResult;
+    '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    learn,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "directors": directors[]->{\n      firstName,\n      lastName,\n      role\n    },\n    "director": director->{\n      firstName,\n      lastName,\n      role\n    }\n  }\n': AllCommitteesIndexQueryResult;
+    '\n  *[_type == "committee" && slug.current == $slug][0] {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    curriculum,\n    curriculumEnabled,\n    curriculumHeading,\n    curriculumTerm,\n    learn,\n    learnHeading,\n    differentiator,\n    differentiatorHeading,\n    signatureProjectsHeading,\n    directorQuote,\n    redirectsFrom,\n    accentColor,\n    order,\n    directorPlaceholder,\n    seo,\n    _updatedAt,\n    "directors": directors[]->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "director": director->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "projects": signatureProjects[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      summary,\n      status\n    }\n  }\n': CommitteeBySlugQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': CommitteeSlugsQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] {\n    "slug": slug.current,\n    redirectsFrom\n  }\n': CommitteeRedirectMapQueryResult;
     '\n  *[_type in [\n    "homePage",\n    "aboutPage",\n    "teamPage",\n    "projectsPage",\n    "eventsPage",\n    "trainingPage",\n    "joinPage",\n    "committeesIndexPage"\n  ]] {\n    _type,\n    _updatedAt\n  }\n': SitemapPagesQueryResult;

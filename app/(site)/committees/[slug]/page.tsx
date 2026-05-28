@@ -29,6 +29,7 @@ import type {
 
 type CommitteeData = NonNullable<CommitteeBySlugQueryResult>;
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
+type CommitteeDirector = NonNullable<CommitteeData['directors']>[number];
 
 export const revalidate = 3600;
 export const dynamicParams = false;
@@ -102,24 +103,37 @@ export default async function CommitteeDetailPage({
 
   const fallbackCommittee = committeeDetailFallback[slug] ?? null;
   const cleaned = stegaClean(committee);
-  const director = committee.director;
-  const directorName = director
-    ? [director.firstName, director.lastName].filter(Boolean).join(' ').trim()
-    : null;
-  const directorLabel = directorName || committee.directorPlaceholder || 'TBD';
-  const directorRole = director?.role ?? null;
-  const directorMonogram =
-    director?.monogramOverride ??
-    deriveDirectorMonogram(director?.firstName, director?.lastName);
-  const directorHeadshotUrl =
-    director?.photoReleaseObtained === true && director?.headshot
-      ? urlForImage(director.headshot)
-          .width(400)
-          .height(400)
-          .fit('crop')
-          .auto('format')
-          .url()
-      : null;
+  const directorProfiles = getCommitteeDirectors(committee)
+    .map((director) => {
+      const name = formatDirectorName(director);
+      const headshotUrl =
+        director.photoReleaseObtained === true && director.headshot
+          ? urlForImage(director.headshot)
+              .width(400)
+              .height(400)
+              .fit('crop')
+              .auto('format')
+              .url()
+          : null;
+
+      return {
+        director,
+        name,
+        headshotUrl,
+        monogram:
+          director.monogramOverride ??
+          deriveDirectorMonogram(director.firstName, director.lastName),
+      };
+    })
+    .filter((profile) => profile.name.length > 0);
+  const directorNames = directorProfiles.map((profile) => profile.name);
+  const directorLabel =
+    formatDirectorList(directorNames) || committee.directorPlaceholder || 'TBD';
+  const directorHeading = directorNames.length > 1 ? 'Directors' : 'Director';
+  const directorCardsClassName =
+    directorProfiles.length > 1
+      ? 'mt-8 grid max-w-3xl gap-5 sm:grid-cols-2'
+      : 'mt-8 flex max-w-md flex-col gap-5';
 
   const curriculumBlocks = committee.curriculum ?? [];
   const showCurriculum =
@@ -200,43 +214,50 @@ export default async function CommitteeDetailPage({
 
           <StaggerItem>
             <div className="inline-flex items-center rounded-full bg-[#0A192F] px-5 py-2.5 text-sm font-medium tracking-wide text-[#FAF9F6]">
-              Director: {directorLabel}
+              {directorHeading}: {directorLabel}
             </div>
           </StaggerItem>
 
-          {director && directorName ? (
+          {directorProfiles.length > 0 ? (
             <StaggerItem>
-              <div className="mt-8 flex max-w-md items-center gap-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-[#0A192F]">
-                  {directorHeadshotUrl ? (
-                    <Image
-                      src={directorHeadshotUrl}
-                      alt={`${directorName} headshot`}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F] to-[#020c1b] opacity-80" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="bg-gradient-to-br from-[#C5A059] to-[#8B6F38] bg-clip-text font-serif text-xl text-transparent">
-                          {directorMonogram}
+              <div className={directorCardsClassName}>
+                {directorProfiles.map((profile) => (
+                  <div
+                    key={profile.director._id}
+                    className="flex items-center gap-5 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
+                  >
+                    <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-[#0A192F]">
+                      {profile.headshotUrl ? (
+                        <Image
+                          src={profile.headshotUrl}
+                          alt={`${profile.name} headshot`}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <>
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F] to-[#020c1b] opacity-80" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="bg-gradient-to-br from-[#C5A059] to-[#8B6F38] bg-clip-text font-serif text-xl text-transparent">
+                              {profile.monogram}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-serif text-lg text-[#0A192F]">
+                        {profile.name}
+                      </span>
+                      {profile.director.role ? (
+                        <span className="font-sans text-sm text-gray-600">
+                          {profile.director.role}
                         </span>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-serif text-lg text-[#0A192F]">
-                    {directorName}
-                  </span>
-                  {directorRole ? (
-                    <span className="font-sans text-sm text-gray-600">
-                      {directorRole}
-                    </span>
-                  ) : null}
-                </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
               </div>
             </StaggerItem>
           ) : null}
@@ -354,6 +375,26 @@ function deriveDirectorMonogram(
   if (first) return first.slice(0, 2).toUpperCase();
   if (last) return last.slice(0, 2).toUpperCase();
   return '?';
+}
+
+function getCommitteeDirectors(committee: CommitteeData): CommitteeDirector[] {
+  if (committee.directors && committee.directors.length > 0) {
+    return committee.directors;
+  }
+  return committee.director ? [committee.director] : [];
+}
+
+function formatDirectorName(director: CommitteeDirector): string {
+  return [director.firstName, director.lastName]
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
+function formatDirectorList(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? '';
+  if (names.length === 2) return `${names[0]} & ${names[1]}`;
+  return `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
 }
 
 async function loadCommittee(slug: string): Promise<CommitteeData | null> {

@@ -112,14 +112,36 @@ export const committee = defineType({
       initialValue: 'Signature Projects',
     }),
     defineField({
+      name: 'directors',
+      title: 'Directors',
+      type: 'array',
+      group: 'leadership',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{ type: 'foundingMember' }],
+          options: { disableNew: true },
+        }),
+      ],
+      validation: (rule) => rule.unique(),
+      description:
+        'Optional. Add one or more Founding Members already in the database (use Team Page → Founding Members to add new people).',
+    }),
+    defineField({
       name: 'director',
-      title: 'Director',
+      title: 'Legacy Director (fallback)',
       type: 'reference',
       group: 'leadership',
       to: [{ type: 'foundingMember' }],
       options: { disableNew: true },
+      readOnly: true,
+      hidden: ({ document }) => {
+        const hasDirectors =
+          Array.isArray(document?.directors) && document.directors.length > 0;
+        return hasDirectors || !document?.director;
+      },
       description:
-        'Optional. Pick a Founding Member already in the database (use Team Page → Founding Members to add new people).',
+        'Read-only legacy field. Add this person to Directors above; the public site uses this only when Directors is empty.',
     }),
     defineField({
       name: 'directorPlaceholder',
