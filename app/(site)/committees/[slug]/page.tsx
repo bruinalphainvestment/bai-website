@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { PortableText } from 'next-sanity';
@@ -13,6 +13,11 @@ import {
   StaggerGroup,
   StaggerItem,
 } from '@/app/_components/motion/scroll-reveal';
+import {
+  formatCommitteeLabel,
+  formatGraduationYear,
+  normalizeExternalUrl,
+} from '@/app/_components/person-fields';
 import { absoluteUrl, buildPageMetadata } from '@/app/_components/seo';
 import { client as sanityReadClient } from '@/sanity/lib/client';
 import { urlForImage } from '@/sanity/lib/imageUrl';
@@ -120,6 +125,10 @@ export default async function CommitteeDetailPage({
         director,
         name,
         headshotUrl,
+        committeeLabel: formatCommitteeLabel(director.committee),
+        gradYear: formatGraduationYear(director.gradYear),
+        bio: director.bio ?? null,
+        linkedinHref: normalizeExternalUrl(director.linkedinUrl),
         monogram:
           director.monogramOverride ??
           deriveDirectorMonogram(director.firstName, director.lastName),
@@ -254,6 +263,31 @@ export default async function CommitteeDetailPage({
                         <span className="font-sans text-sm text-gray-600">
                           {profile.director.role}
                         </span>
+                      ) : null}
+                      {profile.committeeLabel || profile.gradYear ? (
+                        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-gray-500">
+                          {profile.committeeLabel ? (
+                            <span>{profile.committeeLabel}</span>
+                          ) : null}
+                          {profile.gradYear ? <span>{profile.gradYear}</span> : null}
+                        </div>
+                      ) : null}
+                      {profile.bio ? (
+                        <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-gray-600">
+                          {profile.bio}
+                        </p>
+                      ) : null}
+                      {profile.linkedinHref ? (
+                        <a
+                          href={profile.linkedinHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${profile.name}'s LinkedIn profile`}
+                          className="mt-3 inline-flex w-fit items-center gap-2 border-b border-[#C5A059]/70 pb-1 font-sans text-sm font-medium text-[#0A192F] transition-colors hover:text-[#8B6F38]"
+                        >
+                          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                          <span>LinkedIn</span>
+                        </a>
                       ) : null}
                     </div>
                   </div>
