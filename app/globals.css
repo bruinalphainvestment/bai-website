@@ -102,24 +102,23 @@ body {
 }
 
 .mission-copy::first-letter {
-  float: left;
-  margin: 0.04em 0.09em 0 0;
+  margin: 0 0.08em 0 0;
   color: var(--color-gold-end);
   font-family: var(--font-display), Georgia, serif;
-  font-size: 5.1em;
+  font-size: 4.8em;
   font-variant-caps: normal;
   font-weight: 600;
-  line-height: 0.955;
+  line-height: 0.75;
+  vertical-align: baseline;
 }
 
-@supports (-webkit-initial-letter: 3) or (initial-letter: 3) {
+@supports (-webkit-initial-letter: 3 1) or (initial-letter: 3 1) {
   .mission-copy::first-letter {
-    float: none;
-    margin: 0 0.18em 0 0;
+    margin: 0 0.14em 0 0;
     font-size: inherit;
     line-height: inherit;
-    -webkit-initial-letter: 3;
-    initial-letter: 3;
+    -webkit-initial-letter: 3 1;
+    initial-letter: 3 1;
   }
 }
 
