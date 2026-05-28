@@ -137,6 +137,7 @@ The repo includes an idempotent seeder that populates the 14 baseline documents 
    | `NEXT_PUBLIC_SITE_URL` | `https://www.bruinalphainvestment.com` (live domain). For a brand-new deploy with no custom domain yet, set it to the assigned `*.vercel.app` alias and swap once the real domain is wired up. | Production |
    | `SANITY_API_WRITE_TOKEN` | The seed-script token | Production, Preview |
    | `SANITY_STUDIO_PREVIEW_SECRET` | The hex secret | Production, Preview |
+   | `SANITY_REVALIDATE_SECRET` | A separate random hex secret for signed Sanity webhooks | Production, Preview |
 
 5. [ ] Click **Deploy**. Wait ~3 minutes for the first build.
 6. [ ] **Smoke test:** Open the assigned `*.vercel.app` URL:
@@ -174,7 +175,7 @@ The site uses ISR with a 1-hour revalidate window, but editors will want changes
 2. [ ] **Name:** `Vercel revalidate (production)`
 3. [ ] **URL:** `https://www.bruinalphainvestment.com/api/revalidate`.
 4. [ ] **Dataset:** `production`. **Trigger on:** Create, Update, Delete.
-5. [ ] **HTTP method:** POST. **Secret:** generate a new random hex (`openssl rand -hex 32`), paste it both here AND as a new Vercel env var `SANITY_WEBHOOK_SECRET`.
+5. [ ] **HTTP method:** POST. **Secret:** generate a new random hex (`openssl rand -hex 32`), paste it both here AND as a new Vercel env var `SANITY_REVALIDATE_SECRET`.
 6. [ ] Save. Test by editing a Site Settings field in Studio and confirming the public page updates within ~5 seconds.
 
 ---

@@ -40,6 +40,11 @@ Example: `feat(home): add marquee section for partner logos`
 7. **Merge:** Once approved and CI passes, merge to `main`.
 8. **Deploy:** Merges to `main` auto-deploy to Vercel production.
 
+## Codex Worktrees
+Codex local worktrees are configured by `.codex/environments/environment.toml`.
+See [CODEX-LOCAL-ENVIRONMENT.md](CODEX-LOCAL-ENVIRONMENT.md) for the setup,
+cleanup, and toolbar action behavior.
+
 ## Rules & Conventions
 
 ### Animation Rules
