@@ -26,12 +26,14 @@ This is where website content lives. Sanity's free tier requires the dataset to 
 
 1. [ ] **Sign up:** Go to [sanity.io](https://www.sanity.io/) and sign up with your personal email (OAuth via Google).
 2. [ ] **Create project from the CLI** (preferred — links Studio + provisions in one shot):
+
    ```bash
    bunx sanity@latest init --env --create-project "Bruin Alpha Investment" --dataset production --visibility public
    ```
 
    - Choose **Existing project** if Sanity asks where to place output (don't overwrite the existing `sanity/` folder).
    - When asked about embedding Studio: skip — we already have it embedded at `/studio`.
+
 3. [ ] **Capture the Project ID:** Sanity will print an 8-character alphanumeric ID (e.g., `v6m6t4z6`). Also visible at `https://www.sanity.io/manage`. **Copy it.**
 4. [ ] **Update `docs/HANDOFF.md`** Accounts Inventory row → Sanity Org → Project ID.
 5. [ ] **Invite co-admin** (optional but recommended): Sanity dashboard → your project → Members → Invite. Add one other officer with **Administrator** role.
@@ -89,6 +91,7 @@ The repo includes an idempotent seeder that populates the 37 baseline documents:
    bun run seed
    ```
 2. [ ] **Verify** by starting the dev server and opening Studio:
+
    ```bash
    bun run dev
    ```
@@ -96,6 +99,7 @@ The repo includes an idempotent seeder that populates the 37 baseline documents:
    - Visit [http://localhost:3000/studio](http://localhost:3000/studio).
    - Sign in with your personal email (same one used at sanity.io).
    - Confirm: **Site Settings** populated, **Home Page** exists with seeded sections, **4 Committees**, **8 Founding Members** (Matt, Ben, Michael, Mack, Kai, Samuel, Max Helmer, Rhett), **10 Projects**, and **6 Events**.
+
 3. [ ] Visit [http://localhost:3000](http://localhost:3000) — site should render without runtime errors.
 4. [ ] Re-running `bun run seed` is safe (idempotent, matches by `_id`).
 

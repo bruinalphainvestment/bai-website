@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, Inter, Geist_Mono } from 'next/font/google';
+import {
+  Cormorant_Garamond,
+  Fraunces,
+  Inter,
+  Geist_Mono,
+} from 'next/font/google';
 import { draftMode } from 'next/headers';
 import Script from 'next/script';
 import { stegaClean } from 'next-sanity';
@@ -32,6 +37,12 @@ const geistMono = Geist_Mono({
   variable: '--font-mono',
   subsets: ['latin'],
   weight: ['400', '500'],
+});
+
+const alphaSerif = Cormorant_Garamond({
+  variable: '--font-alpha-serif',
+  subsets: ['latin'],
+  weight: ['600', '700'],
 });
 
 const siteUrl = (
@@ -148,7 +159,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${inter.variable} ${geistMono.variable} ${alphaSerif.variable} h-full antialiased`}
     >
       <head>
         <link
