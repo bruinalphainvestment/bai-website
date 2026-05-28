@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "setup": "bash .codex/scripts/setup-worktree.sh",
+    "run": "NEXT_PUBLIC_SITE_URL=\"http://localhost:${CONDUCTOR_PORT:-3000}\" bun run dev -- --port \"${CONDUCTOR_PORT:-3000}\"",
+    "archive": "bash .codex/scripts/cleanup-worktree.sh"
+  },
+  "runScriptMode": "concurrent"
+}

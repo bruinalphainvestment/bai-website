@@ -1,16 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+script_label="${WORKTREE_SCRIPT_LABEL:-}"
+if [ -z "$script_label" ]; then
+  if [ -n "${CONDUCTOR_WORKSPACE_PATH:-}" ]; then
+    script_label="conductor setup"
+  else
+    script_label="codex setup"
+  fi
+fi
+
 log() {
-  printf '[codex setup] %s\n' "$*"
+  printf '[%s] %s\n' "$script_label" "$*"
 }
 
 warn() {
-  printf '[codex setup] warning: %s\n' "$*" >&2
+  printf '[%s] warning: %s\n' "$script_label" "$*" >&2
 }
 
 die() {
-  printf '[codex setup] error: %s\n' "$*" >&2
+  printf '[%s] error: %s\n' "$script_label" "$*" >&2
   exit 1
 }
 
@@ -18,7 +27,7 @@ repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 repo_root="$(cd "$repo_root" && pwd -P)"
 cd "$repo_root"
 
-source_tree="${CODEX_SOURCE_TREE_PATH:-}"
+source_tree="${CODEX_SOURCE_TREE_PATH:-${CONDUCTOR_ROOT_PATH:-}}"
 if [ -n "$source_tree" ] && [ -d "$source_tree" ]; then
   source_tree="$(cd "$source_tree" && pwd -P)"
 fi
@@ -94,10 +103,11 @@ fi
 ensure_env_file
 
 log "Installing dependencies with bun install --frozen-lockfile"
-bun install --frozen-lockfile
+SKIP_INSTALL_SIMPLE_GIT_HOOKS=1 bun install --frozen-lockfile
 
-if [ "${CODEX_SKIP_PLAYWRIGHT_INSTALL:-0}" = "1" ]; then
-  log "Skipping Playwright browser install because CODEX_SKIP_PLAYWRIGHT_INSTALL=1"
+skip_playwright_install="${WORKTREE_SKIP_PLAYWRIGHT_INSTALL:-${CODEX_SKIP_PLAYWRIGHT_INSTALL:-0}}"
+if [ "$skip_playwright_install" = "1" ]; then
+  log "Skipping Playwright browser install because WORKTREE_SKIP_PLAYWRIGHT_INSTALL=1 or CODEX_SKIP_PLAYWRIGHT_INSTALL=1"
 else
   log "Ensuring Playwright Chromium is available"
   if ! bunx playwright install chromium; then

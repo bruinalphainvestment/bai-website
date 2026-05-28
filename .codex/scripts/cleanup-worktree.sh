@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+script_label="${WORKTREE_SCRIPT_LABEL:-}"
+if [ -z "$script_label" ]; then
+  if [ -n "${CONDUCTOR_WORKSPACE_PATH:-}" ]; then
+    script_label="conductor cleanup"
+  else
+    script_label="codex cleanup"
+  fi
+fi
+
 log() {
-  printf '[codex cleanup] %s\n' "$*"
+  printf '[%s] %s\n' "$script_label" "$*"
 }
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
@@ -33,16 +42,18 @@ for path in \
   remove_path "$path"
 done
 
-if [ "${CODEX_CLEAN_NODE_MODULES:-0}" = "1" ]; then
+clean_node_modules="${WORKTREE_CLEAN_NODE_MODULES:-${CODEX_CLEAN_NODE_MODULES:-0}}"
+if [ "$clean_node_modules" = "1" ]; then
   remove_path node_modules
 else
-  log "Leaving node_modules in place; set CODEX_CLEAN_NODE_MODULES=1 to remove it"
+  log "Leaving node_modules in place; set WORKTREE_CLEAN_NODE_MODULES=1 or CODEX_CLEAN_NODE_MODULES=1 to remove it"
 fi
 
-if [ "${CODEX_CLEAN_CODEGRAPH:-0}" = "1" ]; then
+clean_codegraph="${WORKTREE_CLEAN_CODEGRAPH:-${CODEX_CLEAN_CODEGRAPH:-0}}"
+if [ "$clean_codegraph" = "1" ]; then
   remove_path .codegraph
 else
-  log "Leaving .codegraph in place; set CODEX_CLEAN_CODEGRAPH=1 to remove it"
+  log "Leaving .codegraph in place; set WORKTREE_CLEAN_CODEGRAPH=1 or CODEX_CLEAN_CODEGRAPH=1 to remove it"
 fi
 
 log "Cleanup complete"
