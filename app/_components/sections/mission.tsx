@@ -3,7 +3,6 @@ import type { MissionSection } from '@/sanity/types/generated';
 import {
   missionBodyText,
   missionFallback,
-  missionFirstLetter,
 } from '../fallbacks/sections/mission';
 
 import { StaggerGroup, StaggerItem } from '../motion/scroll-reveal';
@@ -14,7 +13,6 @@ export default function Mission(props: Partial<MissionSection> = {}) {
 
   const heading = data.heading ?? missionFallback.heading ?? '';
   const bodyText = extractText(data.body) || missionBodyText;
-  const { dropCap, rest } = splitDropCap(bodyText);
 
   return (
     <section
@@ -29,11 +27,8 @@ export default function Mission(props: Partial<MissionSection> = {}) {
             </h2>
           </StaggerItem>
           <StaggerItem className="md:col-span-8 lg:col-span-9">
-            <p className="font-sans text-lg md:text-2xl leading-relaxed md:leading-[1.6]">
-              <span className="float-left text-6xl md:text-8xl font-display leading-none mr-1 md:mr-1.5 mt-1 text-[#8B6F38]">
-                {dropCap}
-              </span>
-              {rest}
+            <p className="mission-copy font-sans text-lg md:text-2xl leading-relaxed md:leading-[1.6]">
+              {bodyText}
             </p>
           </StaggerItem>
         </StaggerGroup>
@@ -47,9 +42,4 @@ function extractText(body: MissionSection['body']): string {
   return body
     .flatMap((block) => block.children?.map((child) => child.text ?? '') ?? [])
     .join('');
-}
-
-function splitDropCap(body: string): { dropCap: string; rest: string } {
-  if (!body) return { dropCap: missionFirstLetter, rest: missionBodyText };
-  return { dropCap: body.charAt(0), rest: body.slice(1) };
 }

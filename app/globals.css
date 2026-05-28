@@ -101,6 +101,28 @@ body {
   color: var(--color-text-on-light);
 }
 
+.mission-copy::first-letter {
+  float: left;
+  margin: 0.04em 0.09em 0 0;
+  color: var(--color-gold-end);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 5.1em;
+  font-variant-caps: normal;
+  font-weight: 600;
+  line-height: 0.955;
+}
+
+@supports (-webkit-initial-letter: 3) or (initial-letter: 3) {
+  .mission-copy::first-letter {
+    float: none;
+    margin: 0 0.18em 0 0;
+    font-size: inherit;
+    line-height: inherit;
+    -webkit-initial-letter: 3;
+    initial-letter: 3;
+  }
+}
+
 /*
  * Lenis required CSS (per darkroomengineering/lenis docs). Without these
  * rules, Chromium browsers apply their built-in wheel-event smoothing on
