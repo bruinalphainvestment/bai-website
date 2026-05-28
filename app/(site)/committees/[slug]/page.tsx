@@ -14,6 +14,7 @@ import {
   StaggerItem,
 } from '@/app/_components/motion/scroll-reveal';
 import {
+  formatCommitteeLabel,
   formatGraduationYear,
   normalizeExternalUrl,
 } from '@/app/_components/person-fields';
@@ -113,6 +114,7 @@ export default async function CommitteeDetailPage({
   const directorLabel = directorName || committee.directorPlaceholder || 'TBD';
   const directorRole = director?.role ?? null;
   const directorBio = director?.bio ?? null;
+  const directorCommitteeLabel = formatCommitteeLabel(director?.committee);
   const directorGradYear = formatGraduationYear(director?.gradYear);
   const directorLinkedinHref = normalizeExternalUrl(director?.linkedinUrl);
   const directorMonogram =
@@ -243,10 +245,11 @@ export default async function CommitteeDetailPage({
                       {directorRole}
                     </span>
                   ) : null}
-                  {directorGradYear ? (
-                    <span className="mt-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-gray-500">
-                      {directorGradYear}
-                    </span>
+                  {directorCommitteeLabel || directorGradYear ? (
+                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-sans text-xs font-medium uppercase tracking-[0.14em] text-gray-500">
+                      {directorCommitteeLabel ? <span>{directorCommitteeLabel}</span> : null}
+                      {directorGradYear ? <span>{directorGradYear}</span> : null}
+                    </div>
                   ) : null}
                   {directorBio ? (
                     <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-gray-600">

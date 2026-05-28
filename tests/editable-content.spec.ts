@@ -213,6 +213,10 @@ test('founding member config fields have public app bindings', async () => {
   ).toContain('director?.linkedinUrl');
   expect(
     committeeDetail,
+    'Committee director cards must render configured member committee labels.',
+  ).toContain('director?.committee');
+  expect(
+    committeeDetail,
     'Committee director cards must render configured member bios.',
   ).toContain('director?.bio');
 });
