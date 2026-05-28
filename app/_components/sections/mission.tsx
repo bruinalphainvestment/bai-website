@@ -31,7 +31,7 @@ export default function Mission(props: Partial<MissionSection> = {}) {
       className="bg-cream text-navy px-4 py-24 md:px-8 md:py-32"
     >
       <div className="mx-auto max-w-7xl">
-        <StaggerGroup className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(280px,420px)] lg:items-start lg:gap-16">
+        <StaggerGroup className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(320px,480px)] lg:items-center lg:gap-16">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
             <StaggerItem className="md:col-span-4 lg:col-span-3">
               <h2 className="font-display sticky top-32 text-2xl md:text-3xl">
@@ -49,12 +49,12 @@ export default function Mission(props: Partial<MissionSection> = {}) {
           </div>
           {groupPhotoUrl ? (
             <StaggerItem>
-              <div className="bg-navy/10 relative mx-auto aspect-[3/4] w-full max-w-[360px] overflow-hidden rounded-[6px] shadow-[0_24px_70px_rgba(0,33,71,0.16)] sm:max-w-[420px] lg:mx-0 lg:max-w-none">
+              <div className="bg-navy/10 relative mx-auto aspect-[3/4] w-full max-w-[390px] overflow-hidden shadow-[0_24px_70px_rgba(0,33,71,0.16)] sm:max-w-[460px] lg:mx-0 lg:max-w-none">
                 <Image
                   src={groupPhotoUrl}
                   alt={groupPhotoAlt}
                   fill
-                  sizes="(min-width: 1024px) 420px, (min-width: 640px) 420px, calc(100vw - 32px)"
+                  sizes="(min-width: 1024px) 480px, (min-width: 640px) 460px, calc(100vw - 32px)"
                   className="object-cover"
                 />
               </div>
@@ -70,8 +70,8 @@ function getGroupPhotoUrl(groupPhoto: GroupPhoto | undefined) {
   if (!groupPhoto?.asset) return null;
 
   return urlForImage(groupPhoto)
-    .width(900)
-    .height(1200)
+    .width(1080)
+    .height(1440)
     .fit('crop')
     .auto('format')
     .url();
