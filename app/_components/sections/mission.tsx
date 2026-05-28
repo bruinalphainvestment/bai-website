@@ -37,13 +37,17 @@ export default function Mission(props: Partial<MissionSection> = {}) {
     : undefined;
   const bodyClassName = hasHeadingAndBody
     ? 'md:col-span-8 lg:col-span-9'
-    : undefined;
+    : !groupPhotoUrl
+      ? 'max-w-5xl'
+      : undefined;
   const imageFrameClassName =
     groupPhotoUrl && hasTextContent
       ? 'bg-navy/10 relative mx-auto aspect-[3/4] w-full max-w-[390px] overflow-hidden shadow-[0_24px_70px_rgba(0,33,71,0.16)] sm:max-w-[460px] lg:mx-0 lg:max-w-none'
       : 'bg-navy/10 relative mx-auto aspect-[3/4] w-full max-w-[390px] overflow-hidden shadow-[0_24px_70px_rgba(0,33,71,0.16)] sm:max-w-[460px] lg:max-w-[480px]';
   const groupPhotoAlt =
     groupPhoto?.alt?.trim() || 'Bruin Alpha Investment group photo';
+
+  if (!hasTextContent && !groupPhotoUrl) return null;
 
   return (
     <section
