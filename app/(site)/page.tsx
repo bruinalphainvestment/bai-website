@@ -59,7 +59,7 @@ export default async function Home() {
 }
 
 function normalizeHomeSections(sections: HomeSection[]): HomeSection[] {
-  const legacyGroupPhoto = sections.find(
+  const legacyGroupPhoto: GroupPhoto = sections.find(
     (section): section is Extract<HomeSection, { _type: 'heroSection' }> =>
       section._type === 'heroSection',
   )?.groupPhoto;
@@ -73,7 +73,7 @@ function normalizeHomeSections(sections: HomeSection[]): HomeSection[] {
 
     return {
       ...section,
-      groupPhoto: legacyGroupPhoto as GroupPhoto,
+      groupPhoto: legacyGroupPhoto,
     };
   });
 }
