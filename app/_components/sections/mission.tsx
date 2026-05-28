@@ -17,14 +17,31 @@ export default function Mission(props: Partial<MissionSection> = {}) {
   const useSanity = process.env.NEXT_PUBLIC_USE_SANITY === 'true';
   const data = useSanity && hasMissionContent(props) ? props : missionFallback;
 
-  const heading = data.heading ?? missionFallback.heading ?? '';
-  const bodyText = extractText(data.body) || missionBodyText;
+  const heading = data.heading?.trim() || missionFallback.heading || '';
+  const bodyText = extractText(data.body).trim() || missionBodyText;
   const { dropCap, rest } = splitDropCap(bodyText);
   const groupPhoto = data.groupPhoto;
   const groupPhotoUrl = getGroupPhotoUrl(groupPhoto);
-  const layoutClassName = groupPhotoUrl
+  const hasHeading = Boolean(heading);
+  const hasBody = Boolean(bodyText);
+  const hasTextContent = hasHeading || hasBody;
+  const hasHeadingAndBody = hasHeading && hasBody;
+  const layoutClassName = groupPhotoUrl && hasTextContent
     ? 'grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(320px,480px)] lg:items-center lg:gap-16'
     : 'grid grid-cols-1 gap-12';
+  const textGridClassName = hasHeadingAndBody
+    ? 'grid grid-cols-1 gap-12 md:grid-cols-12'
+    : 'grid grid-cols-1 gap-12';
+  const headingClassName = hasHeadingAndBody
+    ? 'md:col-span-4 lg:col-span-3'
+    : undefined;
+  const bodyClassName = hasHeadingAndBody
+    ? 'md:col-span-8 lg:col-span-9'
+    : undefined;
+  const imageFrameClassName =
+    groupPhotoUrl && hasTextContent
+      ? 'bg-navy/10 relative mx-auto aspect-[3/4] w-full max-w-[390px] overflow-hidden shadow-[0_24px_70px_rgba(0,33,71,0.16)] sm:max-w-[460px] lg:mx-0 lg:max-w-none'
+      : 'bg-navy/10 relative mx-auto aspect-[3/4] w-full max-w-[390px] overflow-hidden shadow-[0_24px_70px_rgba(0,33,71,0.16)] sm:max-w-[460px] lg:max-w-[480px]';
   const groupPhotoAlt =
     groupPhoto?.alt?.trim() || 'Bruin Alpha Investment group photo';
 
@@ -35,24 +52,30 @@ export default function Mission(props: Partial<MissionSection> = {}) {
     >
       <div className="mx-auto max-w-7xl">
         <StaggerGroup className={layoutClassName}>
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
-            <StaggerItem className="md:col-span-4 lg:col-span-3">
-              <h2 className="font-display sticky top-32 text-2xl md:text-3xl">
-                {heading}
-              </h2>
-            </StaggerItem>
-            <StaggerItem className="md:col-span-8 lg:col-span-9">
-              <p className="font-sans text-lg leading-relaxed md:text-2xl md:leading-[1.6]">
-                <span className="font-display float-left mt-1 mr-1 text-6xl leading-none text-[#8B6F38] md:mr-1.5 md:text-8xl">
-                  {dropCap}
-                </span>
-                {rest}
-              </p>
-            </StaggerItem>
-          </div>
+          {hasTextContent ? (
+            <div className={textGridClassName}>
+              {hasHeading ? (
+                <StaggerItem className={headingClassName}>
+                  <h2 className="font-display sticky top-32 text-2xl md:text-3xl">
+                    {heading}
+                  </h2>
+                </StaggerItem>
+              ) : null}
+              {hasBody ? (
+                <StaggerItem className={bodyClassName}>
+                  <p className="font-sans text-lg leading-relaxed md:text-2xl md:leading-[1.6]">
+                    <span className="font-display float-left mt-1 mr-1 text-6xl leading-none text-[#8B6F38] md:mr-1.5 md:text-8xl">
+                      {dropCap}
+                    </span>
+                    {rest}
+                  </p>
+                </StaggerItem>
+              ) : null}
+            </div>
+          ) : null}
           {groupPhotoUrl ? (
             <StaggerItem>
-              <div className="bg-navy/10 relative mx-auto aspect-[3/4] w-full max-w-[390px] overflow-hidden shadow-[0_24px_70px_rgba(0,33,71,0.16)] sm:max-w-[460px] lg:mx-0 lg:max-w-none">
+              <div className={imageFrameClassName}>
                 <Image
                   src={groupPhotoUrl}
                   alt={groupPhotoAlt}
