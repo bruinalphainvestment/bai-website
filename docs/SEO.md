@@ -32,8 +32,14 @@ do manually before / shortly after launch.
 ### Fallback chain (for any page)
 
 1. `pageDoc.seo.title` → `pageDoc.seo.description` → `pageDoc.seo.ogImage`
-2. else `siteSettings.defaultMetaDescription` / `siteSettings.defaultOgImage`
+2. else `fallbackTitle + siteSettings.titleSuffix` and
+   `siteSettings.defaultMetaDescription` / `siteSettings.defaultOgImage`
 3. else hardcoded in `buildPageMetadata` (`brandName`, etc.)
+
+When `seo.title` is set, it is treated as the final rendered title and is
+not suffixed again. Keep Sanity SEO titles at or under 65 characters and
+meta descriptions at or under 160 characters to avoid Studio warnings and
+search-result truncation.
 
 ---
 
@@ -42,15 +48,15 @@ do manually before / shortly after launch.
 Set these in Vercel → Project → Settings → Environment Variables (Production):
 
 ```
-NEXT_PUBLIC_SITE_URL=https://bruinalphainvestment.com
+NEXT_PUBLIC_SITE_URL=https://www.bruinalphainvestment.com
 NEXT_PUBLIC_USE_SANITY=true
 NEXT_PUBLIC_GSC_VERIFICATION=<token-from-google-search-console>  # optional but recommended
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX                                    # optional, GA4 measurement ID
 ```
 
-`NEXT_PUBLIC_SITE_URL` MUST be the production https URL with no trailing
-slash. Every canonical, sitemap entry, OG URL, and JSON-LD `@id` derives
-from it. Wrong value → everything Google sees is wrong.
+`NEXT_PUBLIC_SITE_URL` MUST be the canonical production https URL with no
+trailing slash. Every canonical, sitemap entry, OG URL, and JSON-LD `@id`
+derives from it. Wrong value → everything Google sees is wrong.
 
 `NEXT_PUBLIC_USE_SANITY=true` is what tells the page loaders to actually
 fetch from Sanity instead of using hardcoded fallbacks. Without it, search

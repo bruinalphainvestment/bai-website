@@ -181,10 +181,11 @@ seed the dataset with locked default content:
    ```
 4. **Verify in Studio** (`bun run dev` → http://localhost:3000/studio):
    - Site Settings singleton populated with disclaimer, mission, slogan.
-   - Home Page singleton exists (empty sections array — populate via Studio).
+   - 8 page singletons exist with seeded content and sections.
    - 8 Founding Member docs (Matt Walker, Ben Robinson, Michael Prosser, Mack Haymond, Kai Hata, Samuel Jiang, Max Helmer, Rhett Adkins).
    - 4 Committee docs (Wealth Management, Trading, Accounting & Consulting,
      Investment Banking — IB director left empty as "TBD").
+   - 10 Project docs and 6 Event docs.
 
 The seeder is **idempotent**: re-running it skips any document that already
 exists (matched by deterministic `_id`). Safe to run after editing — only
@@ -195,7 +196,7 @@ missing documents get created.
 If the dataset is wiped and you need to rebuild defaults:
 
 1. Delete remaining documents in Studio (or via `sanity documents delete`).
-2. Run `bun run seed` again — recreates the 14 baseline documents.
+2. Run `bun run seed` again — recreates the 37 baseline documents.
 3. Re-upload headshots / re-enter custom content via Studio.
 
 ## 2FA Status
@@ -229,7 +230,7 @@ The initial site architecture and content were bootstrapped by Antigravity (AI A
 
 - **Commits:** 17+ commits covering design tokens, CMS schemas, and page implementations.
 - **Files:** 119+ managed files in the repository.
-- **CMS:** 14 baseline documents seeded (Settings, Home, 8 Members, 4 Committees).
+- **CMS:** 37 baseline documents seeded (Settings, 8 page singletons, 8 Members, 4 Committees, 10 Projects, 6 Events).
 - **Automation:** GitHub Actions for Sanity backups and Lighthouse CI audits configured.
 
 ## References

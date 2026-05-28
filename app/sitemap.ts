@@ -46,20 +46,15 @@ const PAGE_CHANGE_FREQ: Record<SitemapPageType, 'weekly' | 'monthly'> = {
   committeesIndexPage: 'monthly',
 };
 
-const FALLBACK_COMMITTEE_SLUGS = [
-  'trading',
-  'asset-management',
-  'wealth-management',
-  'sales-trading',
-] as const;
-
 type SitemapCommittee = {
   slug: string | null;
   _updatedAt: string;
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/+$/, '');
+  const baseUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  ).replace(/\/+$/, '');
 
   const [pages, committees] = await Promise.all([
     loadPages(),
@@ -107,11 +102,7 @@ async function loadPages(): Promise<SitemapPagesQueryResult> {
 
 async function loadCommittees(): Promise<SitemapCommittee[]> {
   if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') {
-    const fallbackTime = new Date().toISOString();
-    return FALLBACK_COMMITTEE_SLUGS.map((slug) => ({
-      slug,
-      _updatedAt: fallbackTime,
-    }));
+    return [];
   }
 
   try {
@@ -119,11 +110,7 @@ async function loadCommittees(): Promise<SitemapCommittee[]> {
     const cleaned: SitemapCommitteesQueryResult = stegaClean(data ?? []);
     return cleaned;
   } catch (error) {
-    console.error('[sitemap] committees fetch failed; using fallback:', error);
-    const fallbackTime = new Date().toISOString();
-    return FALLBACK_COMMITTEE_SLUGS.map((slug) => ({
-      slug,
-      _updatedAt: fallbackTime,
-    }));
+    console.error('[sitemap] committees fetch failed:', error);
+    return [];
   }
 }

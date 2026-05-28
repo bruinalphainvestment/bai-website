@@ -1,8 +1,8 @@
 import { test, expect, type ConsoleMessage } from '@playwright/test';
 import { SITE_ROUTES } from './_helpers/routes';
 
-const TITLE_FRAGMENT = 'Bruin Alpha Investment at UCLA';
 const DISCLAIMER_FRAGMENT = 'registered student organization at UCLA';
+const MAX_SEARCH_TITLE_LENGTH = 65;
 
 for (const route of SITE_ROUTES) {
   test.describe(`route ${route}`, () => {
@@ -30,18 +30,19 @@ for (const route of SITE_ROUTES) {
       expect(h1Text.length, `empty h1 on ${route}`).toBeGreaterThan(0);
 
       const title = await page.title();
-      expect(title, `title missing fragment on ${route}: "${title}"`).toContain(
-        TITLE_FRAGMENT,
-      );
+      expect(title.trim().length, `empty title on ${route}`).toBeGreaterThan(0);
+      expect(
+        title.length,
+        `title may truncate in search results on ${route}: "${title}"`,
+      ).toBeLessThanOrEqual(MAX_SEARCH_TITLE_LENGTH);
 
       // Site footer is the last <footer> in the DOM. The .first() footer can
       // be a <blockquote><footer>...</footer></blockquote> attribution element
       // (e.g. on /about), which doesn't contain the disclaimer.
       const footerText = await page.locator('footer').last().innerText();
-      expect(
-        footerText,
-        `disclaimer missing in footer on ${route}`,
-      ).toContain(DISCLAIMER_FRAGMENT);
+      expect(footerText, `disclaimer missing in footer on ${route}`).toContain(
+        DISCLAIMER_FRAGMENT,
+      );
 
       const overflow = await page.evaluate(() => {
         return {
