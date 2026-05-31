@@ -48,7 +48,7 @@ const PAGE_SEO: SeoPatch[] = [
     label: 'Committees',
     title: 'Committees — Investment Banking, Trading, Wealth, Consulting',
     description:
-      "Explore BAI's UCLA committees in investment banking, trading, wealth management, and accounting consulting, each with curriculum and signature projects.",
+      "Explore BAI's UCLA committees in investment banking, trading, wealth management, and consulting, each with curriculum and signature projects.",
   },
   {
     docId: 'trainingPage',
@@ -69,7 +69,7 @@ const PAGE_SEO: SeoPatch[] = [
     label: 'Projects',
     title: 'Projects & Research — Real Finance Work at UCLA',
     description:
-      'Explore BAI projects across event-contract modeling, UCLA club audits, wealth advisory work, trading competitions, and stock pitch research.',
+      'Explore BAI projects across event-contract modeling, wealth advisory work, trading competitions, consulting case work, and stock pitch research.',
   },
   {
     docId: 'teamPage',
@@ -111,24 +111,24 @@ const COMMITTEE_SEO: SeoPatch[] = [
   },
   {
     docId: 'committee-accounting-consulting',
-    label: 'Accounting & Consulting committee',
-    title: 'Accounting & Consulting — Models, Audit & Case Strategy',
+    label: 'Consulting committee',
+    title: 'Consulting Committee — Models & Case Strategy',
     description:
-      "Explore BAI's Accounting & Consulting committee at UCLA: 3-statement models, DCF and LBO basics, audit fundamentals, and advisory case strategy.",
+      "Explore BAI's Consulting committee at UCLA: financial analysis, market sizing, case frameworks, and advisory strategy.",
   },
 ];
 
 const SITE_SETTINGS_PATCH = {
   defaultMetaDescription:
-    "UCLA's multi-committee finance club for investment banking, trading, wealth management, and accounting consulting training through real projects.",
+    "UCLA's multi-committee finance club for investment banking, trading, wealth management, and consulting training through real projects.",
   organizationDescription:
-    "Bruin Alpha Investment is UCLA's student-led finance club for investment banking, trading, wealth management, and accounting consulting. Members rotate through committees, complete technical training, and contribute to real-world projects.",
+    "Bruin Alpha Investment is UCLA's student-led finance club for investment banking, trading, wealth management, and consulting. Members rotate through committees, complete technical training, and contribute to real-world projects.",
 };
 
 const COMMITTEE_ROUTE_PATCHES = [
   {
     docId: 'committee-accounting-consulting',
-    label: 'Accounting & Consulting route',
+    label: 'Consulting legacy route',
     slug: 'consulting',
     redirectsFrom: ['accounting-consulting'],
   },

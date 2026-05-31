@@ -1,7 +1,7 @@
 import { stegaClean } from 'next-sanity';
 
 const COMMITTEE_LABELS: Record<string, string> = {
-  'accounting-consulting': 'Accounting & Consulting',
+  'accounting-consulting': 'Consulting',
   'investment-banking': 'Investment Banking',
   operations: 'Operations',
   president: 'President',

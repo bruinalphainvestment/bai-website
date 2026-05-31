@@ -3,7 +3,7 @@ import { defineField, defineType } from 'sanity';
 const COMMITTEE_OPTIONS = [
   { title: 'Wealth Management', value: 'wealth-management' },
   { title: 'Trading', value: 'trading' },
-  { title: 'Accounting & Consulting', value: 'accounting-consulting' },
+  { title: 'Consulting', value: 'accounting-consulting' },
   { title: 'Investment Banking', value: 'investment-banking' },
   { title: 'Operations', value: 'operations' },
   { title: 'President', value: 'president' },

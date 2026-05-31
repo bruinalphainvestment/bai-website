@@ -38,7 +38,7 @@ The following live routes are implemented and verified:
 - `/`: Home Page (dynamic sections)
 - `/about`: Mission, history, and values
 - `/committees`: Overview of all 4 active committees
-- `/committees/[slug]`: Dedicated pages for Wealth Management, Trading, Accounting & Consulting, and Investment Banking
+- `/committees/[slug]`: Dedicated pages for Wealth Management, Trading, Consulting, and Investment Banking
 - `/training`: Educational resources and curriculum overview
 - `/projects`: Gallery of active and past investment projects
 - `/team`: Full roster of founding members and directors
@@ -183,9 +183,9 @@ seed the dataset with locked default content:
    - Site Settings singleton populated with disclaimer, mission, slogan.
    - 8 page singletons exist with seeded content and sections.
    - 8 Founding Member docs (Matt Walker, Ben Robinson, Michael Prosser, Mack Haymond, Kai Hata, Samuel Jiang, Max Helmer, Rhett Adkins).
-   - 4 Committee docs (Wealth Management, Trading, Accounting & Consulting,
+   - 4 Committee docs (Wealth Management, Trading, Consulting,
      Investment Banking — IB director left empty as "TBD").
-   - 10 Project docs and 6 Event docs.
+   - 9 Project docs and 6 Event docs.
 
 The seeder is **idempotent**: re-running it skips any document that already
 exists (matched by deterministic `_id`). Safe to run after editing — only

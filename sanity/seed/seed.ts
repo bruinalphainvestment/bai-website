@@ -30,7 +30,7 @@
  *   - 8 foundingMember docs (real Spring 2026 roster, all class of 2029).
  *   - 4 committee docs with learn[], differentiator, director quotes,
  *     signature project refs, and directorPlaceholder.
- *   - 10 project docs from project and committee-detail pages.
+ *   - 9 project docs from project and committee-detail pages.
  *   - 6 event docs from the legacy Events fallback.
  *
  * What it does NOT do:
@@ -128,10 +128,9 @@ const IDS = {
     accounting: 'committee-accounting-consulting',
     ib: 'committee-investment-banking',
   },
-  // Project docs (5) — IDs are dash-only (Sanity anonymous-read quirk).
+  // Project docs — IDs are dash-only (Sanity anonymous-read quirk).
   projects: {
     eventContractModeling: 'project-event-contract-modeling',
-    uclaClubAudit: 'project-ucla-club-audit',
     springStockPitch: 'project-spring-stock-pitch',
     wealthAdvisoryMock: 'project-wealth-advisory-mock',
     uclaTradingComp: 'project-ucla-trading-competition',
@@ -161,6 +160,7 @@ const IDS = {
     'committee.trading',
     'committee.accounting-consulting',
     'committee.investment-banking',
+    'project-ucla-club-audit',
     'foundingMember.mack-haymond',
     'foundingMember.max',
     'foundingMember.sam',
@@ -186,9 +186,9 @@ const BRAND_NAME = 'Bruin Alpha Investment';
 const CLUB_EMAIL = 'bruinalphainvestment26@gmail.com';
 const TITLE_SUFFIX = ' — Bruin Alpha Investment at UCLA';
 const DEFAULT_META_DESCRIPTION =
-  "UCLA's multi-committee finance club for investment banking, trading, wealth management, and accounting consulting training through real projects.";
+  "UCLA's multi-committee finance club for investment banking, trading, wealth management, and consulting training through real projects.";
 const ORGANIZATION_DESCRIPTION =
-  "Bruin Alpha Investment is UCLA's student-led finance club for investment banking, trading, wealth management, and accounting consulting. Members rotate through committees, complete technical training, and contribute to real-world projects.";
+  "Bruin Alpha Investment is UCLA's student-led finance club for investment banking, trading, wealth management, and consulting. Members rotate through committees, complete technical training, and contribute to real-world projects.";
 const COMMITTEE_PLACEHOLDER_DESCRIPTION =
   'Curriculum in development — check back fall 2026.';
 // Per docs/CUSTOM-DOMAIN.md — bruinalphainvestment.com expires 2027-05-14.
@@ -391,7 +391,7 @@ const aboutPageDoc = {
     heading: 'Our History',
     body:
       'The vision for Bruin Alpha Investment began in the Spring of 2026. Mack Haymond and four co-founders recognized a clear gap in the existing financial organization landscape at UCLA. While other organizations focused heavily on single disciplines or maintained extremely narrow funnels for entry, there was a profound need for a community that offered both an inclusive starting point and a pathway to highly specialized expertise.\n\n' +
-      "We realized that true financial education doesn't happen in silos. It happens when students are exposed to the full spectrum of the industry — from investment banking and wealth management to trading and accounting — before they are forced to specialize.\n\n" +
+      "We realized that true financial education doesn't happen in silos. It happens when students are exposed to the full spectrum of the industry — from investment banking and wealth management to trading and consulting — before they are forced to specialize.\n\n" +
       'By establishing our multi-committee structure, we ensure that every member receives blanket coverage of the financial world during their rotational period, followed by rigorous, hands-on development within their chosen focus area. Our goal is not just to teach finance, but to execute real, meaningful projects that deliver tangible value to our members and the broader community.',
   },
   founderQuote: {
@@ -520,8 +520,8 @@ const trainingPageDoc = {
       _key: 'tr-wk-5-6',
       _type: 'curriculumEntry',
       week: 'Wk 5-6',
-      topic: 'Accounting & Consulting',
-      body: 'Financial statement analysis, corporate strategy, and operational auditing.',
+      topic: 'Consulting',
+      body: 'Financial statement analysis, corporate strategy, and case execution.',
     },
     {
       _key: 'tr-wk-7-8',
@@ -788,7 +788,7 @@ const projectsPageDoc = {
     _type: 'seo',
     title: 'Projects & Research — Bruin Alpha Investment at UCLA',
     description:
-      'Explore BAI projects across event-contract modeling, UCLA club audits, wealth advisory work, trading competitions, and stock pitch research.',
+      'Explore BAI projects across event-contract modeling, wealth advisory work, trading competitions, consulting case work, and stock pitch research.',
   },
   hero: {
     heading: 'What We Build',
@@ -859,7 +859,7 @@ const committeesIndexPageDoc = {
     _type: 'seo',
     title: 'Committees — Investment Banking, Trading, Wealth, Consulting',
     description:
-      "Explore BAI's UCLA committees in investment banking, trading, wealth management, and accounting consulting, each with curriculum and signature projects.",
+      "Explore BAI's UCLA committees in investment banking, trading, wealth management, and consulting, each with curriculum and signature projects.",
   },
   hero: {
     heading: 'Four Committees. One Club.',
@@ -872,7 +872,7 @@ const committeesIndexPageDoc = {
     heading: 'Connected by Design',
     body: "We don't believe in silos.",
     paragraphs: [
-      "We don't believe in silos. Our unique rotational program ensures that every member gains exposure to all four disciplines during their early tenure. You might specialize in Wealth Management, but you'll understand how a trader sizes positions, how a consultant audits operations, and how an investment banker builds a DCF.",
+      "We don't believe in silos. Our unique rotational program ensures that every member gains exposure to all four disciplines during their early tenure. You might specialize in Wealth Management, but you'll understand how a trader sizes positions, how a consultant reviews operations, and how an investment banker builds a DCF.",
       'This cross-pollination comes to life in our unified all-club projects, where members from different committees collaborate to tackle complex, multi-faceted financial challenges. We build well-rounded professionals who understand the entire financial ecosystem.',
     ],
   },
@@ -901,7 +901,7 @@ const foundingMembers = [
     _type: 'foundingMember',
     firstName: 'Ben',
     lastName: 'Robinson',
-    role: 'Accounting & Consulting Co-Director',
+    role: 'Consulting Co-Director',
     committee: 'accounting-consulting',
     gradYear: 2029,
     bio: '',
@@ -912,7 +912,7 @@ const foundingMembers = [
     _type: 'foundingMember',
     firstName: 'Michael',
     lastName: 'Prosser',
-    role: 'Accounting & Consulting Co-Director',
+    role: 'Consulting Co-Director',
     committee: 'accounting-consulting',
     gradYear: 2029,
     bio: '',
@@ -1100,7 +1100,7 @@ const committees = [
   {
     _id: IDS.committees.accounting,
     _type: 'committee',
-    name: 'Accounting & Consulting',
+    name: 'Consulting',
     slug: { _type: 'slug', current: 'consulting' },
     // Co-led by Ben + Michael. Ben listed first per Mack's roster note.
     directors: [
@@ -1113,7 +1113,7 @@ const committees = [
     ],
     director: { _type: 'reference', _ref: IDS.members.ben },
     tagline:
-      'Where the numbers and the strategy meet — modeling, audit, and advisory thinking under one roof.',
+      'Where the numbers and the strategy meet — modeling, cases, and advisory thinking under one roof.',
     curriculumEnabled: false,
     curriculumHeading: 'Curriculum',
     curriculumTerm: 'Fall 2026',
@@ -1122,23 +1122,17 @@ const committees = [
     learn: [
       '3-statement modeling and financial statement analysis',
       'Discounted Cash Flow (DCF) and LBO basics',
-      'Audit fundamentals and operational review',
+      'Market sizing and operational review',
       'Case frameworks and structured advisory thinking',
     ],
     learnHeading: "What You'll Learn",
     differentiator:
-      'Why Both? We explain the accounting-consulting overlap and why a unified committee best prepares you for both career paths.',
+      'We focus on structured problem-solving, financial analysis, and advisory judgment for students interested in consulting careers.',
     differentiatorHeading: 'The BAI Difference',
     signatureProjectsHeading: 'Signature Projects',
     directorQuote:
-      '"Understanding both the underlying accounting and the overarching strategy makes you significantly more dangerous in any advisory room." — Helmer',
+      '"Strong consultants pair financial fluency with clear strategic judgment. We train members to connect the numbers to the decision." — Helmer',
     signatureProjects: [
-      {
-        _key: 'ucla-club-audit',
-        _type: 'reference',
-        _ref: IDS.projects.uclaClubAudit,
-        _weak: true,
-      },
       {
         _key: 'industry-case-competitions',
         _type: 'reference',
@@ -1148,9 +1142,9 @@ const committees = [
     ],
     seo: {
       _type: 'seo',
-      title: 'Accounting & Consulting — Models, Audit & Case Strategy',
+      title: 'Consulting Committee — Models & Case Strategy',
       description:
-        "Explore BAI's Accounting & Consulting committee at UCLA: 3-statement models, DCF and LBO basics, audit fundamentals, and advisory case strategy.",
+        "Explore BAI's Consulting committee at UCLA: financial analysis, market sizing, case frameworks, and advisory strategy.",
     },
     redirectsFrom: ['accounting-consulting'] as string[],
   },
@@ -1231,18 +1225,6 @@ const projects = [
     status: 'planning',
     showOnProjectsPage: true,
     tags: ['research', 'quantitative', 'modeling'],
-  },
-  {
-    _id: IDS.projects.uclaClubAudit,
-    _type: 'project',
-    name: 'UCLA Club Audit Initiative',
-    slug: { _type: 'slug', current: 'ucla-club-audit-initiative' },
-    summary:
-      'Pro-bono financial reviews for other campus organizations. Members will assess cash flow, budget allocations, and operational efficiency, culminating in a formalized advisory report.',
-    committee: { _type: 'reference', _ref: IDS.committees.accounting },
-    status: 'planning',
-    showOnProjectsPage: true,
-    tags: ['advisory', 'pro-bono', 'audit'],
   },
   {
     _id: IDS.projects.springStockPitch,
@@ -1399,7 +1381,7 @@ const events = [
     name: 'Case Competitions',
     date: null,
     description:
-      'Targeted participation in regional and national accounting and investment banking case competitions.',
+      'Targeted participation in regional and national consulting and investment banking case competitions.',
     type: 'comp',
     status: 'tbd',
     committee: { _type: 'reference', _ref: IDS.committees.accounting },
@@ -1439,6 +1421,16 @@ const LEGACY_ELIGIBILITY_BULLETS = [
   'Genuine interest in at least one of the four committee tracks',
 ];
 
+const LEGACY_CONSULTING_ROLE = 'Accounting & Consulting Co-Director';
+const LEGACY_PROJECTS_SEO_DESCRIPTION =
+  'Explore BAI projects across event-contract modeling, UCLA club audits, wealth advisory work, trading competitions, and stock pitch research.';
+const LEGACY_COMMITTEES_SEO_DESCRIPTION =
+  "Explore BAI's UCLA committees in investment banking, trading, wealth management, and accounting consulting, each with curriculum and signature projects.";
+const LEGACY_DEFAULT_META_DESCRIPTION =
+  "UCLA's multi-committee finance club for investment banking, trading, wealth management, and accounting consulting training through real projects.";
+const LEGACY_ORGANIZATION_DESCRIPTION =
+  "Bruin Alpha Investment is UCLA's student-led finance club for investment banking, trading, wealth management, and accounting consulting. Members rotate through committees, complete technical training, and contribute to real-world projects.";
+
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return (
     typeof value === 'object' &&
@@ -1464,6 +1456,10 @@ function isPlaceholderPortableText(value: unknown) {
   if (!Array.isArray(children) || children.length !== 1) return false;
   const span = children[0];
   return isPlainObject(span) && span.text === COMMITTEE_PLACEHOLDER_DESCRIPTION;
+}
+
+function seedCommitteeById(id: string) {
+  return committees.find((committee) => committee._id === id);
 }
 
 function collectMissingValues(
@@ -1667,6 +1663,181 @@ async function cleanupLegacySeedArtifacts(): Promise<void> {
     await client
       .patch(joinPage._id)
       .unset(['eligibilityHeading', 'eligibilityBullets'])
+      .commit();
+  }
+
+  await cleanupConsultingRenameArtifacts();
+}
+
+async function cleanupConsultingRenameArtifacts(): Promise<void> {
+  const consultingCommittee = seedCommitteeById(IDS.committees.accounting);
+  if (!consultingCommittee) return;
+
+  const committee = await client.fetch<{
+    _id: string;
+    name?: string;
+    seo?: { title?: string; description?: string };
+    signatureProjects?: Array<{ _ref?: string }>;
+  } | null>(
+    `*[_id == $committeeId][0]{ _id, name, seo, signatureProjects }`,
+    { committeeId: IDS.committees.accounting },
+  );
+
+  if (
+    committee &&
+    (committee.name === 'Accounting & Consulting' ||
+      committee.seo?.description === LEGACY_COMMITTEES_SEO_DESCRIPTION ||
+      committee.signatureProjects?.some(
+        (project) => project._ref === 'project-ucla-club-audit',
+      ))
+  ) {
+    await client
+      .patch(committee._id)
+      .set({
+        name: consultingCommittee.name,
+        tagline: consultingCommittee.tagline,
+        learn: consultingCommittee.learn,
+        differentiator: consultingCommittee.differentiator,
+        directorQuote: consultingCommittee.directorQuote,
+        signatureProjects: consultingCommittee.signatureProjects,
+        seo: consultingCommittee.seo,
+        redirectsFrom: consultingCommittee.redirectsFrom,
+      })
+      .commit();
+  }
+
+  for (const memberId of [IDS.members.ben, IDS.members.michael]) {
+    const member = await client.fetch<{ _id: string; role?: string } | null>(
+      `*[_id == $memberId][0]{ _id, role }`,
+      { memberId },
+    );
+    if (member?.role === LEGACY_CONSULTING_ROLE) {
+      await client
+        .patch(member._id)
+        .set({ role: 'Consulting Co-Director' })
+        .commit();
+    }
+  }
+
+  const trainingPage = await client.fetch<{
+    _id: string;
+    curriculum?: Array<{ _key?: string; topic?: string; body?: string }>;
+  } | null>(
+    `*[_id == $trainingPageId][0]{ _id, curriculum[]{ _key, topic, body } }`,
+    { trainingPageId: IDS.trainingPage },
+  );
+  const consultingWeek = trainingPage?.curriculum?.find(
+    (entry) => entry._key === 'tr-wk-5-6',
+  );
+  if (
+    trainingPage &&
+    (consultingWeek?.topic === 'Accounting & Consulting' ||
+      consultingWeek?.body ===
+        'Financial statement analysis, corporate strategy, and operational auditing.')
+  ) {
+    await client
+      .patch(trainingPage._id)
+      .set({
+        'curriculum[_key=="tr-wk-5-6"].topic': 'Consulting',
+        'curriculum[_key=="tr-wk-5-6"].body':
+          'Financial statement analysis, corporate strategy, and case execution.',
+      })
+      .commit();
+  }
+
+  const projectsPage = await client.fetch<{
+    _id: string;
+    seo?: { title?: string; description?: string };
+  } | null>(`*[_id == $projectsPageId][0]{ _id, seo }`, {
+    projectsPageId: IDS.projectsPage,
+  });
+  if (projectsPage?.seo?.description === LEGACY_PROJECTS_SEO_DESCRIPTION) {
+    await client.patch(projectsPage._id).set({ seo: projectsPageDoc.seo }).commit();
+  }
+
+  const committeesPage = await client.fetch<{
+    _id: string;
+    seo?: { title?: string; description?: string };
+    connectedByDesign?: { paragraphs?: string[] };
+  } | null>(
+    `*[_id == $committeesPageId][0]{ _id, seo, connectedByDesign }`,
+    { committeesPageId: IDS.committeesIndexPage },
+  );
+  if (
+    committeesPage &&
+    (committeesPage.seo?.description === LEGACY_COMMITTEES_SEO_DESCRIPTION ||
+      committeesPage.connectedByDesign?.paragraphs?.some((paragraph) =>
+        paragraph.includes('consultant audits operations'),
+      ))
+  ) {
+    await client
+      .patch(committeesPage._id)
+      .set({
+        seo: committeesIndexPageDoc.seo,
+        connectedByDesign: committeesIndexPageDoc.connectedByDesign,
+      })
+      .commit();
+  }
+
+  const aboutPage = await client.fetch<{
+    _id: string;
+    history?: { body?: string };
+  } | null>(`*[_id == $aboutPageId][0]{ _id, history }`, {
+    aboutPageId: IDS.aboutPage,
+  });
+  if (aboutPage?.history?.body?.includes('trading and accounting')) {
+    await client
+      .patch(aboutPage._id)
+      .set({
+        'history.body': aboutPage.history.body.replace(
+          'trading and accounting',
+          'trading and consulting',
+        ),
+      })
+      .commit();
+  }
+
+  const siteSettings = await client.fetch<{
+    _id: string;
+    defaultMetaDescription?: string;
+    organizationDescription?: string;
+  } | null>(
+    `*[_id == $siteSettingsId][0]{
+      _id,
+      defaultMetaDescription,
+      organizationDescription
+    }`,
+    { siteSettingsId: IDS.siteSettings },
+  );
+  if (
+    siteSettings?.defaultMetaDescription === LEGACY_DEFAULT_META_DESCRIPTION ||
+    siteSettings?.organizationDescription === LEGACY_ORGANIZATION_DESCRIPTION
+  ) {
+    await client
+      .patch(siteSettings._id)
+      .set({
+        defaultMetaDescription: DEFAULT_META_DESCRIPTION,
+        organizationDescription: ORGANIZATION_DESCRIPTION,
+      })
+      .commit();
+  }
+
+  const caseEvent = await client.fetch<{
+    _id: string;
+    description?: string;
+  } | null>(`*[_id == $caseEventId][0]{ _id, description }`, {
+    caseEventId: IDS.events.caseComps,
+  });
+  if (
+    caseEvent?.description ===
+    'Targeted participation in regional and national accounting and investment banking case competitions.'
+  ) {
+    await client
+      .patch(caseEvent._id)
+      .set({
+        description:
+          'Targeted participation in regional and national consulting and investment banking case competitions.',
+      })
       .commit();
   }
 }

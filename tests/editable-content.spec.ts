@@ -24,7 +24,6 @@ const visibleCmsPhrases = [
   'CME Trading Challenge',
   'Status Legend',
   'Event-Contract Modeling Research',
-  'UCLA Club Audit Initiative',
   'Active Community',
   'The Founding Class',
   'Connected by Design',
