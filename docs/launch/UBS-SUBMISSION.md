@@ -23,7 +23,7 @@ Use these exact values for consistency and compliance:
 - **Website URL**: `https://www.bruinalphainvestment.com` (live as of 2026-05-14, custom domain via Cloudflare → Vercel). (UCLA does not issue `*.ucla.edu` subdomains to student orgs.)
 - **LinkedIn URL**: https://www.linkedin.com/company/bruin-alpha-investment
 - **Instagram URL**: [Paste URL from Instagram setup]
-- **Club Email**: `bruinalphainvestment26@gmail.com`
+- **Club Email**: `info@bruinalphainvestment.com`
 - **Contact Officer**: `Mack Haymond` (President)
 - **Club Category**: `Investment & Finance`
 

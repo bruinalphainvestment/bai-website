@@ -78,7 +78,7 @@ export const siteSettings = defineType({
       title: 'Club Email',
       type: 'string',
       group: 'contact',
-      initialValue: 'bruinalphainvestment26@gmail.com',
+      initialValue: 'info@bruinalphainvestment.com',
       validation: (rule) => rule.required().email(),
     }),
     defineField({
