@@ -184,6 +184,7 @@ const LOCKED_SLOGAN = 'Have Passion, Believe in Legacy, Believe in BAI';
 const LOCKED_NAME = 'Bruin Alpha Investment at UCLA';
 const BRAND_NAME = 'Bruin Alpha Investment';
 const CLUB_EMAIL = 'info@bruinalphainvestment.com';
+const INSTAGRAM_URL = 'https://www.instagram.com/bruinalphainvestment';
 const LINKEDIN_URL = 'https://www.linkedin.com/company/bruin-alpha-investment';
 const TITLE_SUFFIX = ' — Bruin Alpha Investment at UCLA';
 const DEFAULT_META_DESCRIPTION =
@@ -220,6 +221,7 @@ const siteSettingsDoc = {
   slogan: LOCKED_SLOGAN,
   applyCtaLabel: 'Apply Now',
   clubEmail: CLUB_EMAIL,
+  instagramUrl: INSTAGRAM_URL,
   linkedinUrl: LINKEDIN_URL,
   brandName: BRAND_NAME,
   titleSuffix: TITLE_SUFFIX,
@@ -234,7 +236,7 @@ const siteSettingsDoc = {
     { _key: 'nav-join', label: 'Join', href: '/join' },
   ],
   organizationDescription: ORGANIZATION_DESCRIPTION,
-  sameAs: [LINKEDIN_URL],
+  sameAs: [INSTAGRAM_URL, LINKEDIN_URL],
   errorCopy: {
     notFoundHeading: 'Page not found',
     notFoundBody: "The page you're looking for doesn't exist.",

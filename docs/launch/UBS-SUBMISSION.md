@@ -8,7 +8,7 @@ Ensure the following are complete before submitting:
 
 - [ ] Website is live and accessible.
 - [x] LinkedIn Company Page is created ([LINKEDIN-SETUP.md](./LINKEDIN-SETUP.md)).
-- [ ] Instagram account is created ([INSTAGRAM-SETUP.md](./INSTAGRAM-SETUP.md)).
+- [x] Instagram account is created ([INSTAGRAM-SETUP.md](./INSTAGRAM-SETUP.md)).
 
 ## 2. Submission Form
 
@@ -22,7 +22,7 @@ Use these exact values for consistency and compliance:
 - **Club Name**: `Bruin Alpha Investment at UCLA`
 - **Website URL**: `https://www.bruinalphainvestment.com` (live as of 2026-05-14, custom domain via Cloudflare → Vercel). (UCLA does not issue `*.ucla.edu` subdomains to student orgs.)
 - **LinkedIn URL**: https://www.linkedin.com/company/bruin-alpha-investment
-- **Instagram URL**: [Paste URL from Instagram setup]
+- **Instagram URL**: https://www.instagram.com/bruinalphainvestment
 - **Club Email**: `info@bruinalphainvestment.com`
 - **Contact Officer**: `Mack Haymond` (President)
 - **Club Category**: `Investment & Finance`
