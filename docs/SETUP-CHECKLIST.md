@@ -200,7 +200,7 @@ Weekly Sanity dataset export to GitHub Actions artifacts. Already configured at 
 
 Not deploy-blockers. Do once the site has a stable URL.
 
-- [ ] **LinkedIn Company Page** — [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md). Use the live Vercel URL until custom domain is live.
+- [x] **LinkedIn Company Page** — [LINKEDIN-SETUP.md](./launch/LINKEDIN-SETUP.md). Live at [linkedin.com/company/bruin-alpha-investment](https://www.linkedin.com/company/bruin-alpha-investment).
 - [ ] **Instagram** — [INSTAGRAM-SETUP.md](./launch/INSTAGRAM-SETUP.md).
 - [ ] **UCLA SOLE registration** — Register the org via [sole.ucla.edu](https://sole.ucla.edu/) → MyUCLA RCO at `https://sa.ucla.edu/RCO/`. Required for "Recognized Campus Organization" status, campus resource access, and any future request for a `*.ucla.edu` subdomain (which is discretionary and unlikely to be granted).
 - [ ] **UBS directory** — [UBS-SUBMISSION.md](./launch/UBS-SUBMISSION.md). Form at [uclaubs.com/club-directory](https://uclaubs.com/club-directory).

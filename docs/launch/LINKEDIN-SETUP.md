@@ -3,25 +3,30 @@
 This guide covers the manual creation of the official LinkedIn Company Page for Bruin Alpha Investment at UCLA. This is a requirement for the UBS Club Directory submission.
 
 ## 1. Create the Page
+
 - [ ] Go to: [https://www.linkedin.com/company/setup/new/](https://www.linkedin.com/company/setup/new/)
 - [ ] Select **Company** (Small, medium, or large business).
 
 ## 2. Page Identity
+
 - [ ] **Page Name**: `Bruin Alpha Investment at UCLA`
-- [ ] **LinkedIn Public URL**: `linkedin.com/company/bai-ucla` (or similar if taken)
+- [x] **LinkedIn Public URL**: `linkedin.com/company/bruin-alpha-investment`
 - [ ] **Website**: `https://www.bruinalphainvestment.com` (live as of 2026-05-14). (UCLA does not provide `*.ucla.edu` subdomains to student orgs — this is the club's own custom domain.)
 
 ## 3. Organization Details
+
 - [ ] **Industry**: `Investment Management` OR `Higher Education`
 - [ ] **Organization Size**: `0-1 employees` (LinkedIn's scale for student orgs)
 - [ ] **Organization Type**: `Non-profit` OR `Educational`
 
 ## 4. Brand Identity
+
 - [ ] **Tagline**: `Have Passion, Believe in Legacy, Believe in BAI`
 - [ ] **Logo**: Upload `brand_assets/BAI Folder/BAI Logo.png`. Ensure it is centered and readable.
 - [ ] **Cover Image**: Create a simple navy gradient image (#002147) in Canva or Figma. Include the logo and the slogan.
 
 ## 5. About Section
+
 Copy and paste the following UCLA-approved mission statement:
 
 ```text
@@ -29,14 +34,17 @@ Bruin Alpha Investment is a student-led organization dedicated to bridging acade
 ```
 
 ## 6. Admin Access
+
 - [ ] Go to **Settings** > **Manage Admins**.
 - [ ] Add **Mack Haymond** as a Super Admin.
 - [ ] Add at least one other founder (Max, Sam, Kai, or Helmer) as a Content Admin.
 
 ## 7. Recording the URL
-- [ ] Copy the final Page URL.
-- [ ] Paste into Sanity Studio: `SiteSettings` > `LinkedIn URL`.
-- [ ] Record the URL in `docs/HANDOFF.md` under the Socials section.
+
+- [x] Copy the final Page URL: `https://www.linkedin.com/company/bruin-alpha-investment`.
+- [x] Paste into Sanity Studio: `SiteSettings` > `LinkedIn URL`.
+- [x] Record the URL in `docs/HANDOFF.md` under the Socials section.
 
 ---
-*Cross-reference: [SETUP-CHECKLIST.md](../SETUP-CHECKLIST.md), [HANDOFF.md](../HANDOFF.md)*
+
+_Cross-reference: [SETUP-CHECKLIST.md](../SETUP-CHECKLIST.md), [HANDOFF.md](../HANDOFF.md)_
