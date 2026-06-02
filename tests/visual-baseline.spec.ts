@@ -16,8 +16,8 @@ import path from 'node:path';
  *     --project=chromium-desktop \
  *     --project=chromium-mobile-375
  *
- * Animations / motion are disabled inside the test via `reducedMotion: 'reduce'`
- * + `prefers-reduced-motion` query, so re-runs are deterministic.
+ * Animations / motion are disabled inside the test via
+ * `prefers-reduced-motion: reduce`, so re-runs are deterministic.
  */
 
 const ROUTES = [
@@ -78,6 +78,7 @@ for (const route of ROUTES) {
       const filename = `baseline-${safeRoute}-${viewportLabel}.png`;
       const outPath = path.join(SNAPSHOT_DIR, filename);
 
+      await page.emulateMedia({ reducedMotion: 'reduce' });
       const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
       expect(
         response,

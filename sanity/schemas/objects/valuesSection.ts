@@ -14,6 +14,8 @@ export const valuesSection = defineType({
       name: 'values',
       title: 'Values',
       type: 'array',
+      description:
+        'The first value is featured more prominently on the homepage; reorder intentionally.',
       of: [
         defineArrayMember({
           type: 'object',

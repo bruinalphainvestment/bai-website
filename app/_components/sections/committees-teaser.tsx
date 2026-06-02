@@ -1,3 +1,4 @@
+import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { sanityFetch } from '@/sanity/lib/live';
@@ -26,46 +27,58 @@ export default async function CommitteesTeaser(props: Props = {}) {
 
   const heading = data.heading ?? committeesTeaserFallback.heading ?? '';
   const subheading = data.subheading;
-  const ctaLabel = data.ctaLabel ?? committeesTeaserFallback.ctaLabel ?? '';
+  const ctaLabel = (
+    data.ctaLabel ??
+    committeesTeaserFallback.ctaLabel ??
+    ''
+  ).trim();
 
   return (
     <section
       data-section="committees"
-      className="bg-cream text-navy py-24 px-4 md:px-8"
+      className="bg-cream px-4 py-20 text-navy md:px-8 md:py-28"
     >
-      <div className="mx-auto max-w-7xl">
-        <FadeUp>
-          <h2 className="font-display text-4xl md:text-5xl mb-12">{heading}</h2>
-        </FadeUp>
-        {subheading ? (
-          <FadeUp>
-            <p className="font-sans text-lg text-navy/70 max-w-3xl mb-12 -mt-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 sm:grid-cols-[minmax(140px,0.42fr)_minmax(0,1fr)] sm:gap-8 lg:grid-cols-12 lg:gap-16">
+        <FadeUp className="sm:sticky sm:top-32 sm:z-10 sm:self-start sm:bg-cream sm:pb-2 lg:col-span-4">
+          {heading ? (
+            <h2 className="font-display text-4xl leading-tight md:text-5xl">
+              {heading}
+            </h2>
+          ) : null}
+          {subheading ? (
+            <p className="mt-6 max-w-xl font-sans text-lg leading-relaxed text-navy/70">
               {subheading}
             </p>
-          </FadeUp>
-        ) : null}
-        <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          ) : null}
+        </FadeUp>
+
+        <StaggerGroup className="grid min-w-0 auto-rows-fr grid-cols-1 gap-4 lg:col-span-8">
           {items.map((c) => (
-            <StaggerItem key={c.slug}>
+            <StaggerItem key={c.slug} as="article" className="h-full">
               <Link
                 href={`/committees/${c.slug}`}
-                className="group block bg-navy text-cream p-8 md:p-12 transition-transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:ring-offset-2 focus:ring-offset-cream"
+                className="group grid h-full min-h-[168px] grid-cols-1 gap-6 bg-navy p-7 text-cream shadow-[0_18px_45px_rgba(0,33,71,0.12)] transition-transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gold-start focus:ring-offset-4 focus:ring-offset-cream sm:min-h-[148px] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center md:p-8"
               >
-                <div className="flex flex-col h-full justify-between min-h-[240px]">
-                  <div>
-                    <h3 className="font-display text-3xl md:text-4xl mb-4 group-hover:text-[#C5A059] transition-colors">
-                      {c.name}
-                    </h3>
-                    <p className="font-sans text-cream/80 text-lg">{c.tagline}</p>
-                  </div>
-                  <div className="flex justify-end mt-8">
-                    {ctaLabel ? (
-                      <span className="font-mono uppercase tracking-widest text-sm text-[#C5A059] flex items-center gap-2 group-hover:gap-4 transition-all">
-                        {ctaLabel} <span>&rarr;</span>
-                      </span>
-                    ) : null}
-                  </div>
+                <div>
+                  <h3 className="font-display text-3xl leading-tight transition-colors group-hover:text-gold-start md:text-4xl">
+                    {c.name}
+                  </h3>
+                  {c.tagline ? (
+                    <p className="mt-3 max-w-2xl font-sans text-base leading-relaxed text-cream/75 md:text-lg">
+                      {c.tagline}
+                    </p>
+                  ) : null}
                 </div>
+                {ctaLabel ? (
+                  <span className="flex items-center justify-between gap-3 font-mono text-xs uppercase tracking-widest text-gold-start sm:justify-end">
+                    <span>{ctaLabel}</span>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                      strokeWidth={1.75}
+                    />
+                  </span>
+                ) : null}
               </Link>
             </StaggerItem>
           ))}

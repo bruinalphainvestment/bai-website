@@ -133,6 +133,59 @@ test.describe('Home page — mobile (375px)', () => {
   });
 });
 
+test.describe('Home page — tablet committee layout (700px)', () => {
+  test.use({ viewport: { width: 700, height: 900 } });
+
+  test('keeps committee header sticky beside boxed committee links', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await expect(page.locator('[data-section="committees"]')).toHaveCount(1);
+
+    const layout = await page.evaluate(() => {
+      const section = document.querySelector('[data-section="committees"]');
+      const container = section?.firstElementChild;
+      const stickyHeader = section?.querySelector('.sm\\:sticky');
+      const committeeLinks = Array.from(
+        section?.querySelectorAll('a[href^="/committees/"]') ?? [],
+      );
+      const firstLink = committeeLinks[0];
+      const linkHeights = committeeLinks.map((link) =>
+        Math.round(link.getBoundingClientRect().height),
+      );
+      const containerStyles = container
+        ? window.getComputedStyle(container)
+        : null;
+      const stickyStyles = stickyHeader
+        ? window.getComputedStyle(stickyHeader)
+        : null;
+      const firstLinkStyles = firstLink
+        ? window.getComputedStyle(firstLink)
+        : null;
+
+      return {
+        columnCount: containerStyles?.gridTemplateColumns
+          .split(' ')
+          .filter(Boolean).length,
+        firstCardBackground: firstLinkStyles?.backgroundColor,
+        hasHorizontalOverflow:
+          document.documentElement.scrollWidth >
+          document.documentElement.clientWidth + 1,
+        linkCount: committeeLinks.length,
+        uniqueCardHeights: Array.from(new Set(linkHeights)),
+        stickyPosition: stickyStyles?.position,
+      };
+    });
+
+    expect(layout.hasHorizontalOverflow).toBe(false);
+    expect(layout.columnCount).toBe(2);
+    expect(layout.linkCount).toBe(4);
+    expect(layout.uniqueCardHeights).toHaveLength(1);
+    expect(layout.firstCardBackground).toBe('rgb(0, 33, 71)');
+    expect(layout.stickyPosition).toBe('sticky');
+  });
+});
+
 test.describe('Home page — accessibility (axe-core)', () => {
   // v1 (Wave 1A) scopes axe to non-color rules. The 8 home-page section
   // components ship gold-on-cream accents that fail 3:1 contrast against the
