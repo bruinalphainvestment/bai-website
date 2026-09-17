@@ -699,20 +699,6 @@ const joinPageDoc = {
       title: 'Wed–Fri, Oct 7–9 — Final Rounds',
       body: 'Final round interviews (1x technical + 1x behavioral).',
     },
-    {
-      _key: 'join-tl-5',
-      _type: 'timelineStep',
-      stepNumber: 5,
-      title: 'Sat–Mon, Oct 10–12 — Decisions Released',
-      body: 'Admit decisions go out over the weekend.',
-    },
-    {
-      _key: 'join-tl-6',
-      _type: 'timelineStep',
-      stepNumber: 6,
-      title: 'Wed, Oct 14 — First New Member Meeting',
-      body: 'The new cohort’s first general meeting, 6:00–7:50 PM.',
-    },
   ],
   applicationForm: {
     heading: 'Application Form',

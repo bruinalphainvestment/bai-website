@@ -36,8 +36,6 @@ const timeline = [
   ['Wed, Sept 30 — Info Session & Applications Close', 'Info session from 6:00–7:50 PM. Applications close at the end of the day.'],
   ['Fri–Sat, Oct 2–3 — Coffee Chats', 'Selected applicants meet members in 1:1 coffee chats.'],
   ['Wed–Fri, Oct 7–9 — Final Rounds', 'Final round interviews (1x technical + 1x behavioral).'],
-  ['Sat–Mon, Oct 10–12 — Decisions Released', 'Admit decisions go out over the weekend.'],
-  ['Wed, Oct 14 — First New Member Meeting', 'The new cohort’s first general meeting, 6:00–7:50 PM.'],
 ].map(([title, body], i) => ({
   _key: `join-tl-${i + 1}`,
   _type: 'timelineStep',
