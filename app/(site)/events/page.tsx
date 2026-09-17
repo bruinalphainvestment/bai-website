@@ -222,34 +222,49 @@ function CompetitionRow({
   );
 }
 
+// Events happen at UCLA, so render in Pacific time regardless of server TZ
+// (Vercel runs in UTC, which would push evening events to the next day).
+const EVENT_TIME_ZONE = 'America/Los_Angeles';
+
+function datePartsInEventZone(date: Date) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: EVENT_TIME_ZONE,
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).formatToParts(date);
+  const get = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((part) => part.type === type)?.value ?? '';
+  return { year: get('year'), month: get('month'), day: get('day') };
+}
+
+function formatTimeInEventZone(date: Date): string {
+  return date.toLocaleTimeString('en-US', {
+    timeZone: EVENT_TIME_ZONE,
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
 function formatDateLabel(event: EventEntry): string {
   if (event.date) {
     const start = new Date(event.date);
+    const s = datePartsInEventZone(start);
     if (event.endDate) {
       const end = new Date(event.endDate);
-      const sameYear = start.getFullYear() === end.getFullYear();
-      const sameMonth = sameYear && start.getMonth() === end.getMonth();
-      if (sameMonth) {
-        const month = start.toLocaleDateString('en-US', { month: 'short' });
-        return `${month} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
+      const e = datePartsInEventZone(end);
+      const sameYear = s.year === e.year;
+      const sameMonth = sameYear && s.month === e.month;
+      if (sameMonth && s.day === e.day) {
+        return `${s.month} ${s.day}, ${s.year} · ${formatTimeInEventZone(start)}–${formatTimeInEventZone(end)}`;
       }
-      const startStr = start.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        ...(sameYear ? {} : { year: 'numeric' }),
-      });
-      const endStr = end.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-      return `${startStr} – ${endStr}`;
+      if (sameMonth) {
+        return `${s.month} ${s.day}–${e.day}, ${s.year}`;
+      }
+      const startStr = `${s.month} ${s.day}${sameYear ? '' : `, ${s.year}`}`;
+      return `${startStr} – ${e.month} ${e.day}, ${e.year}`;
     }
-    return start.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
+    return `${s.month} ${s.day}, ${s.year}`;
   }
   if (event.status === 'scheduled') return 'Coming Soon';
   if (event.status === 'past') return 'Past';
