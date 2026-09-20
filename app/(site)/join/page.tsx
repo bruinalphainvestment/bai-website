@@ -139,18 +139,34 @@ export default async function JoinPage() {
             </h2>
           </FadeUp>
           <FadeUp>
-            <div className="aspect-[4/3] md:aspect-[21/9] w-full bg-cream border border-navy/10 rounded-sm relative overflow-hidden flex items-center justify-center flex-col">
-              <p className="font-display text-2xl md:text-3xl mb-4">
-                {applicationFormBody}
-              </p>
+            <div className="flex flex-col items-start gap-8">
+              {applicationFormBody ? (
+                <p className="font-sans text-lg md:text-xl text-navy/80 max-w-3xl leading-relaxed">
+                  {applicationFormBody}
+                </p>
+              ) : null}
               {applicationFormUrl && applicationFormLinkLabel ? (
                 <a
                   href={applicationFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans border border-navy px-6 py-3 hover:bg-navy hover:text-cream transition-colors duration-300"
+                  className="group inline-flex items-center gap-3 bg-navy text-cream px-10 py-5 font-sans uppercase tracking-widest text-sm hover:bg-[#C5A059] transition-colors duration-300"
                 >
                   {applicationFormLinkLabel}
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1"
+                  >
+                    <path
+                      d="M5 12h14m-6-6 6 6-6 6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </a>
               ) : null}
             </div>

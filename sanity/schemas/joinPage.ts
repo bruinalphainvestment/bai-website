@@ -123,7 +123,7 @@ export const joinPage = defineType({
       type: 'object',
       group: 'timeline',
       options: { collapsible: true, collapsed: false },
-      description: 'External application form (Tally embed/link).',
+      description: 'External application form (Google Form link).',
       fields: [
         defineField({
           name: 'heading',
@@ -143,7 +143,7 @@ export const joinPage = defineType({
           title: 'Form URL',
           type: 'string',
           description:
-            'External application URL. Leave blank while applications are closed; when set, use a full http(s) URL.',
+            'Google Form URL (e.g. https://forms.gle/… or https://docs.google.com/forms/…). Leave blank while applications are closed; when set, use a full http(s) URL.',
           validation: (rule) =>
             rule.custom((value) => {
               if (!value) return true;
