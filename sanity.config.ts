@@ -120,6 +120,8 @@ export default defineConfig({
                     S.divider(),
                     S.documentTypeListItem('foundingMember')
                       .title('Founding Members'),
+                    S.documentTypeListItem('member')
+                      .title('Members'),
                   ]),
               ),
             S.listItem()

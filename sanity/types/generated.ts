@@ -314,6 +314,35 @@ export type Slug = {
   source?: string;
 };
 
+export type Member = {
+  _id: string;
+  _type: 'member';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  firstName?: string;
+  lastName?: string;
+  role?: string;
+  committee?:
+    | 'wealth-management'
+    | 'trading'
+    | 'accounting-consulting'
+    | 'investment-banking'
+    | 'operations';
+  gradYear?: number;
+  bio?: string;
+  photoReleaseObtained?: boolean;
+  headshot?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  monogramOverride?: string;
+  linkedinUrl?: string;
+};
+
 export type ProjectReference = {
   _ref: string;
   _type: 'reference';
@@ -868,6 +897,7 @@ export type AllSanitySchemaTypes =
   | Event
   | Project
   | Slug
+  | Member
   | ProjectReference
   | Committee
   | FoundingMember
@@ -1090,6 +1120,35 @@ export type AllFoundingMembersQueryResult = Array<{
     | 'investment-banking'
     | 'operations'
     | 'president'
+    | 'trading'
+    | 'wealth-management'
+    | null;
+  gradYear: number | null;
+  bio: string | null;
+  linkedinUrl: string | null;
+  photoReleaseObtained: boolean | null;
+  headshot: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  } | null;
+  monogramOverride: string | null;
+}>;
+
+// Source: sanity/lib/queries.ts
+// Variable: allMembersQuery
+// Query: *[_type == "member"] | order(lastName asc) {    _id,    firstName,    lastName,    role,    committee,    gradYear,    bio,    linkedinUrl,    photoReleaseObtained,    headshot,    monogramOverride  }
+export type AllMembersQueryResult = Array<{
+  _id: string;
+  firstName: string | null;
+  lastName: string | null;
+  role: string | null;
+  committee:
+    | 'accounting-consulting'
+    | 'investment-banking'
+    | 'operations'
     | 'trading'
     | 'wealth-management'
     | null;
@@ -1564,6 +1623,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "homePage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    sections[] {\n      _key,\n      _type,\n      ...\n    }\n  }\n': HomePageQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] | order(order asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SitemapCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
+    '\n  *[_type == "member"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllMembersQueryResult;
     '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    mission,\n    history,\n    founderQuote,\n    signatureTrip,\n    valuesHeading,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
     '\n  *[_type == "trainingPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    curriculum,\n    curriculumHeading,\n    classHierarchy,\n    sampleWeek,\n    assessment,\n    quarterlyProject,\n    programs,\n    signatureCertifications\n  }\n': TrainingPageQueryResult;
     '\n  *[_type == "joinPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    applicationProcessHeading,\n    applicationSteps,\n    timelineHeading,\n    timeline,\n    applicationForm,\n    faqHeading,\n    faqs,\n    contactHeading,\n    contactLinks\n  }\n': JoinPageQueryResult;

@@ -61,6 +61,22 @@ export const allFoundingMembersQuery = defineQuery(`
   }
 `);
 
+export const allMembersQuery = defineQuery(`
+  *[_type == "member"] | order(lastName asc) {
+    _id,
+    firstName,
+    lastName,
+    role,
+    committee,
+    gradYear,
+    bio,
+    linkedinUrl,
+    photoReleaseObtained,
+    headshot,
+    monogramOverride
+  }
+`);
+
 export const aboutPageQuery = defineQuery(`
   *[_type == "aboutPage"][0] {
     title,

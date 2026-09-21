@@ -51,6 +51,7 @@ const LIST_PATHS: Record<string, string[]> = {
      the /committees cards, and as director on /committees/{slug}
      (cascaded below per-id). */
   foundingMember: ['/team', '/', '/committees'],
+  member: ['/team'],
   /* project cards surface on /projects and inside the committee detail
      page's Signature Projects section (cascaded below per-id). */
   project: ['/projects'],

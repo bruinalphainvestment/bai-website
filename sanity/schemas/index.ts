@@ -8,6 +8,7 @@ import { eventsPage } from './eventsPage';
 import { foundingMember } from './foundingMember';
 import { homePage } from './homePage';
 import { joinPage } from './joinPage';
+import { member } from './member';
 import { project } from './project';
 import { projectsPage } from './projectsPage';
 import { siteSettings } from './siteSettings';
@@ -46,6 +47,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   committeesIndexPage,
   committee,
   foundingMember,
+  member,
   project,
   event,
   seo,

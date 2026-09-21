@@ -1,17 +1,10 @@
 import { defineField, defineType } from 'sanity';
 
-export const COMMITTEE_OPTIONS = [
-  { title: 'Wealth Management', value: 'wealth-management' },
-  { title: 'Trading', value: 'trading' },
-  { title: 'Consulting', value: 'accounting-consulting' },
-  { title: 'Investment Banking', value: 'investment-banking' },
-  { title: 'Operations', value: 'operations' },
-  { title: 'President', value: 'president' },
-] as const;
+import { COMMITTEE_OPTIONS } from './foundingMember';
 
-export const foundingMember = defineType({
-  name: 'foundingMember',
-  title: 'Founding Member',
+export const member = defineType({
+  name: 'member',
+  title: 'Member',
   type: 'document',
   groups: [
     { name: 'identity', title: 'Identity', default: true },
@@ -38,8 +31,7 @@ export const foundingMember = defineType({
       title: 'Role',
       type: 'string',
       group: 'identity',
-      description: 'Display title, e.g. "President", "Trading Co-Director".',
-      validation: (rule) => rule.required(),
+      description: 'Optional display title, e.g. "Analyst". Leave blank for general members.',
     }),
     defineField({
       name: 'committee',
@@ -47,7 +39,7 @@ export const foundingMember = defineType({
       type: 'string',
       group: 'identity',
       options: {
-        list: [...COMMITTEE_OPTIONS],
+        list: COMMITTEE_OPTIONS.filter((option) => option.value !== 'president'),
         layout: 'dropdown',
       },
       validation: (rule) => rule.required(),
@@ -57,7 +49,7 @@ export const foundingMember = defineType({
       title: 'Graduation Year',
       type: 'number',
       group: 'identity',
-      validation: (rule) => rule.required().integer().min(2024).max(2035),
+      validation: (rule) => rule.integer().min(2024).max(2035),
     }),
     defineField({
       name: 'bio',
@@ -114,7 +106,7 @@ export const foundingMember = defineType({
     prepare({ firstName, lastName, role, committee, media }) {
       const name = [firstName, lastName].filter(Boolean).join(' ');
       const subtitle = [role, committee].filter(Boolean).join(' · ');
-      return { title: name || 'Founding Member', subtitle, media };
+      return { title: name || 'Member', subtitle, media };
     },
   },
 });

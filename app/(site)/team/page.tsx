@@ -19,11 +19,13 @@ import { urlForImage } from '@/sanity/lib/imageUrl';
 import { sanityFetch } from '@/sanity/lib/live';
 import {
   allFoundingMembersQuery,
+  allMembersQuery,
   siteSettingsQuery,
   teamPageQuery,
 } from '@/sanity/lib/queries';
 import type {
   AllFoundingMembersQueryResult,
+  AllMembersQueryResult,
   SiteSettingsQueryResult,
   TeamPageQueryResult,
 } from '@/sanity/types/generated';
@@ -31,6 +33,7 @@ import type {
 type TeamPageData = NonNullable<TeamPageQueryResult>;
 type SiteSettingsData = NonNullable<SiteSettingsQueryResult>;
 type FoundingMember = AllFoundingMembersQueryResult[number];
+type GeneralMember = AllMembersQueryResult[number];
 
 export async function generateMetadata(): Promise<Metadata> {
   const [pageRaw, settingsRaw] = await Promise.all([
@@ -50,15 +53,18 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TeamPage() {
-  const [page, members] = await Promise.all([
+  const [page, members, generalMembers] = await Promise.all([
     loadTeamPageData(),
     loadFoundingMembers(),
+    loadMembers(),
   ]);
 
   const heading = page.hero?.heading ?? teamPageFallback.hero?.heading ?? '';
   const subheading = page.hero?.subheading ?? teamPageFallback.hero?.subheading ?? '';
   const intro = page.intro ?? teamPageFallback.intro;
   const foundingHeading = page.foundingClassHeading ?? teamPageFallback.foundingClassHeading ?? '';
+  const membersHeading = page.membersHeading ?? teamPageFallback.membersHeading ?? '';
+  const membersPlaceholder = page.membersPlaceholder ?? teamPageFallback.membersPlaceholder ?? '';
 
   return (
     <div className="min-h-screen bg-cream text-navy pt-32 pb-24">
@@ -89,17 +95,39 @@ export default async function TeamPage() {
         <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {members.map((member) => (
             <StaggerItem key={member._id}>
-              <FoundingMemberCard member={member} />
+              <MemberCard member={member} />
             </StaggerItem>
           ))}
         </StaggerGroup>
       </section>
 
+      {membersHeading && (generalMembers.length > 0 || membersPlaceholder) ? (
+        <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
+          <FadeUp>
+            <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+              {membersHeading}
+            </h2>
+          </FadeUp>
+          {generalMembers.length > 0 ? (
+            <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+              {generalMembers.map((member) => (
+                <StaggerItem key={member._id}>
+                  <MemberCard member={member} />
+                </StaggerItem>
+              ))}
+            </StaggerGroup>
+          ) : (
+            <FadeUp>
+              <p className="font-sans text-lg text-navy/70">{membersPlaceholder}</p>
+            </FadeUp>
+          )}
+        </section>
+      ) : null}
     </div>
   );
 }
 
-function FoundingMemberCard({ member }: { member: FoundingMember }) {
+function MemberCard({ member }: { member: FoundingMember | GeneralMember }) {
   const fullName = [member.firstName, member.lastName].filter(Boolean).join(' ').trim();
   const monogram = member.monogramOverride ?? deriveMonogram(member.firstName, member.lastName);
   const committeeLabel = formatCommitteeLabel(member.committee);
@@ -116,7 +144,7 @@ function FoundingMemberCard({ member }: { member: FoundingMember }) {
         {headshotUrl ? (
           <Image
             src={headshotUrl}
-            alt={fullName ? `${fullName} headshot` : 'Founding team member headshot'}
+            alt={fullName ? `${fullName} headshot` : 'Team member headshot'}
             fill
             sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -193,6 +221,18 @@ async function loadFoundingMembers(): Promise<AllFoundingMembersQueryResult> {
   } catch (err) {
     console.error('[team] members fetch failed; using fallback:', err);
     return foundingMembersFallback;
+  }
+}
+
+async function loadMembers(): Promise<AllMembersQueryResult> {
+  if (process.env.NEXT_PUBLIC_USE_SANITY !== 'true') return [];
+  try {
+    const { data } = await sanityFetch({ query: allMembersQuery });
+    // Return stega-encoded data for JSX rendering (Visual Editing overlays need PUA chars).
+    return data ?? [];
+  } catch (err) {
+    console.error('[team] general members fetch failed; using fallback:', err);
+    return [];
   }
 }
 
