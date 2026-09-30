@@ -679,8 +679,8 @@ const joinPageDoc = {
       _key: 'join-tl-2',
       _type: 'timelineStep',
       stepNumber: 2,
-      title: 'Through Week 5 — Rolling Applications & Coffee Chats',
-      body: 'Rolling applications stay open through Week 5; meet founders in 1:1 coffee chats.',
+      title: 'Through Week 5 — Applications & Coffee Chats',
+      body: 'Applications stay open through Week 5; meet founders in 1:1 coffee chats.',
     },
     {
       _key: 'join-tl-3',
