@@ -109,13 +109,24 @@ export default async function TeamPage() {
             </h2>
           </FadeUp>
           {generalMembers.length > 0 ? (
-            <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-              {generalMembers.map((member) => (
-                <StaggerItem key={member._id}>
-                  <MemberCard member={member} />
-                </StaggerItem>
+            <div className="flex flex-col gap-16 md:gap-20">
+              {groupMembersByCommittee(generalMembers).map((group) => (
+                <div key={group.key}>
+                  <FadeUp>
+                    <h3 className="font-sans text-sm font-medium uppercase tracking-[0.16em] text-navy/60 mb-8">
+                      {group.label}
+                    </h3>
+                  </FadeUp>
+                  <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                    {group.members.map((member) => (
+                      <StaggerItem key={member._id}>
+                        <MemberCard member={member} showCommittee={false} />
+                      </StaggerItem>
+                    ))}
+                  </StaggerGroup>
+                </div>
               ))}
-            </StaggerGroup>
+            </div>
           ) : (
             <FadeUp>
               <p className="font-sans text-lg text-navy/70">{membersPlaceholder}</p>
@@ -127,10 +138,50 @@ export default async function TeamPage() {
   );
 }
 
-function MemberCard({ member }: { member: FoundingMember | GeneralMember }) {
+// Display order for the committee sub-sections of the general members grid.
+const COMMITTEE_ORDER = [
+  'wealth-management',
+  'trading',
+  'accounting-consulting',
+  'investment-banking',
+  'operations',
+];
+
+type MemberGroup = { key: string; label: string; members: GeneralMember[] };
+
+function groupMembersByCommittee(members: GeneralMember[]): MemberGroup[] {
+  const groups = new Map<string, MemberGroup>();
+  for (const member of members) {
+    const key = stegaClean(member.committee ?? '').trim() || 'general';
+    let group = groups.get(key);
+    if (!group) {
+      group = {
+        key,
+        label: key === 'general' ? 'General' : (formatCommitteeLabel(key) ?? key),
+        members: [],
+      };
+      groups.set(key, group);
+    }
+    group.members.push(member);
+  }
+  const rank = (key: string) => {
+    const index = COMMITTEE_ORDER.indexOf(key);
+    if (index !== -1) return index;
+    return key === 'general' ? COMMITTEE_ORDER.length + 1 : COMMITTEE_ORDER.length;
+  };
+  return [...groups.values()].sort((a, b) => rank(a.key) - rank(b.key));
+}
+
+function MemberCard({
+  member,
+  showCommittee = true,
+}: {
+  member: FoundingMember | GeneralMember;
+  showCommittee?: boolean;
+}) {
   const fullName = [member.firstName, member.lastName].filter(Boolean).join(' ').trim();
   const monogram = member.monogramOverride ?? deriveMonogram(member.firstName, member.lastName);
-  const committeeLabel = formatCommitteeLabel(member.committee);
+  const committeeLabel = showCommittee ? formatCommitteeLabel(member.committee) : null;
   const gradYearLabel = formatGraduationYear(member.gradYear);
   const linkedinHref = normalizeExternalUrl(member.linkedinUrl);
   const headshotUrl =
