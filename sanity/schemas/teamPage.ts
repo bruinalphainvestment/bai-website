@@ -50,6 +50,14 @@ export const teamPage = defineType({
       description: 'Empty-state copy when there are no general members yet.',
     }),
     defineField({
+      name: 'associatesHeading',
+      title: 'Associates Heading',
+      type: 'string',
+      group: 'content',
+      description:
+        'Heading above the associates, who are grouped by committee. Defaults to "Associates".',
+    }),
+    defineField({
       name: 'alumniHeading',
       title: 'Alumni Heading',
       type: 'string',

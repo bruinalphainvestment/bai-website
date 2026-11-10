@@ -323,6 +323,7 @@ export type Member = {
   firstName?: string;
   lastName?: string;
   role?: string;
+  position?: 'analyst' | 'associate';
   committee?:
     | 'wealth-management'
     | 'trading'
@@ -483,6 +484,7 @@ export type TeamPage = {
   foundingClassHeading?: string;
   membersHeading?: string;
   membersPlaceholder?: string;
+  associatesHeading?: string;
   alumniHeading?: string;
   alumniPlaceholder?: string;
   seo?: Seo;
@@ -1139,12 +1141,13 @@ export type AllFoundingMembersQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: allMembersQuery
-// Query: *[_type == "member"] | order(lastName asc) {    _id,    firstName,    lastName,    role,    committee,    gradYear,    bio,    linkedinUrl,    photoReleaseObtained,    headshot,    monogramOverride  }
+// Query: *[_type == "member"] | order(lastName asc) {    _id,    firstName,    lastName,    role,    position,    committee,    gradYear,    bio,    linkedinUrl,    photoReleaseObtained,    headshot,    monogramOverride  }
 export type AllMembersQueryResult = Array<{
   _id: string;
   firstName: string | null;
   lastName: string | null;
   role: string | null;
+  position: 'analyst' | 'associate' | null;
   committee:
     | 'accounting-consulting'
     | 'investment-banking'
@@ -1386,7 +1389,7 @@ export type AllProjectsQueryResult = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: teamPageQuery
-// Query: *[_type == "teamPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    foundingClassHeading,    membersHeading,    membersPlaceholder,    alumniHeading,    alumniPlaceholder  }
+// Query: *[_type == "teamPage"][0] {    title,    seo,    _updatedAt,    hero,    intro,    foundingClassHeading,    membersHeading,    membersPlaceholder,    associatesHeading,    alumniHeading,    alumniPlaceholder  }
 export type TeamPageQueryResult = {
   title: string | null;
   seo: Seo | null;
@@ -1396,6 +1399,7 @@ export type TeamPageQueryResult = {
   foundingClassHeading: string | null;
   membersHeading: string | null;
   membersPlaceholder: string | null;
+  associatesHeading: string | null;
   alumniHeading: string | null;
   alumniPlaceholder: string | null;
 } | null;
@@ -1623,7 +1627,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "homePage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    sections[] {\n      _key,\n      _type,\n      ...\n    }\n  }\n': HomePageQueryResult;
     '\n  *[_type == "committee" && defined(slug.current)] | order(order asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SitemapCommitteesQueryResult;
     '\n  *[_type == "foundingMember"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllFoundingMembersQueryResult;
-    '\n  *[_type == "member"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllMembersQueryResult;
+    '\n  *[_type == "member"] | order(lastName asc) {\n    _id,\n    firstName,\n    lastName,\n    role,\n    position,\n    committee,\n    gradYear,\n    bio,\n    linkedinUrl,\n    photoReleaseObtained,\n    headshot,\n    monogramOverride\n  }\n': AllMembersQueryResult;
     '\n  *[_type == "aboutPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    mission,\n    history,\n    founderQuote,\n    signatureTrip,\n    valuesHeading,\n    values,\n    sections\n  }\n': AboutPageQueryResult;
     '\n  *[_type == "trainingPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    curriculum,\n    curriculumHeading,\n    classHierarchy,\n    sampleWeek,\n    assessment,\n    quarterlyProject,\n    programs,\n    signatureCertifications\n  }\n': TrainingPageQueryResult;
     '\n  *[_type == "joinPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    applicationProcessHeading,\n    applicationSteps,\n    timelineHeading,\n    timeline,\n    applicationForm,\n    faqHeading,\n    faqs,\n    contactHeading,\n    contactLinks\n  }\n': JoinPageQueryResult;
@@ -1631,7 +1635,7 @@ declare module '@sanity/client' {
     '\n  *[_type == "event"] | order(date asc) {\n    _id,\n    name,\n    date,\n    endDate,\n    location,\n    description,\n    type,\n    status,\n    externalUrl,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllEventsQueryResult;
     '\n  *[_type == "projectsPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    emptyState,\n    statusLegendHeading,\n    statusLegend\n  }\n': ProjectsPageQueryResult;
     '\n  *[_type == "project" && showOnProjectsPage != false] | order(_createdAt asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    summary,\n    status,\n    tags,\n    "committee": committee->{ _id, name, "slug": slug.current }\n  }\n': AllProjectsQueryResult;
-    '\n  *[_type == "teamPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    foundingClassHeading,\n    membersHeading,\n    membersPlaceholder,\n    alumniHeading,\n    alumniPlaceholder\n  }\n': TeamPageQueryResult;
+    '\n  *[_type == "teamPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    foundingClassHeading,\n    membersHeading,\n    membersPlaceholder,\n    associatesHeading,\n    alumniHeading,\n    alumniPlaceholder\n  }\n': TeamPageQueryResult;
     '\n  *[_type == "committeesIndexPage"][0] {\n    title,\n    seo,\n    _updatedAt,\n    hero,\n    intro,\n    connectedByDesign,\n    cardLearnHeading,\n    cardCtaLabel\n  }\n': CommitteesIndexPageQueryResult;
     '\n  *[_type == "committee"] | order(order asc) {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    learn,\n    accentColor,\n    order,\n    directorPlaceholder,\n    "directors": directors[]->{\n      firstName,\n      lastName,\n      role\n    },\n    "director": director->{\n      firstName,\n      lastName,\n      role\n    }\n  }\n': AllCommitteesIndexQueryResult;
     '\n  *[_type == "committee" && slug.current == $slug][0] {\n    _id,\n    name,\n    "slug": slug.current,\n    tagline,\n    description,\n    curriculum,\n    curriculumEnabled,\n    curriculumHeading,\n    curriculumTerm,\n    learn,\n    learnHeading,\n    differentiator,\n    differentiatorHeading,\n    signatureProjectsHeading,\n    directorQuote,\n    redirectsFrom,\n    accentColor,\n    order,\n    directorPlaceholder,\n    seo,\n    _updatedAt,\n    "directors": directors[]->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      gradYear,\n      bio,\n      linkedinUrl,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "director": director->{\n      _id,\n      firstName,\n      lastName,\n      role,\n      committee,\n      gradYear,\n      bio,\n      linkedinUrl,\n      headshot,\n      photoReleaseObtained,\n      monogramOverride\n    },\n    "projects": signatureProjects[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      summary,\n      status\n    }\n  }\n': CommitteeBySlugQueryResult;

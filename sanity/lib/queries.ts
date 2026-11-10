@@ -67,6 +67,7 @@ export const allMembersQuery = defineQuery(`
     firstName,
     lastName,
     role,
+    position,
     committee,
     gradYear,
     bio,
@@ -195,6 +196,7 @@ export const teamPageQuery = defineQuery(`
     foundingClassHeading,
     membersHeading,
     membersPlaceholder,
+    associatesHeading,
     alumniHeading,
     alumniPlaceholder
   }

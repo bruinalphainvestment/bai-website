@@ -12,6 +12,7 @@ export const teamPageFallback = {
   foundingClassHeading: null,
   membersHeading: null,
   membersPlaceholder: null,
+  associatesHeading: null,
   alumniHeading: null,
   alumniPlaceholder: null,
 } as NonNullable<TeamPageQueryResult>;

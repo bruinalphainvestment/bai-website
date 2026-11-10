@@ -2,6 +2,11 @@ import { defineField, defineType } from 'sanity';
 
 import { COMMITTEE_OPTIONS } from './foundingMember';
 
+export const MEMBER_POSITION_OPTIONS = [
+  { title: 'Analyst', value: 'analyst' },
+  { title: 'Associate', value: 'associate' },
+] as const;
+
 export const member = defineType({
   name: 'member',
   title: 'Member',
@@ -34,6 +39,21 @@ export const member = defineType({
       description: 'Optional display title, e.g. "Analyst". Leave blank for general members.',
     }),
     defineField({
+      name: 'position',
+      title: 'Position',
+      type: 'string',
+      group: 'identity',
+      options: {
+        list: [...MEMBER_POSITION_OPTIONS],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'analyst',
+      validation: (rule) => rule.required(),
+      description:
+        'Analysts are listed together on the team page. Associates are listed under their committee.',
+    }),
+    defineField({
       name: 'committee',
       title: 'Committee',
       type: 'string',
@@ -42,7 +62,16 @@ export const member = defineType({
         list: COMMITTEE_OPTIONS.filter((option) => option.value !== 'president'),
         layout: 'dropdown',
       },
-      validation: (rule) => rule.required(),
+      hidden: ({ document }) => document?.position !== 'associate',
+      validation: (rule) =>
+        rule.custom((committee, context) => {
+          const position = (context.document as { position?: string } | undefined)?.position;
+          if (position === 'associate' && !committee) {
+            return 'Associates need a committee.';
+          }
+          return true;
+        }),
+      description: 'Associates only.',
     }),
     defineField({
       name: 'gradYear',
@@ -100,12 +129,20 @@ export const member = defineType({
       firstName: 'firstName',
       lastName: 'lastName',
       role: 'role',
+      position: 'position',
       committee: 'committee',
       media: 'headshot',
     },
-    prepare({ firstName, lastName, role, committee, media }) {
+    prepare({ firstName, lastName, role, position, committee, media }) {
       const name = [firstName, lastName].filter(Boolean).join(' ');
-      const subtitle = [role, committee].filter(Boolean).join(' · ');
+      const positionLabel =
+        MEMBER_POSITION_OPTIONS.find((option) => option.value === position)?.title ?? 'Analyst';
+      const subtitle = [
+        role || positionLabel,
+        position === 'associate' ? committee : null,
+      ]
+        .filter(Boolean)
+        .join(' · ');
       return { title: name || 'Member', subtitle, media };
     },
   },

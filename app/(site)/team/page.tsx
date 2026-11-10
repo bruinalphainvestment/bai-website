@@ -65,6 +65,15 @@ export default async function TeamPage() {
   const foundingHeading = page.foundingClassHeading ?? teamPageFallback.foundingClassHeading ?? '';
   const membersHeading = page.membersHeading ?? teamPageFallback.membersHeading ?? '';
   const membersPlaceholder = page.membersPlaceholder ?? teamPageFallback.membersPlaceholder ?? '';
+  const associatesHeading = page.associatesHeading?.trim() || 'Associates';
+  // Analysts have no committee; associates are listed under theirs.
+  // A member with no position set counts as an analyst.
+  const associates = generalMembers.filter(
+    (member) => stegaClean(member.position ?? '') === 'associate',
+  );
+  const analysts = generalMembers.filter(
+    (member) => stegaClean(member.position ?? '') !== 'associate',
+  );
 
   return (
     <div className="min-h-screen bg-cream text-navy pt-32 pb-24">
@@ -101,32 +110,21 @@ export default async function TeamPage() {
         </StaggerGroup>
       </section>
 
-      {membersHeading && (generalMembers.length > 0 || membersPlaceholder) ? (
+      {membersHeading && (analysts.length > 0 || membersPlaceholder) ? (
         <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
           <FadeUp>
             <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
               {membersHeading}
             </h2>
           </FadeUp>
-          {generalMembers.length > 0 ? (
-            <div className="flex flex-col gap-16 md:gap-20">
-              {groupMembersByCommittee(generalMembers).map((group) => (
-                <div key={group.key}>
-                  <FadeUp>
-                    <h3 className="font-sans text-sm font-medium uppercase tracking-[0.16em] text-navy/60 mb-8">
-                      {group.label}
-                    </h3>
-                  </FadeUp>
-                  <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-                    {group.members.map((member) => (
-                      <StaggerItem key={member._id}>
-                        <MemberCard member={member} showCommittee={false} />
-                      </StaggerItem>
-                    ))}
-                  </StaggerGroup>
-                </div>
+          {analysts.length > 0 ? (
+            <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+              {analysts.map((member) => (
+                <StaggerItem key={member._id}>
+                  <MemberCard member={member} showCommittee={false} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           ) : (
             <FadeUp>
               <p className="font-sans text-lg text-navy/70">{membersPlaceholder}</p>
@@ -134,11 +132,39 @@ export default async function TeamPage() {
           )}
         </section>
       ) : null}
+
+      {associates.length > 0 ? (
+        <section className="px-4 md:px-8 max-w-7xl mx-auto mb-24 md:mb-32">
+          <FadeUp>
+            <h2 className="font-display text-3xl md:text-4xl mb-12 border-b border-navy/10 pb-6">
+              {associatesHeading}
+            </h2>
+          </FadeUp>
+          <div className="flex flex-col gap-16 md:gap-20">
+            {groupMembersByCommittee(associates).map((group) => (
+              <div key={group.key}>
+                <FadeUp>
+                  <h3 className="font-sans text-sm font-medium uppercase tracking-[0.16em] text-navy/60 mb-8">
+                    {group.label}
+                  </h3>
+                </FadeUp>
+                <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                  {group.members.map((member) => (
+                    <StaggerItem key={member._id}>
+                      <MemberCard member={member} showCommittee={false} />
+                    </StaggerItem>
+                  ))}
+                </StaggerGroup>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }
 
-// Display order for the committee sub-sections of the general members grid.
+// Display order for the committee sub-sections of the associates grid.
 const COMMITTEE_ORDER = [
   'wealth-management',
   'trading',
